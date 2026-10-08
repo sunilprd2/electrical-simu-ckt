@@ -1,7 +1,13 @@
-ELECTRICAL SIMU CKT – V8 Exact IEC Library
+# ELECTRICAL SIMU CKT V9
 
-This build follows the supplied schematic references: clean CAD-style IEC symbols, reference designations, component names, terminal numbers, visible tails, and magnetic square terminal points.
+Fixed component-library rendering from V8.
 
-Added/expanded: coils and timer coils, manual buttons, pilot light, beacon, horn, plus the existing grouped library.
+- IEC groups render reliably
+- Actual symbol previews with terminal tails and square magnetic terminal points
+- Component names and IEC reference prefixes
+- Separate L1/L2/L3 power symbols
+- Drag and drop into schematic
+- Magnetic snapping of dropped components
+- Dark CAD-style 2D schematic
 
-Files: index.html, styles.css, app.js.
+Upload index.html, styles.css and app.js to the root of the GitHub repository.

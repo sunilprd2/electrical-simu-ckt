@@ -92,7 +92,7 @@ function refPrefix(type){
 
 const lib=document.getElementById('libraryGroups');
 function renderLibrary(){
- lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${icon(type)}</div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`).join('');
+ lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${withPreviewPorts(type)}</div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`).join('');
  document.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
  document.querySelectorAll('.symbol-btn').forEach(b=>{
   b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase();});
@@ -100,7 +100,7 @@ function renderLibrary(){
   b.addEventListener('click',()=>{state.textContent='DRAG '+b.dataset.name.toUpperCase()+' INTO SCHEMATIC';});
  });
 }
-renderLibrary();
+
 
 const svg=document.getElementById('schematic'), dropLayer=document.getElementById('dropLayer'), overlay=document.getElementById('dropOverlay');
 let running=false, selected=null, counter=1;
@@ -151,16 +151,6 @@ function portDefs(type){
   if(['lamp','led','tower','pilot','buzzer','siren','heater','resistive','inductive','capacitive','solenoid'].includes(type)) return [v(24,2,'X1','top'),v(24,30,'X2','bottom')];
   if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) return [v(24,2,'1','top'),v(24,30,'2','bottom')];
   return [v(24,2,'1','top'),v(24,30,'2','bottom')];
-}
-function icon(type){
-  const c='#e9f1ed'; const common=`stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
-  const txt=t=>`<text x="24" y="20" text-anchor="middle" font-size="8" fill="${c}" font-family="Arial" font-weight="700">${t}</text>`;
-  if(['l1','l2','l3','n','dc-','dc+'].includes(type)){
-    const t=type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase();
-    return `<svg class="lib-icon" viewBox="0 0 48 32"><line x1="24" y1="2" x2="24" y2="7" ${common}/><circle cx="24" cy="16" r="9" ${common}/>${txt(t)}<line x1="24" y1="25" x2="24" y2="30" ${common}/></svg>`;
-  }
-  if(type==='3p') return `<svg class="lib-icon" viewBox="0 0 48 32"><line x1="8" y1="2" x2="8" y2="7" ${common}/><circle cx="8" cy="16" r="7" ${common}/><line x1="8" y1="23" x2="8" y2="30" ${common}/><line x1="24" y1="2" x2="24" y2="7" ${common}/><circle cx="24" cy="16" r="7" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/><line x1="40" y1="2" x2="40" y2="7" ${common}/><circle cx="40" cy="16" r="7" ${common}/><line x1="40" y1="23" x2="40" y2="30" ${common}/></svg>`;
-  return _oldIconV7(type);
 }
 function withPreviewPorts(type){
   const base=icon(type).replace('</svg>','');
