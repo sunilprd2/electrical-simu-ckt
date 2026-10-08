@@ -19,3 +19,7 @@ This build changes the schematic presentation to a compact IEC-style drawing bas
 3. Electrical connectivity model
 4. Fault and overload simulation
 5. 3D industrial panel generated from the same circuit model
+
+
+## V3 component library
+Collapsible folder-style categories for power supply, breakers, MCB/MCCB, contactors, relays, auxiliary blocks, control devices, timers, motors, indicators, PLC/I/O, sensors, and terminals.

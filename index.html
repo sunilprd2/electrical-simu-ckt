@@ -22,27 +22,148 @@
 <aside class="library">
   <div class="libtitle">Components <span>(ELECTRICAL SIMU CKT)</span></div>
   <input id="search" placeholder="⌕  Search component...">
-  <section><h3>Power Supply & Protection</h3><div class="items">
-    <button data-symbol="supply"><strong>◯ ◯ ◯</strong><label>Supply</label></button><button data-symbol="fuse"><strong>─▱─</strong><label>Fuse</label></button><button data-symbol="mcb"><strong>╱│╲</strong><label>MCB</label></button><button><strong>▱▱</strong><label>MCCB</label></button>
-  </div></section>
-  <section><h3>Contactors & Relays</h3><div class="items">
-    <button data-symbol="contactor"><strong>╱ ╱ ╱</strong><label>Contactor</label></button><button data-symbol="aux"><strong>─╱ ─</strong><label>Aux Contact</label></button><button><strong>□</strong><label>Relay</label></button><button data-symbol="overload"><strong>▱▱</strong><label>Thermal OL</label></button>
-  </div></section>
-  <section><h3>Push Buttons & Switches</h3><div class="items">
-    <button data-symbol="start"><strong>─┤ ├─</strong><label>Start (NO)</label></button><button data-symbol="stop"><strong>─┤╱├─</strong><label>Stop (NC)</label></button><button><strong>○/○</strong><label>Selector</label></button><button><strong>⦻</strong><label>E-Stop</label></button>
-  </div></section>
-  <section><h3>Timers & Control Relays</h3><div class="items">
-    <button><strong>TON</strong><label>ON Delay</label></button><button><strong>TOF</strong><label>OFF Delay</label></button><button><strong>YΔ</strong><label>Star-Delta</label></button><button><strong>PER</strong><label>Periodic</label></button>
-  </div></section>
-  <section><h3>Motors & Loads</h3><div class="items">
-    <button data-symbol="motor"><strong>◯M3~</strong><label>3- Motor</label></button><button><strong>◯M~</strong><label>1- Motor</label></button><button><strong>⊗</strong><label>Lamp</label></button><button><strong>▥</strong><label>Heater</label></button>
-  </div></section>
-  <section><h3>Indicators & Meter</h3><div class="items">
-    <button><strong>⊗</strong><label>Pilot Lamp</label></button><button><strong>◖</strong><label>Buzzer</label></button><button><strong>▥</strong><label>Tower Lamp</label></button><button><strong>◷</strong><label>Meter</label></button>
-  </div></section>
-  <section><h3>PLC & I/O</h3><div class="items"><button><strong>PLC</strong><label>PLC</label></button><button><strong>DI</strong><label>DI</label></button><button><strong>DO</strong><label>DO</label></button><button><strong>AI</strong><label>AI</label></button></div></section>
-  <section><h3>Sensors & Field Devices</h3><div class="items"><button><strong>▥</strong><label>Proximity</label></button><button><strong>◌</strong><label>Photo Sensor</label></button><button><strong>⌁</strong><label>Limit Switch</label></button><button><strong>▯</strong><label>Float Switch</label></button></div></section>
-  <section><h3>Terminal & Wiring</h3><div class="items"><button><strong>●─●</strong><label>Terminal</label></button><button><strong>▤</strong><label>Terminal Block</label></button><button><strong>┼</strong><label>Junction</label></button><button><strong>━━</strong><label>Cable</label></button></div></section>
+
+  <div class="cat open">
+    <button class="cat-head"><span>📁</span><b>POWER SUPPLY</b><small>4</small><i>⌃</i></button>
+    <div class="cat-body">
+      <button data-symbol="supply"><strong>◯ ◯ ◯</strong><label>3Φ Supply</label></button>
+      <button data-symbol="supply"><strong>◯ N</strong><label>1Φ Supply</label></button>
+      <button><strong>+ −</strong><label>24V DC</label></button>
+      <button><strong>PE</strong><label>Earth</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>BREAKERS & PROTECTION</b><small>6</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="mcb"><strong>╱│╲</strong><label>MCB</label></button>
+      <button><strong>▱▱</strong><label>MCCB</label></button>
+      <button><strong>QF</strong><label>Isolator</label></button>
+      <button><strong>FU</strong><label>Fuse</label></button>
+      <button><strong>RCD</strong><label>RCD</label></button>
+      <button><strong>SPD</strong><label>Surge Prot.</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>MCB / MCCB</b><small>4</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="mcb"><strong>1P</strong><label>1P MCB</label></button>
+      <button data-symbol="mcb"><strong>2P</strong><label>2P MCB</label></button>
+      <button data-symbol="mcb"><strong>3P</strong><label>3P MCB</label></button>
+      <button data-symbol="mcb"><strong>4P</strong><label>4P MCB</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>CONTACTORS</b><small>6</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="contactor"><strong>KM</strong><label>3P Contactor</label></button>
+      <button><strong>KM</strong><label>4P Contactor</label></button>
+      <button><strong>A1 A2</strong><label>Coil</label></button>
+      <button data-symbol="aux"><strong>13—14</strong><label>Aux NO</label></button>
+      <button data-symbol="aux"><strong>21—22</strong><label>Aux NC</label></button>
+      <button><strong>KM</strong><label>Power Contacts</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>RELAYS</b><small>6</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>K</strong><label>Relay</label></button>
+      <button><strong>13—14</strong><label>Relay NO</label></button>
+      <button><strong>21—22</strong><label>Relay NC</label></button>
+      <button><strong>KA</strong><label>Control Relay</label></button>
+      <button><strong>KT</strong><label>Timer Relay</label></button>
+      <button><strong>CR</strong><label>Interposing</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>AUXILIARY BLOCKS</b><small>4</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="aux"><strong>13—14</strong><label>NO Block</label></button>
+      <button data-symbol="aux"><strong>21—22</strong><label>NC Block</label></button>
+      <button><strong>1NO+1NC</strong><label>Combo</label></button>
+      <button><strong>2NO+2NC</strong><label>Multi Block</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>CONTROL DEVICES</b><small>8</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="start"><strong>─┤ ├─</strong><label>Start NO</label></button>
+      <button data-symbol="stop"><strong>─┤╱├─</strong><label>Stop NC</label></button>
+      <button><strong>⦻</strong><label>E-Stop</label></button>
+      <button><strong>○/○</strong><label>Selector</label></button>
+      <button><strong>LS</strong><label>Limit Switch</label></button>
+      <button><strong>PS</strong><label>Pressure</label></button>
+      <button><strong>TS</strong><label>Temperature</label></button>
+      <button><strong>FS</strong><label>Float Switch</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>TIMERS & CONTROL RELAYS</b><small>5</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>TON</strong><label>ON Delay</label></button>
+      <button><strong>TOF</strong><label>OFF Delay</label></button>
+      <button><strong>YΔ</strong><label>Star-Delta</label></button>
+      <button><strong>PER</strong><label>Periodic</label></button>
+      <button><strong>TP</strong><label>Pulse Timer</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>MOTORS & LOADS</b><small>6</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button data-symbol="motor"><strong>◯M3~</strong><label>3Φ Motor</label></button>
+      <button><strong>◯M~</strong><label>1Φ Motor</label></button>
+      <button><strong>⊗</strong><label>Lamp</label></button>
+      <button><strong>▥</strong><label>Heater</label></button>
+      <button><strong>YΔ</strong><label>Motor Y-Δ</label></button>
+      <button><strong>BR</strong><label>Brake</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>INDICATORS & METER</b><small>5</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>⊗</strong><label>Pilot Lamp</label></button>
+      <button><strong>◖</strong><label>Buzzer</label></button>
+      <button><strong>▥</strong><label>Tower Lamp</label></button>
+      <button><strong>◷</strong><label>Meter</label></button>
+      <button><strong>A/V</strong><label>Multimeter</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>PLC & I/O</b><small>8</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>PLC</strong><label>PLC</label></button><button><strong>DI</strong><label>Digital In</label></button>
+      <button><strong>DO</strong><label>Digital Out</label></button><button><strong>AI</strong><label>Analog In</label></button>
+      <button><strong>AO</strong><label>Analog Out</label></button><button><strong>CPU</strong><label>CPU</label></button>
+      <button><strong>HMI</strong><label>HMI</label></button><button><strong>IO</strong><label>I/O Module</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>SENSORS & FIELD DEVICES</b><small>6</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>▥</strong><label>Proximity</label></button><button><strong>◌</strong><label>Photo Sensor</label></button>
+      <button><strong>⌁</strong><label>Limit Switch</label></button><button><strong>▯</strong><label>Float Switch</label></button>
+      <button><strong>PT</strong><label>Pressure</label></button><button><strong>RTD</strong><label>Temperature</label></button>
+    </div>
+  </div>
+
+  <div class="cat">
+    <button class="cat-head"><span>📁</span><b>TERMINAL & WIRING</b><small>5</small><i>⌄</i></button>
+    <div class="cat-body">
+      <button><strong>●─●</strong><label>Terminal</label></button><button><strong>▤</strong><label>Terminal Block</label></button>
+      <button><strong>┼</strong><label>Junction</label></button><button><strong>━━</strong><label>Cable</label></button>
+      <button><strong>PE</strong><label>Earth</label></button>
+    </div>
+  </div>
 </aside>
 <main class="work">
   <div class="workbar"><span id="state">READY • 2D SCHEMATIC</span><span>Compact IEC-style schematic • DOL starter demo</span></div>
