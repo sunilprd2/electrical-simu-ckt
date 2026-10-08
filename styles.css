@@ -29,3 +29,17 @@
 .wiring-preview{fill:none;stroke:#50f0a1;stroke-width:2;stroke-dasharray:6 4;pointer-events:none;}
 .connected-wire{fill:none;stroke:#d8dddf;stroke-width:2;pointer-events:none;}
 .mag-port.connected{fill:#50f0a1;stroke:#fff;stroke-width:1.2;}
+
+/* V12 UX: clean selection + colourful symbol previews */
+.symbol-btn { color: var(--accent); }
+.symbol-btn .symbol-preview { color: var(--accent); }
+.symbol-btn .symbol-preview .lib-icon { color: inherit; }
+.symbol-btn:hover .symbol-preview { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 45%, transparent)); }
+/* Never draw a large rectangle around a placed component. */
+.dropped-symbol .select-box { display:none !important; }
+.dropped-symbol.selected .select-box { display:none !important; }
+/* Selection is indicated only at the real connection terminals. */
+.dropped-symbol.selected .mag-port { fill:#50f0a1; stroke:#ffffff; stroke-width:1.5; filter:drop-shadow(0 0 4px #50f0a1); }
+.dropped-symbol.selected .drop-tag { filter:drop-shadow(0 0 3px rgba(80,240,161,.6)); }
+/* Keep the actual schematic symbols clean; terminals remain visible. */
+.dropped-symbol .mag-port { rx:1; ry:1; }

@@ -1,16 +1,12 @@
-# ELECTRICAL SIMU CKT V9
+# ELECTRICAL SIMU CKT V12
 
-Fixed component-library rendering from V8.
+IEC electrical schematic simulator UI.
 
-- IEC groups render reliably
-- Actual symbol previews with terminal tails and square magnetic terminal points
-- Component names and IEC reference prefixes
-- Separate L1/L2/L3 power symbols
-- Drag and drop into schematic
-- Magnetic snapping of dropped components
-- Dark CAD-style 2D schematic
-
-Upload index.html, styles.css and app.js to the root of the GitHub repository.
-
-
-V11: removed all outer component selection rectangles. Wiring starts only from the small magnetic terminal squares and snaps to another terminal square.
+V12 changes:
+- Drag placed components anywhere on the schematic.
+- Click a placed component to select it; press Delete or use the DELETE toolbar button.
+- Escape clears selection.
+- No large green/grey bounding rectangle around placed components.
+- Selection is shown only through the actual magnetic terminal squares.
+- Library symbol previews use category colours while retaining the IEC-style geometry.
+- Drag from one magnetic terminal square to another to create a snapped wire.

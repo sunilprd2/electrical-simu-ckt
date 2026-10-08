@@ -45,7 +45,7 @@ const groups=[
 ];
 
 function icon(type){
- const s='#e9f1ed';
+ const s='currentColor';
  const common=`stroke="${s}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
  const txt=(t)=>`<text x="24" y="20" text-anchor="middle" font-size="8" fill="${s}" font-family="Arial" font-weight="700">${t}</text>`;
  let body='';
@@ -92,10 +92,10 @@ function refPrefix(type){
 
 const lib=document.getElementById('libraryGroups');
 function renderLibrary(){
- lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${withPreviewPorts(type)}</div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`).join('');
+ lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-accent="${g.color}" style="--accent:${g.color};color:${g.color}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${withPreviewPorts(type)}</div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`).join('');
  document.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
  document.querySelectorAll('.symbol-btn').forEach(b=>{
-  b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase();});
+  b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase();});
   b.addEventListener('dragend',()=>document.getElementById('dropOverlay').classList.remove('show'));
   b.addEventListener('click',()=>{state.textContent='DRAG '+b.dataset.name.toUpperCase()+' INTO SCHEMATIC';});
  });
@@ -108,9 +108,9 @@ function render(){document.body.classList.toggle('live',running);sim.textContent
 document.getElementById('play').onclick=()=>{running=true;render()};
 document.getElementById('stop').onclick=()=>{running=false;render()};
 document.getElementById('threeD').onclick=()=>alert('3D view will use the same IEC circuit model as this 2D schematic.');
-document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='SELECT A DROPPED SYMBOL FIRST';};
+document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 
-document.addEventListener('keydown',e=>{if((e.key==='Delete'||e.key==='Backspace')&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
 
 document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.library .cat').forEach(s=>{const match=s.textContent.toLowerCase().includes(q);s.style.display=match?'block':'none';if(q&&match){s.classList.add('open');s.querySelector('.cat-head i').textContent='⌃'}})});
 
@@ -160,9 +160,9 @@ function withPreviewPorts(type){
 function makeDropped(d,x,y){
   const NS='http://www.w3.org/2000/svg', W=140, H=100;
   const g=document.createElementNS(NS,'g');
-  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.x=x; g.dataset.y=y;
+  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y;
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
-  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.style.color=g.dataset.accent; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.type).forEach(p=>{
     const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',46+p.x-3); r.setAttribute('y',30+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; ports.appendChild(r);
