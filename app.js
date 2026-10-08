@@ -136,3 +136,55 @@ svg.addEventListener('dragleave',()=>overlay.classList.remove('show'));
 svg.addEventListener('drop',e=>{e.preventDefault();overlay.classList.remove('show');let raw=e.dataTransfer.getData('application/json')||e.dataTransfer.getData('text/plain');if(!raw)return;let d;try{d=JSON.parse(raw)}catch{return;}const p=getPoint(e);makeDropped(d,Math.round(p.x),Math.round(p.y));state.textContent='PLACED • '+d.name.toUpperCase();});
 svg.addEventListener('pointerdown',e=>{if(e.target===svg)select(null)});
 render();
+
+/* V7: clear IEC symbols with visible tails + magnetic square connection points */
+const _oldIconV7 = icon;
+function portDefs(type){
+  const v=(x,y,label,side)=>({x,y,label,side});
+  if(type==='3p') return [v(8,2,'L1','top'),v(24,2,'L2','top'),v(40,2,'L3','top'),v(8,30,'L1','bottom'),v(24,30,'L2','bottom'),v(40,30,'L3','bottom')];
+  if(['l1','l2','l3','n','dc-','dc+','pe','gnd'].includes(type)) return [v(24,2,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'top'),v(24,30,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'bottom')];
+  if(type==='psu') return [v(7,7,'L','top'),v(17,7,'N','top'),v(31,7,'HV','top'),v(41,7,'PE','top'),v(7,25,'+','bottom'),v(17,25,'+','bottom'),v(31,25,'−','bottom'),v(41,25,'−','bottom')];
+  if(['tr1','tr3','gen3'].includes(type)) return [v(12,2,'1','top'),v(36,2,'2','top'),v(12,30,'1','bottom'),v(36,30,'2','bottom')];
+  if(['no','nc','change','changeover','auxno','auxnc','mainno','mainnc','relayno','relaync','start','stop','estop','limitno','limitnc','foot','pressure','temperature','float','hand','tdno','tdnc','offno','offnc','timernc','timerno'].includes(type)) return [v(5,16,'1','left'),v(43,16,'2','right')];
+  if(['coil','relaycoil','powerrelay','interpose','latchrelay','ssr','reed','safetyrelay','ton','tof','multitimer','stimer','flasher','cyclic','stair','analogtimer','digitaltimer','programmable','counter','3pcont','4pcont','contaux','reverse','contimer','stardelta','latchcont'].includes(type)) return [v(24,2,'A1','top'),v(24,30,'A2','bottom')];
+  if(['motor3','motor1','motorDC','twospeed','motorsd','brake','gear'].includes(type)) return [v(14,2,'U','top'),v(24,2,'V','top'),v(34,2,'W','top'),v(24,30,'PE','bottom')];
+  if(['lamp','led','tower','pilot','buzzer','siren','heater','resistive','inductive','capacitive','solenoid'].includes(type)) return [v(24,2,'X1','top'),v(24,30,'X2','bottom')];
+  if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) return [v(24,2,'1','top'),v(24,30,'2','bottom')];
+  return [v(24,2,'1','top'),v(24,30,'2','bottom')];
+}
+function icon(type){
+  const c='#e9f1ed'; const common=`stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
+  const txt=t=>`<text x="24" y="20" text-anchor="middle" font-size="8" fill="${c}" font-family="Arial" font-weight="700">${t}</text>`;
+  if(['l1','l2','l3','n','dc-','dc+'].includes(type)){
+    const t=type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase();
+    return `<svg class="lib-icon" viewBox="0 0 48 32"><line x1="24" y1="2" x2="24" y2="7" ${common}/><circle cx="24" cy="16" r="9" ${common}/>${txt(t)}<line x1="24" y1="25" x2="24" y2="30" ${common}/></svg>`;
+  }
+  if(type==='3p') return `<svg class="lib-icon" viewBox="0 0 48 32"><line x1="8" y1="2" x2="8" y2="7" ${common}/><circle cx="8" cy="16" r="7" ${common}/><line x1="8" y1="23" x2="8" y2="30" ${common}/><line x1="24" y1="2" x2="24" y2="7" ${common}/><circle cx="24" cy="16" r="7" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/><line x1="40" y1="2" x2="40" y2="7" ${common}/><circle cx="40" cy="16" r="7" ${common}/><line x1="40" y1="23" x2="40" y2="30" ${common}/></svg>`;
+  return _oldIconV7(type);
+}
+function withPreviewPorts(type){
+  const base=icon(type).replace('</svg>','');
+  const ports=portDefs(type).map(p=>`<rect class="port" x="${p.x-2}" y="${p.y-2}" width="4" height="4"/><text class="port-label" x="${p.x}" y="${p.side==='top'?p.y-3:p.y+8}" text-anchor="middle">${p.label}</text>`).join('');
+  return base+ports+'</svg>';
+}
+function makeDropped(d,x,y){
+  const NS='http://www.w3.org/2000/svg', W=140, H=100;
+  const g=document.createElementNS(NS,'g');
+  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.x=x; g.dataset.y=y;
+  g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
+  const box=document.createElementNS(NS,'rect'); box.setAttribute('class','select-box'); box.setAttribute('x',0); box.setAttribute('y',0); box.setAttribute('width',W); box.setAttribute('height',H); box.setAttribute('rx',5);
+  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
+  portDefs(d.type).forEach(p=>{
+    const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',46+p.x-3); r.setAttribute('y',30+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; ports.appendChild(r);
+    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',46+p.x); t.setAttribute('y',p.side==='top'?30+p.y-7:30+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=p.label; ports.appendChild(t);
+  });
+  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',90); label.setAttribute('text-anchor','middle'); label.textContent=d.name.length>28?d.name.slice(0,27)+'…':d.name;
+  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',13); tag.setAttribute('text-anchor','middle'); tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
+  const title=document.createElementNS(NS,'title'); title.textContent=d.name+' | IEC reference '+(d.ref||refPrefix(d.type));
+  g.append(title,box,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
+}
+function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portDefs(g.dataset.type).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
+function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
+function enableMove(g){let moving=false,dx=0,dy=0;g.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);dx=p.x-(+g.dataset.x);dy=p.y-(+g.dataset.y);g.setPointerCapture(e.pointerId);});g.addEventListener('pointermove',e=>{if(!moving)return;const p=getPoint(e);let x=Math.round(p.x-dx),y=Math.round(p.y-dy);const snap=findSnap(g,x,y);if(snap){x=snap.x;y=snap.y;g.classList.add('magnetic')}else g.classList.remove('magnetic');g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-70},${y-50})`);});g.addEventListener('pointerup',e=>{moving=false;g.classList.remove('magnetic');try{g.releasePointerCapture(e.pointerId)}catch{}});}
+renderLibrary();

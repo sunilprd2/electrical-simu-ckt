@@ -1,6 +1,7 @@
-# ELECTRICAL SIMU CKT — V4 IEC Component Library
+ELECTRICAL SIMU CKT – V8 Exact IEC Library
 
-V4 expands the collapsible component library with IEC-style grouped symbols and names:
-Power Supply, Breakers & Protection, MCB/MCCB, Contactors, Relays, Auxiliary Contacts, Control Devices, Timers & Control Relays, Motors & Loads, Indicators & Meters, PLC & I/O, Sensors & Field Devices, and Terminals & Wiring.
+This build follows the supplied schematic references: clean CAD-style IEC symbols, reference designations, component names, terminal numbers, visible tails, and magnetic square terminal points.
 
-The library supports search, click selection, and drag/drop placement onto the 2D schematic. The symbols are original SVG-style drawings for this project; device reference designators are common IEC/industrial conventions and can be overridden for a project.
+Added/expanded: coils and timer coils, manual buttons, pilot light, beacon, horn, plus the existing grouped library.
+
+Files: index.html, styles.css, app.js.
