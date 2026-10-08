@@ -178,24 +178,52 @@ function makeDropped(d,x,y){
 function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portDefs(g.dataset.type).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
 function enableMove(g){
-  let moving=false,dx=0,dy=0;
+  let moving=false, moved=false, dx=0, dy=0;
   g.addEventListener('pointerdown',e=>{
     if(e.button!==0) return;
     if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
-    e.stopPropagation(); select(g); moving=true;
+    e.preventDefault(); e.stopPropagation();
+    select(g);
     const p=getPoint(e); dx=p.x-(+g.dataset.x); dy=p.y-(+g.dataset.y);
-    g.setPointerCapture(e.pointerId);
+    moving=true; moved=false;
+    try{g.setPointerCapture(e.pointerId)}catch{}
   });
   g.addEventListener('pointermove',e=>{
     if(!moving) return;
-    const p=getPoint(e); let x=Math.round(p.x-dx),y=Math.round(p.y-dy);
-    const snap=findSnap(g,x,y);
-    if(snap){x=snap.x;y=snap.y;g.classList.add('magnetic')}else g.classList.remove('magnetic');
-    g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-70},${y-50})`);
+    const p=getPoint(e);
+    const x=Math.round(p.x-dx), y=Math.round(p.y-dy);
+    if(Math.abs(x-(+g.dataset.x))>1 || Math.abs(y-(+g.dataset.y))>1) moved=true;
+    g.dataset.x=x; g.dataset.y=y;
+    g.setAttribute('transform',`translate(${x-70},${y-50})`);
+    g.classList.add('moving');
   });
-  g.addEventListener('pointerup',e=>{moving=false;g.classList.remove('magnetic');try{g.releasePointerCapture(e.pointerId)}catch{}});
+  g.addEventListener('pointerup',e=>{
+    if(!moving) return;
+    moving=false; g.classList.remove('moving');
+    try{g.releasePointerCapture(e.pointerId)}catch{}
+    select(g);
+  });
+  g.addEventListener('click',e=>{
+    if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
+    e.stopPropagation(); select(g);
+    state.textContent='SELECTED • '+(g.dataset.name||'COMPONENT').toUpperCase()+' • PRESS DELETE OR DRAG';
+  });
 }
 renderLibrary();
+
+/* V15: reliable component selection. Clicking a placed symbol selects it; Delete button/keyboard removes it. */
+(function reliableSelection(){
+  const layer=document.getElementById('dropLayer');
+  if(!layer) return;
+  layer.addEventListener('click',e=>{
+    const g=e.target.closest && e.target.closest('.dropped-symbol');
+    if(!g) return;
+    if(e.target.classList && e.target.classList.contains('mag-port')) return;
+    select(g);
+    state.textContent='SELECTED • '+(g.dataset.name||'COMPONENT').toUpperCase()+' • PRESS DELETE OR DRAG';
+  },false);
+  document.getElementById('delete').title='Select a component, then click DELETE or press the Delete key';
+})();
 
 /* V10 — real terminal-to-terminal magnetic wiring.  Drag the small square terminal, not the symbol. */
 (function initMagneticWiring(){

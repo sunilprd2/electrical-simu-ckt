@@ -82,3 +82,9 @@ footer{height:32px;background:#091116;border-top:1px solid #2d3d45;font-size:10.
 @media(min-width:1920px){.library{width:440px;flex-basis:440px}.cat-body{gap:5px}.symbol-btn{height:126px}.symbol-btn .lib-icon{width:102px;height:62px}.brand b{font-size:21px}.top button{min-width:70px}}
 @media(min-width:3000px){.library{width:500px;flex-basis:500px}.cat-head{height:52px}.cat-head b{font-size:13px}.symbol-btn{height:145px}.symbol-btn label{font-size:11px;line-height:12px}.symbol-btn small{font-size:10px}.symbol-preview{height:82px}.symbol-btn .lib-icon{width:120px;height:72px}.top{height:88px}.layout{height:calc(100vh - 88px)}.brand b{font-size:24px}.top button{height:72px;min-width:78px;font-size:24px}}
 @media(max-width:1250px){#schematic{width:1400px;min-width:1400px}.library{width:370px;flex-basis:370px}}
+
+/* V15 reliable selection: glow only, never a bounding box. */
+.dropped-symbol.selected { filter: drop-shadow(0 0 5px rgba(80,240,161,.95)) !important; }
+.dropped-symbol.selected .mag-port { fill:#50f0a1 !important; stroke:#ffffff !important; stroke-width:1.7 !important; }
+.dropped-symbol.moving { cursor:grabbing !important; }
+#dropLayer { pointer-events:all; }

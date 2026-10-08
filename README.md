@@ -1,3 +1,3 @@
-ELECTRICAL SIMU CKT V14 — 4K-ready high-DPI UI.
+ELECTRICAL SIMU CKT V15
 
-Vector/SVG-first rendering, crisp 2D schematic, high-DPI library, magnetic terminals, drag/move/select/delete workflow.
+Fixes: reliable click selection, visible glow without bounding rectangle, drag-to-move, Delete button and Delete key, magnetic terminal wiring preserved.
