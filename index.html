@@ -1,135 +1,96 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ELECTRICAL SIMU CKT</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELECTRICAL SIMU CKT</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="bolt">⚡</span><div><strong>ELECTRICAL SIMU CKT</strong><small>Design • Simulate • Control • Visualize</small></div></div>
-    <div class="toolbar">
-      <button id="playBtn" class="tool play">▶<span>PLAY</span></button>
-      <button id="stopBtn" class="tool stop">■<span>STOP</span></button>
-      <button class="tool" id="valuesBtn">☷<span>VALUES</span></button>
-      <button class="tool" id="viewBtn">◉<span>VIEW</span></button>
-      <button class="tool" id="holdBtn">⌑<span>HOLD</span></button>
-      <button class="tool" id="deleteBtn">▱<span>DELETE</span></button>
-      <button class="tool">▣<span>FRONT</span></button>
-      <button class="tool">▣<span>BACK</span></button>
-      <button class="tool">⟳<span>ROTATE</span></button>
-      <button class="mode active">▣<span>2D</span></button>
-      <button class="mode" id="threeDBtn">◇<span>3D</span></button>
-      <button class="tool">⚙<span>SETTINGS</span></button>
-    </div>
-  </header>
+<header class="top">
+  <div class="brand"><span>⚡</span><div><b>ELECTRICAL SIMU CKT</b><small>Design • Simulate • Control • Visualize</small></div></div>
+  <nav>
+    <button class="run" id="play">▶<em>PLAY</em></button>
+    <button class="stop" id="stop">■<em>STOP</em></button>
+    <button>☷<em>VALUES</em></button><button>◉<em>VIEW</em></button>
+    <button>⌑<em>HOLD</em></button><button id="delete">⌫<em>DELETE</em></button>
+    <button>▣<em>FRONT</em></button><button>▣<em>BACK</em></button><button>⟳<em>ROTATE</em></button>
+    <button class="mode active">▣<em>2D</em></button><button id="threeD">◇<em>3D</em></button><button>⚙<em>SETTINGS</em></button>
+  </nav>
+</header>
+<div class="layout">
+<aside class="library">
+  <div class="libtitle">Components <span>(ELECTRICAL SIMU CKT)</span></div>
+  <input id="search" placeholder="⌕  Search component...">
+  <section><h3>Power Supply & Protection</h3><div class="items">
+    <button data-symbol="supply"><strong>◯ ◯ ◯</strong><label>Supply</label></button><button data-symbol="fuse"><strong>─▱─</strong><label>Fuse</label></button><button data-symbol="mcb"><strong>╱│╲</strong><label>MCB</label></button><button><strong>▱▱</strong><label>MCCB</label></button>
+  </div></section>
+  <section><h3>Contactors & Relays</h3><div class="items">
+    <button data-symbol="contactor"><strong>╱ ╱ ╱</strong><label>Contactor</label></button><button data-symbol="aux"><strong>─╱ ─</strong><label>Aux Contact</label></button><button><strong>□</strong><label>Relay</label></button><button data-symbol="overload"><strong>▱▱</strong><label>Thermal OL</label></button>
+  </div></section>
+  <section><h3>Push Buttons & Switches</h3><div class="items">
+    <button data-symbol="start"><strong>─┤ ├─</strong><label>Start (NO)</label></button><button data-symbol="stop"><strong>─┤╱├─</strong><label>Stop (NC)</label></button><button><strong>○/○</strong><label>Selector</label></button><button><strong>⦻</strong><label>E-Stop</label></button>
+  </div></section>
+  <section><h3>Timers & Control Relays</h3><div class="items">
+    <button><strong>TON</strong><label>ON Delay</label></button><button><strong>TOF</strong><label>OFF Delay</label></button><button><strong>YΔ</strong><label>Star-Delta</label></button><button><strong>PER</strong><label>Periodic</label></button>
+  </div></section>
+  <section><h3>Motors & Loads</h3><div class="items">
+    <button data-symbol="motor"><strong>◯M3~</strong><label>3- Motor</label></button><button><strong>◯M~</strong><label>1- Motor</label></button><button><strong>⊗</strong><label>Lamp</label></button><button><strong>▥</strong><label>Heater</label></button>
+  </div></section>
+  <section><h3>Indicators & Meter</h3><div class="items">
+    <button><strong>⊗</strong><label>Pilot Lamp</label></button><button><strong>◖</strong><label>Buzzer</label></button><button><strong>▥</strong><label>Tower Lamp</label></button><button><strong>◷</strong><label>Meter</label></button>
+  </div></section>
+  <section><h3>PLC & I/O</h3><div class="items"><button><strong>PLC</strong><label>PLC</label></button><button><strong>DI</strong><label>DI</label></button><button><strong>DO</strong><label>DO</label></button><button><strong>AI</strong><label>AI</label></button></div></section>
+  <section><h3>Sensors & Field Devices</h3><div class="items"><button><strong>▥</strong><label>Proximity</label></button><button><strong>◌</strong><label>Photo Sensor</label></button><button><strong>⌁</strong><label>Limit Switch</label></button><button><strong>▯</strong><label>Float Switch</label></button></div></section>
+  <section><h3>Terminal & Wiring</h3><div class="items"><button><strong>●─●</strong><label>Terminal</label></button><button><strong>▤</strong><label>Terminal Block</label></button><button><strong>┼</strong><label>Junction</label></button><button><strong>━━</strong><label>Cable</label></button></div></section>
+</aside>
+<main class="work">
+  <div class="workbar"><span id="state">READY • 2D SCHEMATIC</span><span>Compact IEC-style schematic • DOL starter demo</span></div>
+  <div id="sheet">
+    <svg id="schematic" viewBox="0 0 1200 760" aria-label="Electrical schematic">
+      <g id="power" class="circuit">
+        <g class="wire white"><line x1="120" y1="70" x2="120" y2="150"/><line x1="165" y1="70" x2="165" y2="150"/><line x1="210" y1="70" x2="210" y2="150"/></g>
+        <g class="terminal"><circle cx="120" cy="55" r="12"/><text x="120" y="59">L1</text><circle cx="165" cy="55" r="12"/><text x="165" y="59">L2</text><circle cx="210" cy="55" r="12"/><text x="210" y="59">L3</text></g>
+        <text class="green" x="108" y="86">L1</text><text class="green" x="153" y="86">L2</text><text class="green" x="198" y="86">L3</text>
+        <g class="sym"><line x1="108" y1="150" x2="132" y2="180"/><line x1="153" y1="150" x2="177" y2="180"/><line x1="198" y1="150" x2="222" y2="180"/><line x1="120" y1="180" x2="120" y2="215"/><line x1="165" y1="180" x2="165" y2="215"/><line x1="210" y1="180" x2="210" y2="215"/></g>
+        <text class="tag" x="84" y="190">-QF1</text><text class="num" x="112" y="146">1</text><text class="num" x="157" y="146">3</text><text class="num" x="202" y="146">5</text>
+        <g class="wire white"><line x1="120" y1="215" x2="120" y2="270"/><line x1="165" y1="215" x2="165" y2="270"/><line x1="210" y1="215" x2="210" y2="270"/></g>
+        <g class="sym"><line x1="108" y1="270" x2="132" y2="300"/><line x1="153" y1="270" x2="177" y2="300"/><line x1="198" y1="270" x2="222" y2="300"/><line x1="120" y1="300" x2="120" y2="335"/><line x1="165" y1="300" x2="165" y2="335"/><line x1="210" y1="300" x2="210" y2="335"/></g>
+        <text class="tag" x="78" y="313">-KM1</text><text class="num" x="112" y="267">1</text><text class="num" x="157" y="267">3</text><text class="num" x="202" y="267">5</text><text class="num" x="112" y="320">2</text><text class="num" x="157" y="320">4</text><text class="num" x="202" y="320">6</text>
+        <g class="wire white"><line x1="120" y1="335" x2="120" y2="385"/><line x1="165" y1="335" x2="165" y2="385"/><line x1="210" y1="335" x2="210" y2="385"/></g>
+        <g class="sym overload"><rect x="108" y="385" width="24" height="42"/><rect x="153" y="385" width="24" height="42"/><rect x="198" y="385" width="24" height="42"/></g>
+        <text class="tag" x="84" y="416">-F1</text><text class="num" x="112" y="380">1</text><text class="num" x="157" y="380">2</text><text class="num" x="202" y="380">3</text>
+        <g class="wire white"><line x1="120" y1="427" x2="120" y2="505"/><line x1="165" y1="427" x2="165" y2="505"/><line x1="210" y1="427" x2="210" y2="505"/></g>
+        <text class="num" x="110" y="500">U1</text><text class="num" x="155" y="500">V1</text><text class="num" x="200" y="500">W1</text>
+        <g id="motorSymbol"><circle cx="165" cy="570" r="54"/><text x="165" y="575" text-anchor="middle" class="motorText">M3~</text><line x1="120" y1="505" x2="120" y2="545"/><line x1="165" y1="505" x2="165" y2="516"/><line x1="210" y1="505" x2="210" y2="545"/></g>
+        <text class="tag" x="82" y="575">-M1</text><text class="green" x="206" y="635">PE</text>
+      </g>
 
-  <main class="app">
-    <aside class="sidebar">
-      <div class="side-title">Components <span>(Electrical Simu CKT)</span></div>
-      <input id="search" class="search" placeholder="⌕  Search component...">
-
-      <section class="group"><h3>Power Supply & Protection</h3><div class="parts">
-        <button class="part" data-type="supply"><b> L1 L2 L3 N</b><span>Supply</span></button>
-        <button class="part" data-type="fuse"><b>──◇──</b><span>Fuse</span></button>
-        <button class="part" data-type="mcb"><b>MCB</b><span>MCB</span></button>
-        <button class="part" data-type="mccb"><b>MCCB</b><span>MCCB</span></button>
-      </div></section>
-
-      <section class="group"><h3>Contactors & Relays</h3><div class="parts">
-        <button class="part" data-type="contactor"><b> K1</b><span>Contactor</span></button>
-        <button class="part" data-type="aux"><b>13—14</b><span>Aux Contact</span></button>
-        <button class="part" data-type="relay"><b> R</b><span>Relay</span></button>
-        <button class="part" data-type="overload"><b>OL</b><span>Thermal OL</span></button>
-      </div></section>
-
-      <section class="group"><h3>Push Buttons & Switches</h3><div class="parts">
-        <button class="part" data-type="start"><b>—( )—</b><span>Start (NO)</span></button>
-        <button class="part" data-type="stop"><b>—|/|—</b><span>Stop (NC)</span></button>
-        <button class="part" data-type="selector"><b>SEL</b><span>Selector</span></button>
-        <button class="part" data-type="estop"><b>⦻</b><span>E-Stop</span></button>
-      </div></section>
-
-      <section class="group"><h3>Timers & Control Relays</h3><div class="parts">
-        <button class="part"><b>TON</b><span>ON Delay</span></button>
-        <button class="part"><b>TOF</b><span>OFF Delay</span></button>
-        <button class="part"><b>Y-Δ</b><span>Star-Delta</span></button>
-        <button class="part"><b>PER</b><span>Periodic</span></button>
-      </div></section>
-
-      <section class="group"><h3>Motors & Loads</h3><div class="parts">
-        <button class="part" data-type="motor"><b>M3~</b><span>3~ Motor</span></button>
-        <button class="part"><b>M1~</b><span>1~ Motor</span></button>
-        <button class="part"><b>◉</b><span>Lamp</span></button>
-        <button class="part"><b>▥</b><span>Heater</span></button>
-      </div></section>
-
-      <section class="group"><h3>Indicators & Meter</h3><div class="parts">
-        <button class="part"><b>●</b><span>Pilot Lamp</span></button>
-        <button class="part"><b>◖</b><span>Buzzer</span></button>
-        <button class="part"><b>▥</b><span>Tower Lamp</span></button>
-        <button class="part"><b>◷</b><span>Meter</span></button>
-      </div></section>
-
-      <section class="group"><h3>PLC & I/O</h3><div class="parts">
-        <button class="part"><b>PLC</b><span>PLC</span></button>
-        <button class="part"><b>DI</b><span>DI</span></button>
-        <button class="part"><b>DO</b><span>DO</span></button>
-        <button class="part"><b>AI</b><span>AI</span></button>
-      </div></section>
-
-      <section class="group"><h3>Sensors & Field Devices</h3><div class="parts">
-        <button class="part"><b>▥</b><span>Proximity</span></button>
-        <button class="part"><b>◌</b><span>Photo Sensor</span></button>
-        <button class="part"><b>⌁</b><span>Limit Switch</span></button>
-        <button class="part"><b>▯</b><span>Float Switch</span></button>
-      </div></section>
-
-      <section class="group"><h3>Terminal & Wiring</h3><div class="parts">
-        <button class="part"><b>●—●</b><span>Terminal</span></button>
-        <button class="part"><b>▤</b><span>Terminal Block</span></button>
-        <button class="part"><b>⌁</b><span>Junction</span></button>
-        <button class="part"><b>━━</b><span>Cable</span></button>
-      </div></section>
-    </aside>
-
-    <section class="workspace">
-      <div class="canvasbar"><span id="status">READY • 2D EDIT MODE</span><span>Drag components from the library • Use PLAY to simulate</span></div>
-      <div id="canvas" class="canvas">
-        <div class="grid"></div>
-        <div class="circuit" id="circuit">
-          <div class="rail power-rail">L1 <span></span></div>
-          <div class="rail power-rail l2">L2 <span></span></div>
-          <div class="rail power-rail l3">L3 <span></span></div>
-
-          <div class="device supply" style="left:45px;top:42px">L1 L2 L3<br><small>SUPPLY</small></div>
-          <div class="device mcb" style="left:160px;top:45px">QF1<br><small>MCB</small></div>
-          <div class="device contactor" id="k1" style="left:285px;top:45px">K1<br><small>1/L1 3/L2 5/L3<br>2/T1 4/T2 6/T3</small></div>
-          <div class="device overload" style="left:430px;top:45px">F1<br><small>95-96 / 97-98</small></div>
-          <div class="device motor" id="motor" style="left:560px;top:35px">M1<br><small>3~ MOTOR</small></div>
-
-          <div class="wire w1"></div><div class="wire w2"></div><div class="wire w3"></div><div class="wire w4"></div>
-
-          <div class="control-label">CONTROL CIRCUIT</div>
-          <div class="control-wire c1"></div>
-          <div class="device stop nc" id="stop" style="left:110px;top:310px">S0<br><small>STOP NC<br>21-22</small></div>
-          <div class="device overload small" style="left:265px;top:310px">F1<br><small>95-96</small></div>
-          <button class="device start no" id="start" style="left:420px;top:302px">S1<br><small>START NO<br>13-14</small></button>
-          <div class="device aux small" id="aux" style="left:565px;top:310px">K1<br><small>13-14</small></div>
-          <div class="coil" id="coil" style="left:710px;top:300px">K1<br>A1 / A2</div>
-          <div class="neutral">N ─────────────────────────────────────────────</div>
-
-          <div class="hint">Demo circuit: 3-phase DOL starter</div>
-        </div>
-      </div>
-      <div class="bottom-status">
-        <span id="simState">● STOPPED</span>
-        <span id="motorState">Motor: OFF</span>
-        <span>Zoom 100%</span>
-      </div>
-    </section>
-  </main>
-  <script src="app.js"></script>
+      <g id="control" class="circuit">
+        <g class="terminal"><circle cx="650" cy="55" r="12"/><text x="650" y="59">L</text><circle cx="700" cy="55" r="12"/><text x="700" y="59">N</text></g>
+        <text class="green" x="645" y="86">L</text><text class="green" x="695" y="86">N</text>
+        <g class="wire white"><line x1="650" y1="70" x2="650" y2="130"/><line x1="700" y1="70" x2="700" y2="690"/></g>
+        <g class="sym"><line x1="638" y1="130" x2="662" y2="160"/></g><text class="tag" x="620" y="175">-QF2</text>
+        <g class="wire white"><line x1="650" y1="160" x2="650" y2="215"/></g>
+        <g id="stopSym" class="sym"><line x1="638" y1="215" x2="662" y2="245"/><line x1="638" y1="245" x2="662" y2="215"/></g><text class="tag" x="620" y="255">-S0</text><text class="num" x="664" y="214">21</text><text class="num" x="664" y="250">22</text>
+        <g class="wire white"><line x1="650" y1="245" x2="650" y2="300"/></g>
+        <g class="sym"><rect x="638" y="300" width="24" height="38"/></g><text class="tag" x="620" y="330">-F1</text><text class="num" x="665" y="312">95</text><text class="num" x="665" y="334">96</text>
+        <g class="wire white"><line x1="650" y1="338" x2="650" y2="395"/><line x1="650" y1="395" x2="760" y2="395"/></g>
+        <g id="startSym" class="sym"><line x1="748" y1="375" x2="772" y2="405"/></g><text class="tag" x="736" y="430">-S1</text><text class="num" x="744" y="370">13</text><text class="num" x="770" y="425">14</text>
+        <g class="wire white"><line x1="760" y1="405" x2="760" y2="500"/></g>
+        <g id="auxSym" class="sym"><line x1="748" y1="500" x2="772" y2="530"/></g><text class="tag" x="738" y="555">-KM1</text><text class="num" x="742" y="495">13</text><text class="num" x="770" y="550">14</text>
+        <g class="wire white"><line x1="760" y1="530" x2="820" y2="530"/><line x1="820" y1="530" x2="820" y2="600"/></g>
+        <g id="coil" class="coil"><rect x="807" y="600" width="26" height="55"/><text x="790" y="625" class="tag">-KM1</text><text x="785" y="600" class="num">A1</text><text x="785" y="660" class="num">A2</text></g>
+        <g class="wire white"><line x1="820" y1="655" x2="820" y2="690"/><line x1="820" y1="690" x2="700" y2="690"/></g>
+        <g class="indicator"><circle cx="920" cy="530" r="15"/><line x1="910" y1="520" x2="930" y2="540"/><line x1="930" y1="520" x2="910" y2="540"/></g><text class="tag" x="905" y="570">H1 RUN</text>
+        <g class="wire white"><line x1="760" y1="395" x2="920" y2="395"/><line x1="920" y1="395" x2="920" y2="515"/><line x1="920" y1="545" x2="920" y2="690"/></g>
+      </g>
+    </svg>
+    <div class="hint">Drag a symbol from the left into the schematic • Click START to run the DOL demonstration</div>
+  </div>
+  <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>2D • IEC schematic view</span></footer>
+</main>
+</div>
+<script src="app.js"></script>
 </body>
 </html>

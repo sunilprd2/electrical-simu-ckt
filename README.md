@@ -1,26 +1,21 @@
-# ELECTRICAL SIMU CKT
+# ELECTRICAL SIMU CKT — Phase 2 UI
 
-**Design • Simulate • Control • Visualize**
+Design • Simulate • Control • Visualize
 
-Phase 1 prototype for a browser-based electrical circuit simulator.
+This build changes the schematic presentation to a compact IEC-style drawing based on the supplied visual reference.
 
-## Current prototype
-- SimuRelay-inspired dark industrial UI
-- 2D schematic workspace
+## Current
+- Compact symbol-only 2D schematic
+- Dark engineering drawing canvas
+- IEC-style terminal labels
+- 3-phase DOL power circuit
+- Control circuit with STOP, overload, START, auxiliary contact and coil
+- Live START/STOP demonstration
 - Component library
-- DOL starter demonstration circuit
-- START/STOP simulation
-- Contactor/auxiliary/motor live-state indication
-- Responsive layout
 
-## Planned
-- Drag-and-drop circuit editor
-- IEC terminal-aware wiring engine
-- Electrical simulation engine
-- Fault/overload behavior
-- 3D industrial panel generated from the same circuit model
-- Save/load projects
-- Android build
-
-## Run
-Open `index.html` in a modern browser.
+## Next
+1. Real drag-and-drop components
+2. Wire drawing and terminal snapping
+3. Electrical connectivity model
+4. Fault and overload simulation
+5. 3D industrial panel generated from the same circuit model
