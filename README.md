@@ -1,25 +1,6 @@
-# ELECTRICAL SIMU CKT — Phase 2 UI
+# ELECTRICAL SIMU CKT — V4 IEC Component Library
 
-Design • Simulate • Control • Visualize
+V4 expands the collapsible component library with IEC-style grouped symbols and names:
+Power Supply, Breakers & Protection, MCB/MCCB, Contactors, Relays, Auxiliary Contacts, Control Devices, Timers & Control Relays, Motors & Loads, Indicators & Meters, PLC & I/O, Sensors & Field Devices, and Terminals & Wiring.
 
-This build changes the schematic presentation to a compact IEC-style drawing based on the supplied visual reference.
-
-## Current
-- Compact symbol-only 2D schematic
-- Dark engineering drawing canvas
-- IEC-style terminal labels
-- 3-phase DOL power circuit
-- Control circuit with STOP, overload, START, auxiliary contact and coil
-- Live START/STOP demonstration
-- Component library
-
-## Next
-1. Real drag-and-drop components
-2. Wire drawing and terminal snapping
-3. Electrical connectivity model
-4. Fault and overload simulation
-5. 3D industrial panel generated from the same circuit model
-
-
-## V3 component library
-Collapsible folder-style categories for power supply, breakers, MCB/MCCB, contactors, relays, auxiliary blocks, control devices, timers, motors, indicators, PLC/I/O, sensors, and terminals.
+The library supports search, click selection, and drag/drop placement onto the 2D schematic. The symbols are original SVG-style drawings for this project; device reference designators are common IEC/industrial conventions and can be overridden for a project.
