@@ -53,3 +53,32 @@
 .symbol-btn:hover{transform:translateY(-1px);}
 @media(max-width:1250px){.cat-body{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:900px){.cat-body{grid-template-columns:repeat(3,minmax(0,1fr));}}
+
+/* V14 — 4K / high-DPI visual system */
+html{background:#080d10;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:#080d10;color:#eef4f5;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;image-rendering:auto}
+*{box-sizing:border-box}
+.top{height:76px;background:linear-gradient(180deg,#09141a 0%,#071016 100%);border-bottom:1px solid #30424c;box-shadow:0 2px 12px rgba(0,0,0,.45);padding:0 18px}
+.brand{min-width:420px;gap:12px}.brand>span{font-size:32px;filter:drop-shadow(0 0 5px rgba(255,190,50,.28))}.brand b{font-size:20px;letter-spacing:.2px}.brand small{font-size:11px;color:#9aabb5}
+.top nav{gap:2px}.top button{height:62px;min-width:64px;font-size:21px;border-right:1px solid #25363f;transition:background .12s,transform .12s}.top button:hover{background:#14242c}.top button:active{transform:translateY(1px)}.top button em{font-size:9px;letter-spacing:.3px}
+.top .mode.active{background:linear-gradient(180deg,#0785ed,#086fc7);box-shadow:0 0 14px rgba(0,140,255,.2)}
+.layout{height:calc(100vh - 76px)}
+.library{width:405px;flex-basis:405px;background:linear-gradient(180deg,#0c1318,#0a1115);border-right:1px solid #30414a;padding:10px;box-shadow:5px 0 18px rgba(0,0,0,.22)}
+.libtitle{font-size:15px;padding:5px 6px 8px;letter-spacing:.15px}.libtitle span{color:#7f929c}
+.drag-help{height:30px;font-size:10px;border-color:#267b58;background:linear-gradient(90deg,#10281f,#0e1c17);box-shadow:inset 0 0 12px rgba(55,230,145,.035)}
+.library input{height:38px;font-size:12px;background:#081015;border-color:#3b505b;box-shadow:inset 0 0 8px rgba(0,0,0,.35)}
+.cat{margin:7px 0}.cat-head{height:46px;border-radius:10px;background:linear-gradient(180deg,#f4f4f4,#dedfe0);box-shadow:0 2px 5px rgba(0,0,0,.25);padding:0 13px}.cat-head b{font-size:11.5px}.cat-head small{font-size:10px}.cat-head i{font-size:18px}
+.cat-body{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:6px;background:#0c1318;border-color:#293942;box-shadow:inset 0 0 16px rgba(0,0,0,.28)}
+.symbol-btn{height:118px;background:linear-gradient(180deg,#101a20,#0c1419);border:1px solid rgba(180,220,230,.045);border-radius:6px;padding:5px 3px;box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 2px 4px rgba(0,0,0,.22);transition:transform .12s,background .12s,box-shadow .12s}
+.symbol-btn:hover{background:linear-gradient(180deg,#17262e,#101a20);outline:1px solid color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 0 10px color-mix(in srgb,var(--accent) 18%,transparent)}
+.symbol-preview{height:66px}.symbol-btn .lib-icon{width:92px;height:58px;shape-rendering:geometricPrecision}.symbol-btn label{font-size:9.5px;line-height:10px;max-width:100px}.symbol-btn small{font-size:8.5px;line-height:9px;margin-top:3px}
+.workbar{height:36px;background:linear-gradient(180deg,#101a20,#0d1519);border-bottom:1px solid #2b3d46;font-size:10.5px;padding:0 14px}
+#sheet{background-color:#171b1d;background-image:linear-gradient(rgba(65,78,84,.32) 1px,transparent 1px),linear-gradient(90deg,rgba(65,78,84,.32) 1px,transparent 1px);background-size:20px 20px;box-shadow:inset 0 0 35px rgba(0,0,0,.35)}
+#schematic{width:1600px;min-width:1600px;min-height:900px;margin:24px auto;shape-rendering:geometricPrecision;text-rendering:geometricPrecision}
+.wire line{stroke:#edf2f2;stroke-width:2.2;vector-effect:non-scaling-stroke}.sym line,.sym rect{stroke:#edf2f2;stroke-width:2.1;vector-effect:non-scaling-stroke}.terminal circle{stroke:#f4f7f7;stroke-width:1.8;vector-effect:non-scaling-stroke}.terminal text{font-size:10.5px;fill:#f4f7f7}.green,.tag{fill:#52f2a2;font-size:13px;font-weight:700}.num{fill:#c3cdd1;font-size:9.5px}.motorText{font-size:18px}
+.dropped-symbol svg{shape-rendering:geometricPrecision;text-rendering:geometricPrecision;overflow:visible}.dropped-symbol .mag-port{shape-rendering:geometricPrecision}.dropped-symbol .drop-tag{font-size:10px}.dropped-symbol .drop-label{font-size:9px}
+.connected-wire{stroke:#e7ecee;stroke-width:2.2;vector-effect:non-scaling-stroke}.wiring-preview{stroke-width:2.7;vector-effect:non-scaling-stroke}
+footer{height:32px;background:#091116;border-top:1px solid #2d3d45;font-size:10.5px;padding:0 14px}
+@media(min-width:1920px){.library{width:440px;flex-basis:440px}.cat-body{gap:5px}.symbol-btn{height:126px}.symbol-btn .lib-icon{width:102px;height:62px}.brand b{font-size:21px}.top button{min-width:70px}}
+@media(min-width:3000px){.library{width:500px;flex-basis:500px}.cat-head{height:52px}.cat-head b{font-size:13px}.symbol-btn{height:145px}.symbol-btn label{font-size:11px;line-height:12px}.symbol-btn small{font-size:10px}.symbol-preview{height:82px}.symbol-btn .lib-icon{width:120px;height:72px}.top{height:88px}.layout{height:calc(100vh - 88px)}.brand b{font-size:24px}.top button{height:72px;min-width:78px;font-size:24px}}
+@media(max-width:1250px){#schematic{width:1400px;min-width:1400px}.library{width:370px;flex-basis:370px}}
