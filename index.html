@@ -20,7 +20,8 @@
 </header>
 <div class="layout">
 <aside class="library">
-  <div class="libtitle">IEC Components <span>(ELECTRICAL SIMU CKT)</span></div>
+  <div class="libtitle"><b>IEC COMPONENTS</b> <span>(ELECTRICAL SIMU CKT)</span></div>
+  <div class="drag-help"><span>↕</span> DRAG &amp; DROP SYMBOLS INTO SCHEMATIC</div>
   <input id="search" placeholder="⌕  Search IEC component...">
   <div id="libraryGroups"></div>
 </aside>
@@ -65,8 +66,10 @@
         <g class="indicator"><circle cx="920" cy="530" r="15"/><line x1="910" y1="520" x2="930" y2="540"/><line x1="930" y1="520" x2="910" y2="540"/></g><text class="tag" x="905" y="570">H1 RUN</text>
         <g class="wire white"><line x1="760" y1="395" x2="920" y2="395"/><line x1="920" y1="395" x2="920" y2="515"/><line x1="920" y1="545" x2="920" y2="690"/></g>
       </g>
+      <g id="dropLayer"></g>
     </svg>
-    <div class="hint">Drag a symbol from the left into the schematic • Click START to run the DOL demonstration</div>
+    <div class="drop-overlay" id="dropOverlay">DROP IEC SYMBOL HERE</div>
+    <div class="hint">Drag a symbol from the left and drop it anywhere on the schematic. Dropped symbols can be selected, moved and deleted.</div>
   </div>
   <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>2D • IEC schematic view</span></footer>
 </main>

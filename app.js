@@ -1,5 +1,4 @@
 const sheet=document.getElementById('sheet'), sim=document.getElementById('sim'), state=document.getElementById('state'), motorState=document.getElementById('motorState');
-let running=false;
 
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
@@ -48,55 +47,74 @@ const groups=[
 function icon(type){
  const s='#e9f1ed';
  const common=`stroke="${s}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
- const text=(t)=>`<text x="24" y="28" text-anchor="middle" font-size="10" fill="${s}" font-family="Arial" font-weight="700">${t}</text>`;
+ const txt=(t)=>`<text x="24" y="20" text-anchor="middle" font-size="8" fill="${s}" font-family="Arial" font-weight="700">${t}</text>`;
  let body='';
- if(['pe','gnd'].includes(type)) body='<line x1="24" y1="3" x2="24" y2="14"/><line x1="14" y1="14" x2="34" y2="14"/><line x1="17" y1="18" x2="31" y2="18"/><line x1="20" y1="22" x2="28" y2="22"/>';
- else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<circle cx="24" cy="15" r="11" ${common}/>${text(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
- else if(['mcb','1pmcb','2pmcb','3pmcb','4pmcb','1pmccb','3pmccb','4pmccb','disconnect','isolator','acb','mccb','mpcb','elcb','rcbo','1pnmcb','dcmcb'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="9" ${common}/><line x1="24" y1="21" x2="24" y2="29" ${common}/><line x1="17" y1="9" x2="29" y2="21" ${common}/>`;
- else if(['fuse','hrc','fuseswitch','spd','thermal','magtrip'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="8" ${common}/><rect x="16" y="8" width="16" height="14" ${common}/><line x1="24" y1="22" x2="24" y2="29" ${common}/>`;
- else if(['3pcont','4pcont','contaux','reverse','contimer','stardelta','latchcont','contactor'].includes(type)) body=`<rect x="14" y="8" width="20" height="14" ${common}/>${text('KM')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="22" x2="24" y2="29" ${common}/>`;
- else if(['coil','relaycoil','powerrelay','interpose','latchrelay','ssr','reed','safetyrelay'].includes(type)) body=`<rect x="15" y="8" width="18" height="14" ${common}/>${text(type==='coil'?'KM':'K')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="22" x2="24" y2="29" ${common}/>`;
- else if(['no','auxno','mainno','relayno','start','limitno','foot','pressure','temperature','float','hand','twinnc','twinno','tdno','tdnc','offno','offnc','auxfront','auxside','change','changeover','mainnc','auxnc','relaync','stop','estop','limitnc'].includes(type)) { const nc=['nc','auxnc','mainnc','relaync','stop','estop','limitnc','tdnc','offnc','twinnc'].includes(type); body=`<line x1="8" y1="15" x2="18" y2="15" ${common}/><line x1="30" y1="15" x2="40" y2="15" ${common}/><line x1="18" y1="15" x2="29" y2="8" ${common}/>${nc?'<line x1="17" y1="7" x2="31" y2="22" '+common+'/>':''}`; }
- else if(['motor3','motor1','motorDC','twospeed','motorsd','brake','gear'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="5" ${common}/><circle cx="24" cy="16" r="11" ${common}/>${text(type==='motor3'?'M3~':type==='motor1'?'M1~':'M')}`;
+ const contact=['no','auxno','mainno','relayno','start','limitno','foot','pressure','temperature','float','hand','twinnc','twinno','tdno','tdnc','offno','offnc','auxfront','auxside','change','changeover','mainnc','auxnc','relaync','stop','estop','limitnc'];
+ const nc=['nc','auxnc','mainnc','relaync','stop','estop','limitnc','tdnc','offnc','twinnc'];
+ if(type==='pe') body=`<line x1="24" y1="2" x2="24" y2="13" ${common}/><line x1="14" y1="13" x2="34" y2="13" ${common}/><line x1="17" y1="18" x2="31" y2="18" ${common}/><line x1="20" y1="23" x2="28" y2="23" ${common}/>`;
+ else if(type==='gnd') body=`<line x1="24" y1="2" x2="24" y2="12" ${common}/><line x1="14" y1="12" x2="34" y2="12" ${common}/><line x1="17" y1="17" x2="31" y2="17" ${common}/><line x1="20" y1="22" x2="28" y2="22" ${common}/>`;
+ else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<circle cx="24" cy="16" r="11" ${common}/>${txt(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
+ else if(['3p','gen3'].includes(type)) body=`<circle cx="15" cy="16" r="7" ${common}/><circle cx="24" cy="16" r="7" ${common}/><circle cx="33" cy="16" r="7" ${common}/>${txt(type==='gen3'?'GS3~':'L1 L2 L3')}`;
+ else if(['tr1','tr3'].includes(type)) body=`<circle cx="18" cy="16" r="7" ${common}/><circle cx="30" cy="16" r="7" ${common}/><line x1="24" y1="8" x2="24" y2="24" ${common}/>`;
+ else if(type==='psu') body=`<rect x="12" y="7" width="24" height="18" ${common}/><line x1="16" y1="16" x2="32" y2="16" ${common}/><line x1="24" y1="11" x2="24" y2="21" ${common}/>`;
+ else if(['disconnect','isolator','acb','mccb','mcb','mpcb','elcb','rcbo','1pmcb','2pmcb','3pmcb','4pmcb','1pmccb','3pmccb','4pmccb','mcbaux','mccbsht','mccbuv','1pnmcb','dcmcb'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="9" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/><line x1="17" y1="9" x2="30" y2="23" ${common}/>`;
+ else if(['fuse','hrc','fuseswitch','spd','thermal','magtrip'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="8" ${common}/><rect x="15" y="8" width="18" height="15" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
+ else if(['3pcont','4pcont','contaux','reverse','contimer','stardelta','latchcont'].includes(type)) body=`<rect x="12" y="8" width="24" height="15" ${common}/>${txt('KM')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
+ else if(['coil','relaycoil','powerrelay','interpose','latchrelay','ssr','reed','safetyrelay'].includes(type)) body=`<rect x="14" y="8" width="20" height="15" ${common}/>${txt(type==='coil'?'KM':'K')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
+ else if(contact.includes(type)) body=`<line x1="5" y1="16" x2="17" y2="16" ${common}/><line x1="31" y1="16" x2="43" y2="16" ${common}/><line x1="17" y1="16" x2="30" y2="8" ${common}/>${nc.includes(type)?`<line x1="15" y1="7" x2="31" y2="23" ${common}/>`:''}`;
+ else if(['ton','tof','multitimer','timernc','timerno','stimer','flasher','cyclic','stair','analogtimer','digitaltimer','programmable','counter'].includes(type)) body=`<rect x="11" y="7" width="26" height="19" ${common}/>${txt(type==='ton'?'TON':type==='tof'?'TOF':'KT')}`;
+ else if(['motor3','motor1','motorDC','twospeed','motorsd','brake','gear'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="5" ${common}/><circle cx="24" cy="16" r="11" ${common}/>${txt(type==='motor3'?'M3~':type==='motor1'?'M1~':'M')}`;
  else if(['lamp','led','tower','pilot','buzzer','siren'].includes(type)) body=`<circle cx="24" cy="16" r="10" ${common}/><line x1="18" y1="10" x2="30" y2="22" ${common}/><line x1="30" y1="10" x2="18" y2="22" ${common}/>`;
- else if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) body=`<circle cx="24" cy="16" r="11" ${common}/>${text(type==='ammeter'?'A':type==='voltmeter'?'V':type==='freq'?'Hz':type==='kw'?'kW':type==='kwh'?'kWh':type==='hour'?'h':'M')}`;
- else if(['ton','tof','multitimer','timernc','timerno','stimer','flasher','cyclic','stair','analogtimer','digitaltimer','programmable','counter'].includes(type)) body=`<rect x="12" y="7" width="24" height="18" ${common}/>${text(type==='ton'?'TON':type==='tof'?'TOF':'KT')}`;
- else if(['plc','di','do','ai','ao','relayout','rs485','ethernet','profinet','terminalmodule','iomodule','plcpower','expansion'].includes(type)) body=`<rect x="9" y="6" width="30" height="20" ${common}/>${text(type==='plc'?'PLC':type.toUpperCase())}`;
- else if(['tr1','tr3','gen3','3p','psu'].includes(type)) body=`<circle cx="18" cy="16" r="7" ${common}/><circle cx="30" cy="16" r="7" ${common}/>`;
- else if(['prox','capsensor','photo','ultra','limitsensor','pt100','presssensor','flow','level','speed','encoder','current','voltage'].includes(type)) body=`<rect x="13" y="7" width="22" height="18" ${common}/>${text(type==='pt100'?'PT100':type==='encoder'?'ENC':type==='current'?'I':type==='voltage'?'U':'S')}`;
- else if(['terminal','terminalblock','cross','junction','crossconn','crossnc','entry','cable','shield','ferrule','plug','test','connector'].includes(type)) body=`<line x1="5" y1="16" x2="43" y2="16" ${common}/><circle cx="24" cy="16" r="4" ${common}/>`;
- else body=`<rect x="13" y="7" width="22" height="18" ${common}/>${text('IEC')}`;
- return `<svg viewBox="0 0 48 32" aria-hidden="true">${body}</svg>`;
+ else if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) body=`<circle cx="24" cy="16" r="11" ${common}/>${txt(type==='ammeter'?'A':type==='voltmeter'?'V':type==='freq'?'Hz':type==='kw'?'kW':type==='kwh'?'kWh':type==='hour'?'h':'M')}`;
+ else if(['plc','di','do','ai','ao','relayout','rs485','ethernet','profinet','terminalmodule','iomodule','plcpower','expansion'].includes(type)) body=`<rect x="8" y="6" width="32" height="20" ${common}/>${txt(type==='plc'?'PLC':type.toUpperCase())}`;
+ else if(['prox','capsensor','photo','ultra','limitsensor','pt100','presssensor','flow','level','speed','encoder','current','voltage'].includes(type)) body=`<rect x="12" y="7" width="24" height="18" ${common}/>${txt(type==='pt100'?'PT100':type==='encoder'?'ENC':type==='current'?'I':type==='voltage'?'U':'S')}`;
+ else if(['terminal','terminalblock','cross','junction','crossconn','crossnc','entry','cable','shield','ferrule','plug','test','connector'].includes(type)) body=`<line x1="4" y1="16" x2="44" y2="16" ${common}/><circle cx="24" cy="16" r="4" ${common}/>`;
+ else body=`<rect x="12" y="7" width="24" height="18" ${common}/>${txt('IEC')}`;
+ return `<svg class="lib-icon" viewBox="0 0 48 32" aria-hidden="true">${body}</svg>`;
 }
 
 const lib=document.getElementById('libraryGroups');
 function renderLibrary(){
- lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length}</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>`<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" title="${name}">${icon(type)}<label>${name}</label></button>`).join('')}</div></section>`).join('');
+ lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length}</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>`<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" title="Drag ${name} to schematic">${icon(type)}<label>${name}</label></button>`).join('')}</div></section>`).join('');
  document.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
  document.querySelectorAll('.symbol-btn').forEach(b=>{
-  b.addEventListener('click',()=>{state.textContent='ADD '+b.dataset.name.toUpperCase()+' • drag into schematic';});
-  b.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name}));state.textContent='DROP '+b.dataset.name.toUpperCase()+' ON SCHEMATIC';});
+  b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase();});
+  b.addEventListener('dragend',()=>document.getElementById('dropOverlay').classList.remove('show'));
+  b.addEventListener('click',()=>{state.textContent='DRAG '+b.dataset.name.toUpperCase()+' INTO SCHEMATIC';});
  });
 }
 renderLibrary();
 
+const svg=document.getElementById('schematic'), dropLayer=document.getElementById('dropLayer'), overlay=document.getElementById('dropOverlay');
+let running=false, selected=null, counter=1;
 function render(){document.body.classList.toggle('live',running);sim.textContent=running?'● RUNNING':'● STOPPED';sim.classList.toggle('running',running);motorState.textContent=running?'Motor: RUNNING':'Motor: OFF';state.textContent=running?'SIMULATION • LIVE':'READY • 2D SCHEMATIC';}
 document.getElementById('play').onclick=()=>{running=true;render()};
 document.getElementById('stop').onclick=()=>{running=false;render()};
 document.getElementById('threeD').onclick=()=>alert('3D view will use the same IEC circuit model as this 2D schematic.');
-document.getElementById('delete').onclick=()=>alert('Select a component, then Delete. Full editor tools are being added in the next build.');
+document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='SELECT A DROPPED SYMBOL FIRST';};
+
+document.addEventListener('keydown',e=>{if((e.key==='Delete'||e.key==='Backspace')&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
 
 document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.library .cat').forEach(s=>{const match=s.textContent.toLowerCase().includes(q);s.style.display=match?'block':'none';if(q&&match){s.classList.add('open');s.querySelector('.cat-head i').textContent='⌃'}})});
 
-// Basic drop placement: creates a compact SVG label on the sheet without changing the demo circuit.
-sheet.addEventListener('dragover',e=>e.preventDefault());
-sheet.addEventListener('drop',e=>{
- e.preventDefault(); const raw=e.dataTransfer.getData('text/plain'); if(!raw)return; let d; try{d=JSON.parse(raw)}catch{return;}
- const r=sheet.getBoundingClientRect(); const x=Math.max(20,Math.min(1150,e.clientX-r.left)); const y=Math.max(50,Math.min(700,e.clientY-r.top));
- const svg=document.getElementById('schematic'); const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped');
- const rect=document.createElementNS(NS,'rect'); rect.setAttribute('x',x-42);rect.setAttribute('y',y-23);rect.setAttribute('width',84);rect.setAttribute('height',46);rect.setAttribute('rx',4);rect.setAttribute('fill','#151c20');rect.setAttribute('stroke','#50f0a1');rect.setAttribute('stroke-width','1.5');
- const t=document.createElementNS(NS,'text');t.setAttribute('x',x);t.setAttribute('y',y+4);t.setAttribute('text-anchor','middle');t.setAttribute('fill','#e9f1ed');t.setAttribute('font-size','9');t.setAttribute('font-family','Arial');t.textContent=d.name.length>18?d.name.slice(0,18)+'…':d.name;
- const tag=document.createElementNS(NS,'text');tag.setAttribute('x',x);tag.setAttribute('y',y+16);tag.setAttribute('text-anchor','middle');tag.setAttribute('fill','#50f0a1');tag.setAttribute('font-size','8');tag.setAttribute('font-family','Arial');tag.textContent=d.type.toUpperCase();
- g.append(rect,t,tag);svg.appendChild(g);state.textContent='PLACED • '+d.name.toUpperCase();
-});
+function getPoint(e){const r=svg.getBoundingClientRect();const vb=svg.viewBox.baseVal;return {x:(e.clientX-r.left)*(vb.width/r.width),y:(e.clientY-r.top)*(vb.height/r.height)};}
+function makeDropped(d,x,y){
+ const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);
+ const box=document.createElementNS(NS,'rect'); box.setAttribute('class','select-box');box.setAttribute('x',0);box.setAttribute('y',0);box.setAttribute('width',72);box.setAttribute('height',44);box.setAttribute('rx',4);
+ const ns=document.createElementNS(NS,'svg');ns.setAttribute('x',12);ns.setAttribute('y',4);ns.setAttribute('width',48);ns.setAttribute('height',32);ns.setAttribute('viewBox','0 0 48 32');ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+ const label=document.createElementNS(NS,'text');label.setAttribute('class','drop-label');label.setAttribute('x',36);label.setAttribute('y',42);label.setAttribute('text-anchor','middle');label.textContent=d.name.length>17?d.name.slice(0,16)+'…':d.name;
+ const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',36);tag.setAttribute('y',-3);tag.setAttribute('text-anchor','middle');tag.textContent='-'+(d.type==='motor3'?'M':d.type==='coil'?'KM':'X')+counter++;
+ g.append(box,ns,label,tag);dropLayer.appendChild(g);select(g);enableMove(g);return g;
+}
+function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');}
+function enableMove(g){
+ let moving=false,dx=0,dy=0;
+ g.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);const x=+g.dataset.x,y=+g.dataset.y;dx=p.x-x;dy=p.y-y;g.setPointerCapture(e.pointerId);});
+ g.addEventListener('pointermove',e=>{if(!moving)return;const p=getPoint(e);const x=Math.round(p.x-dx),y=Math.round(p.y-dy);g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);});
+ g.addEventListener('pointerup',e=>{moving=false;try{g.releasePointerCapture(e.pointerId)}catch{}});
+}
+svg.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy';overlay.classList.add('show');});
+svg.addEventListener('dragleave',()=>overlay.classList.remove('show'));
+svg.addEventListener('drop',e=>{e.preventDefault();overlay.classList.remove('show');let raw=e.dataTransfer.getData('application/json')||e.dataTransfer.getData('text/plain');if(!raw)return;let d;try{d=JSON.parse(raw)}catch{return;}const p=getPoint(e);makeDropped(d,Math.round(p.x),Math.round(p.y));state.textContent='PLACED • '+d.name.toUpperCase();});
+svg.addEventListener('pointerdown',e=>{if(e.target===svg)select(null)});
 render();
