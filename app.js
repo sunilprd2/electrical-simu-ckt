@@ -54,11 +54,13 @@ function icon(type){
  if(type==='pe') body=`<line x1="24" y1="2" x2="24" y2="13" ${common}/><line x1="14" y1="13" x2="34" y2="13" ${common}/><line x1="17" y1="18" x2="31" y2="18" ${common}/><line x1="20" y1="23" x2="28" y2="23" ${common}/>`;
  else if(type==='gnd') body=`<line x1="24" y1="2" x2="24" y2="12" ${common}/><line x1="14" y1="12" x2="34" y2="12" ${common}/><line x1="17" y1="17" x2="31" y2="17" ${common}/><line x1="20" y1="22" x2="28" y2="22" ${common}/>`;
  else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<circle cx="24" cy="16" r="11" ${common}/>${txt(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
- else if(['3p','gen3'].includes(type)) body=`<circle cx="15" cy="16" r="7" ${common}/><circle cx="24" cy="16" r="7" ${common}/><circle cx="33" cy="16" r="7" ${common}/>${txt(type==='gen3'?'GS3~':'L1 L2 L3')}`;
+ else if(type==='3p') body=`<line x1="8" y1="1" x2="8" y2="8" ${common}/><line x1="24" y1="1" x2="24" y2="8" ${common}/><line x1="40" y1="1" x2="40" y2="8" ${common}/><circle cx="8" cy="15" r="6" ${common}/><circle cx="24" cy="15" r="6" ${common}/><circle cx="40" cy="15" r="6" ${common}/><line x1="8" y1="21" x2="8" y2="30" ${common}/><line x1="24" y1="21" x2="24" y2="30" ${common}/><line x1="40" y1="21" x2="40" y2="30" ${common}/><text x="8" y="17" text-anchor="middle" font-size="6" fill="${s}">L1</text><text x="24" y="17" text-anchor="middle" font-size="6" fill="${s}">L2</text><text x="40" y="17" text-anchor="middle" font-size="6" fill="${s}">L3</text>`;
+ else if(type==='gen3') body=`<line x1="12" y1="1" x2="12" y2="7" ${common}/><line x1="24" y1="1" x2="24" y2="7" ${common}/><line x1="36" y1="1" x2="36" y2="7" ${common}/><circle cx="24" cy="16" r="10" ${common}/>${txt('G3~')}<line x1="12" y1="25" x2="12" y2="30" ${common}/><line x1="24" y1="25" x2="24" y2="30" ${common}/><line x1="36" y1="25" x2="36" y2="30" ${common}/>`;
  else if(['tr1','tr3'].includes(type)) body=`<circle cx="18" cy="16" r="7" ${common}/><circle cx="30" cy="16" r="7" ${common}/><line x1="24" y1="8" x2="24" y2="24" ${common}/>`;
  else if(type==='psu') body=`<rect x="12" y="7" width="24" height="18" ${common}/><line x1="16" y1="16" x2="32" y2="16" ${common}/><line x1="24" y1="11" x2="24" y2="21" ${common}/>`;
  else if(['disconnect','isolator','acb','mccb','mcb','mpcb','elcb','rcbo','1pmcb','2pmcb','3pmcb','4pmcb','1pmccb','3pmccb','4pmccb','mcbaux','mccbsht','mccbuv','1pnmcb','dcmcb'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="9" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/><line x1="17" y1="9" x2="30" y2="23" ${common}/>`;
- else if(['fuse','hrc','fuseswitch','spd','thermal','magtrip'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="8" ${common}/><rect x="15" y="8" width="18" height="15" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
+ else if(type==='fuse') body=`<line x1="24" y1="1" x2="24" y2="8" ${common}/><rect x="16" y="8" width="16" height="14" ${common}/><line x1="18" y1="19" x2="30" y2="11" ${common}/><line x1="24" y1="22" x2="24" y2="31" ${common}/>`;
+ else if(['hrc','fuseswitch','spd','thermal','magtrip'].includes(type)) body=`<line x1="24" y1="2" x2="24" y2="8" ${common}/><rect x="15" y="8" width="18" height="15" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
  else if(['3pcont','4pcont','contaux','reverse','contimer','stardelta','latchcont'].includes(type)) body=`<rect x="12" y="8" width="24" height="15" ${common}/>${txt('KM')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
  else if(['coil','relaycoil','powerrelay','interpose','latchrelay','ssr','reed','safetyrelay'].includes(type)) body=`<rect x="14" y="8" width="20" height="15" ${common}/>${txt(type==='coil'?'KM':'K')}<line x1="24" y1="2" x2="24" y2="8" ${common}/><line x1="24" y1="23" x2="24" y2="30" ${common}/>`;
  else if(contact.includes(type)) body=`<line x1="5" y1="16" x2="17" y2="16" ${common}/><line x1="31" y1="16" x2="43" y2="16" ${common}/><line x1="17" y1="16" x2="30" y2="8" ${common}/>${nc.includes(type)?`<line x1="15" y1="7" x2="31" y2="23" ${common}/>`:''}`;
@@ -162,7 +164,7 @@ function makeDropped(d,x,y){
   const g=document.createElementNS(NS,'g');
   g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y;
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
-  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.style.color=g.dataset.accent; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',88); ns.setAttribute('height',54); ns.setAttribute('viewBox','0 0 48 32'); ns.style.color=g.dataset.accent; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.type).forEach(p=>{
     const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',46+p.x-3); r.setAttribute('y',30+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; ports.appendChild(r);
@@ -289,6 +291,8 @@ renderLibrary();
       line.dataset.to=w.target.label;
       line.dataset.fromType=w.source.dataset.type;
       line.dataset.toType=w.target.g.dataset.type;
+      line.dataset.fromG=w.source.dataset.uid||'';
+      line.dataset.toG=w.target.g.dataset.uid||'';
       wireLayer.appendChild(line);
       setPortConnected(w.start); setPortConnected(w.target);
       state.textContent=`CONNECTED • ${w.start.label} ↔ ${w.target.label}`;
@@ -314,3 +318,98 @@ renderLibrary();
   const hint=document.querySelector('.hint');
   if(hint) hint.textContent='Drag a symbol from the left. To wire: drag the small square terminal on one component to the square terminal on another component. Release to snap-connect.';
 })();
+
+
+/* V13: component selection/move/delete keeps magnetic wiring attached. */
+(function enhancePlacedComponents(){
+  const svgEl=document.getElementById('schematic');
+  const layer=document.getElementById('dropLayer');
+  const wires=document.getElementById('wireLayer');
+  if(!svgEl||!layer) return;
+
+  function portAbs(g,p){
+    const x=+g.dataset.x,y=+g.dataset.y;
+    return {x:x-24+p.x,y:y-20+p.y,label:p.label,g};
+  }
+  function updateWiresFor(g){
+    if(!wires) return;
+    const ports=portDefs(g.dataset.type).map(p=>portAbs(g,p));
+    [...wires.querySelectorAll('.connected-wire')].forEach(line=>{
+      if(line.dataset.fromG!==g.dataset.uid && line.dataset.toG!==g.dataset.uid) return;
+      const fromG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.fromG);
+      const toG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.toG);
+      if(!fromG||!toG) return;
+      const fp=portDefs(fromG.dataset.type).map(p=>portAbs(fromG,p)).find(p=>p.label===line.dataset.from);
+      const tp=portDefs(toG.dataset.type).map(p=>portAbs(toG,p)).find(p=>p.label===line.dataset.to);
+      if(!fp||!tp) return;
+      const mx=Math.round((fp.x+tp.x)/2);
+      line.setAttribute('points',`${fp.x},${fp.y} ${mx},${fp.y} ${mx},${tp.y} ${tp.x},${tp.y}`);
+    });
+  }
+  function refreshAllWires(){[...layer.querySelectorAll('.dropped-symbol')].forEach(updateWiresFor);}
+
+  // Give existing and future components a stable id and ensure moving does not break wires.
+  let uid=1;
+  function ensureId(g){ if(!g.dataset.uid) g.dataset.uid='C'+(uid++); }
+  const obs=new MutationObserver(()=>layer.querySelectorAll('.dropped-symbol').forEach(ensureId));
+  obs.observe(layer,{childList:true});
+  layer.querySelectorAll('.dropped-symbol').forEach(ensureId);
+
+  // Wrap the current move handler behavior by observing transforms and refreshing wires.
+  const transformObserver=new MutationObserver(records=>{
+    let changed=false;
+    for(const r of records){ if(r.type==='attributes' && r.attributeName==='transform'){changed=true;ensureId(r.target);} }
+    if(changed) refreshAllWires();
+  });
+  transformObserver.observe(layer,{subtree:true,attributes:true,attributeFilter:['transform']});
+
+  // Delete selected component and its connected wires.
+  function removeComponent(g){
+    if(!g) return;
+    if(wires){
+      [...wires.querySelectorAll('.connected-wire')].forEach(line=>{
+        if(line.dataset.fromG===g.dataset.uid||line.dataset.toG===g.dataset.uid) line.remove();
+      });
+    }
+    g.remove();
+    if(selected===g) selected=null;
+    state.textContent='DELETED';
+  }
+  document.getElementById('delete').onclick=()=>{
+    if(selected) removeComponent(selected);
+    else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';
+  };
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Delete' && selected){e.preventDefault();removeComponent(selected);}
+  },true);
+
+  // Click anywhere on a placed symbol selects it and gives a clean glow only.
+  layer.addEventListener('pointerdown',e=>{
+    const g=e.target.closest && e.target.closest('.dropped-symbol');
+    if(g && !(e.target.classList&&e.target.classList.contains('mag-port'))) select(g);
+  },true);
+
+  // Add IDs to newly created wires after the V10 wiring code creates them.
+  const wireObserver=new MutationObserver(records=>{
+    for(const r of records){
+      r.addedNodes.forEach(n=>{
+        if(n.nodeType===1 && n.classList.contains('connected-wire')){
+          // Infer endpoint component from the current labels/nearest port when IDs weren't assigned.
+          if(!n.dataset.fromG||!n.dataset.toG){
+            const gs=[...layer.querySelectorAll('.dropped-symbol')];
+            const from=gs.find(g=>portDefs(g.dataset.type).some(p=>p.label===n.dataset.from));
+            const to=gs.find(g=>portDefs(g.dataset.type).some(p=>p.label===n.dataset.to));
+            if(from) ensureId(from); if(to) ensureId(to);
+            if(from) n.dataset.fromG=from.dataset.uid;
+            if(to) n.dataset.toG=to.dataset.uid;
+          }
+        }
+      });
+    }
+    refreshAllWires();
+  });
+  if(wires) wireObserver.observe(wires,{childList:true});
+})();
+
+/* Re-render library after V13 symbol definitions; keeps 3-column, high-resolution previews. */
+renderLibrary();

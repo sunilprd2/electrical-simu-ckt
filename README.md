@@ -1,12 +1,15 @@
-# ELECTRICAL SIMU CKT V12
+# ELECTRICAL SIMU CKT V13
 
-IEC electrical schematic simulator UI.
-
-V12 changes:
-- Drag placed components anywhere on the schematic.
-- Click a placed component to select it; press Delete or use the DELETE toolbar button.
-- Escape clears selection.
-- No large green/grey bounding rectangle around placed components.
-- Selection is shown only through the actual magnetic terminal squares.
-- Library symbol previews use category colours while retaining the IEC-style geometry.
-- Drag from one magnetic terminal square to another to create a snapped wire.
+Changes:
+- 3-column component library rows.
+- Clearer, larger SVG/IEC previews.
+- Separate L1/L2/L3 3-phase supply symbol; no overlapping circles.
+- Clearer IEC fuse symbol.
+- No component bounding rectangle.
+- Selected component glows only.
+- Click a placed component to select it.
+- DELETE toolbar button or Delete key removes it.
+- Components can be dragged anywhere on the schematic.
+- Magnetic terminal-to-terminal wiring remains supported.
+- Connected wires follow components when they are moved.
+- Connected wires are removed when a component is deleted.
