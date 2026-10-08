@@ -53,7 +53,7 @@ function icon(type){
  const nc=['nc','auxnc','mainnc','relaync','stop','estop','limitnc','tdnc','offnc','twinnc'];
  if(type==='pe') body=`<line x1="24" y1="2" x2="24" y2="13" ${common}/><line x1="14" y1="13" x2="34" y2="13" ${common}/><line x1="17" y1="18" x2="31" y2="18" ${common}/><line x1="20" y1="23" x2="28" y2="23" ${common}/>`;
  else if(type==='gnd') body=`<line x1="24" y1="2" x2="24" y2="12" ${common}/><line x1="14" y1="12" x2="34" y2="12" ${common}/><line x1="17" y1="17" x2="31" y2="17" ${common}/><line x1="20" y1="22" x2="28" y2="22" ${common}/>`;
- else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<circle cx="24" cy="16" r="11" ${common}/>${txt(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
+ else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<line x1="24" y1="1" x2="24" y2="5" ${common}/><circle cx="24" cy="16" r="11" ${common}/><line x1="24" y1="27" x2="24" y2="31" ${common}/>${txt(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
  else if(type==='3p') body=`<line x1="8" y1="1" x2="8" y2="8" ${common}/><line x1="24" y1="1" x2="24" y2="8" ${common}/><line x1="40" y1="1" x2="40" y2="8" ${common}/><circle cx="8" cy="15" r="6" ${common}/><circle cx="24" cy="15" r="6" ${common}/><circle cx="40" cy="15" r="6" ${common}/><line x1="8" y1="21" x2="8" y2="30" ${common}/><line x1="24" y1="21" x2="24" y2="30" ${common}/><line x1="40" y1="21" x2="40" y2="30" ${common}/><text x="8" y="17" text-anchor="middle" font-size="6" fill="${s}">L1</text><text x="24" y="17" text-anchor="middle" font-size="6" fill="${s}">L2</text><text x="40" y="17" text-anchor="middle" font-size="6" fill="${s}">L3</text>`;
  else if(type==='gen3') body=`<line x1="12" y1="1" x2="12" y2="7" ${common}/><line x1="24" y1="1" x2="24" y2="7" ${common}/><line x1="36" y1="1" x2="36" y2="7" ${common}/><circle cx="24" cy="16" r="10" ${common}/>${txt('G3~')}<line x1="12" y1="25" x2="12" y2="30" ${common}/><line x1="24" y1="25" x2="24" y2="30" ${common}/><line x1="36" y1="25" x2="36" y2="30" ${common}/>`;
  else if(['tr1','tr3'].includes(type)) body=`<circle cx="18" cy="16" r="7" ${common}/><circle cx="30" cy="16" r="7" ${common}/><line x1="24" y1="8" x2="24" y2="24" ${common}/>`;
@@ -160,18 +160,21 @@ function withPreviewPorts(type){
   return base+ports+'</svg>';
 }
 function makeDropped(d,x,y){
-  const NS='http://www.w3.org/2000/svg', W=140, H=100;
+  const NS='http://www.w3.org/2000/svg', W=120, H=90;
   const g=document.createElementNS(NS,'g');
-  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y;
+  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y; g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
-  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',88); ns.setAttribute('height',54); ns.setAttribute('viewBox','0 0 48 32'); ns.style.color=g.dataset.accent; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+
+  // The symbol, its tails, terminal squares and labels are ONE SVG group.
+  // Keep the symbol at its native 48x32 viewBox so magnetic ports line up exactly.
+  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none'; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.type).forEach(p=>{
-    const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',46+p.x-3); r.setAttribute('y',30+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; ports.appendChild(r);
-    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',46+p.x); t.setAttribute('y',p.side==='top'?30+p.y-7:30+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=p.label; ports.appendChild(t);
+    const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',36+p.x-3); r.setAttribute('y',28+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
+    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',36+p.x); t.setAttribute('y',p.side==='top'?28+p.y-7:28+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=p.label; ports.appendChild(t);
   });
-  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',90); label.setAttribute('text-anchor','middle'); label.textContent=d.name.length>28?d.name.slice(0,27)+'…':d.name;
-  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',13); tag.setAttribute('text-anchor','middle'); tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
+  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',80); label.setAttribute('text-anchor','middle'); label.textContent=d.name.length>28?d.name.slice(0,27)+'…':d.name;
+  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',12); tag.setAttribute('text-anchor','middle'); tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
   const title=document.createElementNS(NS,'title'); title.textContent=d.name+' | IEC reference '+(d.ref||refPrefix(d.type));
   g.append(title,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
 }

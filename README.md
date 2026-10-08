@@ -1,3 +1,3 @@
-ELECTRICAL SIMU CKT V15
+# ELECTRICAL SIMU CKT V16
 
-Fixes: reliable click selection, visible glow without bounding rectangle, drag-to-move, Delete button and Delete key, magnetic terminal wiring preserved.
+V16 fixes the component object model: every placed component is one SVG group containing its symbol, tails, reference/name and magnetic terminal squares. Terminal squares cannot move independently. Drag the component body to move the whole component; drag from a magnetic square to another square to wire. Click the component body to select it, then use DELETE or the Delete key.
