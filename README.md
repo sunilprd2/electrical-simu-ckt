@@ -11,3 +11,6 @@ Fixed component-library rendering from V8.
 - Dark CAD-style 2D schematic
 
 Upload index.html, styles.css and app.js to the root of the GitHub repository.
+
+
+V11: removed all outer component selection rectangles. Wiring starts only from the small magnetic terminal squares and snaps to another terminal square.

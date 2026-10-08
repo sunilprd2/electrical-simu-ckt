@@ -5,3 +5,27 @@
 .symbol-preview .port{fill:#cfd5d7;stroke:#ffffff;stroke-width:.5}.symbol-preview .port-label{fill:#50f0a1;font-size:4.5px;font-weight:700;pointer-events:none}.symbol-btn{overflow:hidden}.symbol-btn .lib-icon{width:74px;height:44px}.dropped-symbol .select-box{fill:#10161a;fill-opacity:.35;stroke:#50f0a1;stroke-opacity:.18}.dropped-symbol .mag-port{fill:#cfd5d7;stroke:#fff;stroke-width:1;cursor:crosshair}.dropped-symbol .mag-port:hover{fill:#50f0a1;stroke:#fff;stroke-width:1.5}.dropped-symbol .port-name{fill:#50f0a1;font-size:9px;font-weight:700;font-family:Arial;pointer-events:none}.dropped-symbol.magnetic .mag-port{fill:#50f0a1;stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 0 4px #50f0a1)}.dropped-symbol .drop-label{fill:#dce3e5;font-size:9px;font-weight:600}.dropped-symbol .drop-tag{fill:#50f0a1;font-size:10px;font-weight:700}
 /* V7 magnetic terminal system */
 .symbol-preview .port{fill:#cfd5d7;stroke:#fff;stroke-width:.6}.symbol-preview .port-label{fill:#50f0a1;font-size:4.5px;font-weight:700;pointer-events:none}.symbol-btn .lib-icon{width:76px;height:46px}.dropped-symbol .select-box{fill:#10161a;fill-opacity:.18;stroke:#50f0a1;stroke-opacity:.16}.dropped-symbol .mag-port{fill:#cfd5d7;stroke:#fff;stroke-width:1;cursor:crosshair}.dropped-symbol .mag-port:hover,.dropped-symbol.magnetic .mag-port{fill:#50f0a1;stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 0 4px #50f0a1)}.dropped-symbol .port-name{fill:#50f0a1;font-size:9px;font-weight:700;font-family:Arial;pointer-events:none}.dropped-symbol .drop-label{fill:#dce3e5;font-size:9px;font-weight:600}.dropped-symbol .drop-tag{fill:#50f0a1;font-size:10px;font-weight:700}
+/* V10: clean CAD symbols - no surrounding component boxes */
+.dropped-symbol .select-box{display:none !important}
+.dropped-symbol{cursor:grab}
+.dropped-symbol.selected{filter:drop-shadow(0 0 3px rgba(80,240,161,.35))}
+.dropped-symbol .mag-port{pointer-events:all !important;cursor:crosshair}
+.dropped-symbol svg{overflow:visible}
+#wireLayer{pointer-events:none}
+.wiring-preview{stroke:#50f0a1;stroke-width:2.5;fill:none;stroke-dasharray:7 5;pointer-events:none;filter:drop-shadow(0 0 3px rgba(80,240,161,.5))}
+.connected-wire{stroke:#d8dddf;stroke-width:2;fill:none;pointer-events:stroke;cursor:pointer}
+.connected-wire:hover{stroke:#50f0a1;stroke-width:2.5}
+.mag-port.connected{fill:#50f0a1;stroke:#fff;stroke-width:1.2}
+.wiring-status{color:#50f0a1 !important;font-weight:700}
+
+/* V11: components have NO outer selection/bounding rectangle. Only terminal squares are interactive. */
+.dropped-symbol .select-box{display:none!important;fill:none!important;stroke:none!important;}
+.dropped-symbol.selected{filter:none!important;}
+.dropped-symbol{cursor:grab;}
+.dropped-symbol:active{cursor:grabbing;}
+.dropped-symbol .mag-port{fill:#cfd5d7;stroke:#ffffff;stroke-width:1;pointer-events:all;cursor:crosshair;}
+.dropped-symbol .mag-port:hover,.dropped-symbol .mag-port.connect-target{fill:#50f0a1;stroke:#ffffff;stroke-width:1.5;filter:drop-shadow(0 0 4px #50f0a1);}
+.dropped-symbol .port-name{fill:#50f0a1;font-size:9px;font-weight:700;font-family:Arial;pointer-events:none;}
+.wiring-preview{fill:none;stroke:#50f0a1;stroke-width:2;stroke-dasharray:6 4;pointer-events:none;}
+.connected-wire{fill:none;stroke:#d8dddf;stroke-width:2;pointer-events:none;}
+.mag-port.connected{fill:#50f0a1;stroke:#fff;stroke-width:1.2;}

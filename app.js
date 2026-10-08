@@ -162,7 +162,6 @@ function makeDropped(d,x,y){
   const g=document.createElementNS(NS,'g');
   g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.x=x; g.dataset.y=y;
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
-  const box=document.createElementNS(NS,'rect'); box.setAttribute('class','select-box'); box.setAttribute('x',0); box.setAttribute('y',0); box.setAttribute('width',W); box.setAttribute('height',H); box.setAttribute('rx',5);
   const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',46); ns.setAttribute('y',30); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.type).forEach(p=>{
@@ -172,9 +171,146 @@ function makeDropped(d,x,y){
   const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',90); label.setAttribute('text-anchor','middle'); label.textContent=d.name.length>28?d.name.slice(0,27)+'…':d.name;
   const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',13); tag.setAttribute('text-anchor','middle'); tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
   const title=document.createElementNS(NS,'title'); title.textContent=d.name+' | IEC reference '+(d.ref||refPrefix(d.type));
-  g.append(title,box,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
+  g.append(title,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
 }
 function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portDefs(g.dataset.type).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
-function enableMove(g){let moving=false,dx=0,dy=0;g.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);dx=p.x-(+g.dataset.x);dy=p.y-(+g.dataset.y);g.setPointerCapture(e.pointerId);});g.addEventListener('pointermove',e=>{if(!moving)return;const p=getPoint(e);let x=Math.round(p.x-dx),y=Math.round(p.y-dy);const snap=findSnap(g,x,y);if(snap){x=snap.x;y=snap.y;g.classList.add('magnetic')}else g.classList.remove('magnetic');g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-70},${y-50})`);});g.addEventListener('pointerup',e=>{moving=false;g.classList.remove('magnetic');try{g.releasePointerCapture(e.pointerId)}catch{}});}
+function enableMove(g){
+  let moving=false,dx=0,dy=0;
+  g.addEventListener('pointerdown',e=>{
+    if(e.button!==0) return;
+    if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
+    e.stopPropagation(); select(g); moving=true;
+    const p=getPoint(e); dx=p.x-(+g.dataset.x); dy=p.y-(+g.dataset.y);
+    g.setPointerCapture(e.pointerId);
+  });
+  g.addEventListener('pointermove',e=>{
+    if(!moving) return;
+    const p=getPoint(e); let x=Math.round(p.x-dx),y=Math.round(p.y-dy);
+    const snap=findSnap(g,x,y);
+    if(snap){x=snap.x;y=snap.y;g.classList.add('magnetic')}else g.classList.remove('magnetic');
+    g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-70},${y-50})`);
+  });
+  g.addEventListener('pointerup',e=>{moving=false;g.classList.remove('magnetic');try{g.releasePointerCapture(e.pointerId)}catch{}});
+}
 renderLibrary();
+
+/* V10 — real terminal-to-terminal magnetic wiring.  Drag the small square terminal, not the symbol. */
+(function initMagneticWiring(){
+  const NS='http://www.w3.org/2000/svg';
+  const svgEl=document.getElementById('schematic');
+  const dropLayerEl=document.getElementById('dropLayer');
+  if(!svgEl||!dropLayerEl) return;
+
+  let wireLayer=document.getElementById('wireLayer');
+  if(!wireLayer){
+    wireLayer=document.createElementNS(NS,'g');
+    wireLayer.setAttribute('id','wireLayer');
+    svgEl.insertBefore(wireLayer,dropLayerEl);
+  }
+  let wiring=null;
+
+  function portAbs(g,p){
+    const x=+g.dataset.x, y=+g.dataset.y;
+    return {x:x-24+p.x,y:y-20+p.y,label:p.label,g};
+  }
+  function allPorts(){
+    const out=[];
+    document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g=>{
+      portDefs(g.dataset.type).forEach(p=>out.push(portAbs(g,p)));
+    });
+    return out;
+  }
+  function pointFromEvent(e){return getPoint(e)}
+  function makePath(a,b){
+    const mx=Math.round((a.x+b.x)/2);
+    return `${a.x},${a.y} ${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`;
+  }
+  function nearestTarget(pt,source){
+    let best=null,bestD=18;
+    for(const p of allPorts()){
+      if(p.g===source.g && p.label===source.label) continue;
+      const d=Math.hypot(p.x-pt.x,p.y-pt.y);
+      if(d<bestD){best=p;bestD=d;}
+    }
+    return best;
+  }
+  function setPortConnected(p){
+    if(!p||!p.g) return;
+    const r=[...p.g.querySelectorAll('.mag-port')].find(x=>x.dataset.port===p.label);
+    if(r) r.classList.add('connected');
+  }
+
+  function startWire(e){
+    if(e.button!==0) return;
+    const port=e.target.closest && e.target.closest('.mag-port');
+    if(!port) return;
+    const g=port.closest('.dropped-symbol');
+    if(!g) return;
+    e.preventDefault(); e.stopPropagation();
+    const pdef=portDefs(g.dataset.type).find(p=>p.label===port.dataset.port);
+    if(!pdef) return;
+    const start=portAbs(g,pdef);
+    const poly=document.createElementNS(NS,'polyline');
+    poly.setAttribute('class','wiring-preview');
+    poly.setAttribute('points',`${start.x},${start.y} ${start.x},${start.y}`);
+    wireLayer.appendChild(poly);
+    wiring={start,source:g,poly,target:null};
+    if(window.state) state.textContent='WIRING • DRAG TO ANOTHER TERMINAL';
+    document.body.style.cursor='crosshair';
+    window.addEventListener('pointermove',moveWire,true);
+    window.addEventListener('pointerup',endWire,true);
+  }
+  function moveWire(e){
+    if(!wiring) return;
+    const pt=pointFromEvent(e);
+    const target=nearestTarget(pt,wiring.start);
+    wiring.target=target;
+    const end=target||pt;
+    wiring.poly.setAttribute('points',makePath(wiring.start,end));
+    document.querySelectorAll('.mag-port').forEach(r=>r.classList.remove('connected'));
+    if(target){
+      const rr=target.g.querySelector(`.mag-port[data-port="${CSS.escape(target.label)}"]`);
+      if(rr) rr.classList.add('connected');
+    }
+  }
+  function endWire(e){
+    if(!wiring) return;
+    const w=wiring;
+    window.removeEventListener('pointermove',moveWire,true);
+    window.removeEventListener('pointerup',endWire,true);
+    document.body.style.cursor='';
+    document.querySelectorAll('.mag-port').forEach(r=>r.classList.remove('connected'));
+    if(w.target && w.target.g!==w.source){
+      const line=document.createElementNS(NS,'polyline');
+      line.setAttribute('class','connected-wire');
+      line.setAttribute('points',makePath(w.start,w.target));
+      line.dataset.from=w.start.label;
+      line.dataset.to=w.target.label;
+      line.dataset.fromType=w.source.dataset.type;
+      line.dataset.toType=w.target.g.dataset.type;
+      wireLayer.appendChild(line);
+      setPortConnected(w.start); setPortConnected(w.target);
+      state.textContent=`CONNECTED • ${w.start.label} ↔ ${w.target.label}`;
+    }else{
+      state.textContent='WIRING CANCELLED • DROP ON ANOTHER TERMINAL';
+    }
+    w.poly.remove();
+    wiring=null;
+  }
+  dropLayerEl.addEventListener('pointerdown',startWire,true);
+
+  // Prevent the normal component-move handler when the user starts on a magnetic port.
+  dropLayerEl.addEventListener('click',e=>{
+    if(e.target.classList && e.target.classList.contains('mag-port')) e.stopPropagation();
+  },true);
+
+  // Remove any accidental selection rectangle if an older function creates one.
+  const cleanBoxes=()=>document.querySelectorAll('.dropped-symbol .select-box').forEach(x=>x.remove());
+  cleanBoxes();
+  const observer=new MutationObserver(cleanBoxes);
+  observer.observe(dropLayerEl,{childList:true,subtree:true});
+
+  const hint=document.querySelector('.hint');
+  if(hint) hint.textContent='Drag a symbol from the left. To wire: drag the small square terminal on one component to the square terminal on another component. Release to snap-connect.';
+})();
