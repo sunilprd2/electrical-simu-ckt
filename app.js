@@ -93,8 +93,41 @@ function refPrefix(type){
 }
 
 const lib=document.getElementById('libraryGroups');
+
+function openComponentDetails(g){
+ if(!g)return;
+ const dlg=document.getElementById('componentDialog');
+ document.getElementById('detailName').value=g.dataset.name||'';
+ document.getElementById('detailRef').value=g.dataset.ref||'';
+ document.getElementById('detailValue').value=g.dataset.value||'';
+ const defs=portsFor(g);
+ let terms=[];try{terms=JSON.parse(g.dataset.terminals||'null')||defs.map(p=>p.label)}catch{terms=defs.map(p=>p.label)}
+ document.getElementById('detailTerminals').value=terms.join(', ');
+ dlg.dataset.uid=g.dataset.uid;dlg.classList.add('open');dlg.setAttribute('aria-hidden','false');
+}
+function closeComponentDetails(){const dlg=document.getElementById('componentDialog');dlg.classList.remove('open');dlg.setAttribute('aria-hidden','true');}
+document.getElementById('closeComponentDialog')?.addEventListener('click',closeComponentDetails);
+document.getElementById('cancelComponentDialog')?.addEventListener('click',closeComponentDetails);
+document.getElementById('componentDialog')?.addEventListener('click',e=>{if(e.target.id==='componentDialog')closeComponentDetails()});
+document.getElementById('applyComponentDialog')?.addEventListener('click',()=>{
+ const dlg=document.getElementById('componentDialog'), uid=dlg.dataset.uid;
+ const g=[...document.querySelectorAll('#dropLayer .dropped-symbol')].find(n=>n.dataset.uid===uid); if(!g){closeComponentDetails();return;}
+ const oldTitle=g.querySelector('title');
+ g.dataset.name=document.getElementById('detailName').value.trim()||g.dataset.name;
+ g.dataset.ref=document.getElementById('detailRef').value.trim().toUpperCase()||g.dataset.ref;
+ g.dataset.value=document.getElementById('detailValue').value.trim();
+ const terminals=document.getElementById('detailTerminals').value.split(',').map(s=>s.trim()).filter(Boolean);
+ g.dataset.terminals=JSON.stringify(terminals);
+ g.querySelectorAll('.mag-port').forEach((port,i)=>{if(terminals[i])port.dataset.port=terminals[i]});
+ const tag=g.querySelector('.drop-tag'); if(tag)tag.textContent=g.dataset.ref;
+ if(oldTitle)oldTitle.textContent=g.dataset.ref+' — '+g.dataset.name+(g.dataset.value?' • '+g.dataset.value:'');
+ state.textContent='UPDATED • '+g.dataset.ref;
+ closeComponentDetails();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeComponentDetails()});
+
 function renderLibrary(){
- lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-accent="${g.color}" style="--accent:${g.color};color:${g.color}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${withPreviewPorts(type)}</div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`).join('');
+ lib.innerHTML=groups.map((g,gi)=>`<section class="cat ${gi===0?'open':''}" data-group="${g.name}"><button class="cat-head" style="--accent:${g.color}"><span class="folder">▰</span><b>${g.name}</b><small>${g.items.length} symbols</small><i>${gi===0?'⌃':'⌄'}</i></button><div class="cat-body">${g.items.map(([type,name])=>{const ref=refPrefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-accent="${g.color}" style="--accent:${g.color};color:${g.color}" title="${name} • IEC reference prefix ${ref}"><div class="symbol-preview">${withPreviewPorts(type)}</div><label>${name}</label></button>`}).join('')}</div></section>`).join('');
  document.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
  document.querySelectorAll('.symbol-btn').forEach(b=>{
   b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase();});
@@ -117,19 +150,39 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.
 document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.library .cat').forEach(s=>{const match=s.textContent.toLowerCase().includes(q);s.style.display=match?'block':'none';if(q&&match){s.classList.add('open');s.querySelector('.cat-head i').textContent='⌃'}})});
 
 function getPoint(e){const r=svg.getBoundingClientRect();const vb=svg.viewBox.baseVal;return {x:(e.clientX-r.left)*(vb.width/r.width),y:(e.clientY-r.top)*(vb.height/r.height)};}
+function nextReference(d){
+ const s=((d&& (d.name||d.type))||'component').toLowerCase();
+ let p='X';
+ if(/contactor/.test(s))p='KM';
+ else if(/overload|thermal/.test(s))p='F';
+ else if(/breaker|mcb|fuse|isolator|protection/.test(s))p='Q';
+ else if(/motor/.test(s))p='M';
+ else if(/timer|delay/.test(s))p='KT';
+ else if(/coil|relay/.test(s))p='K';
+ else if(/push|button|emergency|selector|switch|limit/.test(s))p='S';
+ else if(/pilot|lamp|led|indicator/.test(s))p='H';
+ else if(/earth|ground/.test(s))p='PE';
+ else if(/terminal|connector|block/.test(s))p='X';
+ else if(/transformer/.test(s))p='T';
+ else if(/sensor/.test(s))p='B';
+ const n=[...dropLayer.querySelectorAll('.dropped-symbol')].filter(g=>(g.dataset.ref||'').startsWith(p)).length+1;
+ return p+n;
+}
 function makeDropped(d,x,y){
- const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);
+ const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name; g.dataset.ref=d.ref||nextReference(d); g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);
  const box=document.createElementNS(NS,'rect'); box.setAttribute('class','select-box');box.setAttribute('x',0);box.setAttribute('y',0);box.setAttribute('width',72);box.setAttribute('height',44);box.setAttribute('rx',4);
  const ns=document.createElementNS(NS,'svg');ns.setAttribute('x',12);ns.setAttribute('y',4);ns.setAttribute('width',48);ns.setAttribute('height',32);ns.setAttribute('viewBox','0 0 48 32');ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
  const label=document.createElementNS(NS,'text');label.setAttribute('class','drop-label');label.setAttribute('x',36);label.setAttribute('y',42);label.setAttribute('text-anchor','middle');label.textContent=d.name.length>20?d.name.slice(0,19)+'…':d.name;
- const title=document.createElementNS(NS,'title');title.textContent=d.name+' | IEC reference '+(d.ref||refPrefix(d.type));g.appendChild(title);
- const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',36);tag.setAttribute('y',-3);tag.setAttribute('text-anchor','middle');tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
- g.append(box,ns,label,tag);dropLayer.appendChild(g);select(g);enableMove(g);return g;
+ const title=document.createElementNS(NS,'title');title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');g.appendChild(title);
+ const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',36);tag.setAttribute('y',-3);tag.setAttribute('text-anchor','middle');tag.textContent='';
+ g.append(box,ns,tag);dropLayer.appendChild(g);select(g);enableMove(g);
+  g.addEventListener('dblclick',e=>{e.stopPropagation();const current=g.dataset.ref||tag.textContent;const next=prompt('Component designation (example: KM1, KM2, QF1, S0):',current);if(next&&next.trim()){g.dataset.ref=next.trim().toUpperCase();tag.textContent=g.dataset.ref;const title=g.querySelector('title');if(title)title.textContent=g.dataset.ref+' — '+d.name;}});
+  return g;
 }
 function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');}
 function enableMove(g){
  let moving=false,dx=0,dy=0;
- g.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);const x=+g.dataset.x,y=+g.dataset.y;dx=p.x-x;dy=p.y-y;g.setPointerCapture(e.pointerId);});
+ g.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(e.target&&e.target.classList&&e.target.classList.contains('mag-port'))return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);const x=+g.dataset.x,y=+g.dataset.y;dx=p.x-x;dy=p.y-y;g.setPointerCapture(e.pointerId);});
  g.addEventListener('pointermove',e=>{if(!moving)return;const p=getPoint(e);const x=Math.round(p.x-dx),y=Math.round(p.y-dy);g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);});
  g.addEventListener('pointerup',e=>{moving=false;try{g.releasePointerCapture(e.pointerId)}catch{}});
 }
@@ -143,6 +196,23 @@ render();
 const _oldIconV7 = icon;
 function portDefs(type){
   const v=(x,y,label,side)=>({x,y,label,side});
+  // SVG-asset terminal rails: place ports at the ends of vertical tails, not on the sides.
+  const asset=String(type||'').split('/').pop().toLowerCase();
+  if(asset.endsWith('.svg')){
+    const poles=/(?:3p|3-pole|three-phase|three-pole)/.test(asset)?3:
+                /(?:2p|2-pole|two-pole)/.test(asset)?2:
+                /(?:1p|1-pole|single-pole)/.test(asset)?1:0;
+    if(poles){
+      const xs=poles===3?[8,24,40]:poles===2?[16,32]:[24];
+      const top=poles===3?['1','3','5']:poles===2?['1','3']:['1'];
+      const bottom=poles===3?['2','4','6']:poles===2?['2','4']:['2'];
+      return [...xs.map((x,i)=>v(x,1,top[i],'top')),...xs.map((x,i)=>v(x,31,bottom[i],'bottom'))];
+    }
+    if(/(?:push-button|manual-button|emergency-stop|limit-switch|normally-open-contact|normally-close-contact|normally-closed-contact|changeover-contact)/.test(asset))
+      return [v(8,1,'1','top'),v(40,31,'2','bottom')];
+    if(/(?:coil|timer|relay)/.test(asset))
+      return [v(24,1,'A1','top'),v(24,31,'A2','bottom')];
+  }
   if(type==='3p') return [v(8,2,'L1','top'),v(24,2,'L2','top'),v(40,2,'L3','top'),v(8,30,'L1','bottom'),v(24,30,'L2','bottom'),v(40,30,'L3','bottom')];
   if(['l1','l2','l3','n','dc-','dc+','pe','gnd'].includes(type)) return [v(24,2,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'top'),v(24,30,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'bottom')];
   if(type==='psu') return [v(7,7,'L','top'),v(17,7,'N','top'),v(31,7,'HV','top'),v(41,7,'PE','top'),v(7,25,'+','bottom'),v(17,25,'+','bottom'),v(31,25,'−','bottom'),v(41,25,'−','bottom')];
@@ -154,31 +224,53 @@ function portDefs(type){
   if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) return [v(24,2,'1','top'),v(24,30,'2','bottom')];
   return [v(24,2,'1','top'),v(24,30,'2','bottom')];
 }
+function portsFor(g){
+ const defs=portDefs(g.dataset.porttype||g.dataset.type);
+ let labels=[];try{labels=JSON.parse(g.dataset.terminals||'null')||[]}catch{}
+ return defs.map((p,i)=>({...p,label:labels[i]||p.label}));
+}
 function withPreviewPorts(type){
   const base=icon(type).replace('</svg>','');
-  const ports=portDefs(type).map(p=>`<rect class="port" x="${p.x-2}" y="${p.y-2}" width="4" height="4"/><text class="port-label" x="${p.x}" y="${p.side==='top'?p.y-3:p.y+8}" text-anchor="middle">${p.label}</text>`).join('');
-  return base+ports+'</svg>';
+  return base+'</svg>';
+}
+function nextReference(d){
+ const s=((d&& (d.name||d.type))||'component').toLowerCase();
+ let p='X';
+ if(/contactor/.test(s))p='KM';
+ else if(/overload|thermal/.test(s))p='F';
+ else if(/breaker|mcb|fuse|isolator|protection/.test(s))p='Q';
+ else if(/motor/.test(s))p='M';
+ else if(/timer|delay/.test(s))p='KT';
+ else if(/coil|relay/.test(s))p='K';
+ else if(/push|button|emergency|selector|switch|limit/.test(s))p='S';
+ else if(/pilot|lamp|led|indicator/.test(s))p='H';
+ else if(/earth|ground/.test(s))p='PE';
+ else if(/terminal|connector|block/.test(s))p='X';
+ else if(/transformer/.test(s))p='T';
+ else if(/sensor/.test(s))p='B';
+ const n=[...dropLayer.querySelectorAll('.dropped-symbol')].filter(g=>(g.dataset.ref||'').startsWith(p)).length+1;
+ return p+n;
 }
 function makeDropped(d,x,y){
   const NS='http://www.w3.org/2000/svg', W=120, H=90;
   const g=document.createElementNS(NS,'g');
-  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.name=d.name; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y; g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
+  g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name; g.dataset.ref=d.ref||nextReference(d); g.dataset.value=d.value||''; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y; g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
 
   // The symbol, its tails, terminal squares and labels are ONE SVG group.
   // Keep the symbol at its native 48x32 viewBox so magnetic ports line up exactly.
   const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none'; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
-  portDefs(d.type).forEach(p=>{
-    const r=document.createElementNS(NS,'rect'); r.setAttribute('class','mag-port'); r.setAttribute('x',36+p.x-3); r.setAttribute('y',28+p.y-3); r.setAttribute('width',6); r.setAttribute('height',6); r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
-    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',36+p.x); t.setAttribute('y',p.side==='top'?28+p.y-7:28+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=p.label; ports.appendChild(t);
+  portDefs(d.symbolFile||d.type).forEach(p=>{
+    const r=document.createElementNS(NS,'circle'); r.setAttribute('class','mag-port'); r.setAttribute('cx',36+p.x); r.setAttribute('cy',28+p.y); r.setAttribute('r',2.1); r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
+    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',36+p.x); t.setAttribute('y',p.side==='top'?28+p.y-7:28+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=''; t.setAttribute('aria-label',p.label); ports.appendChild(t);
   });
-  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',80); label.setAttribute('text-anchor','middle'); label.textContent=d.name.length>28?d.name.slice(0,27)+'…':d.name;
-  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',12); tag.setAttribute('text-anchor','middle'); tag.textContent='-'+(d.ref||refPrefix(d.type))+counter++;
-  const title=document.createElementNS(NS,'title'); title.textContent=d.name+' | IEC reference '+(d.ref||refPrefix(d.type));
+  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',80); label.setAttribute('text-anchor','middle'); label.textContent='';
+  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',12); tag.setAttribute('text-anchor','middle'); tag.textContent=g.dataset.ref||nextReference(d);
+  const title=document.createElementNS(NS,'title'); title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
   g.append(title,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
 }
-function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portDefs(g.dataset.type).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
+function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portsFor(g).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
 function enableMove(g){
   let moving=false, moved=false, dx=0, dy=0;
@@ -209,7 +301,7 @@ function enableMove(g){
   g.addEventListener('click',e=>{
     if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
     e.stopPropagation(); select(g);
-    state.textContent='SELECTED • '+(g.dataset.name||'COMPONENT').toUpperCase()+' • PRESS DELETE OR DRAG';
+    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'); openComponentDetails(g);
   });
 }
 renderLibrary();
@@ -223,7 +315,7 @@ renderLibrary();
     if(!g) return;
     if(e.target.classList && e.target.classList.contains('mag-port')) return;
     select(g);
-    state.textContent='SELECTED • '+(g.dataset.name||'COMPONENT').toUpperCase()+' • PRESS DELETE OR DRAG';
+    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'); openComponentDetails(g);
   },false);
   document.getElementById('delete').title='Select a component, then click DELETE or press the Delete key';
 })();
@@ -250,7 +342,7 @@ renderLibrary();
   function allPorts(){
     const out=[];
     document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g=>{
-      portDefs(g.dataset.type).forEach(p=>out.push(portAbs(g,p)));
+      portsFor(g).forEach(p=>out.push(portAbs(g,p)));
     });
     return out;
   }
@@ -274,66 +366,101 @@ renderLibrary();
     if(r) r.classList.add('connected');
   }
 
-  function startWire(e){
-    if(e.button!==0) return;
+  let activePort=null;
+  // Live CAD wire preview and alignment crosshairs, similar to the supplied reference video.
+  const guideLayer=document.createElementNS(NS,'g');
+  guideLayer.setAttribute('id','wireGuides');
+  const guideX=document.createElementNS(NS,'line');
+  const guideY=document.createElementNS(NS,'line');
+  [guideX,guideY].forEach(l=>{l.setAttribute('class','wire-guide');guideLayer.appendChild(l);});
+  svgEl.appendChild(guideLayer);
+  const preview=document.createElementNS(NS,'polyline');
+  preview.setAttribute('class','wire-preview');
+  preview.setAttribute('points','');
+  preview.style.display='none';
+  wireLayer.appendChild(preview);
+  function elbowPath(a,b){
+    const dx=Math.abs(b.x-a.x),dy=Math.abs(b.y-a.y);
+    if(dx<8||dy<8) return `${a.x},${a.y} ${b.x},${b.y}`;
+    const mx=Math.round((a.x+b.x)/2);
+    return `${a.x},${a.y} ${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`;
+  }
+  function orthogonalRoute(points){
+    if(!points||points.length<2)return '';
+    const out=[`${points[0].x},${points[0].y}`];
+    for(let i=1;i<points.length;i++){
+      const a=points[i-1],b=points[i];
+      if(Math.abs(a.x-b.x)>1 && Math.abs(a.y-b.y)>1){
+        // Default route: horizontal then vertical; every bend point remains user-controlled.
+        out.push(`${b.x},${a.y}`);
+      }
+      out.push(`${b.x},${b.y}`);
+    }
+    return out.join(' ');
+  }
+  function hideWireGuides(){guideX.style.display='none';guideY.style.display='none';preview.style.display='none';}
+  svgEl.addEventListener('pointermove',e=>{
+    if(!activePort)return;
+    const p=pointFromEvent(e);
+    guideX.setAttribute('x1',0);guideX.setAttribute('y1',activePort.y);
+    guideX.setAttribute('x2',svgEl.viewBox.baseVal.width);guideX.setAttribute('y2',activePort.y);
+    guideY.setAttribute('x1',activePort.x);guideY.setAttribute('y1',0);
+    guideY.setAttribute('x2',activePort.x);guideY.setAttribute('y2',svgEl.viewBox.baseVal.height);
+    guideX.style.display='block';guideY.style.display='block';
+    const route=[{x:activePort.x,y:activePort.y},...(activePort.waypoints||[]),p];
+     preview.setAttribute('points',orthogonalRoute(route));preview.style.display='block';
+  });
+  function connectOnClick(e){
     const port=e.target.closest && e.target.closest('.mag-port');
     if(!port) return;
-    const g=port.closest('.dropped-symbol');
-    if(!g) return;
+    const g=port.closest('.dropped-symbol'); if(!g) return;
     e.preventDefault(); e.stopPropagation();
-    const pdef=portDefs(g.dataset.type).find(p=>p.label===port.dataset.port);
-    if(!pdef) return;
-    const start=portAbs(g,pdef);
-    const poly=document.createElementNS(NS,'polyline');
-    poly.setAttribute('class','wiring-preview');
-    poly.setAttribute('points',`${start.x},${start.y} ${start.x},${start.y}`);
-    wireLayer.appendChild(poly);
-    wiring={start,source:g,poly,target:null};
-    if(window.state) state.textContent='WIRING • DRAG TO ANOTHER TERMINAL';
-    document.body.style.cursor='crosshair';
-    window.addEventListener('pointermove',moveWire,true);
-    window.addEventListener('pointerup',endWire,true);
-  }
-  function moveWire(e){
-    if(!wiring) return;
-    const pt=pointFromEvent(e);
-    const target=nearestTarget(pt,wiring.start);
-    wiring.target=target;
-    const end=target||pt;
-    wiring.poly.setAttribute('points',makePath(wiring.start,end));
-    document.querySelectorAll('.mag-port').forEach(r=>r.classList.remove('connected'));
-    if(target){
-      const rr=target.g.querySelector(`.mag-port[data-port="${CSS.escape(target.label)}"]`);
-      if(rr) rr.classList.add('connected');
+    const pdef=portsFor(g).find(p=>p.label===port.dataset.port); if(!pdef) return;
+    const current=portAbs(g,pdef);
+    if(!activePort){
+      activePort={...current,el:port,waypoints:[]};
+      port.classList.add('port-active','selected');
+      preview.setAttribute('points',`${current.x},${current.y} ${current.x},${current.y}`);
+      preview.style.display='block';
+      state.textContent=`WIRE START • ${current.label} • CLICK DESTINATION TERMINAL`;
+      return;
     }
-  }
-  function endWire(e){
-    if(!wiring) return;
-    const w=wiring;
-    window.removeEventListener('pointermove',moveWire,true);
-    window.removeEventListener('pointerup',endWire,true);
-    document.body.style.cursor='';
-    document.querySelectorAll('.mag-port').forEach(r=>r.classList.remove('connected'));
-    if(w.target && w.target.g!==w.source){
-      const line=document.createElementNS(NS,'polyline');
-      line.setAttribute('class','connected-wire');
-      line.setAttribute('points',makePath(w.start,w.target));
-      line.dataset.from=w.start.label;
-      line.dataset.to=w.target.label;
-      line.dataset.fromType=w.source.dataset.type;
-      line.dataset.toType=w.target.g.dataset.type;
-      line.dataset.fromG=w.source.dataset.uid||'';
-      line.dataset.toG=w.target.g.dataset.uid||'';
-      wireLayer.appendChild(line);
-      setPortConnected(w.start); setPortConnected(w.target);
-      state.textContent=`CONNECTED • ${w.start.label} ↔ ${w.target.label}`;
-    }else{
-      state.textContent='WIRING CANCELLED • DROP ON ANOTHER TERMINAL';
+    if(activePort.g===g && activePort.label===current.label){
+      activePort.el.classList.remove('port-active','selected'); activePort=null; hideWireGuides(); state.textContent='WIRING CANCELLED'; return;
     }
-    w.poly.remove();
-    wiring=null;
+    if(activePort.g===g){state.textContent='CHOOSE A TERMINAL ON ANOTHER COMPONENT';return;}
+    const line=document.createElementNS(NS,'polyline');
+    line.setAttribute('class','connected-wire');
+     line.setAttribute('points',orthogonalRoute([{x:activePort.x,y:activePort.y},...(activePort.waypoints||[]),{x:current.x,y:current.y}]));
+    line.dataset.from=activePort.label; line.dataset.to=current.label;
+    line.dataset.fromType=activePort.g.dataset.type; line.dataset.toType=g.dataset.type;
+    line.dataset.fromG=activePort.g.dataset.uid||''; line.dataset.toG=g.dataset.uid||'';
+    wireLayer.insertBefore(line,preview);
+    activePort.el.classList.remove('port-active','selected');
+    setPortConnected(activePort); setPortConnected(current);
+    state.textContent=`CONNECTED • ${activePort.label} ↔ ${current.label}`; activePort=null;hideWireGuides();
   }
-  dropLayerEl.addEventListener('pointerdown',startWire,true);
+  dropLayerEl.addEventListener('click',connectOnClick,true);
+  // Left-click on empty canvas while wiring to add a user-defined cable bend.
+  svgEl.addEventListener('click',e=>{
+    if(!activePort) return;
+    if(e.target.closest && (e.target.closest('.mag-port') || e.target.closest('.dropped-symbol'))) return;
+    const p=pointFromEvent(e);
+    activePort.waypoints.push({x:Math.round(p.x),y:Math.round(p.y)});
+    const pts=[{x:activePort.x,y:activePort.y},...activePort.waypoints,{x:p.x,y:p.y}];
+    preview.setAttribute('points',orthogonalRoute(pts));
+    preview.style.display='block';
+    state.textContent=`WIRE BEND ${activePort.waypoints.length} • LEFT-CLICK TO ADD BEND • RIGHT-CLICK TO CANCEL`;
+  });
+  // Right-click cancels the unfinished cable without affecting completed wires.
+  svgEl.addEventListener('contextmenu',e=>{
+    if(!activePort) return;
+    e.preventDefault();
+    if(activePort.el) activePort.el.classList.remove('port-active','selected');
+    activePort=null; hideWireGuides(); state.textContent='WIRING CANCELLED';
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&activePort){activePort.el.classList.remove('port-active','selected');activePort=null;hideWireGuides();state.textContent='WIRING CANCELLED';}});
+
 
   // Prevent the normal component-move handler when the user starts on a magnetic port.
   dropLayerEl.addEventListener('click',e=>{
@@ -347,7 +474,7 @@ renderLibrary();
   observer.observe(dropLayerEl,{childList:true,subtree:true});
 
   const hint=document.querySelector('.hint');
-  if(hint) hint.textContent='Drag a symbol from the left. To wire: drag the small square terminal on one component to the square terminal on another component. Release to snap-connect.';
+  if(hint) hint.textContent='Click one terminal, then click a terminal on another component to connect. Press Escape to cancel.';
 })();
 
 
@@ -364,14 +491,14 @@ renderLibrary();
   }
   function updateWiresFor(g){
     if(!wires) return;
-    const ports=portDefs(g.dataset.type).map(p=>portAbs(g,p));
+    const ports=portsFor(g).map(p=>portAbs(g,p));
     [...wires.querySelectorAll('.connected-wire')].forEach(line=>{
       if(line.dataset.fromG!==g.dataset.uid && line.dataset.toG!==g.dataset.uid) return;
       const fromG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.fromG);
       const toG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.toG);
       if(!fromG||!toG) return;
-      const fp=portDefs(fromG.dataset.type).map(p=>portAbs(fromG,p)).find(p=>p.label===line.dataset.from);
-      const tp=portDefs(toG.dataset.type).map(p=>portAbs(toG,p)).find(p=>p.label===line.dataset.to);
+      const fp=portsFor(fromG).map(p=>portAbs(fromG,p)).find(p=>p.label===line.dataset.from);
+      const tp=portsFor(toG).map(p=>portAbs(toG,p)).find(p=>p.label===line.dataset.to);
       if(!fp||!tp) return;
       const mx=Math.round((fp.x+tp.x)/2);
       line.setAttribute('points',`${fp.x},${fp.y} ${mx},${fp.y} ${mx},${tp.y} ${tp.x},${tp.y}`);
@@ -428,8 +555,8 @@ renderLibrary();
           // Infer endpoint component from the current labels/nearest port when IDs weren't assigned.
           if(!n.dataset.fromG||!n.dataset.toG){
             const gs=[...layer.querySelectorAll('.dropped-symbol')];
-            const from=gs.find(g=>portDefs(g.dataset.type).some(p=>p.label===n.dataset.from));
-            const to=gs.find(g=>portDefs(g.dataset.type).some(p=>p.label===n.dataset.to));
+            const from=gs.find(g=>portsFor(g).some(p=>p.label===n.dataset.from));
+            const to=gs.find(g=>portsFor(g).some(p=>p.label===n.dataset.to));
             if(from) ensureId(from); if(to) ensureId(to);
             if(from) n.dataset.fromG=from.dataset.uid;
             if(to) n.dataset.toG=to.dataset.uid;
@@ -480,7 +607,7 @@ renderLibrary();
   'bell':'buzzer','horn':'siren'
  };
  function slugName(s){return s.replace(/\.svg$/i,'')}
- function friendly(s){return slugName(s).replace(/\s*\(\d+\)/g,'').replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}
+ function friendly(s){return slugName(String(s||'').split(/[\\/]/).pop()).replace(/\s*\(\d+\)/g,'').replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}
  function prefix(type){if(typeof refPrefix==='function')return refPrefix(type);return 'X'}
  function categoryFor(s){
   const n=slugName(s).toLowerCase();
@@ -508,15 +635,19 @@ renderLibrary();
   host.innerHTML=keys.map((cat,idx)=>{
    const accent=(groups.find(g=>g.name.toLowerCase().includes(cat.toLowerCase().split(' ')[0]))||groups[idx%groups.length]).color;
    const entries=buckets.get(cat)||[];
-   return `<section class="cat ${idx===0?'open':''}" data-group="${cat}"><button class="cat-head" style="--accent:${accent}"><span class="folder">▰</span><b>${cat.toUpperCase()}</b><small>${entries.length} symbols</small><i>${idx===0?'⌃':'⌄'}</i></button><div class="cat-body">${entries.map(it=>{const name=friendly(it.file),slug=slugName(it.file),type=typeMap[slug]||slug;const ref=prefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-file="${it.file}" data-accent="${accent}" style="--accent:${accent};color:${accent}" title="${name}"><div class="symbol-preview asset-symbol-preview"><img class="asset-symbol" src="${it.file}" alt="${name}" loading="lazy"></div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`
+   return `<section class="cat ${idx===0?'open':''}" data-group="${cat}"><button class="cat-head" style="--accent:${accent}"><span class="folder">▰</span><b>${cat.toUpperCase()}</b><small>${entries.length} symbols</small><i>${idx===0?'⌃':'⌄'}</i></button><div class="cat-body">${entries.map(it=>{const cleanFile=(it.file||'').split(/[\\/]/).pop();const name=friendly(cleanFile),slug=slugName(cleanFile),type=typeMap[slug]||slug;const ref=prefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-file="${it.file}" data-accent="${accent}" style="--accent:${accent};color:${accent}" title="${name}"><div class="symbol-preview asset-symbol-preview"><img class="asset-symbol" src="${it.file}" alt="${name}" loading="lazy"></div><label>${name}</label></button>`}).join('')}</div></section>`
   }).join('');
   attachCardEvents();
   if(search && !search.dataset.assetSearch){search.dataset.assetSearch='1';search.addEventListener('input',()=>{const q=search.value.toLowerCase().trim();host.querySelectorAll('.cat').forEach(cat=>{const match=cat.textContent.toLowerCase().includes(q);cat.style.display=match?'block':'none';if(q&&match){cat.classList.add('open');cat.querySelector('.cat-head i').textContent='⌃'}})});}
  }
- fetch('symbol-library.json').then(r=>{if(!r.ok)throw new Error('symbol-library.json not found');return r.json()}).then(data=>{
-   const items=(data.symbols||[]).filter(it=>it.file && it.file.endsWith('.svg'));
-   if(items.length)renderAssets(items);
- }).catch(err=>{console.warn('SVG asset library could not load; retaining built-in library.',err)});
+ // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.
+ const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":80,"symbols":[{"file":"assets/symbols/ac-motor-3p-3-terminal.svg","name":"ac-motor-3p-3-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-3-terminal.svg"},{"file":"assets/symbols/ac-motor-3p-6-terminal.svg","name":"ac-motor-3p-6-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-6-terminal.svg"},{"file":"assets/symbols/bell.svg","name":"bell","category":"Indicators & Signalling","original_filename":"bell.svg"},{"file":"assets/symbols/changeover-contact-break-before-make.svg","name":"changeover-contact-break-before-make","category":"Contacts & Relays","original_filename":"changeover-contact-break-before-make.svg"},{"file":"assets/symbols/changeover-contact-off-delay.svg","name":"changeover-contact-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-off-delay.svg"},{"file":"assets/symbols/changeover-contact-on-delay.svg","name":"changeover-contact-on-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-delay.svg"},{"file":"assets/symbols/changeover-contact-on-off-delay.svg","name":"changeover-contact-on-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-off-delay.svg"},{"file":"assets/symbols/circuit-breaker-1p.svg","name":"circuit-breaker-1p","category":"Breakers & Protection","original_filename":"circuit-breaker-1p.svg"},{"file":"assets/symbols/circuit-breaker-2p.svg","name":"circuit-breaker-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-2p.svg"},{"file":"assets/symbols/circuit-breaker-3p.svg","name":"circuit-breaker-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-3p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-2p.svg","name":"circuit-breaker-thermal-magnetic-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-2p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-3p.svg","name":"circuit-breaker-thermal-magnetic-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-3p.svg"},{"file":"assets/symbols/coil (1).svg","name":"coil (1)","category":"Contactors & Coils","original_filename":"coil (1).svg"},{"file":"assets/symbols/coil.svg","name":"coil","category":"Contactors & Coils","original_filename":"coil.svg"},{"file":"assets/symbols/contactor-3p-automatic-tripping.svg","name":"contactor-3p-automatic-tripping","category":"Contactors & Coils","original_filename":"contactor-3p-automatic-tripping.svg"},{"file":"assets/symbols/contactor-3p.svg","name":"contactor-3p","category":"Contactors & Coils","original_filename":"contactor-3p.svg"},{"file":"assets/symbols/counter-nc.svg","name":"counter-nc","category":"Contacts & Relays","original_filename":"counter-nc.svg"},{"file":"assets/symbols/counter-no.svg","name":"counter-no","category":"Contacts & Relays","original_filename":"counter-no.svg"},{"file":"assets/symbols/counter-pulse.svg","name":"counter-pulse","category":"Contacts & Relays","original_filename":"counter-pulse.svg"},{"file":"assets/symbols/counter-switch-nc.svg","name":"counter-switch-nc","category":"Control Devices & Switches","original_filename":"counter-switch-nc.svg"},{"file":"assets/symbols/counter-switch-no.svg","name":"counter-switch-no","category":"Control Devices & Switches","original_filename":"counter-switch-no.svg"},{"file":"assets/symbols/disconnector-isolator-2p.svg","name":"disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"disconnector-isolator-2p.svg"},{"file":"assets/symbols/disconnector-isolator-3p.svg","name":"disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"disconnector-isolator-3p.svg"},{"file":"assets/symbols/earth-ground.svg","name":"earth-ground","category":"Motors & Earthing","original_filename":"earth-ground.svg"},{"file":"assets/symbols/electronic-clock-nc-switch.svg","name":"electronic-clock-nc-switch","category":"Timers","original_filename":"electronic-clock-nc-switch.svg"},{"file":"assets/symbols/electronic-clock-no-switch.svg","name":"electronic-clock-no-switch","category":"Timers","original_filename":"electronic-clock-no-switch.svg"},{"file":"assets/symbols/electronic-clock-switch.svg","name":"electronic-clock-switch","category":"Timers","original_filename":"electronic-clock-switch.svg"},{"file":"assets/symbols/electronic-clock.svg","name":"electronic-clock","category":"Timers","original_filename":"electronic-clock.svg"},{"file":"assets/symbols/emergency-stop-nc-spring-return.svg","name":"emergency-stop-nc-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-nc-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-spring-return.svg","name":"emergency-stop-no-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-no-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-turn-reset.svg","name":"emergency-stop-no-turn-reset","category":"Control Devices & Switches","original_filename":"emergency-stop-no-turn-reset.svg"},{"file":"assets/symbols/fuse-2p.svg","name":"fuse-2p","category":"Breakers & Protection","original_filename":"fuse-2p.svg"},{"file":"assets/symbols/fuse-3p.svg","name":"fuse-3p","category":"Breakers & Protection","original_filename":"fuse-3p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-2p.svg","name":"fuse-disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-2p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p (1).svg","name":"fuse-disconnector-isolator-3p (1)","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p (1).svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p.svg","name":"fuse-disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-2p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-3p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/fuse-switch-3p.svg","name":"fuse-switch-3p","category":"Breakers & Protection","original_filename":"fuse-switch-3p.svg"},{"file":"assets/symbols/horn.svg","name":"horn","category":"Indicators & Signalling","original_filename":"horn.svg"},{"file":"assets/symbols/isolator-square-3d.svg","name":"isolator-square-3d","category":"Breakers & Protection","original_filename":"isolator-square-3d.svg"},{"file":"assets/symbols/key-switch-nc-maintained.svg","name":"key-switch-nc-maintained","category":"Control Devices & Switches","original_filename":"key-switch-nc-maintained.svg"},{"file":"assets/symbols/key-switch-nc-spring-return.svg","name":"key-switch-nc-spring-return","category":"Control Devices & Switches","original_filename":"key-switch-nc-spring-return.svg"},{"file":"assets/symbols/key-switch-no-maintained.svg","name":"key-switch-no-maintained","category":"Control Devices & Switches","original_filename":"key-switch-no-maintained.svg"},{"file":"assets/symbols/led-coil.svg","name":"led-coil","category":"Contactors & Coils","original_filename":"led-coil.svg"},{"file":"assets/symbols/limit-switch-nc.svg","name":"limit-switch-nc","category":"Control Devices & Switches","original_filename":"limit-switch-nc.svg"},{"file":"assets/symbols/limit-switch-no.svg","name":"limit-switch-no","category":"Control Devices & Switches","original_filename":"limit-switch-no.svg"},{"file":"assets/symbols/main-switch-1p.svg","name":"main-switch-1p","category":"Breakers & Protection","original_filename":"main-switch-1p.svg"},{"file":"assets/symbols/main-switch-2p.svg","name":"main-switch-2p","category":"Breakers & Protection","original_filename":"main-switch-2p.svg"},{"file":"assets/symbols/main-switch-3p.svg","name":"main-switch-3p","category":"Breakers & Protection","original_filename":"main-switch-3p.svg"},{"file":"assets/symbols/manual-button-nc-maintained.svg","name":"manual-button-nc-maintained","category":"Control Devices & Switches","original_filename":"manual-button-nc-maintained.svg"},{"file":"assets/symbols/manual-button-nc-spring-return.svg","name":"manual-button-nc-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-nc-spring-return.svg"},{"file":"assets/symbols/manual-button-no-maintained.svg","name":"manual-button-no-maintained","category":"Control Devices & Switches","original_filename":"manual-button-no-maintained.svg"},{"file":"assets/symbols/manual-button-no-spring-return.svg","name":"manual-button-no-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-no-spring-return.svg"},{"file":"assets/symbols/manual-switch.svg","name":"manual-switch","category":"Control Devices & Switches","original_filename":"manual-switch.svg"},{"file":"assets/symbols/motor-circuit-breaker-2p.svg","name":"motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/motor-circuit-breaker-3p.svg","name":"motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/normally-close-contact.svg","name":"normally-close-contact","category":"Contacts & Relays","original_filename":"normally-close-contact.svg"},{"file":"assets/symbols/normally-closed-contact.svg","name":"normally-closed-contact","category":"Contacts & Relays","original_filename":"normally-closed-contact.svg"},{"file":"assets/symbols/normally-open-contact (1).svg","name":"normally-open-contact (1)","category":"Contacts & Relays","original_filename":"normally-open-contact (1).svg"},{"file":"assets/symbols/normally-open-contact.svg","name":"normally-open-contact","category":"Contacts & Relays","original_filename":"normally-open-contact.svg"},{"file":"assets/symbols/off-delay-nc-contact(1).svg","name":"off-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"off-delay-nc-contact(1).svg"},{"file":"assets/symbols/off-delay-no-contact (1).svg","name":"off-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (1).svg"},{"file":"assets/symbols/off-delay-no-contact (2).svg","name":"off-delay-no-contact (2)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (2).svg"},{"file":"assets/symbols/off-delay-no-contact.svg","name":"off-delay-no-contact","category":"Contacts & Relays","original_filename":"off-delay-no-contact.svg"},{"file":"assets/symbols/off-delay-timer (1).svg","name":"off-delay-timer (1)","category":"Timers","original_filename":"off-delay-timer (1).svg"},{"file":"assets/symbols/off-delay-timer.svg","name":"off-delay-timer","category":"Timers","original_filename":"off-delay-timer.svg"},{"file":"assets/symbols/on-delay-nc-contact(1).svg","name":"on-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"on-delay-nc-contact(1).svg"},{"file":"assets/symbols/on-delay-no-contact (1).svg","name":"on-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"on-delay-no-contact (1).svg"},{"file":"assets/symbols/on-delay-no-contact.svg","name":"on-delay-no-contact","category":"Contacts & Relays","original_filename":"on-delay-no-contact.svg"},{"file":"assets/symbols/on-delay-timer (1).svg","name":"on-delay-timer (1)","category":"Timers","original_filename":"on-delay-timer (1).svg"},{"file":"assets/symbols/on-delay-timer.svg","name":"on-delay-timer","category":"Timers","original_filename":"on-delay-timer.svg"},{"file":"assets/symbols/on-off-delay-nc-contact.svg","name":"on-off-delay-nc-contact","category":"Contacts & Relays","original_filename":"on-off-delay-nc-contact.svg"},{"file":"assets/symbols/on-off-delay-no-contact.svg","name":"on-off-delay-no-contact","category":"Contacts & Relays","original_filename":"on-off-delay-no-contact.svg"},{"file":"assets/symbols/pilot-light (1).svg","name":"pilot-light (1)","category":"Indicators & Signalling","original_filename":"pilot-light (1).svg"},{"file":"assets/symbols/pilot-light-blink.svg","name":"pilot-light-blink","category":"Indicators & Signalling","original_filename":"pilot-light-blink.svg"},{"file":"assets/symbols/pilot-light.svg","name":"pilot-light","category":"Indicators & Signalling","original_filename":"pilot-light.svg"},{"file":"assets/symbols/push-button-nc-maintained(1).svg","name":"push-button-nc-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-maintained(1).svg"},{"file":"assets/symbols/push-button-nc-spring-return(1).svg","name":"push-button-nc-spring-return(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-spring-return(1).svg"},{"file":"assets/symbols/push-button-no-key-maintained(1).svg","name":"push-button-no-key-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-no-key-maintained(1).svg"}]};
+ const assetItems = (embeddedSymbolManifest.symbols || []).filter(it => it.file && /\.svg$/i.test(it.file));
+ if (assetItems.length) renderAssets(assetItems);
+ else {
+   host.innerHTML = '<div class="library-error">No SVG symbols were found in the embedded library.</div>';
+ }
+
 
  // Replace a generic drawn icon with the original SVG asset when one was dragged from the library.
  const priorMakeDropped=makeDropped;

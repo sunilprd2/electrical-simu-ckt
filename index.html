@@ -10,12 +10,12 @@
 <header class="top">
   <div class="brand"><span>⚡</span><div><b>ELECTRICAL SIMU CKT</b><small>Design • Simulate • Control • Visualize</small></div></div>
   <nav>
-    <button class="run" id="play">▶<em>PLAY</em></button>
-    <button class="stop" id="stop">■<em>STOP</em></button>
-    <button>☷<em>VALUES</em></button><button>◉<em>VIEW</em></button><button id="printDrawing">▤<em>PRINT PDF</em></button>
-    <button>⌑<em>HOLD</em></button><button id="delete">⌫<em>DELETE</em></button>
-    <button>▣<em>FRONT</em></button><button>▣<em>BACK</em></button><button>⟳<em>ROTATE</em></button>
-    <button class="mode active">▣<em>2D</em></button><button id="threeD">◇<em>3D</em></button><button>⚙<em>SETTINGS</em></button>
+    <button class="run" id="play"><span class="toolbar-icon green">▶</span><em>PLAY</em></button>
+    <button class="stop" id="stop"><span class="toolbar-icon red">■</span><em>STOP</em></button><button id="undoBtn" title="Undo (Ctrl+Z)" disabled><span class="toolbar-icon violet">↶</span><em>UNDO</em></button><button id="redoBtn" title="Redo (Ctrl+Y)" disabled><span class="toolbar-icon cyan">↷</span><em>REDO</em></button>
+    <button><span class="toolbar-icon amber">▦</span><em>VALUES</em></button><button><span class="toolbar-icon cyan">◉</span><em>VIEW</em></button><button id="printDrawing"><span class="toolbar-icon blue">▤</span><em>PRINT PDF</em></button>
+    <button><span class="toolbar-icon purple">Ⅱ</span><em>HOLD</em></button><button id="delete"><span class="toolbar-icon red">⌫</span><em>DELETE</em></button>
+    <button><span class="toolbar-icon cyan">▣</span><em>FRONT</em></button><button><span class="toolbar-icon violet">▣</span><em>BACK</em></button><button><span class="toolbar-icon amber">⟳</span><em>ROTATE</em></button>
+    <button id="zoomInBtn" title="Zoom in"><span class="toolbar-icon cyan">＋</span><em>ZOOM IN</em></button><button id="zoomOutBtn" title="Zoom out"><span class="toolbar-icon cyan">−</span><em>ZOOM OUT</em></button><button id="centerViewBtn" title="Center drawing"><span class="toolbar-icon violet">⊙</span><em>CENTER</em></button><button id="insertTextBtn" title="Insert text"><span class="toolbar-icon amber">T</span><em>TEXT</em></button><button id="connectToggle" title="Enable terminal connection mode"><span class="toolbar-icon green">⌁</span><em>CONNECT</em></button><button class="mode active"><span class="toolbar-icon blue">▣</span><em>2D</em></button><button id="threeD"><span class="toolbar-icon violet">◇</span><em>3D</em></button><button id="themeToggle" title="Toggle dark/light workspace"><span class="toolbar-icon amber">☼</span><em>LIGHT MODE</em></button><button id="gridToggle" title="Toggle schematic grid"><span class="toolbar-icon cyan">▦</span><em>GRID ON</em></button><button>⚙<em>SETTINGS</em></button>
   </nav>
 </header>
 <div class="layout">
@@ -26,55 +26,136 @@
   <div id="libraryGroups"><div style="padding:18px;color:#50f0a1;font-size:11px">Loading IEC component library…</div></div>
 </aside>
 <main class="work">
-  <div class="workbar"><span id="state">READY • 2D SCHEMATIC</span><span>Compact IEC-style schematic • DOL starter demo</span></div>
+  <div class="workbar"><span id="state">READY • 2D SCHEMATIC</span><span>SVG schematic workspace</span></div>
   <div id="sheet">
     <svg id="schematic" viewBox="0 0 1200 760" aria-label="Electrical schematic">
-      <g id="power" class="circuit">
-        <g class="wire white"><line x1="120" y1="70" x2="120" y2="150"/><line x1="165" y1="70" x2="165" y2="150"/><line x1="210" y1="70" x2="210" y2="150"/></g>
-        <g class="terminal"><circle cx="120" cy="55" r="12"/><text x="120" y="59">L1</text><circle cx="165" cy="55" r="12"/><text x="165" y="59">L2</text><circle cx="210" cy="55" r="12"/><text x="210" y="59">L3</text></g>
-        <text class="green" x="108" y="86">L1</text><text class="green" x="153" y="86">L2</text><text class="green" x="198" y="86">L3</text>
-        <g class="sym"><line x1="108" y1="150" x2="132" y2="180"/><line x1="153" y1="150" x2="177" y2="180"/><line x1="198" y1="150" x2="222" y2="180"/><line x1="120" y1="180" x2="120" y2="215"/><line x1="165" y1="180" x2="165" y2="215"/><line x1="210" y1="180" x2="210" y2="215"/></g>
-        <text class="tag" x="84" y="190">-QF1</text><text class="num" x="112" y="146">1</text><text class="num" x="157" y="146">3</text><text class="num" x="202" y="146">5</text>
-        <g class="wire white"><line x1="120" y1="215" x2="120" y2="270"/><line x1="165" y1="215" x2="165" y2="270"/><line x1="210" y1="215" x2="210" y2="270"/></g>
-        <g class="sym"><line x1="108" y1="270" x2="132" y2="300"/><line x1="153" y1="270" x2="177" y2="300"/><line x1="198" y1="270" x2="222" y2="300"/><line x1="120" y1="300" x2="120" y2="335"/><line x1="165" y1="300" x2="165" y2="335"/><line x1="210" y1="300" x2="210" y2="335"/></g>
-        <text class="tag" x="78" y="313">-KM1</text><text class="num" x="112" y="267">1</text><text class="num" x="157" y="267">3</text><text class="num" x="202" y="267">5</text><text class="num" x="112" y="320">2</text><text class="num" x="157" y="320">4</text><text class="num" x="202" y="320">6</text>
-        <g class="wire white"><line x1="120" y1="335" x2="120" y2="385"/><line x1="165" y1="335" x2="165" y2="385"/><line x1="210" y1="335" x2="210" y2="385"/></g>
-        <g class="sym overload"><rect x="108" y="385" width="24" height="42"/><rect x="153" y="385" width="24" height="42"/><rect x="198" y="385" width="24" height="42"/></g>
-        <text class="tag" x="84" y="416">-F1</text><text class="num" x="112" y="380">1</text><text class="num" x="157" y="380">2</text><text class="num" x="202" y="380">3</text>
-        <g class="wire white"><line x1="120" y1="427" x2="120" y2="505"/><line x1="165" y1="427" x2="165" y2="505"/><line x1="210" y1="427" x2="210" y2="505"/></g>
-        <text class="num" x="110" y="500">U1</text><text class="num" x="155" y="500">V1</text><text class="num" x="200" y="500">W1</text>
-        <g id="motorSymbol"><circle cx="165" cy="570" r="54"/><text x="165" y="575" text-anchor="middle" class="motorText">M3~</text><line x1="120" y1="505" x2="120" y2="545"/><line x1="165" y1="505" x2="165" y2="516"/><line x1="210" y1="505" x2="210" y2="545"/></g>
-        <text class="tag" x="82" y="575">-M1</text><text class="green" x="206" y="635">PE</text>
-      </g>
-
-      <g id="control" class="circuit">
-        <g class="terminal"><circle cx="650" cy="55" r="12"/><text x="650" y="59">L</text><circle cx="700" cy="55" r="12"/><text x="700" y="59">N</text></g>
-        <text class="green" x="645" y="86">L</text><text class="green" x="695" y="86">N</text>
-        <g class="wire white"><line x1="650" y1="70" x2="650" y2="130"/><line x1="700" y1="70" x2="700" y2="690"/></g>
-        <g class="sym"><line x1="638" y1="130" x2="662" y2="160"/></g><text class="tag" x="620" y="175">-QF2</text>
-        <g class="wire white"><line x1="650" y1="160" x2="650" y2="215"/></g>
-        <g id="stopSym" class="sym"><line x1="638" y1="215" x2="662" y2="245"/><line x1="638" y1="245" x2="662" y2="215"/></g><text class="tag" x="620" y="255">-S0</text><text class="num" x="664" y="214">21</text><text class="num" x="664" y="250">22</text>
-        <g class="wire white"><line x1="650" y1="245" x2="650" y2="300"/></g>
-        <g class="sym"><rect x="638" y="300" width="24" height="38"/></g><text class="tag" x="620" y="330">-F1</text><text class="num" x="665" y="312">95</text><text class="num" x="665" y="334">96</text>
-        <g class="wire white"><line x1="650" y1="338" x2="650" y2="395"/><line x1="650" y1="395" x2="760" y2="395"/></g>
-        <g id="startSym" class="sym"><line x1="748" y1="375" x2="772" y2="405"/></g><text class="tag" x="736" y="430">-S1</text><text class="num" x="744" y="370">13</text><text class="num" x="770" y="425">14</text>
-        <g class="wire white"><line x1="760" y1="405" x2="760" y2="500"/></g>
-        <g id="auxSym" class="sym"><line x1="748" y1="500" x2="772" y2="530"/></g><text class="tag" x="738" y="555">-KM1</text><text class="num" x="742" y="495">13</text><text class="num" x="770" y="550">14</text>
-        <g class="wire white"><line x1="760" y1="530" x2="820" y2="530"/><line x1="820" y1="530" x2="820" y2="600"/></g>
-        <g id="coil" class="coil"><rect x="807" y="600" width="26" height="55"/><text x="790" y="625" class="tag">-KM1</text><text x="785" y="600" class="num">A1</text><text x="785" y="660" class="num">A2</text></g>
-        <g class="wire white"><line x1="820" y1="655" x2="820" y2="690"/><line x1="820" y1="690" x2="700" y2="690"/></g>
-        <g class="indicator"><circle cx="920" cy="530" r="15"/><line x1="910" y1="520" x2="930" y2="540"/><line x1="930" y1="520" x2="910" y2="540"/></g><text class="tag" x="905" y="570">H1 RUN</text>
-        <g class="wire white"><line x1="760" y1="395" x2="920" y2="395"/><line x1="920" y1="395" x2="920" y2="515"/><line x1="920" y1="545" x2="920" y2="690"/></g>
-      </g>
       <g id="dropLayer"></g>
     </svg>
     <div class="drop-overlay" id="dropOverlay">DROP IEC SYMBOL HERE</div>
-    <div class="hint">Drag a symbol from the left and drop it anywhere on the schematic. Dropped symbols can be selected, moved and deleted.</div>
+    <div class="hint">Drag symbols into the workspace. Click one terminal, then click another terminal to connect. Use Light Mode and Grid controls above.</div>
   </div>
   <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>2D • IEC schematic view</span></footer>
 </main>
 </div>
-<script src="app.js?v=15-svg-library"></script>
-<script>document.getElementById("printDrawing")?.addEventListener("click",()=>window.print());</script>
+
+<div id="componentDialog" class="component-dialog" aria-hidden="true">
+  <div class="component-dialog-card" role="dialog" aria-modal="true" aria-labelledby="componentDialogTitle">
+    <div class="dialog-heading"><b id="componentDialogTitle">Component details</b><button type="button" id="closeComponentDialog" aria-label="Close">✕</button></div>
+    <label>Component name<input id="detailName" type="text"></label>
+    <div class="dialog-grid"><label>Short designation<input id="detailRef" type="text" placeholder="KM1, F1, QF1"></label><label>Value / rating<input id="detailValue" type="text" placeholder="e.g. 9 A, 230 V"></label></div>
+    <label>Terminal numbers (comma-separated)<input id="detailTerminals" type="text" placeholder="1,3,5,2,4,6"></label>
+    <div class="dialog-actions"><button type="button" id="cancelComponentDialog">Cancel</button><button type="button" id="applyComponentDialog">Apply changes</button></div>
+  </div>
+</div>
+<script src="app.js?v=26-workspace-tools"></script>
+<script>
+document.getElementById("printDrawing")?.addEventListener("click",()=>window.print());
+(()=>{
+ const body=document.body, sheet=document.getElementById('sheet');
+ const themeBtn=document.getElementById('themeToggle'), gridBtn=document.getElementById('gridToggle');
+ let theme=localStorage.getItem('esim-theme')||'dark';
+ let grid=localStorage.getItem('esim-grid')!=='off';
+ function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);themeBtn.innerHTML=(theme==='dark'?'☼<em>LIGHT MODE</em>':'☾<em>DARK MODE</em>');gridBtn.innerHTML=(grid?'▦<em>GRID ON</em>':'▦<em>GRID OFF</em>');themeBtn.setAttribute('aria-pressed',String(theme==='light'));gridBtn.setAttribute('aria-pressed',String(grid));}
+ themeBtn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render()});
+ const connectBtn=document.getElementById('connectToggle');
+ let connectMode=localStorage.getItem('esim-connect-mode')==='on';
+ function renderConnect(){body.classList.toggle('connect-mode',connectMode);if(connectBtn){connectBtn.classList.toggle('active',connectMode);connectBtn.innerHTML=connectMode?'⌁<em>CONNECT ON</em>':'⌁<em>CONNECT</em>';connectBtn.setAttribute('aria-pressed',String(connectMode));}}
+ if(connectBtn){connectBtn.addEventListener('click',()=>{connectMode=!connectMode;localStorage.setItem('esim-connect-mode',connectMode?'on':'off');renderConnect();});}
+ renderConnect();
+
+ gridBtn.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
+})();
+</script>
+
+<script>
+/* Undo/Redo for component placement, movement, deletion and completed wires. */
+(()=>{
+ const svg=document.getElementById('schematic');
+ const drop=document.getElementById('dropLayer');
+ const wire=()=>document.getElementById('wireLayer');
+ const undoBtn=document.getElementById('undoBtn'), redoBtn=document.getElementById('redoBtn');
+ if(!svg||!drop||!undoBtn||!redoBtn)return;
+ let undoStack=[],redoStack=[],last='',restoreInProgress=false,saveTimer=null;
+ const snapshot=()=>JSON.stringify({drop:drop.innerHTML,wire:wire()?wire().innerHTML:''});
+ const updateButtons=()=>{undoBtn.disabled=undoStack.length<2;redoBtn.disabled=redoStack.length===0;};
+ const remember=()=>{
+   if(restoreInProgress)return;
+   const s=snapshot();
+   if(s===last)return;
+   undoStack.push(s); if(undoStack.length>100)undoStack.shift();
+   last=s; redoStack=[]; updateButtons();
+ };
+ const queueRemember=()=>{clearTimeout(saveTimer);saveTimer=setTimeout(remember,180);};
+ function rebind(){
+   drop.querySelectorAll('.dropped-symbol').forEach(g=>{
+     if(typeof enableMove==='function')enableMove(g);
+   });
+ }
+ function apply(s){
+   restoreInProgress=true;
+   const obj=JSON.parse(s);
+   drop.innerHTML=obj.drop;
+   if(wire()){
+     wire().innerHTML=obj.wire;
+   }
+   rebind();
+   last=s;
+   restoreInProgress=false;
+   updateButtons();
+   document.getElementById('state').textContent='EDIT HISTORY RESTORED';
+ }
+ function undo(){
+   if(undoStack.length<2)return;
+   const current=undoStack.pop();redoStack.push(current);
+   apply(undoStack[undoStack.length-1]);
+ }
+ function redo(){
+   if(!redoStack.length)return;
+   const s=redoStack.pop();undoStack.push(s);apply(s);
+ }
+ undoBtn.addEventListener('click',undo);redoBtn.addEventListener('click',redo);
+ document.addEventListener('keydown',e=>{
+   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();}
+   else if((e.ctrlKey||e.metaKey)&&(e.key.toLowerCase()==='y'||(e.shiftKey&&e.key.toLowerCase()==='z'))){e.preventDefault();redo();}
+ });
+ document.addEventListener('pointerup',queueRemember,true);
+ document.addEventListener('click',e=>{
+   if(e.target.closest('#delete')||e.target.closest('.mag-port'))queueRemember();
+ },true);
+ const observer=new MutationObserver(queueRemember);
+ observer.observe(drop,{childList:true,subtree:true,attributes:true,attributeFilter:['transform','data-x','data-y']});
+ const init=()=>{last=snapshot();undoStack=[last];updateButtons();};
+ setTimeout(init,350);
+})();
+</script>
+
+
+<script>
+(()=> {
+ const svg=document.getElementById('schematic'), sheet=document.getElementById('sheet'), drop=document.getElementById('dropLayer');
+ if(!svg||!sheet)return;
+ const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
+ const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`)};
+ const zoom=(factor,cx=view.x+view.w/2,cy=view.y+view.h/2)=>{const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view.x=cx-(cx-view.x)*(nw/view.w);view.y=cy-(cy-view.y)*(nh/view.h);view.w=nw;view.h=nh;apply()};
+ document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
+ document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
+ document.getElementById('centerViewBtn')?.addEventListener('click',()=>{view={x:0,y:0,w:1200,h:760};apply()});
+ document.getElementById('insertTextBtn')?.addEventListener('click',e=>{textMode=!textMode;e.currentTarget.classList.toggle('active',textMode);document.getElementById('state').textContent=textMode?'TEXT MODE • CLICK WORKSPACE TO PLACE TEXT':'TEXT MODE OFF'});
+ const point=e=>{const r=svg.getBoundingClientRect();return{x:view.x+(e.clientX-r.left)/r.width*view.w,y:view.y+(e.clientY-r.top)/r.height*view.h}};
+ svg.addEventListener('wheel',e=>{e.preventDefault();const p=point(e);zoom(e.deltaY<0?.88:1.14,p.x,p.y)},{passive:false});
+ svg.addEventListener('contextmenu',e=>{if(document.getElementById('connectToggle')?.classList.contains('active'))e.preventDefault()});
+ svg.addEventListener('pointerdown',e=>{
+   if(e.button!==0 || e.target.closest('.dropped-symbol') || e.target.closest('.mag-port'))return;
+   const st=document.getElementById('state')?.textContent||'';
+   if(st.startsWith('WIRE START')||st.startsWith('WIRE BEND'))return;
+   if(textMode){const p=point(e),value=prompt('Text to insert:','Text');if(value){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',p.x);t.setAttribute('y',p.y);t.setAttribute('class','drawing-text');t.textContent=value;t.setAttribute('fill','currentColor');t.setAttribute('font-size','16');drop.appendChild(t)}textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');return;}
+   pan={clientX:e.clientX,clientY:e.clientY,x:view.x,y:view.y};svg.classList.add('panning');try{svg.setPointerCapture(e.pointerId)}catch{}
+ });
+ svg.addEventListener('pointermove',e=>{if(!pan)return;const r=svg.getBoundingClientRect();view.x=pan.x-(e.clientX-pan.clientX)/r.width*view.w;view.y=pan.y-(e.clientY-pan.clientY)/r.height*view.h;apply()});
+ const stop=e=>{if(pan){pan=null;svg.classList.remove('panning');try{svg.releasePointerCapture(e.pointerId)}catch{}}};
+ svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
+})();
+</script>
+
 </body>
 </html>
