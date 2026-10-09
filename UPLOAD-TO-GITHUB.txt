@@ -1,0 +1,6 @@
+ELECTRICAL SIMU CKT - website files
+
+Upload the contents of this folder to the root of your GitHub Pages repository.
+Keep assets/symbols/ in place. Do not upload the outer ZIP file itself as a replacement for the website.
+This package combines the separately supplied HTML/CSS/JS/manifest with the SVG files from the supplied project ZIP.
+Check the site after publishing; this package does not claim a validated electrical solver.

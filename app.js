@@ -444,3 +444,108 @@ renderLibrary();
 
 /* Re-render library after V13 symbol definitions; keeps 3-column, high-resolution previews. */
 renderLibrary();
+
+
+/* SVG SYMBOL LIBRARY INTEGRATION — loads the supplied original SVG files from assets/symbols. */
+(function installOriginalSvgLibrary(){
+ const host=document.getElementById('libraryGroups');
+ const search=document.getElementById('search');
+ const NS='http://www.w3.org/2000/svg';
+ const categoryOrder=['Power Supply','Breakers & Protection','Contactors & Coils','Contacts & Relays','Control Devices & Switches','Timers','Motors & Earthing','Indicators & Signalling','PLC & I/O','Sensors & Field Devices','Terminals & Wiring','Other'];
+ const typeMap={
+  'circuit-breaker-1p':'1pmcb','circuit-breaker-2p':'2pmcb','circuit-breaker-3p':'3pmcb',
+  'circuit-breaker-thermal-magnetic-2p':'2pmcb','circuit-breaker-thermal-magnetic-3p':'3pmcb',
+  'motor-circuit-breaker-2p':'2pmcb','motor-circuit-breaker-3p':'3pmcb',
+  'ac-motor-3p-3-terminal':'motor3','ac-motor-3p-6-terminal':'motor3',
+  'contactor-3p':'3pcont','contactor-3p-automatic-tripping':'3pcont',
+  'coil':'coil','coil (1)':'coil','led-coil':'coil',
+  'normally-open-contact':'no','normally-open-contact (1)':'no',
+  'normally-close-contact':'nc','normally-closed-contact':'nc',
+  'manual-button-no-spring-return':'start','manual-button-no-maintained':'start',
+  'push-button-no-key-maintained(1)':'start','manual-button-nc-spring-return':'stop','manual-button-nc-maintained':'stop',
+  'emergency-stop-nc-spring-return':'estop','emergency-stop-no-spring-return':'estop','emergency-stop-no-turn-reset':'estop',
+  'limit-switch-no':'limitno','limit-switch-nc':'limitnc',
+  'pilot-light':'pilot','pilot-light (1)':'pilot','pilot-light-blink':'pilot',
+  'on-delay-timer':'ton','on-delay-timer (1)':'ton','off-delay-timer':'tof','off-delay-timer (1)':'tof',
+  'on-delay-no-contact':'tdno','on-delay-no-contact (1)':'tdno','on-delay-nc-contact(1)':'tdnc',
+  'off-delay-no-contact':'offno','off-delay-no-contact (1)':'offno','off-delay-no-contact (2)':'offno','off-delay-nc-contact(1)':'offnc',
+  'on-off-delay-no-contact':'tdno','on-off-delay-nc-contact':'tdnc',
+  'earth-ground':'pe','main-switch-1p':'1pmcb','main-switch-2p':'2pmcb','main-switch-3p':'3pmcb',
+  'disconnector-isolator-2p':'disconnect','disconnector-isolator-3p':'disconnect','fuse-2p':'fuse','fuse-3p':'fuse','fuse-switch-3p':'fuseswitch',
+  'fuse-disconnector-isolator-2p':'fuseswitch','fuse-disconnector-isolator-3p':'fuseswitch','fuse-disconnector-isolator-3p (1)':'fuseswitch',
+  'fuse-disconnector-w-motor-circuit-breaker-2p':'mpcb','fuse-disconnector-w-motor-circuit-breaker-3p':'mpcb',
+  'counter-switch-nc':'nc','counter-switch-no':'no','key-switch-nc-maintained':'nc','key-switch-nc-spring-return':'nc','key-switch-no-maintained':'no',
+  'manual-switch':'toggle','counter-nc':'nc','counter-no':'no','counter-pulse':'counter',
+  'changeover-contact-break-before-make':'changeover','changeover-contact-off-delay':'changeover','changeover-contact-on-delay':'changeover','changeover-contact-on-off-delay':'changeover',
+  'bell':'buzzer','horn':'siren'
+ };
+ function slugName(s){return s.replace(/\.svg$/i,'')}
+ function friendly(s){return slugName(s).replace(/\s*\(\d+\)/g,'').replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}
+ function prefix(type){if(typeof refPrefix==='function')return refPrefix(type);return 'X'}
+ function categoryFor(s){
+  const n=slugName(s).toLowerCase();
+  if(/motor|earth-ground/.test(n))return 'Motors & Earthing';
+  if(/breaker|isolator|switch-3p|fuse|main-switch/.test(n))return 'Breakers & Protection';
+  if(/contactor|coil/.test(n))return 'Contactors & Coils';
+  if(/contact|counter-(nc|no|pulse)/.test(n))return 'Contacts & Relays';
+  if(/button|emergency|key-switch|limit-switch|manual-switch|counter-switch/.test(n))return 'Control Devices & Switches';
+  if(/timer|clock|delay/.test(n))return 'Timers';
+  if(/pilot|bell|horn/.test(n))return 'Indicators & Signalling';
+  return 'Other';
+ }
+ function attachCardEvents(){
+  host.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
+  host.querySelectorAll('.symbol-btn').forEach(b=>{
+   b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase()});
+   b.addEventListener('dragend',()=>document.getElementById('dropOverlay').classList.remove('show'));
+   b.addEventListener('click',()=>{state.textContent='DRAG '+b.dataset.name.toUpperCase()+' INTO SCHEMATIC'});
+  });
+ }
+ function renderAssets(items){
+  const buckets=new Map();
+  items.forEach(it=>{const cat=it.category||categoryFor(it.file);if(!buckets.has(cat))buckets.set(cat,[]);buckets.get(cat).push(it)});
+  const keys=[...categoryOrder.filter(k=>buckets.has(k)),...([...buckets.keys()].filter(k=>!categoryOrder.includes(k)))];
+  host.innerHTML=keys.map((cat,idx)=>{
+   const accent=(groups.find(g=>g.name.toLowerCase().includes(cat.toLowerCase().split(' ')[0]))||groups[idx%groups.length]).color;
+   const entries=buckets.get(cat)||[];
+   return `<section class="cat ${idx===0?'open':''}" data-group="${cat}"><button class="cat-head" style="--accent:${accent}"><span class="folder">▰</span><b>${cat.toUpperCase()}</b><small>${entries.length} symbols</small><i>${idx===0?'⌃':'⌄'}</i></button><div class="cat-body">${entries.map(it=>{const name=friendly(it.file),slug=slugName(it.file),type=typeMap[slug]||slug;const ref=prefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-file="${it.file}" data-accent="${accent}" style="--accent:${accent};color:${accent}" title="${name}"><div class="symbol-preview asset-symbol-preview"><img class="asset-symbol" src="${it.file}" alt="${name}" loading="lazy"></div><label>${name}</label><small>IEC: ${ref}</small></button>`}).join('')}</div></section>`
+  }).join('');
+  attachCardEvents();
+  if(search && !search.dataset.assetSearch){search.dataset.assetSearch='1';search.addEventListener('input',()=>{const q=search.value.toLowerCase().trim();host.querySelectorAll('.cat').forEach(cat=>{const match=cat.textContent.toLowerCase().includes(q);cat.style.display=match?'block':'none';if(q&&match){cat.classList.add('open');cat.querySelector('.cat-head i').textContent='⌃'}})});}
+ }
+ fetch('symbol-library.json').then(r=>{if(!r.ok)throw new Error('symbol-library.json not found');return r.json()}).then(data=>{
+   const items=(data.symbols||[]).filter(it=>it.file && it.file.endsWith('.svg'));
+   if(items.length)renderAssets(items);
+ }).catch(err=>{console.warn('SVG asset library could not load; retaining built-in library.',err)});
+
+ // Replace a generic drawn icon with the original SVG asset when one was dragged from the library.
+ const priorMakeDropped=makeDropped;
+ makeDropped=function(d,x,y){
+   const g=priorMakeDropped(d,x,y);
+   if(d.symbolFile){
+    g.dataset.symbolFile=d.symbolFile;
+    const old=g.querySelector('svg');
+    if(old){
+      old.innerHTML=''; old.setAttribute('x','15');old.setAttribute('y','13');old.setAttribute('width','90');old.setAttribute('height','63');old.setAttribute('viewBox','0 0 90 63');
+      old.setAttribute('preserveAspectRatio','xMidYMid meet');
+      const img=document.createElementNS(NS,'image');img.setAttribute('x','0');img.setAttribute('y','0');img.setAttribute('width','90');img.setAttribute('height','63');img.setAttribute('preserveAspectRatio','xMidYMid meet');img.setAttribute('href',d.symbolFile);img.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',d.symbolFile);old.appendChild(img);
+    }
+    // Keep the real SVG symbol visually crisp while leaving the fixed terminal points as the interaction layer.
+    g.classList.add('original-svg-component');
+   }
+   return g;
+ };
+
+ // Simulation interaction: in RUN mode, operating a placed control visibly changes its state.
+ dropLayer.addEventListener('click',e=>{
+   const g=e.target.closest&&e.target.closest('.dropped-symbol');
+   if(!g||!running||e.target.classList.contains('mag-port'))return;
+   const t=(g.dataset.type||'').toLowerCase();
+   const n=(g.dataset.name||'').toLowerCase();
+   if(/button|switch|contact|stop|start|limit|key|emergency|counter/.test(t+' '+n)){
+     g.classList.toggle('device-on');
+     const on=g.classList.contains('device-on');
+     state.textContent=`SIMULATION • ${g.dataset.name.toUpperCase()} ${on?'OPERATED / CLOSED':'RELEASED / NORMAL'}`;
+   }
+ },true);
+})();

@@ -12,7 +12,7 @@
   <nav>
     <button class="run" id="play">▶<em>PLAY</em></button>
     <button class="stop" id="stop">■<em>STOP</em></button>
-    <button>☷<em>VALUES</em></button><button>◉<em>VIEW</em></button>
+    <button>☷<em>VALUES</em></button><button>◉<em>VIEW</em></button><button id="printDrawing">▤<em>PRINT PDF</em></button>
     <button>⌑<em>HOLD</em></button><button id="delete">⌫<em>DELETE</em></button>
     <button>▣<em>FRONT</em></button><button>▣<em>BACK</em></button><button>⟳<em>ROTATE</em></button>
     <button class="mode active">▣<em>2D</em></button><button id="threeD">◇<em>3D</em></button><button>⚙<em>SETTINGS</em></button>
@@ -74,6 +74,7 @@
   <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>2D • IEC schematic view</span></footer>
 </main>
 </div>
-<script src="app.js?v=14"></script>
+<script src="app.js?v=15-svg-library"></script>
+<script>document.getElementById("printDrawing")?.addEventListener("click",()=>window.print());</script>
 </body>
 </html>
