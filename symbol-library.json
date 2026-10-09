@@ -1,0 +1,486 @@
+{
+  "project": "ELECTRICAL SIMU CKT",
+  "count": 80,
+  "symbols": [
+    {
+      "file": "assets/symbols/ac-motor-3p-3-terminal.svg",
+      "name": "ac-motor-3p-3-terminal",
+      "category": "Motors & Earthing",
+      "original_filename": "ac-motor-3p-3-terminal.svg"
+    },
+    {
+      "file": "assets/symbols/ac-motor-3p-6-terminal.svg",
+      "name": "ac-motor-3p-6-terminal",
+      "category": "Motors & Earthing",
+      "original_filename": "ac-motor-3p-6-terminal.svg"
+    },
+    {
+      "file": "assets/symbols/bell.svg",
+      "name": "bell",
+      "category": "Indicators & Signalling",
+      "original_filename": "bell.svg"
+    },
+    {
+      "file": "assets/symbols/changeover-contact-break-before-make.svg",
+      "name": "changeover-contact-break-before-make",
+      "category": "Contacts & Relays",
+      "original_filename": "changeover-contact-break-before-make.svg"
+    },
+    {
+      "file": "assets/symbols/changeover-contact-off-delay.svg",
+      "name": "changeover-contact-off-delay",
+      "category": "Contacts & Relays",
+      "original_filename": "changeover-contact-off-delay.svg"
+    },
+    {
+      "file": "assets/symbols/changeover-contact-on-delay.svg",
+      "name": "changeover-contact-on-delay",
+      "category": "Contacts & Relays",
+      "original_filename": "changeover-contact-on-delay.svg"
+    },
+    {
+      "file": "assets/symbols/changeover-contact-on-off-delay.svg",
+      "name": "changeover-contact-on-off-delay",
+      "category": "Contacts & Relays",
+      "original_filename": "changeover-contact-on-off-delay.svg"
+    },
+    {
+      "file": "assets/symbols/circuit-breaker-1p.svg",
+      "name": "circuit-breaker-1p",
+      "category": "Breakers & Protection",
+      "original_filename": "circuit-breaker-1p.svg"
+    },
+    {
+      "file": "assets/symbols/circuit-breaker-2p.svg",
+      "name": "circuit-breaker-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "circuit-breaker-2p.svg"
+    },
+    {
+      "file": "assets/symbols/circuit-breaker-3p.svg",
+      "name": "circuit-breaker-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "circuit-breaker-3p.svg"
+    },
+    {
+      "file": "assets/symbols/circuit-breaker-thermal-magnetic-2p.svg",
+      "name": "circuit-breaker-thermal-magnetic-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "circuit-breaker-thermal-magnetic-2p.svg"
+    },
+    {
+      "file": "assets/symbols/circuit-breaker-thermal-magnetic-3p.svg",
+      "name": "circuit-breaker-thermal-magnetic-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "circuit-breaker-thermal-magnetic-3p.svg"
+    },
+    {
+      "file": "assets/symbols/coil (1).svg",
+      "name": "coil (1)",
+      "category": "Contactors & Coils",
+      "original_filename": "coil (1).svg"
+    },
+    {
+      "file": "assets/symbols/coil.svg",
+      "name": "coil",
+      "category": "Contactors & Coils",
+      "original_filename": "coil.svg"
+    },
+    {
+      "file": "assets/symbols/contactor-3p-automatic-tripping.svg",
+      "name": "contactor-3p-automatic-tripping",
+      "category": "Contactors & Coils",
+      "original_filename": "contactor-3p-automatic-tripping.svg"
+    },
+    {
+      "file": "assets/symbols/contactor-3p.svg",
+      "name": "contactor-3p",
+      "category": "Contactors & Coils",
+      "original_filename": "contactor-3p.svg"
+    },
+    {
+      "file": "assets/symbols/counter-nc.svg",
+      "name": "counter-nc",
+      "category": "Contacts & Relays",
+      "original_filename": "counter-nc.svg"
+    },
+    {
+      "file": "assets/symbols/counter-no.svg",
+      "name": "counter-no",
+      "category": "Contacts & Relays",
+      "original_filename": "counter-no.svg"
+    },
+    {
+      "file": "assets/symbols/counter-pulse.svg",
+      "name": "counter-pulse",
+      "category": "Contacts & Relays",
+      "original_filename": "counter-pulse.svg"
+    },
+    {
+      "file": "assets/symbols/counter-switch-nc.svg",
+      "name": "counter-switch-nc",
+      "category": "Control Devices & Switches",
+      "original_filename": "counter-switch-nc.svg"
+    },
+    {
+      "file": "assets/symbols/counter-switch-no.svg",
+      "name": "counter-switch-no",
+      "category": "Control Devices & Switches",
+      "original_filename": "counter-switch-no.svg"
+    },
+    {
+      "file": "assets/symbols/disconnector-isolator-2p.svg",
+      "name": "disconnector-isolator-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "disconnector-isolator-2p.svg"
+    },
+    {
+      "file": "assets/symbols/disconnector-isolator-3p.svg",
+      "name": "disconnector-isolator-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "disconnector-isolator-3p.svg"
+    },
+    {
+      "file": "assets/symbols/earth-ground.svg",
+      "name": "earth-ground",
+      "category": "Motors & Earthing",
+      "original_filename": "earth-ground.svg"
+    },
+    {
+      "file": "assets/symbols/electronic-clock-nc-switch.svg",
+      "name": "electronic-clock-nc-switch",
+      "category": "Timers",
+      "original_filename": "electronic-clock-nc-switch.svg"
+    },
+    {
+      "file": "assets/symbols/electronic-clock-no-switch.svg",
+      "name": "electronic-clock-no-switch",
+      "category": "Timers",
+      "original_filename": "electronic-clock-no-switch.svg"
+    },
+    {
+      "file": "assets/symbols/electronic-clock-switch.svg",
+      "name": "electronic-clock-switch",
+      "category": "Timers",
+      "original_filename": "electronic-clock-switch.svg"
+    },
+    {
+      "file": "assets/symbols/electronic-clock.svg",
+      "name": "electronic-clock",
+      "category": "Timers",
+      "original_filename": "electronic-clock.svg"
+    },
+    {
+      "file": "assets/symbols/emergency-stop-nc-spring-return.svg",
+      "name": "emergency-stop-nc-spring-return",
+      "category": "Control Devices & Switches",
+      "original_filename": "emergency-stop-nc-spring-return.svg"
+    },
+    {
+      "file": "assets/symbols/emergency-stop-no-spring-return.svg",
+      "name": "emergency-stop-no-spring-return",
+      "category": "Control Devices & Switches",
+      "original_filename": "emergency-stop-no-spring-return.svg"
+    },
+    {
+      "file": "assets/symbols/emergency-stop-no-turn-reset.svg",
+      "name": "emergency-stop-no-turn-reset",
+      "category": "Control Devices & Switches",
+      "original_filename": "emergency-stop-no-turn-reset.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-2p.svg",
+      "name": "fuse-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-2p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-3p.svg",
+      "name": "fuse-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-3p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-disconnector-isolator-2p.svg",
+      "name": "fuse-disconnector-isolator-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-disconnector-isolator-2p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-disconnector-isolator-3p (1).svg",
+      "name": "fuse-disconnector-isolator-3p (1)",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-disconnector-isolator-3p (1).svg"
+    },
+    {
+      "file": "assets/symbols/fuse-disconnector-isolator-3p.svg",
+      "name": "fuse-disconnector-isolator-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-disconnector-isolator-3p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-disconnector-w-motor-circuit-breaker-2p.svg",
+      "name": "fuse-disconnector-w-motor-circuit-breaker-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-disconnector-w-motor-circuit-breaker-2p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-disconnector-w-motor-circuit-breaker-3p.svg",
+      "name": "fuse-disconnector-w-motor-circuit-breaker-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-disconnector-w-motor-circuit-breaker-3p.svg"
+    },
+    {
+      "file": "assets/symbols/fuse-switch-3p.svg",
+      "name": "fuse-switch-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "fuse-switch-3p.svg"
+    },
+    {
+      "file": "assets/symbols/horn.svg",
+      "name": "horn",
+      "category": "Indicators & Signalling",
+      "original_filename": "horn.svg"
+    },
+    {
+      "file": "assets/symbols/isolator-square-3d.svg",
+      "name": "isolator-square-3d",
+      "category": "Breakers & Protection",
+      "original_filename": "isolator-square-3d.svg"
+    },
+    {
+      "file": "assets/symbols/key-switch-nc-maintained.svg",
+      "name": "key-switch-nc-maintained",
+      "category": "Control Devices & Switches",
+      "original_filename": "key-switch-nc-maintained.svg"
+    },
+    {
+      "file": "assets/symbols/key-switch-nc-spring-return.svg",
+      "name": "key-switch-nc-spring-return",
+      "category": "Control Devices & Switches",
+      "original_filename": "key-switch-nc-spring-return.svg"
+    },
+    {
+      "file": "assets/symbols/key-switch-no-maintained.svg",
+      "name": "key-switch-no-maintained",
+      "category": "Control Devices & Switches",
+      "original_filename": "key-switch-no-maintained.svg"
+    },
+    {
+      "file": "assets/symbols/led-coil.svg",
+      "name": "led-coil",
+      "category": "Contactors & Coils",
+      "original_filename": "led-coil.svg"
+    },
+    {
+      "file": "assets/symbols/limit-switch-nc.svg",
+      "name": "limit-switch-nc",
+      "category": "Control Devices & Switches",
+      "original_filename": "limit-switch-nc.svg"
+    },
+    {
+      "file": "assets/symbols/limit-switch-no.svg",
+      "name": "limit-switch-no",
+      "category": "Control Devices & Switches",
+      "original_filename": "limit-switch-no.svg"
+    },
+    {
+      "file": "assets/symbols/main-switch-1p.svg",
+      "name": "main-switch-1p",
+      "category": "Breakers & Protection",
+      "original_filename": "main-switch-1p.svg"
+    },
+    {
+      "file": "assets/symbols/main-switch-2p.svg",
+      "name": "main-switch-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "main-switch-2p.svg"
+    },
+    {
+      "file": "assets/symbols/main-switch-3p.svg",
+      "name": "main-switch-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "main-switch-3p.svg"
+    },
+    {
+      "file": "assets/symbols/manual-button-nc-maintained.svg",
+      "name": "manual-button-nc-maintained",
+      "category": "Control Devices & Switches",
+      "original_filename": "manual-button-nc-maintained.svg"
+    },
+    {
+      "file": "assets/symbols/manual-button-nc-spring-return.svg",
+      "name": "manual-button-nc-spring-return",
+      "category": "Control Devices & Switches",
+      "original_filename": "manual-button-nc-spring-return.svg"
+    },
+    {
+      "file": "assets/symbols/manual-button-no-maintained.svg",
+      "name": "manual-button-no-maintained",
+      "category": "Control Devices & Switches",
+      "original_filename": "manual-button-no-maintained.svg"
+    },
+    {
+      "file": "assets/symbols/manual-button-no-spring-return.svg",
+      "name": "manual-button-no-spring-return",
+      "category": "Control Devices & Switches",
+      "original_filename": "manual-button-no-spring-return.svg"
+    },
+    {
+      "file": "assets/symbols/manual-switch.svg",
+      "name": "manual-switch",
+      "category": "Control Devices & Switches",
+      "original_filename": "manual-switch.svg"
+    },
+    {
+      "file": "assets/symbols/motor-circuit-breaker-2p.svg",
+      "name": "motor-circuit-breaker-2p",
+      "category": "Breakers & Protection",
+      "original_filename": "motor-circuit-breaker-2p.svg"
+    },
+    {
+      "file": "assets/symbols/motor-circuit-breaker-3p.svg",
+      "name": "motor-circuit-breaker-3p",
+      "category": "Breakers & Protection",
+      "original_filename": "motor-circuit-breaker-3p.svg"
+    },
+    {
+      "file": "assets/symbols/normally-close-contact.svg",
+      "name": "normally-close-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "normally-close-contact.svg"
+    },
+    {
+      "file": "assets/symbols/normally-closed-contact.svg",
+      "name": "normally-closed-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "normally-closed-contact.svg"
+    },
+    {
+      "file": "assets/symbols/normally-open-contact (1).svg",
+      "name": "normally-open-contact (1)",
+      "category": "Contacts & Relays",
+      "original_filename": "normally-open-contact (1).svg"
+    },
+    {
+      "file": "assets/symbols/normally-open-contact.svg",
+      "name": "normally-open-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "normally-open-contact.svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-nc-contact(1).svg",
+      "name": "off-delay-nc-contact(1)",
+      "category": "Contacts & Relays",
+      "original_filename": "off-delay-nc-contact(1).svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-no-contact (1).svg",
+      "name": "off-delay-no-contact (1)",
+      "category": "Contacts & Relays",
+      "original_filename": "off-delay-no-contact (1).svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-no-contact (2).svg",
+      "name": "off-delay-no-contact (2)",
+      "category": "Contacts & Relays",
+      "original_filename": "off-delay-no-contact (2).svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-no-contact.svg",
+      "name": "off-delay-no-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "off-delay-no-contact.svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-timer (1).svg",
+      "name": "off-delay-timer (1)",
+      "category": "Timers",
+      "original_filename": "off-delay-timer (1).svg"
+    },
+    {
+      "file": "assets/symbols/off-delay-timer.svg",
+      "name": "off-delay-timer",
+      "category": "Timers",
+      "original_filename": "off-delay-timer.svg"
+    },
+    {
+      "file": "assets/symbols/on-delay-nc-contact(1).svg",
+      "name": "on-delay-nc-contact(1)",
+      "category": "Contacts & Relays",
+      "original_filename": "on-delay-nc-contact(1).svg"
+    },
+    {
+      "file": "assets/symbols/on-delay-no-contact (1).svg",
+      "name": "on-delay-no-contact (1)",
+      "category": "Contacts & Relays",
+      "original_filename": "on-delay-no-contact (1).svg"
+    },
+    {
+      "file": "assets/symbols/on-delay-no-contact.svg",
+      "name": "on-delay-no-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "on-delay-no-contact.svg"
+    },
+    {
+      "file": "assets/symbols/on-delay-timer (1).svg",
+      "name": "on-delay-timer (1)",
+      "category": "Timers",
+      "original_filename": "on-delay-timer (1).svg"
+    },
+    {
+      "file": "assets/symbols/on-delay-timer.svg",
+      "name": "on-delay-timer",
+      "category": "Timers",
+      "original_filename": "on-delay-timer.svg"
+    },
+    {
+      "file": "assets/symbols/on-off-delay-nc-contact.svg",
+      "name": "on-off-delay-nc-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "on-off-delay-nc-contact.svg"
+    },
+    {
+      "file": "assets/symbols/on-off-delay-no-contact.svg",
+      "name": "on-off-delay-no-contact",
+      "category": "Contacts & Relays",
+      "original_filename": "on-off-delay-no-contact.svg"
+    },
+    {
+      "file": "assets/symbols/pilot-light (1).svg",
+      "name": "pilot-light (1)",
+      "category": "Indicators & Signalling",
+      "original_filename": "pilot-light (1).svg"
+    },
+    {
+      "file": "assets/symbols/pilot-light-blink.svg",
+      "name": "pilot-light-blink",
+      "category": "Indicators & Signalling",
+      "original_filename": "pilot-light-blink.svg"
+    },
+    {
+      "file": "assets/symbols/pilot-light.svg",
+      "name": "pilot-light",
+      "category": "Indicators & Signalling",
+      "original_filename": "pilot-light.svg"
+    },
+    {
+      "file": "assets/symbols/push-button-nc-maintained(1).svg",
+      "name": "push-button-nc-maintained(1)",
+      "category": "Control Devices & Switches",
+      "original_filename": "push-button-nc-maintained(1).svg"
+    },
+    {
+      "file": "assets/symbols/push-button-nc-spring-return(1).svg",
+      "name": "push-button-nc-spring-return(1)",
+      "category": "Control Devices & Switches",
+      "original_filename": "push-button-nc-spring-return(1).svg"
+    },
+    {
+      "file": "assets/symbols/push-button-no-key-maintained(1).svg",
+      "name": "push-button-no-key-maintained(1)",
+      "category": "Control Devices & Switches",
+      "original_filename": "push-button-no-key-maintained(1).svg"
+    }
+  ]
+}
