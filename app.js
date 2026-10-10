@@ -3,8 +3,11 @@ const sheet=document.getElementById('sheet'), sim=document.getElementById('sim')
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
 const groups=[
- {name:'POWER SUPPLY',color:'#0879df',items:[
-  ['pe','Protective Earth (PE)'],['gnd','Ground (GND)'],['dc-','DC Negative (−)'],['dc+','DC Positive (+)'],['n','Neutral (N)'],['l1','Phase 1 (L1)'],['l2','Phase 2 (L2)'],['l3','Phase 3 (L3)'],['3p','3Φ Supply L1 L2 L3'],['gen3','3Φ Generator (GS3~)'],['tr1','Transformer 1Φ'],['tr3','Transformer 3Φ'],['psu','AC-DC Power Supply']
+ {name:'POWER',color:'#0879df',items:[
+  ['l1','Phase L'],['l1','Phase L1'],['l2','Phase L2'],['l3','Phase L3'],['n','Neutral N'],['pe','Earth PE'],
+  ['3p','3-Phase Supply L1 + L2 + L3'],['3pn','3-Phase + Neutral L1 + L2 + L3 + N'],['3ppe','3-Phase + Earth L1 + L2 + L3 + PE'],['1pn','Single-Phase L + N'],['1pnpe','Single-Phase L + N + PE'],
+  ['dc+','DC Positive Pole (+)'],['dc-','DC Negative Pole (−)'],['dcpair','DC Supply Pair (+ / −)'],
+  ['tr1','Single-Phase Transformer'],['tr3','Three-Phase Transformer'],['psu','AC/DC Power Supply'],['psu3','3-Phase AC/DC Power Supply'],['pe','Protective Earth (PE)'],['gnd','Ground (GND)'],['gen3','3-Phase Generator']
  ]},
  {name:'BREAKERS & PROTECTION',color:'#e21f2f',items:[
   ['disconnect','Disconnector (Q)'],['isolator','Isolator (QS)'],['acb','Air Circuit Breaker (ACB)'],['mccb','Moulded Case CB (MCCB)'],['mcb','Miniature CB (MCB)'],['fuse','Fuse (F)'],['hrc','HRC Fuse'],['fuseswitch','Fuse Switch'],['spd','Surge Protection (SPD)'],['thermal','Thermal Protector'],['magtrip','Magnetic Trip'],['mpcb','Motor Protection CB'],['elcb','ELCB / RCCB']
@@ -55,6 +58,12 @@ function icon(type){
  else if(type==='gnd') body=`<line x1="24" y1="2" x2="24" y2="12" ${common}/><line x1="14" y1="12" x2="34" y2="12" ${common}/><line x1="17" y1="17" x2="31" y2="17" ${common}/><line x1="20" y1="22" x2="28" y2="22" ${common}/>`;
  else if(['dc-','dc+','n','l1','l2','l3'].includes(type)) body=`<line x1="24" y1="1" x2="24" y2="5" ${common}/><circle cx="24" cy="16" r="11" ${common}/><line x1="24" y1="27" x2="24" y2="31" ${common}/>${txt(type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase())}`;
  else if(type==='3p') body=`<line x1="8" y1="1" x2="8" y2="8" ${common}/><line x1="24" y1="1" x2="24" y2="8" ${common}/><line x1="40" y1="1" x2="40" y2="8" ${common}/><circle cx="8" cy="15" r="6" ${common}/><circle cx="24" cy="15" r="6" ${common}/><circle cx="40" cy="15" r="6" ${common}/><line x1="8" y1="21" x2="8" y2="30" ${common}/><line x1="24" y1="21" x2="24" y2="30" ${common}/><line x1="40" y1="21" x2="40" y2="30" ${common}/><text x="8" y="17" text-anchor="middle" font-size="6" fill="${s}">L1</text><text x="24" y="17" text-anchor="middle" font-size="6" fill="${s}">L2</text><text x="40" y="17" text-anchor="middle" font-size="6" fill="${s}">L3</text>`;
+ else if(['3pn','3ppe','1pn','1pnpe','dcpair'].includes(type)) {
+  const xs=type==='1pn'||type==='1pnpe'?[16,32]:type==='dcpair'?[16,32]:type==='3pn'?[5,16,27,39]:[5,16,27,39];
+  const labs=type==='1pn'?['L','N']:type==='1pnpe'?['L','N']:type==='dcpair'?['+','−']:type==='3pn'?['L1','L2','L3','N']:['L1','L2','L3','PE'];
+  body=xs.map((x,i)=>`<circle cx="${x}" cy="8" r="5" ${common}/><line x1="${x}" y1="13" x2="${x}" y2="30" ${common}/><text x="${x}" y="10" text-anchor="middle" font-size="4.5" fill="${s}">${labs[i]}</text>`).join('');
+ }
+ else if(['psu3'].includes(type)) body=`<rect x="7" y="7" width="34" height="19" ${common}/><path d="M11 16 q3 -6 6 0 t6 0" ${common}/><line x1="27" y1="12" x2="36" y2="12" ${common}/><line x1="27" y1="16" x2="36" y2="16" ${common}/>${txt('AC/DC')}`;
  else if(type==='gen3') body=`<line x1="12" y1="1" x2="12" y2="7" ${common}/><line x1="24" y1="1" x2="24" y2="7" ${common}/><line x1="36" y1="1" x2="36" y2="7" ${common}/><circle cx="24" cy="16" r="10" ${common}/>${txt('G3~')}<line x1="12" y1="25" x2="12" y2="30" ${common}/><line x1="24" y1="25" x2="24" y2="30" ${common}/><line x1="36" y1="25" x2="36" y2="30" ${common}/>`;
  else if(['tr1','tr3'].includes(type)) body=`<circle cx="18" cy="16" r="7" ${common}/><circle cx="30" cy="16" r="7" ${common}/><line x1="24" y1="8" x2="24" y2="24" ${common}/>`;
  else if(type==='psu') body=`<rect x="12" y="7" width="24" height="18" ${common}/><line x1="16" y1="16" x2="32" y2="16" ${common}/><line x1="24" y1="11" x2="24" y2="21" ${common}/>`;
@@ -114,12 +123,11 @@ document.getElementById('applyComponentDialog')?.addEventListener('click',()=>{
  const g=[...document.querySelectorAll('#dropLayer .dropped-symbol')].find(n=>n.dataset.uid===uid); if(!g){closeComponentDetails();return;}
  const oldTitle=g.querySelector('title');
  g.dataset.name=document.getElementById('detailName').value.trim()||g.dataset.name;
- g.dataset.ref=document.getElementById('detailRef').value.trim().toUpperCase()||g.dataset.ref;
+ g.dataset.ref=document.getElementById('detailRef').value.trim().toUpperCase()||g.dataset.ref; const tag=g.querySelector('.drop-tag'); if(tag)tag.textContent=g.dataset.ref;
  g.dataset.value=document.getElementById('detailValue').value.trim();
  const terminals=document.getElementById('detailTerminals').value.split(',').map(s=>s.trim()).filter(Boolean);
  g.dataset.terminals=JSON.stringify(terminals);
  g.querySelectorAll('.mag-port').forEach((port,i)=>{if(terminals[i])port.dataset.port=terminals[i]});
- const tag=g.querySelector('.drop-tag'); if(tag)tag.textContent=g.dataset.ref;
  if(oldTitle)oldTitle.textContent=g.dataset.ref+' — '+g.dataset.name+(g.dataset.value?' • '+g.dataset.value:'');
  state.textContent='UPDATED • '+g.dataset.ref;
  closeComponentDetails();
@@ -142,7 +150,7 @@ let running=false, selected=null, counter=1;
 function render(){document.body.classList.toggle('live',running);sim.textContent=running?'● RUNNING':'● STOPPED';sim.classList.toggle('running',running);motorState.textContent=running?'Motor: RUNNING':'Motor: OFF';state.textContent=running?'SIMULATION • LIVE':'READY • 2D SCHEMATIC';}
 document.getElementById('play').onclick=()=>{running=true;render()};
 document.getElementById('stop').onclick=()=>{running=false;render()};
-document.getElementById('threeD').onclick=()=>alert('3D view will use the same IEC circuit model as this 2D schematic.');
+document.getElementById('threeD').onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
 document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
@@ -169,12 +177,12 @@ function nextReference(d){
  return p+n;
 }
 function makeDropped(d,x,y){
- const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name; g.dataset.ref=d.ref||nextReference(d); g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);
+ const NS='http://www.w3.org/2000/svg'; const g=document.createElementNS(NS,'g'); g.setAttribute('class','dropped-symbol'); g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name; g.dataset.ref=d.ref||nextReference(d); g.dataset.accent=d.accent||'#0879df'; g.style.setProperty('--component-accent',g.dataset.accent); g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);
  const box=document.createElementNS(NS,'rect'); box.setAttribute('class','select-box');box.setAttribute('x',0);box.setAttribute('y',0);box.setAttribute('width',72);box.setAttribute('height',44);box.setAttribute('rx',4);
  const ns=document.createElementNS(NS,'svg');ns.setAttribute('x',12);ns.setAttribute('y',4);ns.setAttribute('width',48);ns.setAttribute('height',32);ns.setAttribute('viewBox','0 0 48 32');ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
  const label=document.createElementNS(NS,'text');label.setAttribute('class','drop-label');label.setAttribute('x',36);label.setAttribute('y',42);label.setAttribute('text-anchor','middle');label.textContent=d.name.length>20?d.name.slice(0,19)+'…':d.name;
  const title=document.createElementNS(NS,'title');title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');g.appendChild(title);
- const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',36);tag.setAttribute('y',-3);tag.setAttribute('text-anchor','middle');tag.textContent='';
+ const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',8);tag.setAttribute('y',23);tag.setAttribute('text-anchor','end');tag.setAttribute('fill',g.dataset.accent);tag.style.fill=g.dataset.accent;tag.style.fontWeight='400';tag.textContent=g.dataset.ref;
  g.append(box,ns,tag);dropLayer.appendChild(g);select(g);enableMove(g);
   g.addEventListener('dblclick',e=>{e.stopPropagation();const current=g.dataset.ref||tag.textContent;const next=prompt('Component designation (example: KM1, KM2, QF1, S0):',current);if(next&&next.trim()){g.dataset.ref=next.trim().toUpperCase();tag.textContent=g.dataset.ref;const title=g.querySelector('title');if(title)title.textContent=g.dataset.ref+' — '+d.name;}});
   return g;
@@ -259,7 +267,12 @@ function makeDropped(d,x,y){
 
   // The symbol, its tails, terminal squares and labels are ONE SVG group.
   // Keep the symbol at its native 48x32 viewBox so magnetic ports line up exactly.
-  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none'; ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none';
+  if(d.symbolFile && d.symbolFile.includes('/power-original/')){
+    // Preserve the user's exact supplied SVG artwork in the workspace.
+    ns.setAttribute('viewBox','0 0 100 100'); ns.setAttribute('x',10); ns.setAttribute('y',5); ns.setAttribute('width',100); ns.setAttribute('height',80);
+    const im=document.createElementNS(NS,'image'); im.setAttribute('href',d.symbolFile); im.setAttribute('x',0); im.setAttribute('y',0); im.setAttribute('width',100); im.setAttribute('height',100); ns.appendChild(im);
+  } else { ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,''); }
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.symbolFile||d.type).forEach(p=>{
     const r=document.createElementNS(NS,'circle'); r.setAttribute('class','mag-port'); r.setAttribute('cx',36+p.x); r.setAttribute('cy',28+p.y); r.setAttribute('r',2.1); r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
@@ -268,42 +281,91 @@ function makeDropped(d,x,y){
   const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',80); label.setAttribute('text-anchor','middle'); label.textContent='';
   const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',12); tag.setAttribute('text-anchor','middle'); tag.textContent=g.dataset.ref||nextReference(d);
   const title=document.createElementNS(NS,'title'); title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
-  g.append(title,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
+  // Full-size transparent hit area makes the whole component selectable,
+  // even when its SVG artwork contains thin lines with tiny click targets.
+  const hit=document.createElementNS(NS,'rect');
+  hit.setAttribute('class','component-hit-area');
+  hit.setAttribute('x','0'); hit.setAttribute('y','0');
+  hit.setAttribute('width',String(W)); hit.setAttribute('height',String(H));
+  hit.setAttribute('fill','transparent'); hit.setAttribute('pointer-events','all');
+  g.append(title,hit,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
 }
-function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portsFor(g).map(p=>({x:x-70+46+p.x,y:y-50+30+p.y,label:p.label}));}
+function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portsFor(g).map(p=>({x:x-60+36+p.x,y:y-45+28+p.y,label:p.label}));}
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
+let activeDrag = null;
+let suppressNextComponentClick = false;
 function enableMove(g){
-  let moving=false, moved=false, dx=0, dy=0;
-  g.addEventListener('pointerdown',e=>{
-    if(e.button!==0) return;
-    if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
-    e.preventDefault(); e.stopPropagation();
+  // Each placed component is its own SVG group. Only the group that received
+  // pointerdown is allowed to change position during this drag operation.
+  g.style.pointerEvents = 'all';
+  g.style.cursor = 'grab';
+  g.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    if (e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
+    if (e.target && e.target.closest && e.target.closest('.connected-wire')) return;
+    e.preventDefault();
+    e.stopPropagation();
     select(g);
-    const p=getPoint(e); dx=p.x-(+g.dataset.x); dy=p.y-(+g.dataset.y);
-    moving=true; moved=false;
-    try{g.setPointerCapture(e.pointerId)}catch{}
-  });
-  g.addEventListener('pointermove',e=>{
-    if(!moving) return;
-    const p=getPoint(e);
-    const x=Math.round(p.x-dx), y=Math.round(p.y-dy);
-    if(Math.abs(x-(+g.dataset.x))>1 || Math.abs(y-(+g.dataset.y))>1) moved=true;
-    g.dataset.x=x; g.dataset.y=y;
-    g.setAttribute('transform',`translate(${x-70},${y-50})`);
+    const p = getPoint(e);
+    activeDrag = {
+      component: g,
+      pointerId: e.pointerId,
+      dx: p.x - Number(g.dataset.x || 0),
+      dy: p.y - Number(g.dataset.y || 0),
+      startX: p.x,
+      startY: p.y,
+      moved: false
+    };
     g.classList.add('moving');
+    g.style.cursor = 'grabbing';
+    try { svg.setPointerCapture(e.pointerId); } catch (_) {}
   });
-  g.addEventListener('pointerup',e=>{
-    if(!moving) return;
-    moving=false; g.classList.remove('moving');
-    try{g.releasePointerCapture(e.pointerId)}catch{}
+  g.addEventListener('click', e => {
+    if (e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
+    e.stopPropagation();
+    if (suppressNextComponentClick) {
+      suppressNextComponentClick = false;
+      return;
+    }
     select(g);
-  });
-  g.addEventListener('click',e=>{
-    if(e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
-    e.stopPropagation(); select(g);
-    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'); openComponentDetails(g);
+    state.textContent = 'SELECTED • ' + (g.dataset.ref || g.dataset.name || 'COMPONENT');
   });
 }
+// A single shared drag handler prevents competing components from moving together.
+svg.addEventListener('pointermove', e => {
+  if (!activeDrag || e.pointerId !== activeDrag.pointerId) return;
+  const g = activeDrag.component;
+  if (!g || !g.isConnected) { activeDrag = null; return; }
+  const p = getPoint(e);
+  const x = p.x - activeDrag.dx;
+  const y = p.y - activeDrag.dy;
+  if (Math.hypot(p.x - activeDrag.startX, p.y - activeDrag.startY) > 3) activeDrag.moved = true;
+  // IMPORTANT: update only this exact component group, never the shared layer.
+  g.dataset.x = x;
+  g.dataset.y = y;
+  g.setAttribute('transform', `translate(${x - 60},${y - 45})`);
+});
+function finishComponentDrag(e) {
+  if (!activeDrag || (e.pointerId != null && e.pointerId !== activeDrag.pointerId)) return;
+  const g = activeDrag.component;
+  const wasMoved = activeDrag.moved;
+  if (g) {
+    g.classList.remove('moving');
+    g.style.cursor = 'grab';
+    select(g);
+  }
+  activeDrag = null;
+  if (wasMoved) {
+    suppressNextComponentClick = true;
+    state.textContent = 'MOVED • ' + (g?.dataset.ref || g?.dataset.name || 'COMPONENT');
+    // Clear the click suppression if the browser doesn't synthesize a click.
+    setTimeout(() => { suppressNextComponentClick = false; }, 250);
+  }
+  try { if (e.pointerId != null) svg.releasePointerCapture(e.pointerId); } catch (_) {}
+}
+svg.addEventListener('pointerup', finishComponentDrag);
+svg.addEventListener('pointercancel', finishComponentDrag);
+
 renderLibrary();
 
 /* V15: reliable component selection. Clicking a placed symbol selects it; Delete button/keyboard removes it. */
@@ -315,7 +377,7 @@ renderLibrary();
     if(!g) return;
     if(e.target.classList && e.target.classList.contains('mag-port')) return;
     select(g);
-    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'); openComponentDetails(g);
+    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
   },false);
   document.getElementById('delete').title='Select a component, then click DELETE or press the Delete key';
 })();
@@ -578,8 +640,21 @@ renderLibrary();
  const host=document.getElementById('libraryGroups');
  const search=document.getElementById('search');
  const NS='http://www.w3.org/2000/svg';
- const categoryOrder=['Power Supply','Breakers & Protection','Contactors & Coils','Contacts & Relays','Control Devices & Switches','Timers','Motors & Earthing','Indicators & Signalling','PLC & I/O','Sensors & Field Devices','Terminals & Wiring','Other'];
+ const categoryOrder=['POWER','Breakers & Protection','Contactors & Coils','Contacts & Relays','Control Devices & Switches','Timers','Motors & Earthing','Indicators & Signalling','PLC & I/O','Sensors & Field Devices','Terminals & Wiring','Other'];
  const typeMap={
+  'supply-3phase':'3p',
+  'supply-3phase-neutral-earth':'3p',
+  'supply-single-phase':'gen1',
+  'supply-single-phase-earth':'gen1',
+  'supply-dc-positive':'dc+',
+  'supply-dc-negative':'dc-',
+  'supply-earth':'pe',
+  'supply-ground':'gnd',
+  'supply-phase-l':'l1',
+  'supply-neutral-n':'n',
+  'supply-transformer-1phase':'tr1',
+  'supply-transformer-3phase':'tr3',
+  'supply-acdc':'psu',
   'circuit-breaker-1p':'1pmcb','circuit-breaker-2p':'2pmcb','circuit-breaker-3p':'3pmcb',
   'circuit-breaker-thermal-magnetic-2p':'2pmcb','circuit-breaker-thermal-magnetic-3p':'3pmcb',
   'motor-circuit-breaker-2p':'2pmcb','motor-circuit-breaker-3p':'3pmcb',
@@ -608,6 +683,40 @@ renderLibrary();
  };
  function slugName(s){return s.replace(/\.svg$/i,'')}
  function friendly(s){return slugName(String(s||'').split(/[\\/]/).pop()).replace(/\s*\(\d+\)/g,'').replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}
+ const powerTypeMap={
+  'L1_L2_L3.svg':'3p',
+  'L1_L2_L3_N.svg':'3p',
+  'L1_L2_L3_N_PE.svg':'3p',
+  '3_Phase_AC_DC_Converter.svg':'psu',
+  'AC_DC_Power_Supply.svg':'psu',
+  'DC_Negative_Power_Pole.svg':'dc-',
+  'DC_Supply_Pair.svg':'dcPair',
+  'DC_Positive_Pole.svg':'dc+',
+  'Earth_Ground.svg':'gnd',
+  'Phase_L.svg':'l1',
+  'Phase_L1.svg':'l1',
+  'Phase_L2.svg':'l1',
+  'Phase_L3.svg':'l1',
+  'L_Plus_N.svg':'gen1',
+  'L_Plus_N_Plus_PE.svg':'gen1',
+  'Neutral_N.svg':'n',
+  'Protective_Earth_PE.svg':'pe'
+ };
+ const powerLabels={
+  'supply-3phase.svg':'L1 + L2 + L3',
+  'supply-3phase-neutral-earth.svg':'L1 + L2 + L3 + N + PE',
+  'supply-single-phase.svg':'L + N',
+  'supply-single-phase-earth.svg':'L + N + PE',
+  'supply-dc-positive.svg':'DC Positive Pole',
+  'supply-dc-negative.svg':'DC Negative Pole',
+  'supply-earth.svg':'Protective Earth (PE)',
+  'supply-ground.svg':'Earth Ground',
+  'supply-phase-l.svg':'Phase L',
+  'supply-neutral-n.svg':'Neutral N',
+  'supply-transformer-1phase.svg':'Single-Phase Transformer',
+  'supply-transformer-3phase.svg':'Three-Phase Transformer',
+  'supply-acdc.svg':'AC/DC Power Supply'
+ };
  function prefix(type){if(typeof refPrefix==='function')return refPrefix(type);return 'X'}
  function categoryFor(s){
   const n=slugName(s).toLowerCase();
@@ -633,15 +742,15 @@ renderLibrary();
   items.forEach(it=>{const cat=it.category||categoryFor(it.file);if(!buckets.has(cat))buckets.set(cat,[]);buckets.get(cat).push(it)});
   const keys=[...categoryOrder.filter(k=>buckets.has(k)),...([...buckets.keys()].filter(k=>!categoryOrder.includes(k)))];
   host.innerHTML=keys.map((cat,idx)=>{
-   const accent=(groups.find(g=>g.name.toLowerCase().includes(cat.toLowerCase().split(' ')[0]))||groups[idx%groups.length]).color;
+   const accent=cat==='POWER'?'#139fe8':(groups.find(g=>g.name.toLowerCase().includes(cat.toLowerCase().split(' ')[0]))||groups[idx%groups.length]).color;
    const entries=buckets.get(cat)||[];
-   return `<section class="cat ${idx===0?'open':''}" data-group="${cat}"><button class="cat-head" style="--accent:${accent}"><span class="folder">▰</span><b>${cat.toUpperCase()}</b><small>${entries.length} symbols</small><i>${idx===0?'⌃':'⌄'}</i></button><div class="cat-body">${entries.map(it=>{const cleanFile=(it.file||'').split(/[\\/]/).pop();const name=friendly(cleanFile),slug=slugName(cleanFile),type=typeMap[slug]||slug;const ref=prefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-file="${it.file}" data-accent="${accent}" style="--accent:${accent};color:${accent}" title="${name}"><div class="symbol-preview asset-symbol-preview"><img class="asset-symbol" src="${it.file}" alt="${name}" loading="lazy"></div><label>${name}</label></button>`}).join('')}</div></section>`
+   return `<section class="cat ${idx===0?'open':''}" data-group="${cat}"><button class="cat-head" style="--accent:${accent}"><span class="folder">▰</span><b>${cat.toUpperCase()}</b><small>${entries.length} symbols</small><i>${idx===0?'⌃':'⌄'}</i></button><div class="cat-body">${entries.map(it=>{const cleanFile=(it.file||'').split(/[\\/]/).pop();const name=(it.category==='POWER'&&it.name)?it.name:(powerLabels[cleanFile]||friendly(cleanFile)),slug=slugName(cleanFile),type=powerTypeMap[cleanFile]||typeMap[slug]||slug;const ref=prefix(type);return `<button class="symbol-btn" draggable="true" data-symbol="${type}" data-name="${name}" data-ref="${ref}" data-file="${it.file}" data-accent="${accent}" style="--accent:${accent};color:${accent}" title="${name}"><div class="symbol-preview asset-symbol-preview"><img class="asset-symbol" src="${it.file}" alt="${name}" loading="lazy"></div><label>${name}</label></button>`}).join('')}</div></section>`
   }).join('');
   attachCardEvents();
   if(search && !search.dataset.assetSearch){search.dataset.assetSearch='1';search.addEventListener('input',()=>{const q=search.value.toLowerCase().trim();host.querySelectorAll('.cat').forEach(cat=>{const match=cat.textContent.toLowerCase().includes(q);cat.style.display=match?'block':'none';if(q&&match){cat.classList.add('open');cat.querySelector('.cat-head i').textContent='⌃'}})});}
  }
  // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.
- const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":80,"symbols":[{"file":"assets/symbols/ac-motor-3p-3-terminal.svg","name":"ac-motor-3p-3-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-3-terminal.svg"},{"file":"assets/symbols/ac-motor-3p-6-terminal.svg","name":"ac-motor-3p-6-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-6-terminal.svg"},{"file":"assets/symbols/bell.svg","name":"bell","category":"Indicators & Signalling","original_filename":"bell.svg"},{"file":"assets/symbols/changeover-contact-break-before-make.svg","name":"changeover-contact-break-before-make","category":"Contacts & Relays","original_filename":"changeover-contact-break-before-make.svg"},{"file":"assets/symbols/changeover-contact-off-delay.svg","name":"changeover-contact-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-off-delay.svg"},{"file":"assets/symbols/changeover-contact-on-delay.svg","name":"changeover-contact-on-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-delay.svg"},{"file":"assets/symbols/changeover-contact-on-off-delay.svg","name":"changeover-contact-on-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-off-delay.svg"},{"file":"assets/symbols/circuit-breaker-1p.svg","name":"circuit-breaker-1p","category":"Breakers & Protection","original_filename":"circuit-breaker-1p.svg"},{"file":"assets/symbols/circuit-breaker-2p.svg","name":"circuit-breaker-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-2p.svg"},{"file":"assets/symbols/circuit-breaker-3p.svg","name":"circuit-breaker-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-3p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-2p.svg","name":"circuit-breaker-thermal-magnetic-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-2p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-3p.svg","name":"circuit-breaker-thermal-magnetic-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-3p.svg"},{"file":"assets/symbols/coil (1).svg","name":"coil (1)","category":"Contactors & Coils","original_filename":"coil (1).svg"},{"file":"assets/symbols/coil.svg","name":"coil","category":"Contactors & Coils","original_filename":"coil.svg"},{"file":"assets/symbols/contactor-3p-automatic-tripping.svg","name":"contactor-3p-automatic-tripping","category":"Contactors & Coils","original_filename":"contactor-3p-automatic-tripping.svg"},{"file":"assets/symbols/contactor-3p.svg","name":"contactor-3p","category":"Contactors & Coils","original_filename":"contactor-3p.svg"},{"file":"assets/symbols/counter-nc.svg","name":"counter-nc","category":"Contacts & Relays","original_filename":"counter-nc.svg"},{"file":"assets/symbols/counter-no.svg","name":"counter-no","category":"Contacts & Relays","original_filename":"counter-no.svg"},{"file":"assets/symbols/counter-pulse.svg","name":"counter-pulse","category":"Contacts & Relays","original_filename":"counter-pulse.svg"},{"file":"assets/symbols/counter-switch-nc.svg","name":"counter-switch-nc","category":"Control Devices & Switches","original_filename":"counter-switch-nc.svg"},{"file":"assets/symbols/counter-switch-no.svg","name":"counter-switch-no","category":"Control Devices & Switches","original_filename":"counter-switch-no.svg"},{"file":"assets/symbols/disconnector-isolator-2p.svg","name":"disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"disconnector-isolator-2p.svg"},{"file":"assets/symbols/disconnector-isolator-3p.svg","name":"disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"disconnector-isolator-3p.svg"},{"file":"assets/symbols/earth-ground.svg","name":"earth-ground","category":"Motors & Earthing","original_filename":"earth-ground.svg"},{"file":"assets/symbols/electronic-clock-nc-switch.svg","name":"electronic-clock-nc-switch","category":"Timers","original_filename":"electronic-clock-nc-switch.svg"},{"file":"assets/symbols/electronic-clock-no-switch.svg","name":"electronic-clock-no-switch","category":"Timers","original_filename":"electronic-clock-no-switch.svg"},{"file":"assets/symbols/electronic-clock-switch.svg","name":"electronic-clock-switch","category":"Timers","original_filename":"electronic-clock-switch.svg"},{"file":"assets/symbols/electronic-clock.svg","name":"electronic-clock","category":"Timers","original_filename":"electronic-clock.svg"},{"file":"assets/symbols/emergency-stop-nc-spring-return.svg","name":"emergency-stop-nc-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-nc-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-spring-return.svg","name":"emergency-stop-no-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-no-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-turn-reset.svg","name":"emergency-stop-no-turn-reset","category":"Control Devices & Switches","original_filename":"emergency-stop-no-turn-reset.svg"},{"file":"assets/symbols/fuse-2p.svg","name":"fuse-2p","category":"Breakers & Protection","original_filename":"fuse-2p.svg"},{"file":"assets/symbols/fuse-3p.svg","name":"fuse-3p","category":"Breakers & Protection","original_filename":"fuse-3p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-2p.svg","name":"fuse-disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-2p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p (1).svg","name":"fuse-disconnector-isolator-3p (1)","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p (1).svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p.svg","name":"fuse-disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-2p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-3p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/fuse-switch-3p.svg","name":"fuse-switch-3p","category":"Breakers & Protection","original_filename":"fuse-switch-3p.svg"},{"file":"assets/symbols/horn.svg","name":"horn","category":"Indicators & Signalling","original_filename":"horn.svg"},{"file":"assets/symbols/isolator-square-3d.svg","name":"isolator-square-3d","category":"Breakers & Protection","original_filename":"isolator-square-3d.svg"},{"file":"assets/symbols/key-switch-nc-maintained.svg","name":"key-switch-nc-maintained","category":"Control Devices & Switches","original_filename":"key-switch-nc-maintained.svg"},{"file":"assets/symbols/key-switch-nc-spring-return.svg","name":"key-switch-nc-spring-return","category":"Control Devices & Switches","original_filename":"key-switch-nc-spring-return.svg"},{"file":"assets/symbols/key-switch-no-maintained.svg","name":"key-switch-no-maintained","category":"Control Devices & Switches","original_filename":"key-switch-no-maintained.svg"},{"file":"assets/symbols/led-coil.svg","name":"led-coil","category":"Contactors & Coils","original_filename":"led-coil.svg"},{"file":"assets/symbols/limit-switch-nc.svg","name":"limit-switch-nc","category":"Control Devices & Switches","original_filename":"limit-switch-nc.svg"},{"file":"assets/symbols/limit-switch-no.svg","name":"limit-switch-no","category":"Control Devices & Switches","original_filename":"limit-switch-no.svg"},{"file":"assets/symbols/main-switch-1p.svg","name":"main-switch-1p","category":"Breakers & Protection","original_filename":"main-switch-1p.svg"},{"file":"assets/symbols/main-switch-2p.svg","name":"main-switch-2p","category":"Breakers & Protection","original_filename":"main-switch-2p.svg"},{"file":"assets/symbols/main-switch-3p.svg","name":"main-switch-3p","category":"Breakers & Protection","original_filename":"main-switch-3p.svg"},{"file":"assets/symbols/manual-button-nc-maintained.svg","name":"manual-button-nc-maintained","category":"Control Devices & Switches","original_filename":"manual-button-nc-maintained.svg"},{"file":"assets/symbols/manual-button-nc-spring-return.svg","name":"manual-button-nc-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-nc-spring-return.svg"},{"file":"assets/symbols/manual-button-no-maintained.svg","name":"manual-button-no-maintained","category":"Control Devices & Switches","original_filename":"manual-button-no-maintained.svg"},{"file":"assets/symbols/manual-button-no-spring-return.svg","name":"manual-button-no-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-no-spring-return.svg"},{"file":"assets/symbols/manual-switch.svg","name":"manual-switch","category":"Control Devices & Switches","original_filename":"manual-switch.svg"},{"file":"assets/symbols/motor-circuit-breaker-2p.svg","name":"motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/motor-circuit-breaker-3p.svg","name":"motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/normally-close-contact.svg","name":"normally-close-contact","category":"Contacts & Relays","original_filename":"normally-close-contact.svg"},{"file":"assets/symbols/normally-closed-contact.svg","name":"normally-closed-contact","category":"Contacts & Relays","original_filename":"normally-closed-contact.svg"},{"file":"assets/symbols/normally-open-contact (1).svg","name":"normally-open-contact (1)","category":"Contacts & Relays","original_filename":"normally-open-contact (1).svg"},{"file":"assets/symbols/normally-open-contact.svg","name":"normally-open-contact","category":"Contacts & Relays","original_filename":"normally-open-contact.svg"},{"file":"assets/symbols/off-delay-nc-contact(1).svg","name":"off-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"off-delay-nc-contact(1).svg"},{"file":"assets/symbols/off-delay-no-contact (1).svg","name":"off-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (1).svg"},{"file":"assets/symbols/off-delay-no-contact (2).svg","name":"off-delay-no-contact (2)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (2).svg"},{"file":"assets/symbols/off-delay-no-contact.svg","name":"off-delay-no-contact","category":"Contacts & Relays","original_filename":"off-delay-no-contact.svg"},{"file":"assets/symbols/off-delay-timer (1).svg","name":"off-delay-timer (1)","category":"Timers","original_filename":"off-delay-timer (1).svg"},{"file":"assets/symbols/off-delay-timer.svg","name":"off-delay-timer","category":"Timers","original_filename":"off-delay-timer.svg"},{"file":"assets/symbols/on-delay-nc-contact(1).svg","name":"on-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"on-delay-nc-contact(1).svg"},{"file":"assets/symbols/on-delay-no-contact (1).svg","name":"on-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"on-delay-no-contact (1).svg"},{"file":"assets/symbols/on-delay-no-contact.svg","name":"on-delay-no-contact","category":"Contacts & Relays","original_filename":"on-delay-no-contact.svg"},{"file":"assets/symbols/on-delay-timer (1).svg","name":"on-delay-timer (1)","category":"Timers","original_filename":"on-delay-timer (1).svg"},{"file":"assets/symbols/on-delay-timer.svg","name":"on-delay-timer","category":"Timers","original_filename":"on-delay-timer.svg"},{"file":"assets/symbols/on-off-delay-nc-contact.svg","name":"on-off-delay-nc-contact","category":"Contacts & Relays","original_filename":"on-off-delay-nc-contact.svg"},{"file":"assets/symbols/on-off-delay-no-contact.svg","name":"on-off-delay-no-contact","category":"Contacts & Relays","original_filename":"on-off-delay-no-contact.svg"},{"file":"assets/symbols/pilot-light (1).svg","name":"pilot-light (1)","category":"Indicators & Signalling","original_filename":"pilot-light (1).svg"},{"file":"assets/symbols/pilot-light-blink.svg","name":"pilot-light-blink","category":"Indicators & Signalling","original_filename":"pilot-light-blink.svg"},{"file":"assets/symbols/pilot-light.svg","name":"pilot-light","category":"Indicators & Signalling","original_filename":"pilot-light.svg"},{"file":"assets/symbols/push-button-nc-maintained(1).svg","name":"push-button-nc-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-maintained(1).svg"},{"file":"assets/symbols/push-button-nc-spring-return(1).svg","name":"push-button-nc-spring-return(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-spring-return(1).svg"},{"file":"assets/symbols/push-button-no-key-maintained(1).svg","name":"push-button-no-key-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-no-key-maintained(1).svg"}]};
+ const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":93,"symbols":[{"file":"assets/symbols/ac-motor-3p-3-terminal.svg","name":"ac-motor-3p-3-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-3-terminal.svg"},{"file":"assets/symbols/ac-motor-3p-6-terminal.svg","name":"ac-motor-3p-6-terminal","category":"Motors & Earthing","original_filename":"ac-motor-3p-6-terminal.svg"},{"file":"assets/symbols/bell.svg","name":"bell","category":"Indicators & Signalling","original_filename":"bell.svg"},{"file":"assets/symbols/changeover-contact-break-before-make.svg","name":"changeover-contact-break-before-make","category":"Contacts & Relays","original_filename":"changeover-contact-break-before-make.svg"},{"file":"assets/symbols/changeover-contact-off-delay.svg","name":"changeover-contact-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-off-delay.svg"},{"file":"assets/symbols/changeover-contact-on-delay.svg","name":"changeover-contact-on-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-delay.svg"},{"file":"assets/symbols/changeover-contact-on-off-delay.svg","name":"changeover-contact-on-off-delay","category":"Contacts & Relays","original_filename":"changeover-contact-on-off-delay.svg"},{"file":"assets/symbols/circuit-breaker-1p.svg","name":"circuit-breaker-1p","category":"Breakers & Protection","original_filename":"circuit-breaker-1p.svg"},{"file":"assets/symbols/circuit-breaker-2p.svg","name":"circuit-breaker-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-2p.svg"},{"file":"assets/symbols/circuit-breaker-3p.svg","name":"circuit-breaker-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-3p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-2p.svg","name":"circuit-breaker-thermal-magnetic-2p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-2p.svg"},{"file":"assets/symbols/circuit-breaker-thermal-magnetic-3p.svg","name":"circuit-breaker-thermal-magnetic-3p","category":"Breakers & Protection","original_filename":"circuit-breaker-thermal-magnetic-3p.svg"},{"file":"assets/symbols/coil (1).svg","name":"coil (1)","category":"Contactors & Coils","original_filename":"coil (1).svg"},{"file":"assets/symbols/coil.svg","name":"coil","category":"Contactors & Coils","original_filename":"coil.svg"},{"file":"assets/symbols/contactor-3p-automatic-tripping.svg","name":"contactor-3p-automatic-tripping","category":"Contactors & Coils","original_filename":"contactor-3p-automatic-tripping.svg"},{"file":"assets/symbols/contactor-3p.svg","name":"contactor-3p","category":"Contactors & Coils","original_filename":"contactor-3p.svg"},{"file":"assets/symbols/counter-nc.svg","name":"counter-nc","category":"Contacts & Relays","original_filename":"counter-nc.svg"},{"file":"assets/symbols/counter-no.svg","name":"counter-no","category":"Contacts & Relays","original_filename":"counter-no.svg"},{"file":"assets/symbols/counter-pulse.svg","name":"counter-pulse","category":"Contacts & Relays","original_filename":"counter-pulse.svg"},{"file":"assets/symbols/counter-switch-nc.svg","name":"counter-switch-nc","category":"Control Devices & Switches","original_filename":"counter-switch-nc.svg"},{"file":"assets/symbols/counter-switch-no.svg","name":"counter-switch-no","category":"Control Devices & Switches","original_filename":"counter-switch-no.svg"},{"file":"assets/symbols/disconnector-isolator-2p.svg","name":"disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"disconnector-isolator-2p.svg"},{"file":"assets/symbols/disconnector-isolator-3p.svg","name":"disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"disconnector-isolator-3p.svg"},{"file":"assets/symbols/earth-ground.svg","name":"earth-ground","category":"Motors & Earthing","original_filename":"earth-ground.svg"},{"file":"assets/symbols/electronic-clock-nc-switch.svg","name":"electronic-clock-nc-switch","category":"Timers","original_filename":"electronic-clock-nc-switch.svg"},{"file":"assets/symbols/electronic-clock-no-switch.svg","name":"electronic-clock-no-switch","category":"Timers","original_filename":"electronic-clock-no-switch.svg"},{"file":"assets/symbols/electronic-clock-switch.svg","name":"electronic-clock-switch","category":"Timers","original_filename":"electronic-clock-switch.svg"},{"file":"assets/symbols/electronic-clock.svg","name":"electronic-clock","category":"Timers","original_filename":"electronic-clock.svg"},{"file":"assets/symbols/emergency-stop-nc-spring-return.svg","name":"emergency-stop-nc-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-nc-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-spring-return.svg","name":"emergency-stop-no-spring-return","category":"Control Devices & Switches","original_filename":"emergency-stop-no-spring-return.svg"},{"file":"assets/symbols/emergency-stop-no-turn-reset.svg","name":"emergency-stop-no-turn-reset","category":"Control Devices & Switches","original_filename":"emergency-stop-no-turn-reset.svg"},{"file":"assets/symbols/fuse-2p.svg","name":"fuse-2p","category":"Breakers & Protection","original_filename":"fuse-2p.svg"},{"file":"assets/symbols/fuse-3p.svg","name":"fuse-3p","category":"Breakers & Protection","original_filename":"fuse-3p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-2p.svg","name":"fuse-disconnector-isolator-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-2p.svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p (1).svg","name":"fuse-disconnector-isolator-3p (1)","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p (1).svg"},{"file":"assets/symbols/fuse-disconnector-isolator-3p.svg","name":"fuse-disconnector-isolator-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-isolator-3p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-2p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/fuse-disconnector-w-motor-circuit-breaker-3p.svg","name":"fuse-disconnector-w-motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"fuse-disconnector-w-motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/fuse-switch-3p.svg","name":"fuse-switch-3p","category":"Breakers & Protection","original_filename":"fuse-switch-3p.svg"},{"file":"assets/symbols/horn.svg","name":"horn","category":"Indicators & Signalling","original_filename":"horn.svg"},{"file":"assets/symbols/isolator-square-3d.svg","name":"isolator-square-3d","category":"Breakers & Protection","original_filename":"isolator-square-3d.svg"},{"file":"assets/symbols/key-switch-nc-maintained.svg","name":"key-switch-nc-maintained","category":"Control Devices & Switches","original_filename":"key-switch-nc-maintained.svg"},{"file":"assets/symbols/key-switch-nc-spring-return.svg","name":"key-switch-nc-spring-return","category":"Control Devices & Switches","original_filename":"key-switch-nc-spring-return.svg"},{"file":"assets/symbols/key-switch-no-maintained.svg","name":"key-switch-no-maintained","category":"Control Devices & Switches","original_filename":"key-switch-no-maintained.svg"},{"file":"assets/symbols/led-coil.svg","name":"led-coil","category":"Contactors & Coils","original_filename":"led-coil.svg"},{"file":"assets/symbols/limit-switch-nc.svg","name":"limit-switch-nc","category":"Control Devices & Switches","original_filename":"limit-switch-nc.svg"},{"file":"assets/symbols/limit-switch-no.svg","name":"limit-switch-no","category":"Control Devices & Switches","original_filename":"limit-switch-no.svg"},{"file":"assets/symbols/main-switch-1p.svg","name":"main-switch-1p","category":"Breakers & Protection","original_filename":"main-switch-1p.svg"},{"file":"assets/symbols/main-switch-2p.svg","name":"main-switch-2p","category":"Breakers & Protection","original_filename":"main-switch-2p.svg"},{"file":"assets/symbols/main-switch-3p.svg","name":"main-switch-3p","category":"Breakers & Protection","original_filename":"main-switch-3p.svg"},{"file":"assets/symbols/manual-button-nc-maintained.svg","name":"manual-button-nc-maintained","category":"Control Devices & Switches","original_filename":"manual-button-nc-maintained.svg"},{"file":"assets/symbols/manual-button-nc-spring-return.svg","name":"manual-button-nc-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-nc-spring-return.svg"},{"file":"assets/symbols/manual-button-no-maintained.svg","name":"manual-button-no-maintained","category":"Control Devices & Switches","original_filename":"manual-button-no-maintained.svg"},{"file":"assets/symbols/manual-button-no-spring-return.svg","name":"manual-button-no-spring-return","category":"Control Devices & Switches","original_filename":"manual-button-no-spring-return.svg"},{"file":"assets/symbols/manual-switch.svg","name":"manual-switch","category":"Control Devices & Switches","original_filename":"manual-switch.svg"},{"file":"assets/symbols/motor-circuit-breaker-2p.svg","name":"motor-circuit-breaker-2p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-2p.svg"},{"file":"assets/symbols/motor-circuit-breaker-3p.svg","name":"motor-circuit-breaker-3p","category":"Breakers & Protection","original_filename":"motor-circuit-breaker-3p.svg"},{"file":"assets/symbols/normally-close-contact.svg","name":"normally-close-contact","category":"Contacts & Relays","original_filename":"normally-close-contact.svg"},{"file":"assets/symbols/normally-closed-contact.svg","name":"normally-closed-contact","category":"Contacts & Relays","original_filename":"normally-closed-contact.svg"},{"file":"assets/symbols/normally-open-contact (1).svg","name":"normally-open-contact (1)","category":"Contacts & Relays","original_filename":"normally-open-contact (1).svg"},{"file":"assets/symbols/normally-open-contact.svg","name":"normally-open-contact","category":"Contacts & Relays","original_filename":"normally-open-contact.svg"},{"file":"assets/symbols/off-delay-nc-contact(1).svg","name":"off-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"off-delay-nc-contact(1).svg"},{"file":"assets/symbols/off-delay-no-contact (1).svg","name":"off-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (1).svg"},{"file":"assets/symbols/off-delay-no-contact (2).svg","name":"off-delay-no-contact (2)","category":"Contacts & Relays","original_filename":"off-delay-no-contact (2).svg"},{"file":"assets/symbols/off-delay-no-contact.svg","name":"off-delay-no-contact","category":"Contacts & Relays","original_filename":"off-delay-no-contact.svg"},{"file":"assets/symbols/off-delay-timer (1).svg","name":"off-delay-timer (1)","category":"Timers","original_filename":"off-delay-timer (1).svg"},{"file":"assets/symbols/off-delay-timer.svg","name":"off-delay-timer","category":"Timers","original_filename":"off-delay-timer.svg"},{"file":"assets/symbols/on-delay-nc-contact(1).svg","name":"on-delay-nc-contact(1)","category":"Contacts & Relays","original_filename":"on-delay-nc-contact(1).svg"},{"file":"assets/symbols/on-delay-no-contact (1).svg","name":"on-delay-no-contact (1)","category":"Contacts & Relays","original_filename":"on-delay-no-contact (1).svg"},{"file":"assets/symbols/on-delay-no-contact.svg","name":"on-delay-no-contact","category":"Contacts & Relays","original_filename":"on-delay-no-contact.svg"},{"file":"assets/symbols/on-delay-timer (1).svg","name":"on-delay-timer (1)","category":"Timers","original_filename":"on-delay-timer (1).svg"},{"file":"assets/symbols/on-delay-timer.svg","name":"on-delay-timer","category":"Timers","original_filename":"on-delay-timer.svg"},{"file":"assets/symbols/on-off-delay-nc-contact.svg","name":"on-off-delay-nc-contact","category":"Contacts & Relays","original_filename":"on-off-delay-nc-contact.svg"},{"file":"assets/symbols/on-off-delay-no-contact.svg","name":"on-off-delay-no-contact","category":"Contacts & Relays","original_filename":"on-off-delay-no-contact.svg"},{"file":"assets/symbols/pilot-light (1).svg","name":"pilot-light (1)","category":"Indicators & Signalling","original_filename":"pilot-light (1).svg"},{"file":"assets/symbols/pilot-light-blink.svg","name":"pilot-light-blink","category":"Indicators & Signalling","original_filename":"pilot-light-blink.svg"},{"file":"assets/symbols/pilot-light.svg","name":"pilot-light","category":"Indicators & Signalling","original_filename":"pilot-light.svg"},{"file":"assets/symbols/push-button-nc-maintained(1).svg","name":"push-button-nc-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-maintained(1).svg"},{"file":"assets/symbols/push-button-nc-spring-return(1).svg","name":"push-button-nc-spring-return(1)","category":"Control Devices & Switches","original_filename":"push-button-nc-spring-return(1).svg"},{"file":"assets/symbols/push-button-no-key-maintained(1).svg","name":"push-button-no-key-maintained(1)","category":"Control Devices & Switches","original_filename":"push-button-no-key-maintained(1).svg"},{"file":"assets/symbols/supply-3phase.svg","name":"supply-3phase","category":"Power Supply","original_filename":"supply-3phase.svg"},{"file":"assets/symbols/supply-3phase-neutral-earth.svg","name":"supply-3phase-neutral-earth","category":"Power Supply","original_filename":"supply-3phase-neutral-earth.svg"},{"file":"assets/symbols/supply-single-phase.svg","name":"supply-single-phase","category":"Power Supply","original_filename":"supply-single-phase.svg"},{"file":"assets/symbols/supply-single-phase-earth.svg","name":"supply-single-phase-earth","category":"Power Supply","original_filename":"supply-single-phase-earth.svg"},{"file":"assets/symbols/supply-dc-positive.svg","name":"supply-dc-positive","category":"Power Supply","original_filename":"supply-dc-positive.svg"},{"file":"assets/symbols/supply-dc-negative.svg","name":"supply-dc-negative","category":"Power Supply","original_filename":"supply-dc-negative.svg"},{"file":"assets/symbols/supply-earth.svg","name":"supply-earth","category":"Power Supply","original_filename":"supply-earth.svg"},{"file":"assets/symbols/supply-ground.svg","name":"supply-ground","category":"Power Supply","original_filename":"supply-ground.svg"},{"file":"assets/symbols/supply-phase-l.svg","name":"supply-phase-l","category":"Power Supply","original_filename":"supply-phase-l.svg"},{"file":"assets/symbols/supply-neutral-n.svg","name":"supply-neutral-n","category":"Power Supply","original_filename":"supply-neutral-n.svg"},{"file":"assets/symbols/supply-transformer-1phase.svg","name":"supply-transformer-1phase","category":"Power Supply","original_filename":"supply-transformer-1phase.svg"},{"file":"assets/symbols/supply-transformer-3phase.svg","name":"supply-transformer-3phase","category":"Power Supply","original_filename":"supply-transformer-3phase.svg"},{"file":"assets/symbols/supply-acdc.svg","name":"supply-acdc","category":"Power Supply","original_filename":"supply-acdc.svg"}]};
  const assetItems = (embeddedSymbolManifest.symbols || []).filter(it => it.file && /\.svg$/i.test(it.file));
  if (assetItems.length) renderAssets(assetItems);
  else {
@@ -679,4 +788,63 @@ renderLibrary();
      state.textContent=`SIMULATION • ${g.dataset.name.toUpperCase()} ${on?'OPERATED / CLOSED':'RELEASED / NORMAL'}`;
    }
  },true);
+})();
+
+/* ESC: toolbar labels are compact icons; expose each tool name on hover/focus. */
+document.querySelectorAll('.top nav button').forEach(button=>{
+  const label=button.querySelector('em');
+  if(label){
+    const name=label.textContent.trim();
+    button.title=name;
+    button.setAttribute('aria-label',name);
+  }
+});
+
+
+/* V18: final, delegated single-component selection and drag controller.
+   It takes priority over older per-component handlers to avoid conflicts. */
+(function installReliableIndividualDrag(){
+  const layer=document.getElementById('dropLayer');
+  const canvas=document.getElementById('schematic');
+  if(!layer||!canvas) return;
+  let drag=null;
+  function point(e){ return getPoint(e); }
+  layer.addEventListener('pointerdown', function(e){
+    if(e.button!==0) return;
+    const target=e.target;
+    // Terminal clicks belong to the wiring tool, not component movement.
+    if(target && target.closest && target.closest('.mag-port')) return;
+    const g=target && target.closest ? target.closest('.dropped-symbol') : null;
+    if(!g) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    select(g);
+    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
+    const p=point(e);
+    drag={g,pointerId:e.pointerId,dx:p.x-(+g.dataset.x||0),dy:p.y-(+g.dataset.y||0),moved:false};
+    g.classList.add('moving');
+    g.style.cursor='grabbing';
+    try{canvas.setPointerCapture(e.pointerId)}catch(_){}
+  },true);
+  function move(e){
+    if(!drag || e.pointerId!==drag.pointerId) return;
+    e.preventDefault();
+    const g=drag.g;
+    if(!g || !g.isConnected){drag=null;return;}
+    const p=point(e), x=p.x-drag.dx, y=p.y-drag.dy;
+    if(Math.hypot(x-(+g.dataset.x||0),y-(+g.dataset.y||0))>0.5) drag.moved=true;
+    g.dataset.x=x; g.dataset.y=y;
+    g.setAttribute('transform',`translate(${x-60},${y-45})`);
+  }
+  function finish(e){
+    if(!drag || (e.pointerId!=null && e.pointerId!==drag.pointerId)) return;
+    const g=drag.g;
+    if(g){g.classList.remove('moving');g.style.cursor='grab';select(g);}
+    if(drag.moved && g) state.textContent='MOVED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
+    drag=null;
+  }
+  window.addEventListener('pointermove',move,{capture:true,passive:false});
+  window.addEventListener('pointerup',finish,true);
+  window.addEventListener('pointercancel',finish,true);
 })();

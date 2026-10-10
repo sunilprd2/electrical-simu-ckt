@@ -1,0 +1,10 @@
+ELECTRICAL SIMU CKT UI refinements
+- Ribbon tab names: SCHEMATIC and 2D.
+- Compact icon ribbon with hover/focus tooltips and horizontal scrolling.
+- Brand logo retained in header.
+- POWER category renamed from POWER SUPPLY.
+- Placed component reference designator is shown to the left in the category accent colour, normal weight.
+- White-mode schematic strokes/text receive higher contrast.
+Note: 2D remains a renamed placeholder button; the physical 2D workspace is not implemented by this patch.
+
+Selection fix: added transparent per-component hit areas so IEC SVG strokes can be clicked and dragged; click now selects without opening the component editor.

@@ -395,3 +395,136 @@ body.connect-mode .dropped-symbol .mag-port.selected {
   r:0!important;
   pointer-events:all!important;
 }
+
+
+/* ESC V29: compact ribbon, hover labels, brand image and improved light mode */
+.top { min-width:0; gap:8px; padding:0 8px; }
+.brand { flex:0 0 205px; min-width:0!important; width:205px; gap:0; overflow:hidden; }
+.brand-logo { display:block; width:100%; height:56px; object-fit:contain; object-position:left center; }
+.top nav { flex:1 1 auto; min-width:0; margin-left:0; overflow-x:auto!important; overflow-y:hidden; scrollbar-width:thin; scrollbar-color:#667782 #18232b; }
+.top nav::-webkit-scrollbar { height:5px; }
+.top nav::-webkit-scrollbar-thumb { background:#667782; border-radius:5px; }
+.top nav button { position:relative; flex:0 0 48px; min-width:48px; font-weight:400!important; }
+.top nav button em { display:none!important; }
+.top nav button .toolbar-icon { margin-bottom:0; font-weight:400!important; }
+.top nav button[title]:hover::after,
+.top nav button[title]:focus-visible::after {
+  content:attr(title); position:absolute; z-index:9999; top:calc(100% + 4px); left:50%;
+  transform:translateX(-50%); padding:5px 8px; border-radius:4px;
+  background:#14212a; color:#fff; border:1px solid #50616a;
+  font:400 11px Arial,sans-serif; white-space:nowrap; pointer-events:none;
+}
+.top nav button.active { font-weight:400!important; }
+#schematicMode { flex-basis:64px; min-width:64px; }
+body.theme-light { background:#f2f5f7!important; color:#17212a!important; }
+body.theme-light .top { background:#ffffff!important; border-color:#d0d9df!important; }
+body.theme-light .top button { color:#334155!important; border-color:#d8e0e5!important; }
+body.theme-light .workbar, body.theme-light footer { background:#eef2f5!important; color:#475569!important; border-color:#cbd5e1!important; }
+body.theme-light #sheet { background-color:#fbfdff!important; background-image:linear-gradient(#e3e9ee 1px,transparent 1px),linear-gradient(90deg,#e3e9ee 1px,transparent 1px)!important; }
+body.theme-light .sym line, body.theme-light .sym rect,
+body.theme-light .wire line, body.theme-light .indicator circle,
+body.theme-light .indicator line, body.theme-light .overload rect,
+body.theme-light .coil rect { stroke:#253746!important; }
+body.theme-light .terminal circle { fill:#fbfdff!important; stroke:#253746!important; }
+body.theme-light .terminal text, body.theme-light .num,
+body.theme-light .motorText, body.theme-light .dropped-symbol .drop-label {
+  fill:#17212a!important; color:#17212a!important;
+}
+body.theme-light .dropped-symbol .select-box { fill:#ffffff!important; fill-opacity:.65!important; }
+body.theme-light .library { background:#f2f5f7!important; border-color:#cbd5e1!important; }
+body.theme-light .libtitle { color:#17212a!important; }
+body.theme-light .cat-body { background:#e8edf1!important; border-color:#cbd5e1!important; }
+body.theme-light .symbol-btn { background:#ffffff!important; color:#17212a!important; border:1px solid #d2dbe1!important; }
+body.theme-light .symbol-btn label { color:#17212a!important; }
+body.theme-light .library input { background:#fff!important; color:#17212a!important; border-color:#aab8c2!important; }
+@media(max-width:900px) {
+  .brand { flex-basis:145px; width:145px; }
+  .brand-logo { height:45px; }
+  .top nav button { flex-basis:42px; min-width:42px; }
+  #schematicMode { flex-basis:64px; min-width:64px; }
+}
+
+/* ESC refinement: scrollable ribbon, light workspace readability and component labels */
+.top { min-width:0; padding:0 8px; gap:8px; }
+.brand { min-width:0!important; flex:0 0 190px; width:190px; overflow:hidden; }
+.brand-logo { width:190px!important; max-width:100%; height:54px!important; object-fit:contain; object-position:left center; }
+.top nav {
+  flex:1 1 auto!important; min-width:0!important; margin-left:0!important;
+  overflow-x:auto!important; overflow-y:hidden!important; white-space:nowrap;
+  scrollbar-width:thin; scrollbar-color:#647783 #17232a;
+}
+.top nav button { flex:0 0 48px; min-width:48px!important; position:relative; font-weight:400!important; }
+.top nav button em { display:none!important; }
+.top nav button:hover::after, .top nav button:focus-visible::after {
+  content:attr(title); position:absolute; z-index:9999; top:calc(100% + 4px); left:50%;
+  transform:translateX(-50%); padding:5px 8px; border-radius:4px;
+  background:#17232a; color:#fff; border:1px solid #5a6c75;
+  font:400 11px Arial,sans-serif; white-space:nowrap; pointer-events:none;
+}
+.dropped-symbol .drop-tag {
+  display:block!important; visibility:visible!important; opacity:1!important;
+  font-family:Arial,sans-serif!important; font-size:10px!important;
+  font-weight:400!important; stroke:none!important; pointer-events:none!important;
+}
+.dropped-symbol .drop-label { display:none!important; }
+body.theme-light #dropLayer .dropped-symbol > svg * {
+  stroke:#263238!important;
+}
+body.theme-light #dropLayer .dropped-symbol > svg text {
+  fill:#17212b!important; stroke:none!important;
+}
+body.theme-light #dropLayer .dropped-symbol .drop-tag {
+  stroke:none!important;
+}
+body.theme-light #schematic text { fill:#202a32; }
+body.theme-light #schematic .drop-tag { fill:var(--component-accent,#0879df); }
+@media(max-width:900px) {
+  .brand { flex-basis:145px; width:145px; }
+  .brand-logo { width:145px!important; height:44px!important; }
+  .top nav button { flex-basis:42px; min-width:42px!important; }
+}
+
+.dropped-symbol .drop-tag { fill:var(--component-accent,#0879df)!important; }
+body.theme-light #dropLayer .dropped-symbol .drop-tag { fill:var(--component-accent,#0879df)!important; }
+
+/* Component selection hit-area fix */
+.dropped-symbol { pointer-events: all !important; }
+.dropped-symbol > .component-hit-area { fill: transparent; pointer-events: all !important; cursor: grab; }
+.dropped-symbol.moving > .component-hit-area { cursor: grabbing; }
+
+
+/* V17: reliable individual component selection */
+#dropLayer { pointer-events: all; }
+.dropped-symbol {
+  pointer-events: all !important;
+  cursor: grab;
+  touch-action: none;
+}
+.dropped-symbol > * { pointer-events: visiblePainted; }
+.dropped-symbol > svg,
+.dropped-symbol .component-art,
+.dropped-symbol .select-box {
+  pointer-events: all;
+}
+.dropped-symbol.moving { cursor: grabbing; }
+.dropped-symbol.selected .select-box {
+  stroke: #1685e8 !important;
+  stroke-width: 2.2 !important;
+  stroke-dasharray: 4 3;
+  stroke-opacity: 1 !important;
+}
+
+/* V18: large reliable hit target for selecting an individual SVG component */
+.dropped-symbol .component-hit-area {
+  fill: transparent !important;
+  pointer-events: all !important;
+  cursor: grab;
+}
+.dropped-symbol .component-hit-area:hover { fill: rgba(22,133,232,.035) !important; }
+.dropped-symbol.moving .component-hit-area { cursor: grabbing; }
+.dropped-symbol.selected .component-hit-area {
+  stroke: #1685e8;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  fill: rgba(22,133,232,.045) !important;
+}

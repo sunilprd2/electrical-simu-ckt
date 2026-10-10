@@ -1,6 +1,6 @@
 {
   "project": "ELECTRICAL SIMU CKT",
-  "count": 80,
+  "count": 130,
   "symbols": [
     {
       "file": "assets/symbols/ac-motor-3p-3-terminal.svg",
@@ -481,6 +481,339 @@
       "name": "push-button-no-key-maintained(1)",
       "category": "Control Devices & Switches",
       "original_filename": "push-button-no-key-maintained(1).svg"
+    },
+    {
+      "file": "assets/power-symbols/L1_L2_L3.svg",
+      "name": "supply-3phase",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3.svg",
+      "display_name": "L1 + L2 + L3"
+    },
+    {
+      "file": "assets/power-symbols/L1_L2_L3_N.svg",
+      "name": "supply-3phase-neutral",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3_N.svg",
+      "display_name": "L1 + L2 + L3 + N"
+    },
+    {
+      "file": "assets/power-symbols/L1_L2_L3_N_PE.svg",
+      "name": "supply-3phase-neutral-earth",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3_N_PE.svg",
+      "display_name": "L1 + L2 + L3 + N + PE"
+    },
+    {
+      "file": "assets/power-symbols/3_Phase_AC_DC_Converter.svg",
+      "name": "supply-acdc-3phase",
+      "category": "POWER",
+      "original_filename": "3_Phase_AC_DC_Converter.svg",
+      "display_name": "3-Phase AC/DC Converter"
+    },
+    {
+      "file": "assets/power-symbols/AC_DC_Power_Supply.svg",
+      "name": "supply-acdc",
+      "category": "POWER",
+      "original_filename": "AC_DC_Power_Supply.svg",
+      "display_name": "AC/DC Power Supply"
+    },
+    {
+      "file": "assets/power-symbols/DC_Negative_Power_Pole.svg",
+      "name": "supply-dc-negative",
+      "category": "POWER",
+      "original_filename": "DC_Negative_Power_Pole.svg",
+      "display_name": "DC Negative Power Pole"
+    },
+    {
+      "file": "assets/power-symbols/DC_Supply_Pair.svg",
+      "name": "supply-dc-pair",
+      "category": "POWER",
+      "original_filename": "DC_Supply_Pair.svg",
+      "display_name": "DC Supply Pair"
+    },
+    {
+      "file": "assets/power-symbols/DC_Positive_Pole.svg",
+      "name": "supply-dc-positive",
+      "category": "POWER",
+      "original_filename": "DC_Positive_Pole.svg",
+      "display_name": "DC Positive Pole"
+    },
+    {
+      "file": "assets/power-symbols/Earth_Ground.svg",
+      "name": "supply-ground",
+      "category": "POWER",
+      "original_filename": "Earth_Ground.svg",
+      "display_name": "Earth Ground"
+    },
+    {
+      "file": "assets/power-symbols/Phase_L.svg",
+      "name": "supply-phase-l",
+      "category": "POWER",
+      "original_filename": "Phase_L.svg",
+      "display_name": "Phase L"
+    },
+    {
+      "file": "assets/power-symbols/Phase_L1.svg",
+      "name": "supply-phase-l1",
+      "category": "POWER",
+      "original_filename": "Phase_L1.svg",
+      "display_name": "Phase L1"
+    },
+    {
+      "file": "assets/power-symbols/Phase_L2.svg",
+      "name": "supply-phase-l2",
+      "category": "POWER",
+      "original_filename": "Phase_L2.svg",
+      "display_name": "Phase L2"
+    },
+    {
+      "file": "assets/power-symbols/Phase_L3.svg",
+      "name": "supply-phase-l3",
+      "category": "POWER",
+      "original_filename": "Phase_L3.svg",
+      "display_name": "Phase L3"
+    },
+    {
+      "file": "assets/power-symbols/L_Plus_N.svg",
+      "name": "supply-single-phase",
+      "category": "POWER",
+      "original_filename": "L_Plus_N.svg",
+      "display_name": "L + N"
+    },
+    {
+      "file": "assets/power-symbols/L_Plus_N_Plus_PE.svg",
+      "name": "supply-single-phase-earth",
+      "category": "POWER",
+      "original_filename": "L_Plus_N_Plus_PE.svg",
+      "display_name": "L + N + PE"
+    },
+    {
+      "file": "assets/power-symbols/Neutral_N.svg",
+      "name": "supply-neutral-n",
+      "category": "POWER",
+      "original_filename": "Neutral_N.svg",
+      "display_name": "Neutral N"
+    },
+    {
+      "file": "assets/power-symbols/Protective_Earth_PE.svg",
+      "name": "supply-earth",
+      "category": "POWER",
+      "original_filename": "Protective_Earth_PE.svg",
+      "display_name": "Protective Earth (PE)"
+    },
+    {
+      "file": "assets/symbols/power-original/L1_L2_L3.svg",
+      "name": "L1 + L2 + L3",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/L1_L2_L3_N.svg",
+      "name": "L1 + L2 + L3 + N",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3_N.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/L1_L2_L3_N_PE.svg",
+      "name": "L1 + L2 + L3 + N + PE",
+      "category": "POWER",
+      "original_filename": "L1_L2_L3_N_PE.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/3_Phase_AC_DC_Converter.svg",
+      "name": "3 Phase AC/DC Converter",
+      "category": "POWER",
+      "original_filename": "3_Phase_AC_DC_Converter.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/AC_DC_Power_Supply.svg",
+      "name": "AC/DC Power Supply",
+      "category": "POWER",
+      "original_filename": "AC_DC_Power_Supply.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/DC_Negative_Power_Pole.svg",
+      "name": "DC Negative Power Pole",
+      "category": "POWER",
+      "original_filename": "DC_Negative_Power_Pole.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/DC_Supply_Pair.svg",
+      "name": "DC Supply Pair",
+      "category": "POWER",
+      "original_filename": "DC_Supply_Pair.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/DC_Positive_Pole.svg",
+      "name": "DC Positive Pole",
+      "category": "POWER",
+      "original_filename": "DC_Positive_Pole.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Earth_Ground.svg",
+      "name": "Earth Ground",
+      "category": "POWER",
+      "original_filename": "Earth_Ground.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Phase_L.svg",
+      "name": "Phase L",
+      "category": "POWER",
+      "original_filename": "Phase_L.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Phase_L1.svg",
+      "name": "Phase L1",
+      "category": "POWER",
+      "original_filename": "Phase_L1.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Phase_L2.svg",
+      "name": "Phase L2",
+      "category": "POWER",
+      "original_filename": "Phase_L2.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Phase_L3.svg",
+      "name": "Phase L3",
+      "category": "POWER",
+      "original_filename": "Phase_L3.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/L_Plus_N.svg",
+      "name": "L + N",
+      "category": "POWER",
+      "original_filename": "L_Plus_N.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/L_Plus_N_Plus_PE.svg",
+      "name": "L + N + PE",
+      "category": "POWER",
+      "original_filename": "L_Plus_N_Plus_PE.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Neutral_N.svg",
+      "name": "Neutral N",
+      "category": "POWER",
+      "original_filename": "Neutral_N.svg"
+    },
+    {
+      "file": "assets/symbols/power-original/Protective_Earth_PE.svg",
+      "name": "Protective Earth PE",
+      "category": "POWER",
+      "original_filename": "Protective_Earth_PE.svg"
+    },
+    {
+      "file": "assets/symbols/power-originals/protective-earth-pe.svg",
+      "name": "protective-earth-pe",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg.svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/neutral-n.svg",
+      "name": "neutral-n",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (1).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/single-phase-l-n-pe.svg",
+      "name": "single-phase-l-n-pe",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (2).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/single-phase-l-n.svg",
+      "name": "single-phase-l-n",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (3).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/phase-l3.svg",
+      "name": "phase-l3",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (4).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/phase-l2.svg",
+      "name": "phase-l2",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (5).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/phase-l1.svg",
+      "name": "phase-l1",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (6).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/phase-l.svg",
+      "name": "phase-l",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (7).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/earth-ground-symbol.svg",
+      "name": "earth-ground-symbol",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (8).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/dc-positive.svg",
+      "name": "dc-positive",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (9).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/dc-positive-negative-pair.svg",
+      "name": "dc-positive-negative-pair",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (10).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/dc-negative.svg",
+      "name": "dc-negative",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (11).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/ac-dc-power-supply-multi-terminal.svg",
+      "name": "ac-dc-power-supply-multi-terminal",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (13).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/three-phase-neutral-earth.svg",
+      "name": "three-phase-neutral-earth",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (14).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/three-phase-neutral.svg",
+      "name": "three-phase-neutral",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (15).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/power-originals/three-phase.svg",
+      "name": "three-phase",
+      "category": "Power Supply",
+      "original_filename": "gemini-svg (16).svg",
+      "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
     }
   ]
 }

@@ -79,3 +79,7 @@ This build connects the supplied original SVG files to the component library.
 
 ## V28 terminal appearance
 - All visible terminal circles, rings, and hover halos are disabled. Transparent terminal hit areas are retained so click-to-connect can continue to work.
+
+
+## Power supply library
+The POWER SUPPLY category includes phase/neutral/PE terminals, 1-phase and 3-phase supply symbols, DC positive/negative, ground, transformers and AC/DC supply. These are SVG assets and are included in both the external and embedded symbol manifests for file:// preview.

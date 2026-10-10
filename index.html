@@ -8,14 +8,14 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><span>⚡</span><div><b>ELECTRICAL SIMU CKT</b><small>Design • Simulate • Control • Visualize</small></div></div>
+  <div class="brand"><img class="brand-logo" src="assets/esc-logo.png" alt="ELECTRICAL SIMU CKT — Simulate • Innovate • Learn • Build"></div>
   <nav>
     <button class="run" id="play"><span class="toolbar-icon green">▶</span><em>PLAY</em></button>
     <button class="stop" id="stop"><span class="toolbar-icon red">■</span><em>STOP</em></button><button id="undoBtn" title="Undo (Ctrl+Z)" disabled><span class="toolbar-icon violet">↶</span><em>UNDO</em></button><button id="redoBtn" title="Redo (Ctrl+Y)" disabled><span class="toolbar-icon cyan">↷</span><em>REDO</em></button>
     <button><span class="toolbar-icon amber">▦</span><em>VALUES</em></button><button><span class="toolbar-icon cyan">◉</span><em>VIEW</em></button><button id="printDrawing"><span class="toolbar-icon blue">▤</span><em>PRINT PDF</em></button>
     <button><span class="toolbar-icon purple">Ⅱ</span><em>HOLD</em></button><button id="delete"><span class="toolbar-icon red">⌫</span><em>DELETE</em></button>
     <button><span class="toolbar-icon cyan">▣</span><em>FRONT</em></button><button><span class="toolbar-icon violet">▣</span><em>BACK</em></button><button><span class="toolbar-icon amber">⟳</span><em>ROTATE</em></button>
-    <button id="zoomInBtn" title="Zoom in"><span class="toolbar-icon cyan">＋</span><em>ZOOM IN</em></button><button id="zoomOutBtn" title="Zoom out"><span class="toolbar-icon cyan">−</span><em>ZOOM OUT</em></button><button id="centerViewBtn" title="Center drawing"><span class="toolbar-icon violet">⊙</span><em>CENTER</em></button><button id="insertTextBtn" title="Insert text"><span class="toolbar-icon amber">T</span><em>TEXT</em></button><button id="connectToggle" title="Enable terminal connection mode"><span class="toolbar-icon green">⌁</span><em>CONNECT</em></button><button class="mode active"><span class="toolbar-icon blue">▣</span><em>2D</em></button><button id="threeD"><span class="toolbar-icon violet">◇</span><em>3D</em></button><button id="themeToggle" title="Toggle dark/light workspace"><span class="toolbar-icon amber">☼</span><em>LIGHT MODE</em></button><button id="gridToggle" title="Toggle schematic grid"><span class="toolbar-icon cyan">▦</span><em>GRID ON</em></button><button>⚙<em>SETTINGS</em></button>
+    <button id="zoomInBtn" title="Zoom in"><span class="toolbar-icon cyan">＋</span><em>ZOOM IN</em></button><button id="zoomOutBtn" title="Zoom out"><span class="toolbar-icon cyan">−</span><em>ZOOM OUT</em></button><button id="centerViewBtn" title="Center drawing"><span class="toolbar-icon violet">⊙</span><em>CENTER</em></button><button id="insertTextBtn" title="Insert text"><span class="toolbar-icon amber">T</span><em>TEXT</em></button><button id="connectToggle" title="Enable terminal connection mode"><span class="toolbar-icon green">⌁</span><em>CONNECT</em></button><button id="schematicMode" class="mode active" type="button" title="SCHEMATIC"><span class="toolbar-icon blue">◇</span><em>SCHEMATIC</em></button><button id="threeD" type="button" title="2D physical view"><span class="toolbar-icon violet">▣</span><em>2D</em></button><button id="themeToggle" title="Toggle dark/light workspace"><span class="toolbar-icon amber">☼</span><em>LIGHT MODE</em></button><button id="gridToggle" title="Toggle schematic grid"><span class="toolbar-icon cyan">▦</span><em>GRID ON</em></button><button>⚙<em>SETTINGS</em></button>
   </nav>
 </header>
 <div class="layout">
@@ -34,7 +34,7 @@
     <div class="drop-overlay" id="dropOverlay">DROP IEC SYMBOL HERE</div>
     <div class="hint">Drag symbols into the workspace. Click one terminal, then click another terminal to connect. Use Light Mode and Grid controls above.</div>
   </div>
-  <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>2D • IEC schematic view</span></footer>
+  <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>SCHEMATIC • IEC symbol view</span></footer>
 </main>
 </div>
 
@@ -157,5 +157,15 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
 })();
 </script>
 
+<script>
+/* Ribbon labels stay compact; reveal their names on hover. */
+document.querySelectorAll(".top nav button").forEach(button => {
+  const label = button.querySelector("em");
+  if (label) {
+    button.title = label.textContent.trim();
+    button.setAttribute("aria-label", label.textContent.trim());
+  }
+});
+</script>
 </body>
 </html>
