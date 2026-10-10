@@ -1013,61 +1013,163 @@ body.theme-light .component-category { color:#f2f5f8 !important; }
 }
 
 
-/* === ESC UI refinement: vivid category rows and a 5x5 major/minor grid === */
-/* Each library category gets its own persistent accent and tinted background. */
-.component-category-list .component-category,
-.component-category-list .component-category:not(.active) {
-  position: relative !important;
-  border: 1px solid color-mix(in srgb, var(--category-accent) 48%, #15304a) !important;
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--category-accent) 19%, #08192d),
-    color-mix(in srgb, var(--category-accent) 8%, #0b1d32)) !important;
-  color: #f4f8ff !important;
-  box-shadow: inset 3px 0 0 var(--category-accent), 0 2px 6px #0003 !important;
+/* ESC 2026-10-10: final theme consistency + major/minor grid */
+/* Sidebar typography and category colors stay identical in both themes. */
+.layout > .library,
+body.theme-light .layout > .library,
+body.theme-dark .layout > .library {
+  background: linear-gradient(180deg,#07172f 0%,#081329 100%) !important;
+  color:#f4f8ff !important;
+  border-right:2px solid #244a7b !important;
 }
-.component-category-list .component-category .category-mark,
-.component-category-list .component-category:not(.active) .category-mark {
-  opacity: 1 !important;
-  width: 5px !important;
-  flex-basis: 5px !important;
-  height: 21px !important;
-  background: var(--category-accent) !important;
-  box-shadow: 0 0 9px color-mix(in srgb, var(--category-accent) 48%, transparent) !important;
+.layout > .library .libtitle,
+.layout > .library label,
+.layout > .library p,
+.layout > .library small,
+.layout > .library .library-empty,
+body.theme-light .layout > .library .libtitle,
+body.theme-light .layout > .library label,
+body.theme-light .layout > .library p,
+body.theme-light .layout > .library small,
+body.theme-light .layout > .library .library-empty {
+  color:#f4f8ff !important;
 }
-.component-category-list .component-category.active {
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--category-accent) 37%, #0a1c31),
-    color-mix(in srgb, var(--category-accent) 16%, #102844)) !important;
-  border-color: var(--category-accent) !important;
+.layout > .library input,
+body.theme-light .layout > .library input {
+  background:#061226 !important;color:#eaf4ff !important;border-color:#315982 !important;
 }
-.component-category-list .component-category:nth-child(1) { --category-accent:#12d89a !important; }
-.component-category-list .component-category:nth-child(2) { --category-accent:#0ea5e9 !important; }
-.component-category-list .component-category:nth-child(3) { --category-accent:#94a3b8 !important; }
-.component-category-list .component-category:nth-child(4) { --category-accent:#a78bfa !important; }
-.component-category-list .component-category:nth-child(5) { --category-accent:#facc15 !important; }
-.component-category-list .component-category:nth-child(6) { --category-accent:#22d3ee !important; }
-.component-category-list .component-category:nth-child(7) { --category-accent:#fb923c !important; }
-.component-category-list .component-category:nth-child(8) { --category-accent:#34d399 !important; }
-.component-category-list .component-category:nth-child(9) { --category-accent:#fb7185 !important; }
-.component-category-list .component-category:nth-child(10) { --category-accent:#60a5fa !important; }
-
-/* One workspace grid: small squares with a stronger line every five squares.
-   The 20px minor grid and 100px major grid are layered on the same surface. */
-#sheet:not(.grid-off) {
+.component-category-list { background:transparent !important; }
+.component-category {
+  color:#f7fbff !important;
+  background:linear-gradient(110deg,color-mix(in srgb,var(--category-color,#168bff) 15%,#0b1b31),#0a1a2d) !important;
+  border:1px solid color-mix(in srgb,var(--category-color,#168bff) 70%,#294766) !important;
+  border-left:4px solid var(--category-color,#168bff) !important;
+}
+.component-category:hover,.component-category.active {
+  color:#ffffff !important;
+  background:linear-gradient(110deg,color-mix(in srgb,var(--category-color,#168bff) 32%,#10243b),#10243b) !important;
+  box-shadow:0 0 10px color-mix(in srgb,var(--category-color,#168bff) 18%,transparent) !important;
+}
+/* Keep a visible fine grid plus stronger major squares in dark mode. */
+body.theme-dark #sheet:not(.grid-off) {
+  background-color:#07111f !important;
   background-image:
-    linear-gradient(rgba(104,145,178,.38) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(104,145,178,.38) 1px, transparent 1px),
-    linear-gradient(rgba(104,145,178,.13) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(104,145,178,.13) 1px, transparent 1px) !important;
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
-  background-position: 0 0, 0 0, 0 0, 0 0 !important;
+    linear-gradient(to right,rgba(102,145,177,.13) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(102,145,177,.13) 1px,transparent 1px),
+    linear-gradient(to right,rgba(119,164,199,.32) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(119,164,199,.32) 1px,transparent 1px) !important;
+  background-size:20px 20px,20px 20px,100px 100px,100px 100px !important;
+  background-position:0 0,0 0,0 0,0 0 !important;
 }
 body.theme-light #sheet:not(.grid-off) {
+  background-color:#e5f4f8 !important;
   background-image:
-    linear-gradient(rgba(75,104,130,.45) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(75,104,130,.45) 1px, transparent 1px),
-    linear-gradient(rgba(100,125,145,.20) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,125,145,.20) 1px, transparent 1px) !important;
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
+    linear-gradient(to right,rgba(53,105,133,.12) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(53,105,133,.12) 1px,transparent 1px),
+    linear-gradient(to right,rgba(53,105,133,.30) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(53,105,133,.30) 1px,transparent 1px) !important;
+  background-size:20px 20px,20px 20px,100px 100px,100px 100px !important;
 }
+body.theme-dark #sheet.grid-off, body.theme-light #sheet.grid-off { background-image:none !important; }
+/* Ribbon icons: consistent, clear folder and floppy-disk artwork. */
+.top nav .toolbar-icon svg { width:22px;height:22px;display:block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+
+
+/* ESC UI corrections: colorful categories, stable Settings button, remove unused bottom strip. */
 .drag-help { display:none !important; }
+.hint, .work > footer { display:none !important; }
+.component-category {
+  color:#f7fbff !important;
+  background:linear-gradient(110deg,color-mix(in srgb,var(--category-accent,#168bff) 22%,#0b1b31),#0a1a2d) !important;
+  border:1px solid color-mix(in srgb,var(--category-accent,#168bff) 78%,#294766) !important;
+  border-left:4px solid var(--category-accent,#168bff) !important;
+}
+.component-category .category-mark {
+  opacity:1 !important; background:var(--category-accent,#168bff) !important;
+  box-shadow:0 0 8px color-mix(in srgb,var(--category-accent,#168bff) 45%,transparent) !important;
+}
+.component-category:not(.active) { background:linear-gradient(110deg,color-mix(in srgb,var(--category-accent,#168bff) 14%,#0b1b31),#0a1a2d) !important; }
+.component-category.active {
+  background:linear-gradient(110deg,color-mix(in srgb,var(--category-accent,#168bff) 36%,#10243b),#10243b) !important;
+  border-color:color-mix(in srgb,var(--category-accent,#168bff) 90%,white 10%) !important;
+  box-shadow:inset 3px 0 0 var(--category-accent,#168bff),0 0 9px color-mix(in srgb,var(--category-accent,#168bff) 20%,transparent) !important;
+}
+/* Settings remains the same dark slate button in both workspace themes. */
+.top nav #settingsBtn, body.theme-light .top nav #settingsBtn, body.theme-dark .top nav #settingsBtn {
+  background:linear-gradient(155deg,#21466e,#0b1c32) !important;
+  color:#f1f7ff !important; border:1px solid #3c6793 !important;
+}
+.top nav #settingsBtn .toolbar-icon, body.theme-light .top nav #settingsBtn .toolbar-icon { color:#f1f7ff !important; }
+
+
+/* ESC refinement 2026-10-10: keep sidebar labels readable in both themes
+   and restore the distinct category colors from the reference screenshot. */
+.layout > .library,
+body.theme-light .layout > .library,
+body.theme-dark .layout > .library {
+  color: #f4f8ff !important;
+}
+.layout > .library .libtitle,
+.layout > .library label,
+.layout > .library p,
+.layout > .library small,
+.layout > .library .library-empty,
+.layout > .library .component-category,
+.layout > .library .component-category span,
+.layout > .library .component-category small,
+body.theme-light .layout > .library .libtitle,
+body.theme-light .layout > .library label,
+body.theme-light .layout > .library p,
+body.theme-light .layout > .library small,
+body.theme-light .layout > .library .library-empty,
+body.theme-light .layout > .library .component-category,
+body.theme-light .layout > .library .component-category span,
+body.theme-light .layout > .library .component-category small,
+body.theme-dark .layout > .library .component-category,
+body.theme-dark .layout > .library .component-category span {
+  color: #f7fbff !important;
+}
+.layout > .library .component-category,
+body.theme-light .layout > .library .component-category,
+body.theme-dark .layout > .library .component-category {
+  --category-accent: #168bff;
+  color: #f7fbff !important;
+  border: 1px solid var(--category-accent) !important;
+  border-left: 4px solid var(--category-accent) !important;
+  background: linear-gradient(105deg,
+    color-mix(in srgb, var(--category-accent) 22%, #0b1b31),
+    #0a1a2d) !important;
+}
+.layout > .library .component-category:nth-child(1) { --category-accent:#12d6a0 !important; }
+.layout > .library .component-category:nth-child(2) { --category-accent:#08b7f4 !important; }
+.layout > .library .component-category:nth-child(3) { --category-accent:#9aa9bb !important; }
+.layout > .library .component-category:nth-child(4) { --category-accent:#a78bfa !important; }
+.layout > .library .component-category:nth-child(5) { --category-accent:#facc15 !important; }
+.layout > .library .component-category:nth-child(6) { --category-accent:#22d3ee !important; }
+.layout > .library .component-category:nth-child(7) { --category-accent:#fb923c !important; }
+.layout > .library .component-category:nth-child(8) { --category-accent:#34d399 !important; }
+.layout > .library .component-category:nth-child(9) { --category-accent:#fb7185 !important; }
+.layout > .library .component-category:nth-child(10) { --category-accent:#60a5fa !important; }
+.layout > .library .component-category .category-mark {
+  display:block !important;
+  width:5px !important; min-width:5px !important; flex:0 0 5px !important;
+  height:18px !important; border-radius:5px !important;
+  background:var(--category-accent) !important; opacity:1 !important;
+  box-shadow:0 0 8px color-mix(in srgb,var(--category-accent) 45%,transparent) !important;
+}
+.layout > .library .component-category:hover,
+.layout > .library .component-category.active,
+body.theme-light .layout > .library .component-category:hover,
+body.theme-light .layout > .library .component-category.active {
+  color:#ffffff !important;
+  border-color:var(--category-accent) !important;
+  background:linear-gradient(105deg,
+    color-mix(in srgb,var(--category-accent) 38%,#10243b),
+    #10243b) !important;
+  box-shadow:inset 3px 0 0 var(--category-accent),
+    0 0 8px color-mix(in srgb,var(--category-accent) 20%,transparent) !important;
+}
+.layout > .library input::placeholder,
+body.theme-light .layout > .library input::placeholder {
+  color:#9eb8d2 !important; opacity:1 !important;
+}
