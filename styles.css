@@ -528,3 +528,125 @@ body.theme-light #dropLayer .dropped-symbol .drop-tag { fill:var(--component-acc
   stroke-dasharray: 4 3;
   fill: rgba(22,133,232,.045) !important;
 }
+
+/* ESC FINAL CAD UI: colorful ribbon, dark component library, engineering sheet */
+:root{--esc-blue:#087cff;--esc-navy:#07172f;--esc-panel:#0b2144;--esc-purple:#693bff;--esc-cyan:#05d7ee;--esc-green:#00d58a;--esc-orange:#ff9f1c}
+body{background:#07172f;color:#eaf4ff;font-family:Inter,"Segoe UI",Arial,sans-serif}
+.top{height:92px;background:linear-gradient(180deg,#061326,#0b2344);border-bottom:2px solid #1766b7;box-shadow:0 4px 18px #00102d;gap:10px;padding:0 12px;position:relative;z-index:5}
+.brand{min-width:260px;max-width:315px}.brand-logo{max-width:260px;max-height:72px;object-fit:contain}
+.top nav{gap:5px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;padding:4px 0}.top button{height:70px;min-width:62px;border:1px solid #294a77;border-radius:11px;background:linear-gradient(160deg,#153963,#0a1c37);color:#eaf5ff;font-size:20px;box-shadow:inset 0 1px #ffffff13;transition:transform .15s,border-color .15s,filter .15s}.top button:hover{transform:translateY(-2px);border-color:#35d5ff;filter:brightness(1.2)}.top button em{font-size:10px;color:#d9e9ff}.top .run{background:linear-gradient(145deg,#00bd79,#007b58);color:#fff}.top .stop{background:linear-gradient(145deg,#ff355d,#a40039);color:#fff}.top #undoBtn,.top #redoBtn{background:linear-gradient(145deg,#6c4cff,#3220a4)}.top #printDrawing{background:linear-gradient(145deg,#00bde9,#0064c8)}.top #schematicMode{background:linear-gradient(145deg,#168dff,#0756d5)}.top #threeD{background:linear-gradient(145deg,#8c49ff,#5022bd)}.top #themeToggle{background:linear-gradient(145deg,#ffb52b,#d66c00)}
+.layout{height:calc(100vh - 92px);background:#07172f}.library{width:400px;flex:0 0 400px;background:linear-gradient(180deg,#07172f,#0a2147);border-right:2px solid #244a7b;padding:12px;box-shadow:4px 0 18px #00102b55}.libtitle{font-size:16px;color:#fff;padding:9px 6px 12px}.libtitle span{color:#91baff}.drag-help{height:34px;background:linear-gradient(90deg,#0759bd,#087fe9);border:1px solid #26a8ff;color:white;border-radius:9px;font-size:10px}.library input{background:#06132a;border:1px solid #35629b;border-radius:10px;height:42px;color:#fff}.cat-head{background:linear-gradient(105deg,var(--accent),#102c58 85%);color:#fff;border:1px solid color-mix(in srgb,var(--accent),white 20%);border-radius:12px;height:48px;box-shadow:0 3px 10px #00112e88}.cat-head:before{width:0}.cat-head .folder{color:#fff}.cat-head b{font-size:12px}.cat-body{gap:8px}.symbol-btn{background:linear-gradient(145deg,#10284a,#07172f);border:1px solid #2b4c78;border-radius:10px;box-shadow:0 4px 10px #00102766;color:#fff}.symbol-btn:hover{border-color:#18d5ff;box-shadow:0 0 0 2px #18d5ff22}.symbol-preview,.symbol-btn .lib-icon{background:transparent!important}.work{position:relative;min-width:0;background:#eaf5fa}.workbar{height:38px;background:linear-gradient(90deg,#0a2144,#123c70);color:#d7eaff;border-bottom:1px solid #2b75bd}.workbar span:first-child{color:#28f5b0}.workbar span:last-child{color:#a6d7ff}#sheet{background:#f8fcff;background-image:linear-gradient(#dce8ee 1px,transparent 1px),linear-gradient(90deg,#dce8ee 1px,transparent 1px);background-size:20px 20px;padding:20px;box-sizing:border-box}#schematic{position:relative;z-index:1;background:transparent;min-width:900px;min-height:650px;max-width:calc(100% - 30px);margin:30px auto 140px;overflow:visible}.sym line,.sym rect{stroke:#111827}.terminal circle{stroke:#111827;fill:#fff}.terminal text{fill:#111827}.wire line{stroke:#111827}.num{fill:#334155}.motorText{fill:#111827}.dropped-symbol .select-box{fill:transparent;fill-opacity:0;stroke:#168dff;stroke-opacity:0}.dropped-symbol.selected .select-box{fill:#60a5fa;fill-opacity:.08;stroke:#168dff;stroke-width:1.7;stroke-dasharray:5 3;stroke-opacity:1}.dropped-symbol .drop-label{fill:#1f2937}.dropped-symbol .drop-tag{fill:#087cff}.hint{color:#64748b;z-index:2}footer{background:#071a37;color:#d7eaff;border-top:1px solid #22518b;min-height:36px}
+/* engineering border and title block for screen and printed sheets */
+#sheet:before{content:"";position:absolute;pointer-events:none;z-index:0;left:5%;right:5%;top:22px;bottom:28px;border:2px solid #526b7c;box-shadow:inset 0 0 0 8px #f8fcff,inset 0 0 0 9px #91a7b5}
+#sheet:after{content:"ELECTRICAL SIMU CKT  •  DESIGN • SIMULATE • CONTROL • VISUALIZE     |     PROJECT: ____________________     |     DRAWING NO: ESC-001     |     SHEET: 1/1     |     SIZE: A4/A3";position:absolute;z-index:2;bottom:32px;left:5.5%;right:5.5%;min-height:48px;padding:10px 12px;box-sizing:border-box;background:#fff;border:1px solid #526b7c;color:#1e293b;font:700 10px Arial;letter-spacing:.3px;display:flex;align-items:center}
+.property-panel{position:absolute;z-index:8;right:12px;top:104px;bottom:48px;width:300px;display:none;flex-direction:column;background:linear-gradient(160deg,#fefeff,#e8efff);color:#14243d;border:1px solid #8bb7ff;border-radius:15px;box-shadow:0 14px 35px #001b4c55;overflow:auto}.property-panel.open{display:flex}.property-head{height:54px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 14px;background:linear-gradient(90deg,#fff,#e5edff);border-bottom:1px solid #cad8f5}.property-head b{flex:1;font-size:14px}.property-icon{color:#6b35ff;font-size:22px}.property-head button{border:0;background:transparent;color:#64748b;font-size:24px;cursor:pointer}.property-content{padding:14px;display:flex;flex-direction:column;gap:10px}.property-content label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:600}.property-content input:not([type=checkbox]),.property-content select{min-width:0;width:58%;height:34px;border:1px solid #c6d4ed;border-radius:7px;background:#fff;color:#162944;padding:5px 8px;box-sizing:border-box}.property-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.property-grid label{display:block}.property-grid input{width:100%!important;margin-top:5px}.property-section{display:flex;align-items:center;gap:9px;border-top:1px solid #d4def0;padding-top:14px;color:#6437e9}.showtag input{width:36px;height:20px;accent-color:#087cff}.property-delete{margin-top:10px;border:0;border-radius:9px;padding:12px;background:linear-gradient(90deg,#ff3559,#cf0035);color:#fff;font-weight:800;cursor:pointer}
+body.theme-dark #sheet{background:#07111f;background-image:linear-gradient(#182a3b 1px,transparent 1px),linear-gradient(90deg,#182a3b 1px,transparent 1px)}body.theme-dark #sheet:before{border-color:#66819a;box-shadow:inset 0 0 0 8px #07111f,inset 0 0 0 9px #66819a}body.theme-dark #sheet:after{background:#0e2036;color:#eaf4ff;border-color:#66819a}body.theme-dark .sym line,body.theme-dark .sym rect,body.theme-dark .wire line{stroke:#eaf4ff}body.theme-dark .terminal circle{stroke:#eaf4ff;fill:#07111f}body.theme-dark .terminal text,body.theme-dark .num,body.theme-dark .motorText{fill:#eaf4ff}
+@media(max-width:1200px){.brand{min-width:200px}.library{width:320px;flex-basis:320px}.top button{min-width:54px}.property-panel{width:270px}}
+@media print{body{background:#fff!important;color:#111!important}.top,.library,.workbar,footer,.hint,.drop-overlay,.property-panel{display:none!important}.layout,.work{height:auto!important;display:block!important}#sheet{overflow:visible!important;background:#fff!important;padding:0!important}#sheet:before{left:10mm;right:10mm;top:8mm;bottom:8mm;border:1.5px solid #111!important;box-shadow:none!important}#sheet:after{left:12mm;right:12mm;bottom:12mm;background:#fff!important;color:#111!important;border-color:#111!important}#schematic{width:277mm!important;height:175mm!important;min-width:0!important;min-height:0!important;margin:12mm auto 30mm!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+
+/* ESC final visual refinement based on approved reference screenshots */
+:root{--esc-navy:#06142c;--esc-blue:#087cff;--esc-cyan:#06c8f7;--esc-purple:#743cff;--esc-green:#00c985;--esc-red:#ff2858;--esc-amber:#ffad19}
+.top{height:82px!important;min-height:82px;background:linear-gradient(180deg,#06172f 0%,#071d3a 65%,#031126 100%)!important;border-bottom:2px solid #1599ff!important;box-shadow:0 4px 18px #00132f88;gap:12px;padding:0 12px!important}
+.brand{min-width:275px!important;max-width:275px!important;flex:0 0 275px!important;width:275px!important;border-right:1px solid #294b76;padding-right:12px}
+.brand-logo{width:260px!important;height:66px!important;max-width:100%!important;object-fit:contain!important;object-position:left center!important}
+.top nav{display:flex!important;flex:1 1 auto!important;min-width:0!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:7px 2px!important;scrollbar-width:thin}
+.top nav button,.top button{height:62px!important;flex:0 0 49px!important;min-width:49px!important;border:1px solid #345b91!important;border-radius:10px!important;background:linear-gradient(160deg,#173d68,#0b1d39)!important;color:#eaf6ff!important;font-size:19px!important;box-shadow:inset 0 1px 0 #ffffff20,0 3px 8px #0005!important;transition:transform .14s,filter .14s,border-color .14s!important;padding:3px!important}
+.top nav button em{display:block!important;font-size:8px!important;line-height:9px!important;margin-top:3px!important;color:#dcecff!important;font-weight:700!important;letter-spacing:.2px}
+.top nav button .toolbar-icon{font-size:20px!important;line-height:21px!important;display:block!important;margin:0 auto!important}
+.top nav button:nth-child(1){background:linear-gradient(145deg,#00d79a,#008b70)!important;border-color:#2df6bd!important}
+.top nav button:nth-child(2){background:linear-gradient(145deg,#ff426d,#c4003c)!important;border-color:#ff7791!important}
+.top nav button:nth-child(3),.top nav button:nth-child(4){background:linear-gradient(145deg,#7652ff,#3a20b8)!important;border-color:#a38cff!important}
+.top nav button:nth-child(5){background:linear-gradient(145deg,#ffb326,#d86b00)!important;border-color:#ffd36c!important}
+.top nav button:nth-child(6){background:linear-gradient(145deg,#00d8ff,#087fc4)!important;border-color:#74edff!important}
+.top nav button:nth-child(7){background:linear-gradient(145deg,#167fff,#0843bf)!important;border-color:#69b5ff!important}
+.top nav button:nth-child(8){background:linear-gradient(145deg,#a56bff,#6128ce)!important;border-color:#c9a5ff!important}
+.top nav button:nth-child(9){background:linear-gradient(145deg,#ff4d7b,#a50044)!important;border-color:#ff9ab6!important}
+.top nav button:nth-child(10){background:linear-gradient(145deg,#00c9e8,#0068a7)!important;border-color:#65eaff!important}
+.top nav button:nth-child(11){background:linear-gradient(145deg,#8d62ff,#4c27c5)!important;border-color:#c4a8ff!important}
+.top nav button:nth-child(12){background:linear-gradient(145deg,#ffb326,#bd5c00)!important;border-color:#ffe08b!important}
+.top nav button:nth-child(13),.top nav button:nth-child(14){background:linear-gradient(145deg,#087fff,#073ca5)!important;border-color:#6cbaff!important}
+.top nav button:nth-child(15){background:linear-gradient(145deg,#14c6b1,#087b8b)!important;border-color:#70ffed!important}
+.top nav button:nth-child(16){background:linear-gradient(145deg,#7c4dff,#4111ae)!important;border-color:#b69aff!important}
+.top nav button:nth-child(17){background:linear-gradient(145deg,#ffb51c,#c15b00)!important;border-color:#ffe18b!important}
+.top nav button:hover,.top nav button:focus-visible{transform:translateY(-2px)!important;filter:brightness(1.16)!important;box-shadow:0 0 0 2px #66baff55,0 5px 12px #0007!important}
+.top nav button.mode.active{background:linear-gradient(145deg,#168cff,#0052c8)!important;border:1px solid #72c0ff!important;box-shadow:0 0 14px #168cff66!important}
+.layout{height:calc(100vh - 82px)!important}
+.library{width:258px!important;flex:0 0 258px!important;padding:8px!important;background:linear-gradient(180deg,#081a34,#071329)!important;border-right:2px solid #1d4e84!important}
+.libtitle{font-size:12px!important;color:#f0f7ff!important;white-space:normal!important;line-height:1.25;padding:5px 4px 8px!important}
+.libtitle span{color:#72baff!important}
+.drag-help{font-size:8.5px!important}
+.library input{height:33px!important;background:#061226!important;border-color:#315982!important}
+.cat-head{height:40px!important;border-radius:9px!important;color:#fff!important;background:linear-gradient(105deg,color-mix(in srgb,var(--accent) 88%,#071a37),#0b2141 90%)!important;border:1px solid color-mix(in srgb,var(--accent) 80%,#ffffff)!important;box-shadow:inset 0 1px #ffffff22,0 2px 6px #0004!important}
+.cat-head b{font-size:10px!important;color:#fff!important}
+.cat-head small{color:#d4e5ff!important;font-size:9px!important}
+.cat-head i{color:#fff!important}
+.cat-body{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;background:#08162b!important;border-color:#1e3d63!important;padding:4px!important}
+.symbol-btn{background:#0c203b!important;border:1px solid #23466c!important;border-radius:7px!important;color:#fff!important;height:96px!important}
+.symbol-btn:hover{background:#15375c!important;outline:1px solid #41aaff!important}
+.symbol-btn label{font-size:8.5px!important;line-height:10px!important;color:#e8f4ff!important}
+.symbol-btn small{color:#7decc8!important}
+.symbol-preview,.asset-symbol-preview{background:transparent!important;border-radius:5px!important}
+.asset-symbol-preview{padding:2px!important}
+.symbol-btn .lib-icon{width:72px!important;height:44px!important}
+/* Keep original SVG artwork clean: no white card or white backing on the drawing canvas. */
+.dropped-symbol.original-svg-component .select-box{fill:transparent!important;fill-opacity:0!important;stroke:transparent!important;stroke-opacity:0!important}
+.dropped-symbol.original-svg-component>svg{background:transparent!important}
+.property-panel{width:292px!important;right:10px!important;top:94px!important;bottom:42px!important;z-index:50!important;border-radius:14px!important;border:1px solid #5b9cff!important;box-shadow:0 14px 35px #001b4c66!important}
+.property-panel:not(.open){display:none!important}
+.property-head{background:linear-gradient(100deg,#ffffff,#e6efff)!important}
+@media(max-width:1100px){.brand{min-width:180px!important;max-width:180px!important;flex-basis:180px!important;width:180px!important}.brand-logo{width:170px!important;height:54px!important}.library{width:235px!important;flex-basis:235px!important}.top nav button,.top button{flex-basis:43px!important;min-width:43px!important}}
+@media(max-width:760px){.top{height:68px!important;min-height:68px!important}.brand{min-width:125px!important;max-width:125px!important;flex-basis:125px!important;width:125px!important}.brand-logo{width:118px!important;height:45px!important}.top nav button,.top button{height:48px!important;flex-basis:39px!important;min-width:39px!important}.top nav button em{display:none!important}.layout{height:calc(100vh - 68px)!important}.library{width:210px!important;flex-basis:210px!important}}
+@media print{.top,.library,.workbar,footer,.hint,.drop-overlay,.property-panel{display:none!important}#sheet{background:#fff!important;box-shadow:none!important}#schematic{margin:0 auto!important}.dropped-symbol.original-svg-component .select-box{display:none!important}}
+
+
+/* ESC correction: coherent light/dark engineering canvas and functional-looking CAD ribbon */
+.top{position:relative!important;isolation:isolate!important}
+.top:after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:linear-gradient(90deg,#00d6ff,#3d72ff,#a43cff,#ff3d98,#ffae21,#00d89a);pointer-events:none;z-index:3}
+.top nav button{position:relative!important;overflow:hidden!important}
+.top nav button:active{transform:translateY(1px) scale(.98)!important}
+.top nav button:disabled{opacity:.55!important;filter:saturate(.55)!important;cursor:not-allowed!important}
+/* Distinct colors for the right-side workspace tools */
+.top nav #zoomInBtn{background:linear-gradient(145deg,#087fff,#0644b5)!important;border-color:#62b5ff!important}
+.top nav #zoomOutBtn{background:linear-gradient(145deg,#00cde8,#006aab)!important;border-color:#70efff!important}
+.top nav #centerViewBtn{background:linear-gradient(145deg,#9b62ff,#5222c5)!important;border-color:#c5a6ff!important}
+.top nav #insertTextBtn{background:linear-gradient(145deg,#ffb52b,#bd5c00)!important;border-color:#ffe08b!important}
+.top nav #connectToggle{background:linear-gradient(145deg,#00cfa0,#08745f)!important;border-color:#6bffda!important}
+.top nav #schematicMode{background:linear-gradient(145deg,#087fff,#073ca5)!important;border-color:#79beff!important}
+.top nav #threeD{background:linear-gradient(145deg,#8c52ff,#4a1eb7)!important;border-color:#c3a6ff!important}
+.top nav #themeToggle{background:linear-gradient(145deg,#ffbd38,#c65b00)!important;border-color:#ffe18a!important}
+.top nav #gridToggle{background:linear-gradient(145deg,#00c9e8,#0066a9)!important;border-color:#68eeff!important}
+.top nav #settingsBtn{background:linear-gradient(145deg,#314b70,#142642)!important;border-color:#8aa9d3!important}
+.top nav button[aria-pressed="true"]{box-shadow:0 0 0 2px #61d8ff88,0 0 16px #078cff66,inset 0 1px #ffffff55!important}
+.top nav #themeToggle[aria-pressed="false"]{background:linear-gradient(145deg,#536d91,#263b5b)!important}
+.top nav #gridToggle[aria-pressed="false"]{filter:saturate(.55)!important}
+/* Dark theme must affect the complete engineering workspace, not only the ribbon. */
+body.theme-dark .work{background:#07111f!important}
+body.theme-dark .workbar{background:linear-gradient(90deg,#0a1d34,#102b4a)!important;color:#d9eaff!important;border-color:#35536f!important}
+body.theme-dark #sheet{background-color:#07111f!important;background-image:linear-gradient(#1a2a3c 1px,transparent 1px),linear-gradient(90deg,#1a2a3c 1px,transparent 1px)!important;background-size:20px 20px!important;color:#eaf4ff!important}
+body.theme-dark #sheet:before{border-color:#7792ad!important;box-shadow:inset 0 0 0 8px #07111f,inset 0 0 0 9px #526d88!important}
+body.theme-dark #sheet:after{background:#0c1d31!important;color:#eaf4ff!important;border-color:#7792ad!important}
+body.theme-dark #schematic{background:transparent!important;color:#eaf4ff!important}
+body.theme-dark #schematic .sym line,body.theme-dark #schematic .sym path,body.theme-dark #schematic .sym rect,body.theme-dark #schematic .wire line,body.theme-dark #schematic .wire path,body.theme-dark #schematic .indicator line,body.theme-dark #schematic .indicator circle,body.theme-dark #schematic .overload rect,body.theme-dark #schematic .coil rect{stroke:#edf6ff!important}
+body.theme-dark #schematic .terminal circle{stroke:#edf6ff!important;fill:#07111f!important}
+body.theme-dark #schematic .terminal text,body.theme-dark #schematic .num,body.theme-dark #schematic .motorText,body.theme-dark #schematic .drop-label{fill:#edf6ff!important}
+body.theme-dark #schematic .drop-tag{fill:#54b5ff!important}
+body.theme-dark #schematic .dropped-symbol .select-box{fill:#0c8cff!important;fill-opacity:.12!important;stroke:#2fa5ff!important}
+body.theme-dark .hint{color:#a4b8cc!important}
+body.theme-dark footer{background:#061329!important;color:#d9eaff!important;border-color:#294c70!important}
+body.theme-dark .property-panel{background:linear-gradient(160deg,#13243a,#0a1728)!important;color:#eaf4ff!important;border-color:#4189db!important}
+body.theme-dark .property-head{background:linear-gradient(90deg,#1a3453,#10233c)!important;border-color:#294b6d!important;color:#f0f7ff!important}
+body.theme-dark .property-content input:not([type=checkbox]),body.theme-dark .property-content select{background:#071629!important;color:#edf6ff!important;border-color:#385a7c!important}
+body.theme-dark .property-section{border-color:#294765!important;color:#b5a0ff!important}
+/* SVG artwork placed as image remains transparent; invert only original monochrome SVGs in dark mode. */
+body.theme-dark #dropLayer image{filter:invert(1) hue-rotate(180deg) brightness(1.08)!important}
+body.theme-light #dropLayer image{filter:none!important}
+/* The settings control opens a small accessible settings panel. */
+#escSettingsPopover{position:fixed;z-index:1000;right:12px;top:88px;width:240px;padding:14px;border:1px solid #4c8bd0;border-radius:12px;background:linear-gradient(160deg,#102b4c,#07172f);color:#eef7ff;box-shadow:0 12px 32px #0008;display:none;font:12px/1.4 "Segoe UI",Arial,sans-serif}
+#escSettingsPopover.open{display:block}
+#escSettingsPopover h3{margin:0 0 10px;font-size:14px;color:#7bdfff}
+#escSettingsPopover button{display:block;width:100%;margin:6px 0;padding:9px;border:1px solid #355d89;border-radius:7px;background:linear-gradient(90deg,#087fff,#542be0);color:white;font-weight:700;cursor:pointer}
+#escSettingsPopover p{margin:8px 0 0;color:#b8cce2;font-size:11px}
+body.theme-light .top nav #settingsBtn{background:linear-gradient(145deg,#edf5ff,#b9d5f4)!important;color:#143153!important}
+@media(max-width:760px){#escSettingsPopover{top:72px;right:6px;width:220px}}
+@media print{body.theme-dark #sheet,body.theme-dark #sheet:after{background:#fff!important;color:#111!important}body.theme-dark #schematic .sym line,body.theme-dark #schematic .sym path,body.theme-dark #schematic .wire line{stroke:#111!important}body.theme-dark #schematic .terminal text,body.theme-dark #schematic .num,body.theme-dark #schematic .motorText{fill:#111!important}}
