@@ -1013,52 +1013,61 @@ body.theme-light .component-category { color:#f2f5f8 !important; }
 }
 
 
-/* ESC grid refinement: small squares grouped into larger 5x5 squares.
-   Grid remains a workspace background, not a second SVG engineering grid. */
-#sheet:not(.grid-off), body.theme-dark #sheet:not(.grid-off) {
+/* === ESC UI refinement: vivid category rows and a 5x5 major/minor grid === */
+/* Each library category gets its own persistent accent and tinted background. */
+.component-category-list .component-category,
+.component-category-list .component-category:not(.active) {
+  position: relative !important;
+  border: 1px solid color-mix(in srgb, var(--category-accent) 48%, #15304a) !important;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--category-accent) 19%, #08192d),
+    color-mix(in srgb, var(--category-accent) 8%, #0b1d32)) !important;
+  color: #f4f8ff !important;
+  box-shadow: inset 3px 0 0 var(--category-accent), 0 2px 6px #0003 !important;
+}
+.component-category-list .component-category .category-mark,
+.component-category-list .component-category:not(.active) .category-mark {
+  opacity: 1 !important;
+  width: 5px !important;
+  flex-basis: 5px !important;
+  height: 21px !important;
+  background: var(--category-accent) !important;
+  box-shadow: 0 0 9px color-mix(in srgb, var(--category-accent) 48%, transparent) !important;
+}
+.component-category-list .component-category.active {
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--category-accent) 37%, #0a1c31),
+    color-mix(in srgb, var(--category-accent) 16%, #102844)) !important;
+  border-color: var(--category-accent) !important;
+}
+.component-category-list .component-category:nth-child(1) { --category-accent:#12d89a !important; }
+.component-category-list .component-category:nth-child(2) { --category-accent:#0ea5e9 !important; }
+.component-category-list .component-category:nth-child(3) { --category-accent:#94a3b8 !important; }
+.component-category-list .component-category:nth-child(4) { --category-accent:#a78bfa !important; }
+.component-category-list .component-category:nth-child(5) { --category-accent:#facc15 !important; }
+.component-category-list .component-category:nth-child(6) { --category-accent:#22d3ee !important; }
+.component-category-list .component-category:nth-child(7) { --category-accent:#fb923c !important; }
+.component-category-list .component-category:nth-child(8) { --category-accent:#34d399 !important; }
+.component-category-list .component-category:nth-child(9) { --category-accent:#fb7185 !important; }
+.component-category-list .component-category:nth-child(10) { --category-accent:#60a5fa !important; }
+
+/* One workspace grid: small squares with a stronger line every five squares.
+   The 20px minor grid and 100px major grid are layered on the same surface. */
+#sheet:not(.grid-off) {
   background-image:
-    linear-gradient(rgba(105,145,175,.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(105,145,175,.075) 1px, transparent 1px),
-    linear-gradient(rgba(115,160,195,.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(115,160,195,.18) 1px, transparent 1px),
-    linear-gradient(rgba(125,175,210,.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(125,175,210,.28) 1px, transparent 1px) !important;
-  background-size: 4px 4px, 4px 4px, 20px 20px, 20px 20px, 100px 100px, 100px 100px !important;
+    linear-gradient(rgba(104,145,178,.38) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104,145,178,.38) 1px, transparent 1px),
+    linear-gradient(rgba(104,145,178,.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104,145,178,.13) 1px, transparent 1px) !important;
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
+  background-position: 0 0, 0 0, 0 0, 0 0 !important;
 }
 body.theme-light #sheet:not(.grid-off) {
   background-image:
-    linear-gradient(rgba(65,95,120,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(65,95,120,.07) 1px, transparent 1px),
-    linear-gradient(rgba(65,95,120,.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(65,95,120,.15) 1px, transparent 1px),
-    linear-gradient(rgba(65,95,120,.24) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(65,95,120,.24) 1px, transparent 1px) !important;
-  background-size: 4px 4px, 4px 4px, 20px 20px, 20px 20px, 100px 100px, 100px 100px !important;
+    linear-gradient(rgba(75,104,130,.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75,104,130,.45) 1px, transparent 1px),
+    linear-gradient(rgba(100,125,145,.20) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,125,145,.20) 1px, transparent 1px) !important;
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
 }
-/* Give every component category its own visible accent, not only the selected row. */
-.component-category {
-  border: 1px solid color-mix(in srgb, var(--category-accent, #168bff) 36%, transparent) !important;
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--category-accent, #168bff) 15%, #07172a),
-    color-mix(in srgb, var(--category-accent, #168bff) 5%, #07172a)) !important;
-  box-shadow: inset 3px 0 0 var(--category-accent, #168bff) !important;
-  color: #f5f9ff !important;
-}
-.component-category .category-mark,
-.component-category:not(.active) .category-mark {
-  opacity: 1 !important;
-  background: var(--category-accent, #168bff) !important;
-  box-shadow: 0 0 8px color-mix(in srgb, var(--category-accent, #168bff) 35%, transparent) !important;
-}
-.component-category:hover {
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--category-accent, #168bff) 27%, #07172a),
-    color-mix(in srgb, var(--category-accent, #168bff) 11%, #07172a)) !important;
-}
-.component-category.active {
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--category-accent, #168bff) 32%, #07172a),
-    color-mix(in srgb, var(--category-accent, #168bff) 13%, #07172a)) !important;
-  border-color: color-mix(in srgb, var(--category-accent, #168bff) 80%, white 0%) !important;
-  box-shadow: inset 4px 0 0 var(--category-accent, #168bff), 0 0 10px color-mix(in srgb, var(--category-accent, #168bff) 12%, transparent) !important;
-}
+.drag-help { display:none !important; }
