@@ -1011,3 +1011,54 @@ body.theme-light .component-category { color:#f2f5f8 !important; }
   .layout { height:calc(100vh - 60px) !important; }
   .layout > .library { width:218px !important; min-width:218px !important; flex-basis:218px !important; }
 }
+
+
+/* ESC grid refinement: small squares grouped into larger 5x5 squares.
+   Grid remains a workspace background, not a second SVG engineering grid. */
+#sheet:not(.grid-off), body.theme-dark #sheet:not(.grid-off) {
+  background-image:
+    linear-gradient(rgba(105,145,175,.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(105,145,175,.075) 1px, transparent 1px),
+    linear-gradient(rgba(115,160,195,.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(115,160,195,.18) 1px, transparent 1px),
+    linear-gradient(rgba(125,175,210,.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125,175,210,.28) 1px, transparent 1px) !important;
+  background-size: 4px 4px, 4px 4px, 20px 20px, 20px 20px, 100px 100px, 100px 100px !important;
+}
+body.theme-light #sheet:not(.grid-off) {
+  background-image:
+    linear-gradient(rgba(65,95,120,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65,95,120,.07) 1px, transparent 1px),
+    linear-gradient(rgba(65,95,120,.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65,95,120,.15) 1px, transparent 1px),
+    linear-gradient(rgba(65,95,120,.24) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65,95,120,.24) 1px, transparent 1px) !important;
+  background-size: 4px 4px, 4px 4px, 20px 20px, 20px 20px, 100px 100px, 100px 100px !important;
+}
+/* Give every component category its own visible accent, not only the selected row. */
+.component-category {
+  border: 1px solid color-mix(in srgb, var(--category-accent, #168bff) 36%, transparent) !important;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--category-accent, #168bff) 15%, #07172a),
+    color-mix(in srgb, var(--category-accent, #168bff) 5%, #07172a)) !important;
+  box-shadow: inset 3px 0 0 var(--category-accent, #168bff) !important;
+  color: #f5f9ff !important;
+}
+.component-category .category-mark,
+.component-category:not(.active) .category-mark {
+  opacity: 1 !important;
+  background: var(--category-accent, #168bff) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--category-accent, #168bff) 35%, transparent) !important;
+}
+.component-category:hover {
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--category-accent, #168bff) 27%, #07172a),
+    color-mix(in srgb, var(--category-accent, #168bff) 11%, #07172a)) !important;
+}
+.component-category.active {
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--category-accent, #168bff) 32%, #07172a),
+    color-mix(in srgb, var(--category-accent, #168bff) 13%, #07172a)) !important;
+  border-color: color-mix(in srgb, var(--category-accent, #168bff) 80%, white 0%) !important;
+  box-shadow: inset 4px 0 0 var(--category-accent, #168bff), 0 0 10px color-mix(in srgb, var(--category-accent, #168bff) 12%, transparent) !important;
+}
