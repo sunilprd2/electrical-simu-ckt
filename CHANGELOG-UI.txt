@@ -8,3 +8,5 @@ ELECTRICAL SIMU CKT UI refinements
 Note: 2D remains a renamed placeholder button; the physical 2D workspace is not implemented by this patch.
 
 Selection fix: added transparent per-component hit areas so IEC SVG strokes can be clicked and dragged; click now selects without opening the component editor.
+
+Visual refinement: colorful gradient toolbar ribbon, reduced component sidebar width, dark blue library panels, and transparent original-SVG canvas backing. Existing JavaScript behavior retained. Browser interaction testing is still required.

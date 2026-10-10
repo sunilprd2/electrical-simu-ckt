@@ -1,0 +1,11 @@
+{
+ "name":"ELECTRICAL SIMU CKT",
+ "short_name":"ESC",
+ "description":"Electrical Circuit Simulation — Design, Simulate, Control, Visualize",
+ "start_url":"./",
+ "scope":"./",
+ "display":"standalone",
+ "background_color":"#07172f",
+ "theme_color":"#087cff",
+ "icons":[{"src":"assets/esc-icon-192.png","sizes":"192x192","type":"image/png"},{"src":"assets/esc-icon-512.png","sizes":"512x512","type":"image/png"}]
+}
