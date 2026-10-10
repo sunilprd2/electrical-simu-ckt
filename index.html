@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ELECTRICAL SIMU CKT</title>
+<title>ELECTRICAL SIMU CKT — UI Foundation</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
@@ -11,13 +11,29 @@
 <body>
 <header class="top">
   <div class="brand"><img class="brand-logo" src="esc-logo.png" alt="ELECTRICAL SIMU CKT — Simulate • Innovate • Learn • Build"></div>
-  <nav>
-    <button class="run" id="play"><span class="toolbar-icon green">▶</span><em>PLAY</em></button>
-    <button class="stop" id="stop"><span class="toolbar-icon red">■</span><em>STOP</em></button><button id="undoBtn" title="Undo (Ctrl+Z)" disabled><span class="toolbar-icon violet">↶</span><em>UNDO</em></button><button id="redoBtn" title="Redo (Ctrl+Y)" disabled><span class="toolbar-icon cyan">↷</span><em>REDO</em></button>
-    <button><span class="toolbar-icon amber">▦</span><em>VALUES</em></button><button><span class="toolbar-icon cyan">◉</span><em>VIEW</em></button><button id="printDrawing"><span class="toolbar-icon blue">▤</span><em>PRINT PDF</em></button>
-    <button><span class="toolbar-icon purple">Ⅱ</span><em>HOLD</em></button><button id="delete"><span class="toolbar-icon red">⌫</span><em>DELETE</em></button>
-    <button><span class="toolbar-icon cyan">▣</span><em>FRONT</em></button><button><span class="toolbar-icon violet">▣</span><em>BACK</em></button><button><span class="toolbar-icon amber">⟳</span><em>ROTATE</em></button>
-    <button id="zoomInBtn" title="Zoom in"><span class="toolbar-icon cyan">＋</span><em>ZOOM IN</em></button><button id="zoomOutBtn" title="Zoom out"><span class="toolbar-icon cyan">−</span><em>ZOOM OUT</em></button><button id="centerViewBtn" title="Center drawing"><span class="toolbar-icon violet">⊙</span><em>CENTER</em></button><button id="insertTextBtn" title="Insert text"><span class="toolbar-icon amber">T</span><em>TEXT</em></button><button id="connectToggle" title="Enable terminal connection mode"><span class="toolbar-icon green">⌁</span><em>CONNECT</em></button><button id="schematicMode" class="mode active" type="button" title="SCHEMATIC"><span class="toolbar-icon blue">◇</span><em>SCHEMATIC</em></button><button id="threeD" type="button" title="2D physical view"><span class="toolbar-icon violet">▣</span><em>2D</em></button><button id="themeToggle" title="Toggle dark/light workspace"><span class="toolbar-icon amber">☼</span><em>LIGHT MODE</em></button><button id="gridToggle" title="Toggle schematic grid"><span class="toolbar-icon cyan">▦</span><em>GRID ON</em></button><button id="settingsBtn" type="button" title="Open settings"><span class="toolbar-icon violet">⚙</span><em>SETTINGS</em></button>
+  <nav class="cad-ribbon" aria-label="Main tools">
+    <button id="libraryToggle" class="tool-btn tool-cyan library-toggle" type="button" title="Show or hide component library" aria-label="Show or hide component library" aria-pressed="true"><span class="toolbar-icon">☷</span><em>Library</em></button>
+    <button id="newBtn" class="tool-btn tool-blue" type="button" title="New drawing"><span class="toolbar-icon">▧</span><em>New</em></button>
+    <button id="openBtn" class="tool-btn tool-purple" type="button" title="Open drawing"><span class="toolbar-icon">▱</span><em>Open</em></button>
+    <button id="saveBtn" class="tool-btn tool-teal" type="button" title="Save drawing"><span class="toolbar-icon">▣</span><em>Save</em></button>
+    <button id="saveAsBtn" class="tool-btn tool-teal2" type="button" title="Save drawing as"><span class="toolbar-icon">▣</span><em>Save As</em></button>
+    <span class="ribbon-separator"></span>
+    <button id="play" class="tool-btn tool-green" type="button" title="Start simulation"><span class="toolbar-icon">▶</span><em>Run</em></button>
+    <button id="stop" class="tool-btn tool-red" type="button" title="Stop simulation"><span class="toolbar-icon">■</span><em>Stop</em></button>
+    <button id="resetBtn" class="tool-btn tool-orange" type="button" title="Reset simulation"><span class="toolbar-icon">⟳</span><em>Reset</em></button>
+    <span class="ribbon-separator"></span>
+    <button id="selectBtn" class="tool-btn tool-blue active" type="button" title="Select and move components"><span class="toolbar-icon">↖</span><em>Select</em></button>
+    <button id="connectToggle" class="tool-btn tool-slate" type="button" title="Connect terminals with wires"><span class="toolbar-icon">⌁</span><em>Wire</em></button>
+    <button id="insertTextBtn" class="tool-btn tool-slate" type="button" title="Insert text"><span class="toolbar-icon">T</span><em>Text</em></button>
+
+    <button id="zoomInBtn" class="tool-btn tool-slate" type="button" title="Zoom in"><span class="toolbar-icon">⊕</span><em>Zoom In</em></button>
+    <button id="zoomOutBtn" class="tool-btn tool-slate" type="button" title="Zoom out"><span class="toolbar-icon">⊖</span><em>Zoom Out</em></button>
+    <button id="fitBtn" class="tool-btn tool-slate" type="button" title="Fit drawing to view"><span class="toolbar-icon">⛶</span><em>Fit</em></button>
+    <button id="gridToggle" class="tool-btn tool-slate" type="button" title="Toggle schematic grid"><span class="toolbar-icon">▦</span><em>Grid</em></button>
+    <button id="sheetBtn" class="tool-btn tool-slate" type="button" title="Engineering sheet options"><span class="toolbar-icon">▤</span><em>Sheet</em></button>
+    <button id="themeToggle" class="tool-btn tool-sun theme-toggle" type="button" title="Toggle light and dark mode" aria-label="Toggle light and dark mode" aria-pressed="false"><span class="theme-symbol theme-moon" aria-hidden="true">☾</span><span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-knob"></span></span><span class="theme-symbol theme-sun" aria-hidden="true">☼</span></button>
+    <button id="settingsBtn" class="tool-btn tool-slate" type="button" title="Settings"><span class="toolbar-icon">⚙</span><em>Settings</em></button>
+    <input id="openFileInput" type="file" accept=".json,.esc,application/json" hidden>
   </nav>
 </header>
 <div class="layout">
@@ -25,16 +41,48 @@
   <div class="libtitle"><b>IEC COMPONENTS</b> <span>(ELECTRICAL SIMU CKT)</span></div>
   <div class="drag-help"><span>↕</span> DRAG &amp; DROP SYMBOLS INTO SCHEMATIC</div>
   <input id="search" placeholder="⌕  Search IEC component...">
-  <div id="libraryGroups"><div style="padding:18px;color:#50f0a1;font-size:11px">Loading IEC component library…</div></div>
+  <div id="libraryGroups"><div class="component-category-list" aria-label="Component categories"><button type="button" class="component-category active" data-category="All" aria-pressed="true"><span class="category-mark"></span><span>All</span></button><button type="button" class="component-category " data-category="Sources" aria-pressed="false"><span class="category-mark"></span><span>Sources</span></button><button type="button" class="component-category " data-category="Others" aria-pressed="false"><span class="category-mark"></span><span>Others</span></button><button type="button" class="component-category " data-category="Coils" aria-pressed="false"><span class="category-mark"></span><span>Coils</span></button><button type="button" class="component-category " data-category="Auxiliaries" aria-pressed="false"><span class="category-mark"></span><span>Auxiliaries</span></button><button type="button" class="component-category " data-category="Switches" aria-pressed="false"><span class="category-mark"></span><span>Switches</span></button><button type="button" class="component-category " data-category="Loads" aria-pressed="false"><span class="category-mark"></span><span>Loads</span></button><button type="button" class="component-category " data-category="Contactors" aria-pressed="false"><span class="category-mark"></span><span>Contactors</span></button><button type="button" class="component-category " data-category="Protections" aria-pressed="false"><span class="category-mark"></span><span>Protections</span></button><button type="button" class="component-category " data-category="Motors" aria-pressed="false"><span class="category-mark"></span><span>Motors</span></button></div><div class="library-empty">Select a category. Components will be added later.</div></div>
 </aside>
 <main class="work">
-  <div class="workbar"><span id="state">READY • 2D SCHEMATIC</span><span>SVG schematic workspace</span></div>
   <div id="sheet">
     <svg id="schematic" viewBox="0 0 1200 760" aria-label="Electrical schematic">
+      <g id="engineeringSheet" aria-label="Engineering drawing sheet">
+        <rect class="sheet-paper" x="24" y="24" width="1152" height="712"/>
+        <g class="sheet-coordinates" text-anchor="middle" font-family="Arial,sans-serif" font-size="10">
+          <text x="112" y="51">1</text><text x="220" y="51">2</text><text x="328" y="51">3</text><text x="436" y="51">4</text><text x="544" y="51">5</text><text x="652" y="51">6</text><text x="760" y="51">7</text><text x="868" y="51">8</text><text x="976" y="51">9</text><text x="1084" y="51">10</text>
+          <text x="112" y="710">1</text><text x="220" y="710">2</text><text x="328" y="710">3</text><text x="436" y="710">4</text><text x="544" y="710">5</text><text x="652" y="710">6</text><text x="760" y="710">7</text><text x="868" y="710">8</text><text x="976" y="710">9</text><text x="1084" y="710">10</text>
+          <text x="49" y="112">A</text><text x="49" y="178">B</text><text x="49" y="244">C</text><text x="49" y="310">D</text><text x="49" y="376">E</text><text x="49" y="442">F</text><text x="49" y="508">G</text><text x="49" y="574">H</text><text x="49" y="640">I</text><text x="49" y="690">J</text>
+          <text x="1151" y="112">A</text><text x="1151" y="178">B</text><text x="1151" y="244">C</text><text x="1151" y="310">D</text><text x="1151" y="376">E</text><text x="1151" y="442">F</text><text x="1151" y="508">G</text><text x="1151" y="574">H</text><text x="1151" y="640">I</text><text x="1151" y="690">J</text>
+        </g>
+        <g class="sheet-frame-lines" fill="none" stroke-width="1">
+          <!-- Segmented coordinate frame: top/bottom columns and side rows -->
+          <rect x="24" y="24" width="1152" height="712"/>
+          <rect x="58" y="58" width="1084" height="562"/>
+          <path d="M58 24V58 M166 24V58 M274 24V58 M382 24V58 M490 24V58 M598 24V58 M706 24V58 M814 24V58 M922 24V58 M1030 24V58 M1142 24V58
+                   M58 702V736 M166 702V736 M274 702V736 M382 702V736 M490 702V736 M598 702V736 M706 702V736 M814 702V736 M922 702V736 M1030 702V736 M1142 702V736
+                   M24 58H58 M24 114H58 M24 170H58 M24 226H58 M24 282H58 M24 338H58 M24 394H58 M24 450H58 M24 506H58 M24 562H58 M24 620H58
+                   M1142 58H1176 M1142 114H1176 M1142 170H1176 M1142 226H1176 M1142 282H1176 M1142 338H1176 M1142 394H1176 M1142 450H1176 M1142 506H1176 M1142 562H1176 M1142 620H1176"/>
+        </g>
+        <g class="sheet-titleblock">
+          <rect x="58" y="620" width="1084" height="82"/>
+          <path d="M58 650H1142 M58 676H1142 M58 702H1142 M300 620V702 M650 620V702 M840 620V702 M1000 620V702 M480 650V676 M650 650V676 M840 650V676 M1000 650V676 M480 676V702 M840 676V702 M1000 676V702"/>
+          <image class="sheet-logo" href="esc-logo.png" x="68" y="624" width="222" height="74" preserveAspectRatio="xMidYMid meet"/>
+          <text x="312" y="636">PROJECT:</text><text id="drawingProjectValue" class="sheet-value" x="370" y="636"></text>
+          <text x="312" y="666">TITLE:</text><text id="drawingTitleValue" class="sheet-value" x="370" y="666"></text>
+          <text x="312" y="692">DRAWN:</text><text id="drawingAuthorValue" class="sheet-value" x="370" y="692"></text>
+          <text x="492" y="666">CHECKED:</text><text id="drawingCheckedValue" class="sheet-value" x="542" y="666"></text>
+          <text x="662" y="666">APPROVED:</text><text id="drawingApprovedValue" class="sheet-value" x="718" y="666"></text>
+          <text x="852" y="636">DRAWING NO.</text><text id="drawingDocValue" class="sheet-value" x="852" y="647"></text>
+          <text x="852" y="666">DATE</text><text id="drawingDateValue" class="sheet-value" x="884" y="666"></text>
+          <text x="1012" y="636">SHEET NO.</text><text id="drawingSheetValue" class="sheet-value" x="1012" y="648">1/1</text>
+          <text x="1012" y="666">SIZE</text><text id="drawingSizeValue" class="sheet-value" x="1044" y="666">A4</text>
+          <text x="1012" y="692">REV.</text><text id="drawingRevValue" class="sheet-value" x="1044" y="692"></text>
+        </g>
+      </g>
       <g id="dropLayer"></g>
     </svg>
     <div class="drop-overlay" id="dropOverlay">DROP IEC SYMBOL HERE</div>
-    <div class="hint">Drag symbols into the workspace. Click one terminal, then click another terminal to connect. Use Light Mode and Grid controls above.</div>
+    <div class="hint">Drag symbols into the workspace. Click one terminal, then click another terminal to connect. Use the theme toggle and Grid controls above.</div>
   </div>
   <footer><span id="sim">● STOPPED</span><span id="motorState">Motor: OFF</span><span>SCHEMATIC • IEC symbol view</span></footer>
 </main>
@@ -68,8 +116,23 @@
     <div class="dialog-actions"><button type="button" id="cancelComponentDialog">Cancel</button><button type="button" id="applyComponentDialog">Apply changes</button></div>
   </div>
 </div>
+<div id="sheetSettings" class="sheet-settings" role="dialog" aria-label="Engineering sheet settings" aria-hidden="true">
+  <div class="sheet-settings-head"><b>▤ Engineering Sheet</b><button type="button" id="sheetClose" aria-label="Close sheet settings">×</button></div>
+  <p class="sheet-note">Show or hide the engineering border, axes, title block and company logo together. The workspace grid remains separate.</p>
+  <label class="sheet-check"><span>Show engineering sheet (border, axes &amp; title block)</span><input id="sheetEnabled" type="checkbox"></label>
+  <label class="sheet-field">Project<input id="sheetProject" type="text" placeholder="Project name"></label>
+  <label class="sheet-field">Drawing title<input id="sheetTitle" type="text" placeholder="Drawing title"></label>
+  <div class="sheet-field-grid"><label class="sheet-field">Document No.<input id="sheetDocNo" type="text" placeholder="ESC-001"></label><label class="sheet-field">Date<input id="sheetDate" type="text" placeholder="DD-MM-YYYY"></label></div>
+  <div class="sheet-field-grid"><label class="sheet-field">Drawn by<input id="sheetAuthor" type="text" placeholder="Name"></label><label class="sheet-field">Revision<input id="sheetRevision" type="text" placeholder="00"></label></div>
+  <div class="sheet-field-grid"><label class="sheet-field">Checked by<input id="sheetChecked" type="text" placeholder="Name"></label><label class="sheet-field">Approved by<input id="sheetApproved" type="text" placeholder="Name"></label></div>
+  <label class="sheet-field">Sheet No.<input id="sheetNumber" type="text" value="1/1"></label>
+  <label class="sheet-field">Sheet size<select id="sheetSize"><option>A4</option><option>A3</option><option>A2</option><option>A1</option><option>A0</option><option>Custom</option></select></label>
+  <label class="sheet-field">Orientation<select id="sheetOrientation"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label>
+  <div class="sheet-settings-actions"><button id="sheetApply" type="button">Apply to drawing</button><button id="sheetReset" type="button">Reset</button></div>
+</div>
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
-<script src="app.js?v=26-workspace-tools"></script>
+<div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
+<script src="app.js?v=28-library-sidebar-categories"></script>
 <script>
 document.getElementById("printDrawing")?.addEventListener("click",()=>window.print());
 (()=>{
@@ -77,14 +140,14 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const themeBtn=document.getElementById('themeToggle'), gridBtn=document.getElementById('gridToggle');
  let theme=localStorage.getItem('esim-theme')||'dark';
  let grid=localStorage.getItem('esim-grid')!=='off';
- function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);themeBtn.innerHTML=(theme==='dark'?'☼<em>LIGHT MODE</em>':'☾<em>DARK MODE</em>');gridBtn.innerHTML=(grid?'▦<em>GRID ON</em>':'▦<em>GRID OFF</em>');themeBtn.setAttribute('aria-pressed',String(theme==='light'));gridBtn.setAttribute('aria-pressed',String(grid));}
+ function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);themeBtn.setAttribute('aria-pressed',String(theme==='light'));gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}
  themeBtn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render()});
  const settingsBtn=document.getElementById('settingsBtn'), settingsPanel=document.getElementById('escSettingsPopover');
  if(settingsBtn&&settingsPanel){
    settingsBtn.addEventListener('click',()=>{const open=!settingsPanel.classList.contains('open');settingsPanel.classList.toggle('open',open);settingsPanel.setAttribute('aria-hidden',String(!open));settingsBtn.classList.toggle('active',open);});
    document.getElementById('settingsTheme')?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render();});
    document.getElementById('settingsGrid')?.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render();});
-   document.getElementById('settingsFit')?.addEventListener('click',()=>{document.getElementById('centerViewBtn')?.click();});
+   document.getElementById('settingsFit')?.addEventListener('click',()=>{document.getElementById('fitBtn')?.click();});
    document.getElementById('settingsPrint')?.addEventListener('click',()=>window.print());
    document.addEventListener('click',e=>{if(settingsPanel.classList.contains('open')&&!settingsPanel.contains(e.target)&&!settingsBtn.contains(e.target)){settingsPanel.classList.remove('open');settingsPanel.setAttribute('aria-hidden','true');settingsBtn.classList.remove('active');}});
  }
@@ -94,6 +157,51 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  function renderConnect(){body.classList.toggle('connect-mode',connectMode);if(connectBtn){connectBtn.classList.toggle('active',connectMode);connectBtn.innerHTML=connectMode?'⌁<em>CONNECT ON</em>':'⌁<em>CONNECT</em>';connectBtn.setAttribute('aria-pressed',String(connectMode));}}
  if(connectBtn){connectBtn.addEventListener('click',()=>{connectMode=!connectMode;localStorage.setItem('esim-connect-mode',connectMode?'on':'off');renderConnect();});}
  renderConnect();
+
+ // Engineering sheet is optional: keep it hidden by default until the user enables it.
+ const sheetBtn=document.getElementById('sheetBtn'), sheetPanel=document.getElementById('sheetSettings');
+ const sheetEnabled=document.getElementById('sheetEnabled');
+ const sheetSize=document.getElementById('sheetSize'), sheetOrientation=document.getElementById('sheetOrientation');
+ const engineeringSheet=document.getElementById('engineeringSheet');
+ const titleFields={
+  sheetProject:'drawingProjectValue', sheetTitle:'drawingTitleValue', sheetDocNo:'drawingDocValue',
+  sheetDate:'drawingDateValue', sheetAuthor:'drawingAuthorValue', sheetRevision:'drawingRevValue',
+  sheetChecked:'drawingCheckedValue', sheetApproved:'drawingApprovedValue', sheetNumber:'drawingSheetValue'
+ };
+ function loadTitleFields(){
+  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId);if(input)input.value=localStorage.getItem('esim-'+inputId)|| (inputId==='sheetNumber'?'1/1':'');});
+ }
+ function updateTitleBlock(){
+  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId),node=document.getElementById(textId);if(input&&node){node.textContent=input.value.trim();localStorage.setItem('esim-'+inputId,input.value);}});
+  const sizeNode=document.getElementById('drawingSizeValue');if(sizeNode)sizeNode.textContent=sheetSize?.value||'A4';
+ }
+ function applySheetOptions(){
+   const enabled=!!sheetEnabled?.checked;
+   body.classList.toggle('engineering-sheet-on',enabled);
+   if(engineeringSheet){engineeringSheet.setAttribute('aria-hidden',String(!enabled));engineeringSheet.style.display=enabled?'inline':'none';}
+   const sizeText=sheetSize?.value||'A4';
+   const sizeNode=document.getElementById('sheetSizeLabel');
+   if(sizeNode)sizeNode.textContent=sizeText;
+   if(sheetOrientation)body.dataset.sheetOrientation=sheetOrientation.value;
+   updateTitleBlock();
+   localStorage.setItem('esim-sheet-enabled',enabled?'on':'off');
+   localStorage.setItem('esim-sheet-size',sizeText);
+   localStorage.setItem('esim-sheet-orientation',sheetOrientation?.value||'landscape');
+   if(state)state.textContent=enabled?'ENGINEERING SHEET • '+sizeText.toUpperCase():'READY • NO SHEET BORDER';
+ }
+ loadTitleFields();
+ if(sheetEnabled)sheetEnabled.checked=localStorage.getItem('esim-sheet-enabled')==='on';
+ if(sheetSize)sheetSize.value=localStorage.getItem('esim-sheet-size')||'A4';
+ if(sheetOrientation)sheetOrientation.value=localStorage.getItem('esim-sheet-orientation')||'landscape';
+ applySheetOptions();
+ function toggleSheetPanel(){const open=!sheetPanel.classList.contains('open');sheetPanel.classList.toggle('open',open);sheetPanel.setAttribute('aria-hidden',String(!open));sheetBtn?.classList.toggle('active',open);}
+ Object.keys(titleFields).forEach(id=>document.getElementById(id)?.addEventListener('input',updateTitleBlock));
+ sheetSize?.addEventListener('change',updateTitleBlock);
+ sheetBtn?.addEventListener('click',toggleSheetPanel);
+ document.getElementById('sheetClose')?.addEventListener('click',()=>{sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')});
+ document.getElementById('sheetApply')?.addEventListener('click',()=>{applySheetOptions();sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')});
+ document.getElementById('sheetReset')?.addEventListener('click',()=>{sheetEnabled.checked=false;sheetSize.value='A4';sheetOrientation.value='landscape';Object.keys(titleFields).forEach(id=>{const el=document.getElementById(id);if(el)el.value=id==='sheetNumber'?'1/1':'';});applySheetOptions()});
+ document.addEventListener('click',e=>{if(sheetPanel?.classList.contains('open')&&!sheetPanel.contains(e.target)&&!sheetBtn?.contains(e.target)){sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')}});
 
  gridBtn.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
 })();
@@ -172,23 +280,50 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
  document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
  document.getElementById('centerViewBtn')?.addEventListener('click',()=>{view={x:0,y:0,w:1200,h:760};apply()});
+ document.getElementById('fitBtn')?.addEventListener('click',()=>{view={x:0,y:0,w:1200,h:760};apply();document.getElementById('state').textContent='READY • FIT VIEW'});
  document.getElementById('insertTextBtn')?.addEventListener('click',e=>{textMode=!textMode;e.currentTarget.classList.toggle('active',textMode);document.getElementById('state').textContent=textMode?'TEXT MODE • CLICK WORKSPACE TO PLACE TEXT':'TEXT MODE OFF'});
- const point=e=>{const r=svg.getBoundingClientRect();return{x:view.x+(e.clientX-r.left)/r.width*view.w,y:view.y+(e.clientY-r.top)/r.height*view.h}};
+ const point=e=>{try{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const m=svg.getScreenCTM();if(m){const p=pt.matrixTransform(m.inverse());return{x:p.x,y:p.y}}}catch(_){}const r=svg.getBoundingClientRect();return{x:view.x+(e.clientX-r.left)/r.width*view.w,y:view.y+(e.clientY-r.top)/r.height*view.h}};
  svg.addEventListener('wheel',e=>{e.preventDefault();const p=point(e);zoom(e.deltaY<0?.88:1.14,p.x,p.y)},{passive:false});
  svg.addEventListener('contextmenu',e=>{if(document.getElementById('connectToggle')?.classList.contains('active'))e.preventDefault()});
  svg.addEventListener('pointerdown',e=>{
-   if(e.button!==0 || e.target.closest('.dropped-symbol') || e.target.closest('.mag-port'))return;
+   const panMode=document.body.classList.contains('pan-mode');
+   if((e.button!==0 && e.button!==1) || e.target.closest('.dropped-symbol') || e.target.closest('.mag-port'))return;
+   if(e.button===0 && !panMode)return;
    const st=document.getElementById('state')?.textContent||'';
    if(st.startsWith('WIRE START')||st.startsWith('WIRE BEND'))return;
    if(textMode){const p=point(e),value=prompt('Text to insert:','Text');if(value){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',p.x);t.setAttribute('y',p.y);t.setAttribute('class','drawing-text');t.textContent=value;t.setAttribute('fill','currentColor');t.setAttribute('font-size','16');drop.appendChild(t)}textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');return;}
-   pan={clientX:e.clientX,clientY:e.clientY,x:view.x,y:view.y};svg.classList.add('panning');try{svg.setPointerCapture(e.pointerId)}catch{}
+   const p=point(e);pan={startX:p.x,startY:p.y,x:view.x,y:view.y};svg.classList.add('panning');try{svg.setPointerCapture(e.pointerId)}catch{}
  });
- svg.addEventListener('pointermove',e=>{if(!pan)return;const r=svg.getBoundingClientRect();view.x=pan.x-(e.clientX-pan.clientX)/r.width*view.w;view.y=pan.y-(e.clientY-pan.clientY)/r.height*view.h;apply()});
+ svg.addEventListener('pointermove',e=>{if(!pan)return;const p=point(e);view.x=pan.x-(p.x-pan.startX);view.y=pan.y-(p.y-pan.startY);apply()});
  const stop=e=>{if(pan){pan=null;svg.classList.remove('panning');try{svg.releasePointerCapture(e.pointerId)}catch{}}};
  svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
 })();
 </script>
 
+<script>
+/* ESC utility menus: Account, Notifications and About. */
+(()=>{
+ const panel=document.getElementById('escUtilityPopover'), title=document.getElementById('utilityTitle'), body=document.getElementById('utilityBody');
+ const buttons={account:document.getElementById('accountBtn'),notifications:document.getElementById('notificationsBtn'),about:document.getElementById('aboutBtn')};
+ const dot=document.getElementById('notificationDot');
+ const notifications=[{title:'Workspace ready',text:'Your schematic workspace is ready.'}];
+ function show(kind){
+  if(!panel)return;
+  const content={
+   account:{heading:'ESC Account',html:'<p><b>Local workspace</b></p><p class="utility-muted">This version stores your work in the current browser session unless you use Save or Save As.</p><button type="button" id="accountSaveHint">Save drawing</button>'},
+   notifications:{heading:'Notifications',html:notifications.map(n=>'<p><b>'+n.title+'</b><br>'+n.text+'</p>').join('')+'<button type="button" id="clearNotifications">Mark all as read</button>'},
+   about:{heading:'About ELECTRICAL SIMU CKT',html:'<p><b>ELECTRICAL SIMU CKT</b></p><p>Design • Simulate • Control • Visualize</p><p class="utility-muted">IEC schematic editor and circuit workspace.</p><p class="utility-muted">Version: 1.0</p>'}
+  }[kind];
+  title.textContent=content.heading;body.innerHTML=content.html;panel.classList.add('open');panel.setAttribute('aria-hidden','false');
+  Object.values(buttons).forEach(b=>b?.classList.remove('active'));buttons[kind]?.classList.add('active');
+  document.getElementById('clearNotifications')?.addEventListener('click',()=>{notifications.length=0;dot.hidden=true;body.innerHTML='<p>No new notifications.</p>';});
+  document.getElementById('accountSaveHint')?.addEventListener('click',()=>{document.getElementById('saveAsBtn')?.click();document.getElementById('saveBtn')?.click();});
+ }
+ Object.entries(buttons).forEach(([kind,b])=>b?.addEventListener('click',()=>{if(panel.classList.contains('open')&&b.classList.contains('active')){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');b.classList.remove('active')}else show(kind)}));
+ document.getElementById('utilityClose')?.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true');Object.values(buttons).forEach(b=>b?.classList.remove('active'))});
+ document.addEventListener('click',e=>{if(panel.classList.contains('open')&&!panel.contains(e.target)&&!Object.values(buttons).some(b=>b&&b.contains(e.target))){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');Object.values(buttons).forEach(b=>b?.classList.remove('active'))}});
+})();
+</script>
 <script>
 /* Ribbon labels stay compact; reveal their names on hover. */
 document.querySelectorAll(".top nav button").forEach(button => {
@@ -200,5 +335,84 @@ document.querySelectorAll(".top nav button").forEach(button => {
 });
 </script>
 <script>if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}</script>
+
+<script>
+/* Approved ribbon actions: New, Open, Save, Save As, Reset, Select and Pan. */
+(()=>{
+ const $=id=>document.getElementById(id);
+ const svg=$('schematic'), drop=$('dropLayer'), state=$('state'), panBtn=$('panBtn'), selectBtn=$('selectBtn');
+ let currentName='Untitled ESC Drawing';
+ const setStatus=s=>{if(state)state.textContent=s};
+ function exportProject(forceName=false){
+   if(!drop){setStatus('SAVE FAILED • DRAWING LAYER NOT FOUND');return}
+   if(forceName){const n=prompt('Save drawing as (name only):',currentName);if(n===null)return;currentName=(n.trim()||'Untitled ESC Drawing')}
+   const project={format:'ESC-DRAWING',version:1,name:currentName,savedAt:new Date().toISOString(),viewBox:svg?.getAttribute('viewBox')||'0 0 1200 760',elements:drop.innerHTML};
+   const blob=new Blob([JSON.stringify(project,null,2)],{type:'application/json'});
+   const url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download=currentName.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_')+'.esc.json';
+   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+   setStatus('SAVED • '+currentName.toUpperCase());
+ }
+ $('newBtn')?.addEventListener('click',()=>{
+   if(drop&&drop.children.length&&!confirm('Start a new drawing? Download or save your current drawing first.'))return;
+   if(drop)drop.replaceChildren();
+   currentName='Untitled ESC Drawing';
+   $('stop')?.click();setStatus('READY • NEW DRAWING');
+   selectBtn?.click();
+ });
+ $('saveBtn')?.addEventListener('click',()=>exportProject(false));
+ $('saveAsBtn')?.addEventListener('click',()=>exportProject(true));
+ $('openBtn')?.addEventListener('click',()=>$('openFileInput')?.click());
+ $('openFileInput')?.addEventListener('change',async e=>{
+   const file=e.target.files?.[0];if(!file)return;
+   try{
+     const data=JSON.parse(await file.text());
+     if(data.format!=='ESC-DRAWING'||typeof data.elements!=='string')throw new Error('This is not an ESC drawing file.');
+     const parser=new DOMParser(),parsed=parser.parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+data.elements+'</svg>','image/svg+xml');
+     if(parsed.querySelector('parsererror'))throw new Error('The drawing file is damaged.');
+     const allowed=new Set(['g','path','line','polyline','polygon','rect','circle','ellipse','text','image','use']);
+     const cleanNode=node=>{
+       if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.textContent);
+       if(node.nodeType!==Node.ELEMENT_NODE||!allowed.has(node.localName))return null;
+       const el=document.createElementNS('http://www.w3.org/2000/svg',node.localName);
+       for(const a of [...node.attributes])if(!/^on/i.test(a.name)&&a.name!=='style'&&a.name!=='href'&&a.name!=='xlink:href')el.setAttribute(a.name,a.value);
+       if(node.localName==='image'||node.localName==='use'){
+         const href=node.getAttribute('href')||node.getAttributeNS('http://www.w3.org/1999/xlink','href')||'';
+         if(href.startsWith('assets/')||href.startsWith('power-original/')||href.startsWith('#'))el.setAttribute('href',href);
+       }
+       [...node.childNodes].forEach(c=>{const clean=cleanNode(c);if(clean)el.appendChild(clean)});
+       return el;
+     };
+     const fragment=document.createDocumentFragment();
+     [...parsed.documentElement.childNodes].forEach(n=>{const clean=cleanNode(n);if(clean)fragment.appendChild(clean)});
+     drop.replaceChildren(fragment);currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
+     if(svg&&data.viewBox)svg.setAttribute('viewBox',data.viewBox);
+     setStatus('OPENED • '+currentName.toUpperCase());
+   }catch(err){alert('Could not open this drawing: '+err.message);setStatus('OPEN FAILED')}
+   e.target.value='';
+ });
+ $('resetBtn')?.addEventListener('click',()=>{
+   $('stop')?.click();
+   document.querySelectorAll('.live-wire,.is-live,.lit,.energized').forEach(el=>el.classList.remove('live-wire','is-live','lit','energized'));
+   setStatus('RESET • SIMULATION STOPPED');
+ });
+ selectBtn?.addEventListener('click',()=>{
+   document.body.classList.remove('pan-mode');
+   panBtn?.classList.remove('active');selectBtn.classList.add('active');
+   setStatus('SELECT MODE • CLICK OR DRAG COMPONENTS');
+ });
+ panBtn?.addEventListener('click',()=>{
+   const active=!document.body.classList.contains('pan-mode');
+   document.body.classList.toggle('pan-mode',active);panBtn.classList.toggle('active',active);selectBtn?.classList.toggle('active',!active);
+   setStatus(active?'PAN MODE • DRAG THE DRAWING':'SELECT MODE • CLICK OR DRAG COMPONENTS');
+ });
+ // Wheel zoom is already supported; Fit returns to the complete engineering sheet viewBox.
+ $('fitBtn')?.addEventListener('click',()=>{
+   if(svg)svg.setAttribute('viewBox','0 0 1200 760');
+   setStatus('READY • FIT DRAWING');
+ });
+})();
+</script>
+
 </body>
 </html>

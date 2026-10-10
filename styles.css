@@ -537,12 +537,12 @@ body{background:#07172f;color:#eaf4ff;font-family:Inter,"Segoe UI",Arial,sans-se
 .top nav{gap:5px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;padding:4px 0}.top button{height:70px;min-width:62px;border:1px solid #294a77;border-radius:11px;background:linear-gradient(160deg,#153963,#0a1c37);color:#eaf5ff;font-size:20px;box-shadow:inset 0 1px #ffffff13;transition:transform .15s,border-color .15s,filter .15s}.top button:hover{transform:translateY(-2px);border-color:#35d5ff;filter:brightness(1.2)}.top button em{font-size:10px;color:#d9e9ff}.top .run{background:linear-gradient(145deg,#00bd79,#007b58);color:#fff}.top .stop{background:linear-gradient(145deg,#ff355d,#a40039);color:#fff}.top #undoBtn,.top #redoBtn{background:linear-gradient(145deg,#6c4cff,#3220a4)}.top #printDrawing{background:linear-gradient(145deg,#00bde9,#0064c8)}.top #schematicMode{background:linear-gradient(145deg,#168dff,#0756d5)}.top #threeD{background:linear-gradient(145deg,#8c49ff,#5022bd)}.top #themeToggle{background:linear-gradient(145deg,#ffb52b,#d66c00)}
 .layout{height:calc(100vh - 92px);background:#07172f}.library{width:400px;flex:0 0 400px;background:linear-gradient(180deg,#07172f,#0a2147);border-right:2px solid #244a7b;padding:12px;box-shadow:4px 0 18px #00102b55}.libtitle{font-size:16px;color:#fff;padding:9px 6px 12px}.libtitle span{color:#91baff}.drag-help{height:34px;background:linear-gradient(90deg,#0759bd,#087fe9);border:1px solid #26a8ff;color:white;border-radius:9px;font-size:10px}.library input{background:#06132a;border:1px solid #35629b;border-radius:10px;height:42px;color:#fff}.cat-head{background:linear-gradient(105deg,var(--accent),#102c58 85%);color:#fff;border:1px solid color-mix(in srgb,var(--accent),white 20%);border-radius:12px;height:48px;box-shadow:0 3px 10px #00112e88}.cat-head:before{width:0}.cat-head .folder{color:#fff}.cat-head b{font-size:12px}.cat-body{gap:8px}.symbol-btn{background:linear-gradient(145deg,#10284a,#07172f);border:1px solid #2b4c78;border-radius:10px;box-shadow:0 4px 10px #00102766;color:#fff}.symbol-btn:hover{border-color:#18d5ff;box-shadow:0 0 0 2px #18d5ff22}.symbol-preview,.symbol-btn .lib-icon{background:transparent!important}.work{position:relative;min-width:0;background:#eaf5fa}.workbar{height:38px;background:linear-gradient(90deg,#0a2144,#123c70);color:#d7eaff;border-bottom:1px solid #2b75bd}.workbar span:first-child{color:#28f5b0}.workbar span:last-child{color:#a6d7ff}#sheet{background:#f8fcff;background-image:linear-gradient(#dce8ee 1px,transparent 1px),linear-gradient(90deg,#dce8ee 1px,transparent 1px);background-size:20px 20px;padding:20px;box-sizing:border-box}#schematic{position:relative;z-index:1;background:transparent;min-width:900px;min-height:650px;max-width:calc(100% - 30px);margin:30px auto 140px;overflow:visible}.sym line,.sym rect{stroke:#111827}.terminal circle{stroke:#111827;fill:#fff}.terminal text{fill:#111827}.wire line{stroke:#111827}.num{fill:#334155}.motorText{fill:#111827}.dropped-symbol .select-box{fill:transparent;fill-opacity:0;stroke:#168dff;stroke-opacity:0}.dropped-symbol.selected .select-box{fill:#60a5fa;fill-opacity:.08;stroke:#168dff;stroke-width:1.7;stroke-dasharray:5 3;stroke-opacity:1}.dropped-symbol .drop-label{fill:#1f2937}.dropped-symbol .drop-tag{fill:#087cff}.hint{color:#64748b;z-index:2}footer{background:#071a37;color:#d7eaff;border-top:1px solid #22518b;min-height:36px}
 /* engineering border and title block for screen and printed sheets */
-#sheet:before{content:"";position:absolute;pointer-events:none;z-index:0;left:5%;right:5%;top:22px;bottom:28px;border:2px solid #526b7c;box-shadow:inset 0 0 0 8px #f8fcff,inset 0 0 0 9px #91a7b5}
+#sheet:before{content:none!important;display:none!important}
 #sheet:after{content:"ELECTRICAL SIMU CKT  •  DESIGN • SIMULATE • CONTROL • VISUALIZE     |     PROJECT: ____________________     |     DRAWING NO: ESC-001     |     SHEET: 1/1     |     SIZE: A4/A3";position:absolute;z-index:2;bottom:32px;left:5.5%;right:5.5%;min-height:48px;padding:10px 12px;box-sizing:border-box;background:#fff;border:1px solid #526b7c;color:#1e293b;font:700 10px Arial;letter-spacing:.3px;display:flex;align-items:center}
 .property-panel{position:absolute;z-index:8;right:12px;top:104px;bottom:48px;width:300px;display:none;flex-direction:column;background:linear-gradient(160deg,#fefeff,#e8efff);color:#14243d;border:1px solid #8bb7ff;border-radius:15px;box-shadow:0 14px 35px #001b4c55;overflow:auto}.property-panel.open{display:flex}.property-head{height:54px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 14px;background:linear-gradient(90deg,#fff,#e5edff);border-bottom:1px solid #cad8f5}.property-head b{flex:1;font-size:14px}.property-icon{color:#6b35ff;font-size:22px}.property-head button{border:0;background:transparent;color:#64748b;font-size:24px;cursor:pointer}.property-content{padding:14px;display:flex;flex-direction:column;gap:10px}.property-content label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:600}.property-content input:not([type=checkbox]),.property-content select{min-width:0;width:58%;height:34px;border:1px solid #c6d4ed;border-radius:7px;background:#fff;color:#162944;padding:5px 8px;box-sizing:border-box}.property-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.property-grid label{display:block}.property-grid input{width:100%!important;margin-top:5px}.property-section{display:flex;align-items:center;gap:9px;border-top:1px solid #d4def0;padding-top:14px;color:#6437e9}.showtag input{width:36px;height:20px;accent-color:#087cff}.property-delete{margin-top:10px;border:0;border-radius:9px;padding:12px;background:linear-gradient(90deg,#ff3559,#cf0035);color:#fff;font-weight:800;cursor:pointer}
-body.theme-dark #sheet{background:#07111f;background-image:linear-gradient(#182a3b 1px,transparent 1px),linear-gradient(90deg,#182a3b 1px,transparent 1px)}body.theme-dark #sheet:before{border-color:#66819a;box-shadow:inset 0 0 0 8px #07111f,inset 0 0 0 9px #66819a}body.theme-dark #sheet:after{background:#0e2036;color:#eaf4ff;border-color:#66819a}body.theme-dark .sym line,body.theme-dark .sym rect,body.theme-dark .wire line{stroke:#eaf4ff}body.theme-dark .terminal circle{stroke:#eaf4ff;fill:#07111f}body.theme-dark .terminal text,body.theme-dark .num,body.theme-dark .motorText{fill:#eaf4ff}
+body.theme-dark #sheet{background:#07111f;background-image:linear-gradient(#182a3b 1px,transparent 1px),linear-gradient(90deg,#182a3b 1px,transparent 1px)}body.theme-dark #sheet:before{content:none!important;display:none!important}body.theme-dark #sheet:after{background:#0e2036;color:#eaf4ff;border-color:#66819a}body.theme-dark .sym line,body.theme-dark .sym rect,body.theme-dark .wire line{stroke:#eaf4ff}body.theme-dark .terminal circle{stroke:#eaf4ff;fill:#07111f}body.theme-dark .terminal text,body.theme-dark .num,body.theme-dark .motorText{fill:#eaf4ff}
 @media(max-width:1200px){.brand{min-width:200px}.library{width:320px;flex-basis:320px}.top button{min-width:54px}.property-panel{width:270px}}
-@media print{body{background:#fff!important;color:#111!important}.top,.library,.workbar,footer,.hint,.drop-overlay,.property-panel{display:none!important}.layout,.work{height:auto!important;display:block!important}#sheet{overflow:visible!important;background:#fff!important;padding:0!important}#sheet:before{left:10mm;right:10mm;top:8mm;bottom:8mm;border:1.5px solid #111!important;box-shadow:none!important}#sheet:after{left:12mm;right:12mm;bottom:12mm;background:#fff!important;color:#111!important;border-color:#111!important}#schematic{width:277mm!important;height:175mm!important;min-width:0!important;min-height:0!important;margin:12mm auto 30mm!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@media print{body{background:#fff!important;color:#111!important}.top,.library,.workbar,footer,.hint,.drop-overlay,.property-panel{display:none!important}.layout,.work{height:auto!important;display:block!important}#sheet{overflow:visible!important;background:#fff!important;padding:0!important}#sheet:before{content:none!important;display:none!important}#sheet:after{left:12mm;right:12mm;bottom:12mm;background:#fff!important;color:#111!important;border-color:#111!important}#schematic{width:277mm!important;height:175mm!important;min-width:0!important;min-height:0!important;margin:12mm auto 30mm!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
 
 /* ESC final visual refinement based on approved reference screenshots */
@@ -624,7 +624,7 @@ body.theme-dark #sheet{background:#07111f;background-image:linear-gradient(#182a
 body.theme-dark .work{background:#07111f!important}
 body.theme-dark .workbar{background:linear-gradient(90deg,#0a1d34,#102b4a)!important;color:#d9eaff!important;border-color:#35536f!important}
 body.theme-dark #sheet{background-color:#07111f!important;background-image:linear-gradient(#1a2a3c 1px,transparent 1px),linear-gradient(90deg,#1a2a3c 1px,transparent 1px)!important;background-size:20px 20px!important;color:#eaf4ff!important}
-body.theme-dark #sheet:before{border-color:#7792ad!important;box-shadow:inset 0 0 0 8px #07111f,inset 0 0 0 9px #526d88!important}
+body.theme-dark #sheet:before{content:none!important;display:none!important}
 body.theme-dark #sheet:after{background:#0c1d31!important;color:#eaf4ff!important;border-color:#7792ad!important}
 body.theme-dark #schematic{background:transparent!important;color:#eaf4ff!important}
 body.theme-dark #schematic .sym line,body.theme-dark #schematic .sym path,body.theme-dark #schematic .sym rect,body.theme-dark #schematic .wire line,body.theme-dark #schematic .wire path,body.theme-dark #schematic .indicator line,body.theme-dark #schematic .indicator circle,body.theme-dark #schematic .overload rect,body.theme-dark #schematic .coil rect{stroke:#edf6ff!important}
@@ -650,3 +650,364 @@ body.theme-light #dropLayer image{filter:none!important}
 body.theme-light .top nav #settingsBtn{background:linear-gradient(145deg,#edf5ff,#b9d5f4)!important;color:#143153!important}
 @media(max-width:760px){#escSettingsPopover{top:72px;right:6px;width:220px}}
 @media print{body.theme-dark #sheet,body.theme-dark #sheet:after{background:#fff!important;color:#111!important}body.theme-dark #schematic .sym line,body.theme-dark #schematic .sym path,body.theme-dark #schematic .wire line{stroke:#111!important}body.theme-dark #schematic .terminal text,body.theme-dark #schematic .num,body.theme-dark #schematic .motorText{fill:#111!important}}
+
+/* ESC vNext: the engineering sheet is part of the SVG drawing coordinate system. */
+#sheet:before,#sheet:after{display:none!important;content:none!important}
+#sheet{background:#f7fbfd!important;background-image:none!important;position:relative!important}
+#schematic{width:100%!important;height:100%!important;min-width:900px!important;min-height:0!important;max-width:none!important;margin:0!important;display:block!important;touch-action:none}
+#engineeringSheet{pointer-events:none}
+.sheet-paper{fill:#fbfdff;stroke:#587387;stroke-width:2}
+.sheet-grid-line{stroke:#dbe6ed}
+.sheet-border,.sheet-border-inner{fill:none;stroke:#526b7c;stroke-width:1.5}
+.sheet-border-inner{stroke-width:1}
+.sheet-coordinates{fill:#263b4a;font-weight:700}
+.sheet-titleblock rect{fill:#fff;stroke:#526b7c;stroke-width:1.2}
+.sheet-titleblock path{fill:none;stroke:#71889a;stroke-width:1}
+.sheet-titleblock text{fill:#263b4a;font-size:9px;font-weight:600}
+.sheet-logo{background:#fff}
+body.theme-dark #sheet{background:#07111f!important;background-image:none!important}
+body.theme-dark .sheet-paper{fill:#071522;stroke:#7792ad}
+body.theme-dark .sheet-grid-line{stroke:#20364a}
+body.theme-dark .sheet-border,body.theme-dark .sheet-border-inner{stroke:#7792ad}
+body.theme-dark .sheet-coordinates{fill:#e5f2ff}
+body.theme-dark .sheet-titleblock rect{fill:#0d2034;stroke:#7792ad}
+body.theme-dark .sheet-titleblock path{stroke:#526d86}
+body.theme-dark .sheet-titleblock text{fill:#e5f2ff}
+body.theme-light #sheet{background:#f7fbfd!important;background-image:none!important}
+body.theme-light .sheet-paper{fill:#fbfdff;stroke:#587387}
+body.theme-light .sheet-grid-line{stroke:#dbe6ed}
+body.theme-light .sheet-border,body.theme-light .sheet-border-inner{stroke:#526b7c}
+body.theme-light .sheet-coordinates{fill:#263b4a}
+body.theme-light .sheet-titleblock rect{fill:#fff;stroke:#526b7c}
+body.theme-light .sheet-titleblock path{stroke:#71889a}
+body.theme-light .sheet-titleblock text{fill:#263b4a}
+/* Additional reference-style top-right utilities */
+.top nav #accountBtn{background:linear-gradient(145deg,#00b8d9,#075a86)!important;border-color:#70eaff!important}
+.top nav #notificationsBtn{background:linear-gradient(145deg,#ffb62e,#b64c0a)!important;border-color:#ffe08a!important;position:relative}
+.top nav #aboutBtn{background:linear-gradient(145deg,#9260ff,#4b27b9)!important;border-color:#c5aaff!important}
+.notification-dot{position:absolute;right:7px;top:5px;width:7px;height:7px;border-radius:50%;background:#ff3559;box-shadow:0 0 0 2px #111d30}
+.esc-utility-popover{position:fixed;z-index:1100;right:14px;top:82px;width:300px;max-width:calc(100vw - 24px);display:none;background:linear-gradient(160deg,#102b4c,#07172f);color:#eef7ff;border:1px solid #4c8bd0;border-radius:12px;box-shadow:0 14px 36px #0009;font:12px/1.45 Arial,sans-serif;overflow:hidden}
+.esc-utility-popover.open{display:block}
+.utility-popover-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:linear-gradient(90deg,#087fff,#522be0);font-size:13px}
+.utility-popover-head button{border:0;background:#ffffff22;color:#fff;border-radius:6px;font-size:20px;width:28px;height:28px;cursor:pointer}
+#utilityBody{padding:14px;max-height:55vh;overflow:auto}
+#utilityBody p{margin:4px 0 10px;color:#d5e7ff}
+#utilityBody button{width:100%;text-align:left;padding:9px 10px;margin:4px 0;border:1px solid #355d89;border-radius:7px;background:#102d4e;color:#fff;cursor:pointer}
+#utilityBody button:hover{background:#17477a}
+#utilityBody .utility-muted{color:#9db9d7;font-size:11px}
+@media print{#engineeringSheet{display:inline!important}.sheet-paper{fill:#fff!important}.sheet-grid-line{stroke:#e6e6e6!important}.sheet-border,.sheet-border-inner,.sheet-titleblock rect,.sheet-titleblock path{stroke:#222!important}.sheet-coordinates,.sheet-titleblock text{fill:#111!important}.sheet-titleblock rect{fill:#fff!important}}
+#sheet.grid-off #engineeringSheet .sheet-grid{display:none!important}
+
+#wireLayer .connected-wire.wire-live{stroke:#ff4858!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #ff485866)}#wireLayer .connected-wire.wire-live.wire-neutral{stroke:#2e9bff!important;filter:drop-shadow(0 0 2px #2e9bff66)}
+
+/* ESC fresh component library: category navigation requested by user */
+#libraryGroups{display:block!important;min-height:0;overflow:visible!important}
+.component-category-list{display:flex;flex-direction:column;gap:5px;margin:8px 0 12px}
+.component-category{width:100%;min-height:35px;display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid transparent;border-radius:7px;background:transparent;color:#e8f2ff;text-align:left;font:600 12px/1.2 Arial,sans-serif;cursor:pointer;transition:background .14s,border-color .14s,transform .14s}
+.component-category .category-mark{width:5px;height:18px;border-radius:5px;background:var(--category-accent);box-shadow:0 0 8px color-mix(in srgb,var(--category-accent) 35%,transparent);flex:0 0 5px}
+.component-category span:nth-child(2){flex:1}
+.component-category small{font-size:10px;color:#a9c6e7;font-weight:500}
+.component-category:hover{background:#ffffff12;border-color:color-mix(in srgb,var(--category-accent) 45%,transparent);transform:translateX(1px)}
+.component-category.active{background:linear-gradient(90deg,color-mix(in srgb,var(--category-accent) 24%,#0b1b32),#102844);border-color:color-mix(in srgb,var(--category-accent) 75%,#18314c);box-shadow:inset 3px 0 0 var(--category-accent)}
+.component-category.active span:nth-child(2){color:#fff}
+.component-results-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 3px;border-top:1px solid #284765;color:#eaf4ff;font:700 10px Arial,sans-serif;letter-spacing:.04em}
+.component-results-head span{color:#8fb7dc;font-weight:500;letter-spacing:0}
+.component-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding-bottom:10px}
+.component-results .symbol-btn{width:100%;min-width:0;height:88px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:5px!important;overflow:hidden}
+.component-results .symbol-preview{width:100%;height:53px!important;min-height:0;display:flex;align-items:center;justify-content:center;background:transparent!important;padding:0!important}
+.component-results .asset-symbol{width:100%;height:100%;object-fit:contain;display:block}
+.component-results .symbol-btn label{font-size:9px!important;line-height:1.15!important;text-align:center;color:#edf5ff!important;max-width:100%;overflow-wrap:anywhere}
+.library-empty{grid-column:1/-1;padding:16px 8px;text-align:center;color:#9eb8d2;font-size:11px}
+body.theme-light .component-category{color:#243447}
+body.theme-light .component-category small{color:#60758a}
+body.theme-light .component-category:hover{background:#e7f0f8}
+body.theme-light .component-category.active{background:linear-gradient(90deg,color-mix(in srgb,var(--category-accent) 14%,#fff),#edf5fc);color:#10253b}
+body.theme-light .component-category.active span:nth-child(2){color:#10253b}
+body.theme-light .component-results-head{color:#263b4e;border-color:#cbd8e2}
+body.theme-light .component-results-head span{color:#627d93}
+body.theme-light .component-results .symbol-btn label{color:#243447!important}
+@media(max-width:600px){.component-results{grid-template-columns:repeat(2,minmax(0,1fr))}.component-category{min-height:33px}}
+
+
+/* ESC CAD ribbon — compact, colorful, and consistent with the approved reference */
+.top{height:76px;padding:5px 10px;background:linear-gradient(180deg,#071321 0%,#0a1b30 100%);border-bottom:2px solid #1e5b80;position:relative;z-index:20}
+.top:after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:linear-gradient(90deg,#00e5a8,#00a9ff,#8b5cf6,#ff3ca6,#ff9d00,#00e5a8)}
+.brand{min-width:180px;max-width:205px;flex:0 0 205px;margin-right:8px}
+.brand-logo{max-width:168px;max-height:61px;object-fit:contain}
+.top nav.cad-ribbon{display:flex;align-items:center;justify-content:flex-start;gap:5px;height:100%;margin-left:auto;overflow-x:auto;overflow-y:hidden;padding:2px 1px 5px;scrollbar-width:thin}
+.top nav.cad-ribbon .tool-btn{position:relative;flex:0 0 49px;min-width:49px;height:53px;padding:4px 2px 3px;border:1px solid rgba(150,190,230,.17);border-radius:10px;background:linear-gradient(180deg,#142842,#09182a);color:#eaf5ff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 7px rgba(0,0,0,.25);transition:transform .12s ease,filter .12s ease,border-color .12s ease}
+.top nav.cad-ribbon .tool-btn:hover{transform:translateY(-2px);filter:brightness(1.18);border-color:#68d7ff}
+.top nav.cad-ribbon .tool-btn:active{transform:translateY(0) scale(.97)}
+.top nav.cad-ribbon .tool-btn .toolbar-icon{font-size:20px;line-height:21px;font-weight:700;display:block;margin:0;color:#dcecff}
+.top nav.cad-ribbon .tool-btn em{font-style:normal;font-size:9px;line-height:11px;font-weight:700;white-space:nowrap;margin:0;letter-spacing:.05px}
+.top nav.cad-ribbon .tool-btn.active{outline:2px solid #16b8ff;outline-offset:0;box-shadow:0 0 12px rgba(0,174,255,.25),inset 0 1px 0 rgba(255,255,255,.12)}
+.top nav.cad-ribbon .tool-blue{background:linear-gradient(145deg,#168bff,#0054cf);border-color:#298fff}
+.top nav.cad-ribbon .tool-purple{background:linear-gradient(145deg,#833dff,#4812b9);border-color:#8552ff}
+.top nav.cad-ribbon .tool-teal{background:linear-gradient(145deg,#00b7b0,#006f77);border-color:#00c9c1}
+.top nav.cad-ribbon .tool-teal2{background:linear-gradient(145deg,#00d5d0,#007c9a);border-color:#00d5d0}
+.top nav.cad-ribbon .tool-green{background:linear-gradient(145deg,#00c982,#00673e);border-color:#00e69a}
+.top nav.cad-ribbon .tool-red{background:linear-gradient(145deg,#ff3c62,#a90031);border-color:#ff5875}
+.top nav.cad-ribbon .tool-orange{background:linear-gradient(145deg,#ffb02e,#b95a00);border-color:#ffc04a}
+.top nav.cad-ribbon .tool-slate{background:linear-gradient(180deg,#18314f,#09182a);border-color:#284567}
+.top nav.cad-ribbon .tool-sun{flex-basis:86px;min-width:86px;background:linear-gradient(180deg,#17314a,#09182a);border-color:#294a68}
+.top nav.cad-ribbon .tool-sun .toolbar-icon{color:#ffce45}
+.top nav.cad-ribbon .ribbon-separator{height:43px;flex:0 0 1px;background:linear-gradient(transparent,#34516b,transparent);margin:0 2px}
+#openFileInput{display:none!important}
+body.pan-mode #schematic{cursor:grab}
+body.pan-mode #schematic.panning{cursor:grabbing}
+@media(max-width:1050px){.brand{min-width:135px;flex-basis:135px}.brand-logo{max-width:130px}.top nav.cad-ribbon .tool-btn{flex-basis:45px;min-width:45px}.top nav.cad-ribbon .tool-sun{flex-basis:78px;min-width:78px}}
+
+
+/* ESC UI foundation refinements: compact brand, always-colorful ribbon, true theme toggle */
+.top{height:64px!important;min-height:64px!important;padding:0 10px!important;background:linear-gradient(180deg,#071a2b 0%,#061321 100%)!important;border-bottom:2px solid transparent!important;border-image:linear-gradient(90deg,#00d8ff,#7c3aed,#ff267a,#00e6a8) 1!important;gap:10px}
+.brand{flex:0 0 205px!important;min-width:205px!important;width:205px!important;height:58px!important;padding-right:10px;border-right:1px solid #2a4968;overflow:hidden}
+.brand-logo{display:block!important;width:194px!important;max-width:194px!important;height:54px!important;object-fit:contain!important;object-position:left center!important}
+.top nav.cad-ribbon{flex:1 1 auto!important;min-width:0!important;height:60px!important;gap:5px!important;padding:3px 1px 4px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin}
+.top nav.cad-ribbon .tool-btn{flex:0 0 48px!important;min-width:48px!important;height:49px!important;padding:3px 2px!important;border-radius:9px!important;color:#fff!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 3px 7px rgba(0,0,0,.25)!important}
+.top nav.cad-ribbon .tool-btn em{display:block!important;font-size:8px!important;line-height:1.05!important;margin-top:1px!important;white-space:nowrap}
+.top nav.cad-ribbon .tool-btn .toolbar-icon{font-size:18px!important;line-height:1!important}
+.top nav.cad-ribbon .tool-blue{background:linear-gradient(155deg,#2998ff,#0054c9)!important;border-color:#399cff!important}
+.top nav.cad-ribbon .tool-purple{background:linear-gradient(155deg,#8c4dff,#4b17be)!important;border-color:#a27bff!important}
+.top nav.cad-ribbon .tool-teal{background:linear-gradient(155deg,#00d5c0,#007c8c)!important;border-color:#36e7d4!important}
+.top nav.cad-ribbon .tool-teal2{background:linear-gradient(155deg,#18d8ef,#0077ad)!important;border-color:#53e8ff!important}
+.top nav.cad-ribbon .tool-green{background:linear-gradient(155deg,#10df8b,#00814f)!important;border-color:#45f4ad!important}
+.top nav.cad-ribbon .tool-red{background:linear-gradient(155deg,#ff5b78,#bd123b)!important;border-color:#ff8195!important}
+.top nav.cad-ribbon .tool-orange{background:linear-gradient(155deg,#ffbc37,#c56a00)!important;border-color:#ffd06a!important}
+.top nav.cad-ribbon .tool-slate{background:linear-gradient(155deg,#21466e,#0b1c32)!important;border-color:#3c6793!important}
+.top nav.cad-ribbon .tool-sun{background:linear-gradient(155deg,#244a69,#10283e)!important;border-color:#527fa5!important}
+.top nav.cad-ribbon .tool-btn.active{outline:2px solid #00e6ff!important;outline-offset:1px!important;filter:brightness(1.12)}
+.top nav.cad-ribbon .theme-toggle{flex:0 0 122px!important;min-width:122px!important;width:122px!important;flex-direction:row!important;gap:5px!important;padding:4px 7px!important;background:linear-gradient(155deg,#163d58,#0a1b2c)!important;border-color:#416f90!important}
+.theme-word{font-size:9px;font-weight:700;color:#f0f7ff;white-space:nowrap}
+.theme-switch-track{position:relative;display:inline-flex;align-items:center;width:37px;height:20px;flex:0 0 37px;border-radius:999px;background:#0879df;border:1px solid #4cbaff;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
+.theme-switch-knob{position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0008;transition:left .18s ease}
+body.theme-light .theme-switch-track .theme-switch-knob{left:19px}
+body.theme-dark .theme-switch-track .theme-switch-knob{left:2px}
+body.theme-light .top,body.theme-light .top nav.cad-ribbon{background:linear-gradient(180deg,#071a2b 0%,#061321 100%)!important}
+body.theme-light .top nav.cad-ribbon .tool-btn{color:#fff!important}
+.empty-library{grid-column:1/-1;padding:16px 8px;text-align:center;color:#a9bed1;font-size:11px;line-height:1.7}
+.empty-library small{color:#718ba2;font-size:10px}
+@media(max-width:900px){.top{height:60px!important;min-height:60px!important;padding:0 6px!important;gap:6px}.brand{flex-basis:150px!important;min-width:150px!important;width:150px!important}.brand-logo{width:140px!important;max-width:140px!important;height:48px!important}.top nav.cad-ribbon .tool-btn{flex-basis:44px!important;min-width:44px!important}.top nav.cad-ribbon .theme-toggle{flex-basis:112px!important;min-width:112px!important;width:112px!important}}
+
+
+/* ESC theme-toggle refinement: keep the ribbon and component sidebar consistently dark/colorful in both themes. */
+body.theme-light .top,
+body.theme-light .top nav.cad-ribbon {
+  background:linear-gradient(180deg,#061326 0%,#0b2344 100%)!important;
+  border-color:#1766b7!important;
+  color:#eaf4ff!important;
+}
+body.theme-light .top nav.cad-ribbon .tool-btn,
+body.theme-light .top nav.cad-ribbon .tool-btn em {
+  color:#fff!important;
+}
+body.theme-light .top nav.cad-ribbon .tool-blue{background:linear-gradient(155deg,#2998ff,#0054c9)!important;border-color:#399cff!important}
+body.theme-light .top nav.cad-ribbon .tool-purple{background:linear-gradient(155deg,#8c4dff,#4b17be)!important;border-color:#a27bff!important}
+body.theme-light .top nav.cad-ribbon .tool-teal{background:linear-gradient(155deg,#00d5c0,#007c8c)!important;border-color:#36e7d4!important}
+body.theme-light .top nav.cad-ribbon .tool-teal2{background:linear-gradient(155deg,#18d8ef,#0077ad)!important;border-color:#53e8ff!important}
+body.theme-light .top nav.cad-ribbon .tool-green{background:linear-gradient(155deg,#10df8b,#00814f)!important;border-color:#45f4ad!important}
+body.theme-light .top nav.cad-ribbon .tool-red{background:linear-gradient(155deg,#ff5b78,#bd123b)!important;border-color:#ff8195!important}
+body.theme-light .top nav.cad-ribbon .tool-orange{background:linear-gradient(155deg,#ffbc37,#c56a00)!important;border-color:#ffd06a!important}
+body.theme-light .top nav.cad-ribbon .tool-slate{background:linear-gradient(155deg,#21466e,#0b1c32)!important;border-color:#3c6793!important}
+body.theme-light .top nav.cad-ribbon .tool-sun{background:linear-gradient(155deg,#163d58,#0a1b2c)!important;border-color:#416f90!important}
+body.theme-light .top nav.cad-ribbon #themeToggle{background:linear-gradient(155deg,#163d58,#0a1b2c)!important;border-color:#416f90!important}
+/* Sidebar remains the same navy color in both themes; only the drawing canvas changes theme. */
+body.theme-light .library{background:#07172f!important;color:#eaf4ff!important;border-color:#24476d!important}
+body.theme-light .libtitle{color:#eaf4ff!important}
+body.theme-light .libtitle span{color:#54b5ff!important}
+body.theme-light .library input{background:#061326!important;color:#eaf4ff!important;border-color:#315678!important}
+body.theme-light .library input::placeholder{color:#91a9c2!important}
+body.theme-light .cat-body{background:#0b2144!important;border-color:#294a70!important}
+body.theme-light .symbol-btn{background:#0b1c32!important;color:#eaf4ff!important;border-color:#294a70!important}
+body.theme-light .symbol-btn label{color:#eaf4ff!important}
+/* Icon-only theme toggle: no Light/Dark words. */
+.top nav.cad-ribbon .theme-toggle{flex:0 0 82px!important;min-width:82px!important;width:82px!important;flex-direction:row!important;gap:5px!important;padding:4px 6px!important;background:linear-gradient(155deg,#163d58,#0a1b2c)!important;border-color:#416f90!important}
+.theme-toggle .theme-symbol{display:inline-flex;align-items:center;justify-content:center;width:13px;flex:0 0 13px;color:#ffe18a;font-size:15px;line-height:1}
+.theme-toggle .theme-moon{color:#c7d9ff}
+.theme-toggle .theme-sun{color:#ffd15b}
+.theme-toggle .theme-switch-track{width:34px;flex-basis:34px;height:19px;background:#0879df;border-color:#4cbaff}
+.theme-toggle .theme-switch-knob{width:13px;height:13px;top:2px;left:2px}
+body.theme-light .theme-toggle .theme-switch-knob{left:17px}
+body.theme-dark .theme-toggle .theme-switch-knob{left:2px}
+body.theme-light .top nav.cad-ribbon .theme-toggle{flex-basis:82px!important;min-width:82px!important;width:82px!important}
+@media(max-width:900px){.top nav.cad-ribbon .theme-toggle,body.theme-light .top nav.cad-ribbon .theme-toggle{flex-basis:78px!important;min-width:78px!important;width:78px!important}}
+
+/* User request: remove the engineering sheet outline while retaining grid, coordinates and title block. */
+.sheet-border,.sheet-border-inner{display:none!important;stroke:none!important}
+#sheet:before{display:none!important;content:none!important}
+
+
+/* User request: remove the workspace outer border and solid background, but KEEP the grid. */
+#sheet, body.theme-light #sheet {
+  background-color: transparent !important;
+  background-image: linear-gradient(rgba(120,145,165,.20) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(120,145,165,.20) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+body.theme-dark #sheet {
+  background-color: transparent !important;
+  background-image: linear-gradient(rgba(100,135,165,.22) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(100,135,165,.22) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+#engineeringSheet { display: none !important; }
+#sheet:before { content: none !important; display: none !important; }
+#schematic { background: transparent !important; border: 0 !important; outline: 0 !important; box-shadow: none !important; }
+
+
+/* ESC sheet/grid controls: grid visibility is independent from optional engineering frame. */
+#sheet{background-image:linear-gradient(rgba(120,145,165,.20) 1px,transparent 1px),linear-gradient(90deg,rgba(120,145,165,.20) 1px,transparent 1px)!important;background-size:20px 20px!important}
+body.theme-dark #sheet{background-image:linear-gradient(rgba(100,135,165,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(100,135,165,.22) 1px,transparent 1px)!important}
+#sheet.grid-off,body.grid-disabled #sheet{background-image:none!important}
+#sheet.grid-off #engineeringSheet .sheet-grid,body.grid-disabled #engineeringSheet .sheet-grid{display:none!important}
+#engineeringSheet{display:none!important;pointer-events:none}
+body.engineering-sheet-on #engineeringSheet{display:inline!important}
+body.title-block-off #engineeringSheet .sheet-titleblock{display:none!important}
+body.engineering-sheet-on #engineeringSheet .sheet-paper{fill:transparent!important;stroke:#71879a!important;stroke-width:1.5!important}
+body.theme-dark.engineering-sheet-on #engineeringSheet .sheet-paper{stroke:#7792ad!important}
+.sheet-settings{position:fixed;z-index:1200;top:82px;right:14px;width:300px;max-width:calc(100vw - 24px);padding:0 14px 14px;display:none;background:#202b3a;color:#edf5ff;border:1px solid #456486;border-radius:13px;box-shadow:0 16px 40px #0009;font:12px/1.45 Arial,sans-serif}
+.sheet-settings.open{display:block}
+.sheet-settings-head{display:flex;align-items:center;justify-content:space-between;margin:0 -14px 10px;padding:12px 14px;background:linear-gradient(90deg,#087fff,#5330dc);border-radius:12px 12px 0 0;font-size:14px}
+.sheet-settings-head button{border:0;border-radius:5px;background:#ffffff22;color:#fff;font-size:22px;width:28px;height:28px;cursor:pointer}
+.sheet-note{margin:0 0 12px;color:#b9cce0;font-size:11px}
+.sheet-check{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:9px 10px;border:1px solid #3c536d;border-radius:8px;background:#152235}
+.sheet-check input{width:17px;height:17px;accent-color:#08a8f0}
+.sheet-field{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;color:#dbe9f8}
+.sheet-field select{width:132px;padding:8px;border:1px solid #496887;border-radius:7px;background:#0d1a2a;color:#fff}
+.sheet-settings-actions{display:flex;gap:8px;margin-top:14px}
+.sheet-settings-actions button{flex:1;padding:10px;border:1px solid #3987c8;border-radius:8px;background:linear-gradient(90deg,#087fff,#5132df);color:white;font-weight:700;cursor:pointer}
+.sheet-settings-actions #sheetReset{background:#26384e;border-color:#4b6178}
+#sheetBtn[aria-pressed="true"],#sheetBtn.active{box-shadow:0 0 0 2px #22d3ee55,inset 0 0 0 1px #6cecff}
+@media print{body.engineering-sheet-on #engineeringSheet{display:inline!important}.sheet-settings{display:none!important}}
+
+
+/* Engineering sheet: coordinate cells, single integrated grid/frame and editable title block */
+.sheet-frame-lines{stroke:#526b7c;fill:none;stroke-width:1.15}
+.sheet-titleblock .sheet-value{font-size:10px;font-weight:500}
+.sheet-logo{background:transparent}
+body.theme-dark .sheet-frame-lines{stroke:#7792ad}
+body.theme-light .sheet-frame-lines{stroke:#526b7c}
+.sheet-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sheet-settings .sheet-field input{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:9px 10px;border:1px solid #536b84;border-radius:7px;background:#0c1d30;color:#eef7ff;font:12px Arial,sans-serif;outline:none}
+.sheet-settings .sheet-field input:focus{border-color:#11b7f0;box-shadow:0 0 0 2px #11b7f033}
+.sheet-settings{max-height:calc(100vh - 100px);overflow-y:auto}
+.sheet-settings .sheet-note{line-height:1.45}
+@media print{.sheet-frame-lines{stroke:#222!important}.sheet-titleblock .sheet-value{fill:#111!important}}
+
+
+/* ESC correction: one workspace grid only; the engineering frame/title block is a single optional layer. */
+#engineeringSheet .sheet-grid, #engineeringSheet .sheet-grid-line { display:none !important; }
+#engineeringSheet .sheet-paper { fill:transparent !important; stroke:transparent !important; }
+body.engineering-sheet-on #engineeringSheet .sheet-paper { fill:transparent !important; stroke:#71879a !important; stroke-width:1.5 !important; }
+body.theme-dark.engineering-sheet-on #engineeringSheet .sheet-paper { fill:transparent !important; stroke:#7792ad !important; }
+body.title-block-off #engineeringSheet .sheet-titleblock { display:initial !important; }
+#sheet.grid-off, body.grid-disabled #sheet { background-image:none !important; }
+#sheet:not(.grid-off) { background-image:linear-gradient(rgba(120,145,165,.20) 1px,transparent 1px),linear-gradient(90deg,rgba(120,145,165,.20) 1px,transparent 1px) !important; background-size:20px 20px !important; }
+body.theme-dark #sheet:not(.grid-off) { background-image:linear-gradient(rgba(100,135,165,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(100,135,165,.22) 1px,transparent 1px) !important; }
+
+
+/* Latest UI request: align logo and library widths, and make the library collapsible. */
+.top{gap:0!important;padding-left:0!important;padding-right:8px!important;overflow:hidden!important}
+.brand{flex:0 0 218px!important;width:218px!important;min-width:218px!important;max-width:218px!important;height:58px!important;margin:0!important;padding:3px 5px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-right:1px solid #24496b!important;overflow:hidden!important}
+.brand-logo{display:block!important;width:208px!important;max-width:208px!important;height:52px!important;max-height:52px!important;object-fit:contain!important;object-position:center!important}
+.top nav.cad-ribbon{margin-left:0!important;flex:1 1 auto!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin!important;gap:3px!important;padding-left:8px!important}
+.top nav.cad-ribbon .tool-btn{flex-shrink:0!important}
+.top nav.cad-ribbon .library-toggle{flex:0 0 55px!important;min-width:55px!important;width:55px!important;background:linear-gradient(155deg,#00c8ef,#006eae)!important;border:1px solid #36e2ff!important;color:#fff!important}
+.library{width:218px!important;flex:0 0 218px!important;min-width:218px!important;padding:8px 7px!important;background:linear-gradient(180deg,#07182f,#071329)!important;border-right:2px solid #1d4e84!important;box-shadow:none!important;transition:width .18s ease,flex-basis .18s ease,padding .18s ease}
+.library-hidden .layout .library{display:none!important}
+.library-hidden .layout .work{flex:1 1 100%!important;width:100%!important;min-width:0!important}
+.library-hidden .layout{grid-template-columns:minmax(0,1fr)!important}
+.component-category-list{display:flex!important;flex-direction:column!important;gap:3px!important;margin:4px 0!important}
+.library-folder{width:100%;border-radius:6px;overflow:hidden;background:transparent;border:1px solid transparent}
+.library-folder-head{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-height:36px!important;padding:7px 10px!important;border:1px solid transparent!important;border-radius:5px!important;background:transparent!important;color:#edf5ff!important;text-align:left!important;font:500 13px/1.2 Arial,sans-serif!important;cursor:pointer!important;box-shadow:none!important}
+.library-folder-mark{width:7px!important;flex:0 0 7px!important;height:18px!important;border-radius:3px!important;background:var(--category-accent)!important;color:transparent!important;font-size:0!important}
+.library-folder-name{flex:1 1 auto!important}
+.library-folder-chevron{color:#a8c0d7;font-size:16px;transition:transform .12s}
+.library-folder.active{background:#ffffff0a;border-color:#ffffff0d}
+.library-folder.active .library-folder-head{background:#ffffff12!important;box-shadow:inset 3px 0 0 var(--category-accent)!important}
+.library-folder-body{display:flex;align-items:center;gap:9px;padding:9px 10px 11px 24px;color:#a9c6e7;font-size:11px;border-top:1px solid #ffffff0a}
+.folder-empty-icon{font-size:20px;color:var(--category-accent)}
+.library-folder-body b,.library-folder-body small{display:block;font-weight:500}
+.library-folder-body small{margin-top:4px;color:#8ea8c2;font-size:10px;line-height:1.3}
+.library .libtitle{white-space:normal!important;line-height:1.3!important;font-size:12px!important;padding:4px 3px 7px!important}
+.library .drag-help{font-size:8px!important;letter-spacing:0!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important}
+@media(max-width:900px){.brand{flex-basis:180px!important;width:180px!important;min-width:180px!important}.brand-logo{width:170px!important;max-width:170px!important}.library{width:218px!important;flex-basis:218px!important;min-width:218px!important}}
+@media(max-width:620px){.brand{flex-basis:142px!important;width:142px!important;min-width:142px!important}.brand-logo{width:132px!important;max-width:132px!important;height:45px!important}.library{width:218px!important;flex-basis:218px!important;min-width:218px!important}}
+
+
+/* FIX 2026-10-10: logo fills the full header brand cell; Library truly collapses the sidebar. */
+.top { padding-left:0 !important; padding-right:8px !important; }
+.top .brand {
+  flex: 0 0 218px !important;
+  width: 218px !important;
+  min-width: 218px !important;
+  max-width: 218px !important;
+  height: 100% !important;
+  margin: 0 8px 0 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  overflow: hidden !important;
+  border-right: 2px solid #1d4772 !important;
+  box-sizing: border-box !important;
+}
+.top .brand .brand-logo {
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  object-position: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* Keep sidebar exactly aligned with the logo cell. */
+.layout > .library {
+  width: 218px !important;
+  min-width: 218px !important;
+  max-width: 218px !important;
+  flex: 0 0 218px !important;
+}
+/* The Library button collapses the entire sidebar and lets the work area take its place. */
+body.library-hidden .layout > .library { display: none !important; }
+body.library-hidden .layout > .work { flex: 1 1 100% !important; width: 100% !important; max-width: 100% !important; }
+#libraryToggle { flex: 0 0 auto; }
+@media (max-width: 620px) {
+  .top .brand { flex-basis: 142px !important; width: 142px !important; min-width: 142px !important; max-width: 142px !important; }
+  .layout > .library { width: 218px !important; min-width: 218px !important; flex-basis: 218px !important; }
+}
+
+
+/* ESC correction: remove the redundant workspace header strip and stabilize the library. */
+.workbar { display:none !important; }
+.layout { height:calc(100vh - 64px) !important; min-height:0 !important; }
+.layout > .library { width:218px !important; min-width:218px !important; max-width:218px !important; flex:0 0 218px !important; }
+.layout > .work { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }
+body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; flex:0 0 0 !important; border:0 !important; padding:0 !important; }
+body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; }
+.component-category-list { display:flex !important; flex-direction:column !important; gap:4px !important; margin:4px 0 10px !important; }
+.component-category {
+  display:flex !important; align-items:center !important; gap:10px !important; width:100% !important;
+  min-height:36px !important; padding:7px 10px !important; text-align:left !important;
+  color:#f2f5f8 !important; background:transparent !important; border:1px solid transparent !important;
+  border-radius:5px !important; cursor:pointer !important; font:500 14px/1.2 Inter,Segoe UI,Arial,sans-serif !important;
+}
+.component-category:hover { background:#ffffff0c !important; }
+.component-category.active { background:#ffffff15 !important; border-color:#ffffff0b !important; box-shadow:inset 3px 0 0 #12d89a !important; }
+.category-mark { width:3px; height:16px; flex:0 0 3px; border-radius:3px; background:var(--category-accent,#168bff); opacity:.95; }
+.component-category:not(.active) .category-mark { opacity:0; }
+.library-empty { padding:12px 10px; color:#9eb8d2; font-size:11px; line-height:1.45; }
+body.theme-light .component-category { color:#f2f5f8 !important; }
+@media(max-width:620px) {
+  .layout { height:calc(100vh - 60px) !important; }
+  .layout > .library { width:218px !important; min-width:218px !important; flex-basis:218px !important; }
+}

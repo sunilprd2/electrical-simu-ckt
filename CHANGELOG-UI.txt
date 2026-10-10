@@ -1,12 +1,6 @@
-ELECTRICAL SIMU CKT UI refinements
-- Ribbon tab names: SCHEMATIC and 2D.
-- Compact icon ribbon with hover/focus tooltips and horizontal scrolling.
-- Brand logo retained in header.
-- POWER category renamed from POWER SUPPLY.
-- Placed component reference designator is shown to the left in the category accent colour, normal weight.
-- White-mode schematic strokes/text receive higher contrast.
-Note: 2D remains a renamed placeholder button; the physical 2D workspace is not implemented by this patch.
-
-Selection fix: added transparent per-component hit areas so IEC SVG strokes can be clicked and dragged; click now selects without opening the component editor.
-
-Visual refinement: colorful gradient toolbar ribbon, reduced component sidebar width, dark blue library panels, and transparent original-SVG canvas backing. Existing JavaScript behavior retained. Browser interaction testing is still required.
+ESC UI update: Engineering sheet frame and title block
+- Integrated the segmented engineering border and coordinate cells with the same SVG sheet/grid.
+- Added editable Project, Title, Document No., Date, Drawn By, Revision, Checked By, Approved By and Sheet No. fields.
+- Sheet details update the title block live and persist in localStorage.
+- Preserved optional sheet border/title block toggles and light/dark styles.
+- Updated service worker cache name.
