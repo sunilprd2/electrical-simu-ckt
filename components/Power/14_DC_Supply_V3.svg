@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" role="img" aria-labelledby="title">
-<title id="title">DC Supply V3</title>
-<g fill="none" stroke="#111111" stroke-width="2.3" stroke-linecap="square" stroke-linejoin="miter">
-<path d="M50 12 V48 M28 48 H72 M38 60 H62 M50 60 V104"/>
-</g>
-<g fill="#111111"><rect x="45.5" y="3.5" width="9" height="10" data-terminal-id="POS"/><rect x="45.5" y="101" width="9" height="10" data-terminal-id="NEG"/></g>
-<g fill="#008000" font-family="Arial,sans-serif" font-size="12" font-weight="bold"><text x="60" y="13">+</text><text x="60" y="114">-</text></g>
-<text x="2" y="65" fill="#008000" font-family="Arial,sans-serif" font-size="14" font-weight="bold" transform="rotate(-90 2 65)">-V3</text></svg>
