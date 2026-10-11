@@ -130,7 +130,7 @@
 </div>
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><label class="zoom-panel-setting"><span>Show Zoom Panel</span><input id="showZoomPanel" type="checkbox"><span class="zoom-panel-state">Off</span></label><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=37-component-drag-fix"></script>
+<script src="app.js?v=38-drag-capture-fix"></script>
 <script>
 /* Component library fallback: approved Power symbols, expandable category rows. */
 (function(){
@@ -488,6 +488,52 @@ document.querySelectorAll(".top nav button").forEach(button => {
    g.dataset.x=String(x);g.dataset.y=String(y);
    if(status)status.textContent=`INSERTED • ${d.name.toUpperCase()}${enabled?' • ENLARGED':''}`;
  });
+})();
+</script>
+
+
+<script>
+/* ESC drag controller v39: capture the pointer before any older handler can cancel it. */
+(function installFinalWorkspaceDrag(){
+  const svg=document.getElementById('schematic');
+  const layer=document.getElementById('dropLayer');
+  if(!svg||!layer||svg.dataset.finalDragInstalled==='1')return;
+  svg.dataset.finalDragInstalled='1';
+  let active=null;
+  function point(e){
+    const m=svg.getScreenCTM();
+    if(m){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(m.inverse());return{x:p.x,y:p.y};}
+    const r=svg.getBoundingClientRect(),v=svg.viewBox.baseVal;
+    return{x:v.x+(e.clientX-r.left)*v.width/r.width,y:v.y+(e.clientY-r.top)*v.height/r.height};
+  }
+  svg.addEventListener('pointerdown',function(e){
+    if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+    const g=e.target.closest?.('#dropLayer .dropped-symbol');
+    if(!g)return;
+    const p=point(e),x=Number(g.dataset.x)||0,y=Number(g.dataset.y)||0;
+    active={g,id:e.pointerId,dx:p.x-x,dy:p.y-y,startX:p.x,startY:p.y,moved:false};
+    g.classList.add('moving');g.style.cursor='grabbing';
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    try{svg.setPointerCapture(e.pointerId)}catch(_){ }
+  },true);
+  window.addEventListener('pointermove',function(e){
+    if(!active||e.pointerId!==active.id)return;
+    const g=active.g;if(!g?.isConnected){active=null;return;}
+    const p=point(e),x=p.x-active.dx,y=p.y-active.dy;
+    if(Math.hypot(p.x-active.startX,p.y-active.startY)>2)active.moved=true;
+    g.dataset.x=String(x);g.dataset.y=String(y);
+    g.setAttribute('transform',`translate(${x-60},${y-45})`);
+    if(typeof refreshWiresForComponent==='function')refreshWiresForComponent(g);
+    if(active.moved)e.preventDefault();
+  },{capture:true,passive:false});
+  function finish(e){
+    if(!active||(e.pointerId!=null&&e.pointerId!==active.id))return;
+    const a=active,g=a.g;active=null;
+    if(g){g.classList.remove('moving');g.style.cursor='grab';if(a.moved){e.preventDefault?.();g.dataset.dragJustFinished='1';setTimeout(()=>delete g.dataset.dragJustFinished,300);}}
+    try{if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId)}catch(_){ }
+  }
+  window.addEventListener('pointerup',finish,true);
+  window.addEventListener('pointercancel',finish,true);
 })();
 </script>
 
