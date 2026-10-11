@@ -792,7 +792,7 @@ renderLibrary();
  }
 
  // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.
- const embeddedSymbolManifest = {"project": "ELECTRICAL SIMU CKT", "count": 15, "symbols": [{"file": "components/Power/01_DC_Negative.svg", "name": "01 DC Negative", "category": "Power", "original_filename": "01_DC_Negative.svg"}, {"file": "components/Power/02_DC_Positive.svg", "name": "02 DC Positive", "category": "Power", "original_filename": "02_DC_Positive.svg"}, {"file": "components/Power/03_Earth_Ground.svg", "name": "03 Earth Ground", "category": "Power", "original_filename": "03_Earth_Ground.svg"}, {"file": "components/Power/04_N_Terminal.svg", "name": "04 N Terminal", "category": "Power", "original_filename": "04_N_Terminal.svg"}, {"file": "components/Power/05_L1_Terminal.svg", "name": "05 L1 Terminal", "category": "Power", "original_filename": "05_L1_Terminal.svg"}, {"file": "components/Power/06_L2_Terminal.svg", "name": "06 L2 Terminal", "category": "Power", "original_filename": "06_L2_Terminal.svg"}, {"file": "components/Power/07_L3_Terminal.svg", "name": "07 L3 Terminal", "category": "Power", "original_filename": "07_L3_Terminal.svg"}, {"file": "components/Power/08_PE_Terminal.svg", "name": "08 PE Terminal", "category": "Power", "original_filename": "08_PE_Terminal.svg"}, {"file": "components/Power/09_Three_Phase_L1_L2_L3.svg", "name": "09 Three Phase L1 L2 L3", "category": "Power", "original_filename": "09_Three_Phase_L1_L2_L3.svg"}, {"file": "components/Power/10_Three_Phase_Neutral.svg", "name": "10 Three Phase Neutral", "category": "Power", "original_filename": "10_Three_Phase_Neutral.svg"}, {"file": "components/Power/11_Three_Phase_Neutral_PE.svg", "name": "11 Three Phase Neutral PE", "category": "Power", "original_filename": "11_Three_Phase_Neutral_PE.svg"}, {"file": "components/Coils/Contactor_Coil.svg", "name": "Contactor Coil", "category": "Coils", "original_filename": "Contactor_Coil.svg"}, {"file": "components/Coils/TOF_Timer_Coil.svg", "name": "TOF Timer Coil", "category": "Coils", "original_filename": "TOF_Timer_Coil.svg"}, {"file": "components/Coils/TON_Timer_Coil.svg", "name": "TON Timer Coil", "category": "Coils", "original_filename": "TON_Timer_Coil.svg"}, {"file": "components/Coils/TON_TOF_Timer_Coil.svg", "name": "TON/TOF Timer Coil", "category": "Coils", "original_filename": "TON_TOF_Timer_Coil.svg"}]};
+ const embeddedSymbolManifest = {"project": "ELECTRICAL SIMU CKT", "count": 11, "symbols": [{"file": "components/Power/01_DC_Negative.svg", "name": "01 DC Negative", "category": "Power", "original_filename": "01_DC_Negative.svg"}, {"file": "components/Power/02_DC_Positive.svg", "name": "02 DC Positive", "category": "Power", "original_filename": "02_DC_Positive.svg"}, {"file": "components/Power/03_Earth_Ground.svg", "name": "03 Earth Ground", "category": "Power", "original_filename": "03_Earth_Ground.svg"}, {"file": "components/Power/04_N_Terminal.svg", "name": "04 N Terminal", "category": "Power", "original_filename": "04_N_Terminal.svg"}, {"file": "components/Power/05_L1_Terminal.svg", "name": "05 L1 Terminal", "category": "Power", "original_filename": "05_L1_Terminal.svg"}, {"file": "components/Power/06_L2_Terminal.svg", "name": "06 L2 Terminal", "category": "Power", "original_filename": "06_L2_Terminal.svg"}, {"file": "components/Power/07_L3_Terminal.svg", "name": "07 L3 Terminal", "category": "Power", "original_filename": "07_L3_Terminal.svg"}, {"file": "components/Power/08_PE_Terminal.svg", "name": "08 PE Terminal", "category": "Power", "original_filename": "08_PE_Terminal.svg"}, {"file": "components/Power/09_Three_Phase_L1_L2_L3.svg", "name": "09 Three Phase L1 L2 L3", "category": "Power", "original_filename": "09_Three_Phase_L1_L2_L3.svg"}, {"file": "components/Power/10_Three_Phase_Neutral.svg", "name": "10 Three Phase Neutral", "category": "Power", "original_filename": "10_Three_Phase_Neutral.svg"}, {"file": "components/Power/11_Three_Phase_Neutral_PE.svg", "name": "11 Three Phase Neutral PE", "category": "Power", "original_filename": "11_Three_Phase_Neutral_PE.svg"}]};
  const assetItems = (embeddedSymbolManifest.symbols || []).filter(it => it.file && /\.svg$/i.test(it.file));
  if (assetItems.length) renderAssets(assetItems);
  else {
@@ -831,21 +831,6 @@ renderLibrary();
    }
  },true);
 })();
-
-
-/* ESC: reference designation policy — assigned only after a component is dropped. */
-const _referencePolicyNext = nextReference;
-nextReference = function(d){
-  const s = `${d?.name || ''} ${d?.type || ''} ${d?.symbolFile || ''}`.toLowerCase();
-  let prefix = 'X';
-  if (/timer|ton|tof|delay/.test(s)) prefix = 'KT';
-  else if (/contactor|coil|relay/.test(s)) prefix = 'K';
-  else return _referencePolicyNext(d);
-  const used = [...dropLayer.querySelectorAll('.dropped-symbol')].map(g => (g.dataset.ref || '').toUpperCase());
-  let n = 1;
-  while (used.includes(prefix + n)) n++;
-  return prefix + n;
-};
 
 /* ESC: toolbar labels are compact icons; expose each tool name on hover/focus. */
 document.querySelectorAll('.top nav button').forEach(button=>{
