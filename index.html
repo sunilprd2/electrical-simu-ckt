@@ -309,9 +309,10 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  // Keep the CSS workspace grid in the exact same SVG coordinate system as symbols and wires.
  // A 20-unit minor grid and 100-unit major grid are scaled and offset from the current viewBox.
  const syncGrid=()=>{
+   // Keep CSS grid cells locked to the current SVG viewBox and zoom level.
    const sr=sheet.getBoundingClientRect(), vr=svg.getBoundingClientRect();
    const sx=vr.width/Math.max(1,view.w), sy=vr.height/Math.max(1,view.h);
-   const stepX=20*sx, stepY=20*sy, majorX=100*sx, majorY=100*sy;
+   const stepX=Math.max(.1,20*sx), stepY=Math.max(.1,20*sy), majorX=Math.max(.1,100*sx), majorY=Math.max(.1,100*sy);
    const posX=(vr.left-sr.left)-view.x*sx, posY=(vr.top-sr.top)-view.y*sy;
    sheet.style.setProperty('--grid-step-x',`${stepX}px`);
    sheet.style.setProperty('--grid-step-y',`${stepY}px`);
@@ -319,8 +320,14 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    sheet.style.setProperty('--grid-major-y',`${majorY}px`);
    sheet.style.setProperty('--grid-pos-x',`${posX}px`);
    sheet.style.setProperty('--grid-pos-y',`${posY}px`);
+   // Inline !important overrides later theme rules that otherwise freeze the grid size.
+   if(!sheet.classList.contains('grid-off')){
+     sheet.style.setProperty('background-size',`${stepX}px ${stepY}px, ${stepX}px ${stepY}px, ${majorX}px ${majorY}px, ${majorX}px ${majorY}px`,'important');
+     sheet.style.setProperty('background-position',`${posX}px ${posY}px, ${posX}px ${posY}px, ${posX}px ${posY}px, ${posX}px ${posY}px`,'important');
+   }
  };
  const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);requestAnimationFrame(syncGrid)};
+ new MutationObserver(()=>requestAnimationFrame(syncGrid)).observe(svg,{attributes:true,attributeFilter:['viewBox']});
  const zoom=(factor,cx=view.x+view.w/2,cy=view.y+view.h/2)=>{const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view.x=cx-(cx-view.x)*(nw/view.w);view.y=cy-(cy-view.y)*(nh/view.h);view.w=nw;view.h=nh;apply()};
  document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
  document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
