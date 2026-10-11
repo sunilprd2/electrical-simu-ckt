@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 145" role="img" aria-labelledby="title">
+<title id="title">AC DC Converter V2</title>
+<g fill="none" stroke="#111111" stroke-width="2.3" stroke-linecap="square" stroke-linejoin="miter">
+<rect x="20" y="36" width="80" height="72"/><path d="M20 108 L100 36"/>
+<path d="M29.5 18 V36 M89.5 18 V36 M29.5 108 V131 M89.5 108 V131"/>
+</g>
+<g fill="#111111"><rect x="25" y="13" width="9" height="10" data-terminal-id="L"/><rect x="85" y="13" width="9" height="10" data-terminal-id="N"/><rect x="25" y="126" width="9" height="10" data-terminal-id="POS"/><rect x="85" y="126" width="9" height="10" data-terminal-id="NEG"/></g>
+<g fill="#111111" font-family="Arial,sans-serif" font-size="22"><text x="31" y="70">~</text><text x="61" y="90">=</text></g>
+<g fill="#008000" font-family="Arial,sans-serif" font-size="12" font-weight="bold"><text x="39" y="20">L</text><text x="99" y="20">N</text><text x="40" y="140">+</text><text x="100" y="140">-</text></g>
+<text x="2" y="82" fill="#008000" font-family="Arial,sans-serif" font-size="14" font-weight="bold" transform="rotate(-90 2 82)">-V2</text></svg>

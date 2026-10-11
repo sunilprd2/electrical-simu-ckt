@@ -1,0 +1,81 @@
+{
+  "group": "Power",
+  "description": "Individual source and power SVG symbols for Electrical Simu CKT",
+  "components": [
+    {
+      "file": "01_DC_Negative.svg",
+      "name": "01 DC Negative",
+      "format": "svg"
+    },
+    {
+      "file": "02_DC_Positive.svg",
+      "name": "02 DC Positive",
+      "format": "svg"
+    },
+    {
+      "file": "03_Earth_Ground.svg",
+      "name": "03 Earth Ground",
+      "format": "svg"
+    },
+    {
+      "file": "04_N_Terminal.svg",
+      "name": "04 N Terminal",
+      "format": "svg"
+    },
+    {
+      "file": "05_L1_Terminal.svg",
+      "name": "05 L1 Terminal",
+      "format": "svg"
+    },
+    {
+      "file": "06_L2_Terminal.svg",
+      "name": "06 L2 Terminal",
+      "format": "svg"
+    },
+    {
+      "file": "07_L3_Terminal.svg",
+      "name": "07 L3 Terminal",
+      "format": "svg"
+    },
+    {
+      "file": "08_PE_Terminal.svg",
+      "name": "08 PE Terminal",
+      "format": "svg"
+    },
+    {
+      "file": "09_Three_Phase_L1_L2_L3.svg",
+      "name": "09 Three Phase L1 L2 L3",
+      "format": "svg"
+    },
+    {
+      "file": "10_Three_Phase_Neutral.svg",
+      "name": "10 Three Phase Neutral",
+      "format": "svg"
+    },
+    {
+      "file": "11_Three_Phase_Neutral_PE.svg",
+      "name": "11 Three Phase Neutral PE",
+      "format": "svg"
+    },
+    {
+      "file": "12_ACDC_Power_Supply_V1.svg",
+      "name": "12 AC/DC Power Supply V1",
+      "format": "svg"
+    },
+    {
+      "file": "13_ACDC_Converter_V2.svg",
+      "name": "13 AC/DC Converter V2",
+      "format": "svg"
+    },
+    {
+      "file": "14_DC_Supply_V3.svg",
+      "name": "14 DC Supply V3",
+      "format": "svg"
+    },
+    {
+      "file": "15_Generator_GS3.svg",
+      "name": "15 Generator GS3",
+      "format": "svg"
+    }
+  ]
+}
