@@ -306,16 +306,21 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const svg=document.getElementById('schematic'), sheet=document.getElementById('sheet'), drop=document.getElementById('dropLayer');
  if(!svg||!sheet)return;
  const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
- const apply=()=>{
-   svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
-   // Keep the CSS workspace grid in the same SVG coordinate system as symbols/wires.
-   const scale=(vb.width||1200)/view.w;
-   const minor=Math.max(3,20*scale), major=Math.max(15,100*scale);
-   sheet.style.setProperty('--grid-minor-size',`${minor}px`);
-   sheet.style.setProperty('--grid-major-size',`${major}px`);
-   const px=-view.x*scale, py=-view.y*scale;
-   sheet.style.setProperty('--grid-position',`${px}px ${py}px`);
+ // Keep the CSS workspace grid in the exact same SVG coordinate system as symbols and wires.
+ // A 20-unit minor grid and 100-unit major grid are scaled and offset from the current viewBox.
+ const syncGrid=()=>{
+   const sr=sheet.getBoundingClientRect(), vr=svg.getBoundingClientRect();
+   const sx=vr.width/Math.max(1,view.w), sy=vr.height/Math.max(1,view.h);
+   const stepX=20*sx, stepY=20*sy, majorX=100*sx, majorY=100*sy;
+   const posX=(vr.left-sr.left)-view.x*sx, posY=(vr.top-sr.top)-view.y*sy;
+   sheet.style.setProperty('--grid-step-x',`${stepX}px`);
+   sheet.style.setProperty('--grid-step-y',`${stepY}px`);
+   sheet.style.setProperty('--grid-major-x',`${majorX}px`);
+   sheet.style.setProperty('--grid-major-y',`${majorY}px`);
+   sheet.style.setProperty('--grid-pos-x',`${posX}px`);
+   sheet.style.setProperty('--grid-pos-y',`${posY}px`);
  };
+ const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);requestAnimationFrame(syncGrid)};
  const zoom=(factor,cx=view.x+view.w/2,cy=view.y+view.h/2)=>{const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view.x=cx-(cx-view.x)*(nw/view.w);view.y=cy-(cy-view.y)*(nh/view.h);view.w=nw;view.h=nh;apply()};
  document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
  document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
@@ -337,6 +342,9 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  svg.addEventListener('pointermove',e=>{if(!pan)return;const p=point(e);view.x=pan.x-(p.x-pan.startX);view.y=pan.y-(p.y-pan.startY);apply()});
  const stop=e=>{if(pan){pan=null;svg.classList.remove('panning');try{svg.releasePointerCapture(e.pointerId)}catch{}}};
  svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
+ window.addEventListener('resize',()=>requestAnimationFrame(syncGrid));
+ if(window.ResizeObserver){new ResizeObserver(()=>requestAnimationFrame(syncGrid)).observe(sheet);new ResizeObserver(()=>requestAnimationFrame(syncGrid)).observe(svg)}
+ requestAnimationFrame(syncGrid);
 })();
 </script>
 

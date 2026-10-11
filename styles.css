@@ -1206,5 +1206,14 @@ body.theme-light .layout > .library input::placeholder {
 .zoom-panel-setting input{accent-color:#10b981;width:17px;height:17px;cursor:pointer}
 .zoom-panel-setting .zoom-panel-state{min-width:28px;color:#10b981;font-weight:500}
 
-/* Fix: workspace grid zooms/pans in sync with the SVG viewBox. */
-body.theme-dark #sheet:not(.grid-off), body.theme-light #sheet:not(.grid-off) { background-size: var(--grid-minor-size,20px) var(--grid-minor-size,20px), var(--grid-minor-size,20px) var(--grid-minor-size,20px), var(--grid-major-size,100px) var(--grid-major-size,100px), var(--grid-major-size,100px) var(--grid-major-size,100px) !important; background-position: var(--grid-position,0px 0px), var(--grid-position,0px 0px), var(--grid-position,0px 0px), var(--grid-position,0px 0px) !important; }
+/* ESC grid lock: align the workspace grid to the SVG viewBox at every zoom/pan level. */
+#sheet:not(.grid-off) {
+  background-size: var(--grid-step-x, 20px) var(--grid-step-y, 20px),
+                   var(--grid-step-x, 20px) var(--grid-step-y, 20px),
+                   var(--grid-major-x, 100px) var(--grid-major-y, 100px),
+                   var(--grid-major-x, 100px) var(--grid-major-y, 100px) !important;
+  background-position: var(--grid-pos-x, 0px) var(--grid-pos-y, 0px),
+                       var(--grid-pos-x, 0px) var(--grid-pos-y, 0px),
+                       var(--grid-pos-x, 0px) var(--grid-pos-y, 0px),
+                       var(--grid-pos-x, 0px) var(--grid-pos-y, 0px) !important;
+}
