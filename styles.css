@@ -1205,3 +1205,6 @@ body.theme-light .layout > .library input::placeholder {
 .zoom-panel-setting{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 14px;padding:10px 12px;border:1px solid rgba(148,163,184,.22);border-radius:10px;background:rgba(148,163,184,.07);font-size:13px;color:var(--text,#e5e7eb)}
 .zoom-panel-setting input{accent-color:#10b981;width:17px;height:17px;cursor:pointer}
 .zoom-panel-setting .zoom-panel-state{min-width:28px;color:#10b981;font-weight:500}
+
+/* Fix: workspace grid zooms/pans in sync with the SVG viewBox. */
+body.theme-dark #sheet:not(.grid-off), body.theme-light #sheet:not(.grid-off) { background-size: var(--grid-minor-size,20px) var(--grid-minor-size,20px), var(--grid-minor-size,20px) var(--grid-minor-size,20px), var(--grid-major-size,100px) var(--grid-major-size,100px), var(--grid-major-size,100px) var(--grid-major-size,100px) !important; background-position: var(--grid-position,0px 0px), var(--grid-position,0px 0px), var(--grid-position,0px 0px), var(--grid-position,0px 0px) !important; }
