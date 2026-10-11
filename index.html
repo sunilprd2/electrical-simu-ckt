@@ -132,6 +132,38 @@
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
 <script src="app.js?v=29-dark-grid-icons"></script>
 <script>
+/* Reliable fallback component-library renderer. Runs even if an earlier optional app.js initializer fails. */
+(function(){
+  const host=document.getElementById('libraryGroups');
+  if(!host) return;
+  // Use the fallback only when the main app has not rendered component cards.
+  if(host.querySelector('.component-results')) return;
+  const symbols=[
+    ['01_DC_Negative.svg','DC Negative'],['02_DC_Positive.svg','DC Positive'],['03_Earth_Ground.svg','Earth Ground'],
+    ['04_N_Terminal.svg','N Terminal'],['05_L1_Terminal.svg','L1 Terminal'],['06_L2_Terminal.svg','L2 Terminal'],
+    ['07_L3_Terminal.svg','L3 Terminal'],['08_PE_Terminal.svg','PE Terminal'],['09_Three_Phase_L1_L2_L3.svg','Three Phase L1 L2 L3'],
+    ['10_Three_Phase_Neutral.svg','Three Phase Neutral'],['11_Three_Phase_Neutral_PE.svg','Three Phase Neutral PE'],
+    ['12_ACDC_Power_Supply_V1.svg','AC/DC Power Supply V1'],['13_ACDC_Converter_V2.svg','AC/DC Converter V2'],
+    ['14_DC_Supply_V3.svg','DC Supply V3'],['15_Generator_GS3.svg','Generator GS3']
+  ].map(([file,name])=>({file:'components/Power/'+file,name,category:'Sources',type:name}));
+  const cats=[['All','#10b981'],['Sources','#06b6d4'],['Others','#94a3b8'],['Coils','#a78bfa'],['Auxiliaries','#facc15'],['Switches','#22d3ee'],['Loads','#fb923c'],['Contactors','#34d399'],['Protections','#fb7185'],['Motors','#60a5fa']];
+  let active='All';
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function paint(){
+    const q=(document.getElementById('search')?.value||'').trim().toLowerCase();
+    const filtered=symbols.filter(s=>(active==='All'||s.category===active)&&(!q||(s.name+' '+s.category).toLowerCase().includes(q)));
+    host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color])=>'<button type="button" class="component-category '+(active===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-pressed="'+(active===name)+'"><span class="category-mark" aria-hidden="true"></span><span>'+name+'</span><small>'+(name==='All'||name==='Sources'?symbols.length:0)+'</small></button>').join('')+'</div><div class="component-results-head"><b>'+(active==='All'?'ALL COMPONENTS':active.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>'+(filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>');
+    host.querySelectorAll('.component-category').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.category;paint()}));
+    host.querySelectorAll('.symbol-btn').forEach(b=>{
+      b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file}));document.getElementById('dropOverlay')?.classList.add('show');const st=document.getElementById('state');if(st)st.textContent='DRAGGING • '+b.dataset.name.toUpperCase()});
+      b.addEventListener('dragend',()=>document.getElementById('dropOverlay')?.classList.remove('show'));
+    });
+  }
+  paint();
+  document.getElementById('search')?.addEventListener('input',paint);
+})();
+</script>
+<script>
 document.getElementById("printDrawing")?.addEventListener("click",()=>window.print());
 (()=>{
  const body=document.body, sheet=document.getElementById('sheet');
