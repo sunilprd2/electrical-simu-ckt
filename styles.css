@@ -1183,3 +1183,9 @@ body.theme-light .layout > .library input::placeholder {
 .component-category-list > .component-results-head { margin-top:4px; }
 .component-category-list > .component-results { margin:0 0 10px; }
 .component-category-list > .library-empty { margin-bottom:10px; }
+
+/* Power library usability: make component cards visibly draggable. */
+.component-results .symbol-btn { cursor: grab !important; user-select: none; -webkit-user-drag: element; touch-action: pan-y; }
+.component-results .symbol-btn:active { cursor: grabbing !important; }
+.component-results .symbol-btn img { pointer-events: none; -webkit-user-drag: none; }
+.component-results .symbol-btn span { pointer-events: none; }
