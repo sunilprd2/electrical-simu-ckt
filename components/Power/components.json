@@ -1,6 +1,6 @@
 {
   "group": "Power",
-  "description": "Individual source and power SVG symbols for Electrical Simu CKT",
+  "description": "Electrical Simu CKT Power SVG components",
   "components": [
     {
       "file": "01_DC_Negative.svg",
@@ -59,12 +59,12 @@
     },
     {
       "file": "12_ACDC_Power_Supply_V1.svg",
-      "name": "12 AC/DC Power Supply V1",
+      "name": "12 ACDC Power Supply V1",
       "format": "svg"
     },
     {
       "file": "13_ACDC_Converter_V2.svg",
-      "name": "13 AC/DC Converter V2",
+      "name": "13 ACDC Converter V2",
       "format": "svg"
     },
     {
