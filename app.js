@@ -163,28 +163,19 @@ function makeDropped(d,x,y){
   g.addEventListener('dblclick',e=>{e.stopPropagation();const current=g.dataset.ref||tag.textContent;const next=prompt('Component designation (example: KM1, KM2, QF1, S0):',current);if(next&&next.trim()){g.dataset.ref=next.trim().toUpperCase();tag.textContent=g.dataset.ref;const title=g.querySelector('title');if(title)title.textContent=g.dataset.ref+' — '+d.name;}});
   return g;
 }
-function select(g, openProperties=false){
- if(selected)selected.classList.remove('selected');
- selected=g;
- if(g)g.classList.add('selected');
- const panel=document.getElementById('propertyPanel');
- if(!panel)return;
- panel.classList.toggle('open',!!g && openProperties);
- panel.setAttribute('aria-hidden',String(!(g && openProperties)));
- if(!g || !openProperties)return;
+function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
+ const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- put('propType',g.dataset.name||'IEC component');
- put('propTag',g.dataset.ref||'');
- put('propLabel',g.dataset.label||g.dataset.name||'');
- put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);
- put('propRotation',g.dataset.rotation||0);
+ put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);put('propRotation',g.dataset.rotation||0);
 }
 function enableMove(g){
- let moving=false,dx=0,dy=0;
- g.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(e.target&&e.target.classList&&e.target.classList.contains('mag-port'))return;e.stopPropagation();select(g);moving=true;const p=getPoint(e);const x=+g.dataset.x,y=+g.dataset.y;dx=p.x-x;dy=p.y-y;g.setPointerCapture(e.pointerId);});
- g.addEventListener('pointermove',e=>{if(!moving)return;const p=getPoint(e);const x=Math.round(p.x-dx),y=Math.round(p.y-dy);g.dataset.x=x;g.dataset.y=y;g.setAttribute('transform',`translate(${x-36},${y-22})`);});
- g.addEventListener('pointerup',e=>{moving=false;try{g.releasePointerCapture(e.pointerId)}catch{}});
+ // Movement is handled once by installReliableIndividualDrag() below.
+ // Do not attach a second per-component pointer controller; competing
+ // pointer-capture handlers prevented reliable dragging in the workspace.
+ g.style.pointerEvents = 'all';
+ g.style.cursor = 'grab';
 }
+
 svg.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy';overlay.classList.add('show');});
 svg.addEventListener('dragleave',()=>overlay.classList.remove('show'));
 svg.addEventListener('drop',e=>{e.preventDefault();overlay.classList.remove('show');let raw=e.dataTransfer.getData('application/json')||e.dataTransfer.getData('text/plain');if(!raw)return;let d;try{d=JSON.parse(raw)}catch{return;}const p=getPoint(e);makeDropped(d,Math.round(p.x),Math.round(p.y));state.textContent='PLACED • '+d.name.toUpperCase();});
@@ -318,14 +309,8 @@ function enableMove(g){
       suppressNextComponentClick = false;
       return;
     }
-    select(g, false);
+    select(g);
     state.textContent = 'SELECTED • ' + (g.dataset.ref || g.dataset.name || 'COMPONENT');
-  });
-  // Properties open only when the placed workspace component is double-clicked.
-  g.addEventListener('dblclick', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    select(g, true);
   });
 }
 // A single shared drag handler prevents competing components from moving together.
@@ -905,7 +890,7 @@ function refreshWiresForComponent(moved){
     const p=point(e), x=p.x-drag.dx, y=p.y-drag.dy;
     if(Math.hypot(x-(+g.dataset.x||0),y-(+g.dataset.y||0))>0.5) drag.moved=true;
     g.dataset.x=x; g.dataset.y=y;
-    g.setAttribute('transform',`translate(${x-36},${y-22})`);refreshWiresForComponent(g);
+    g.setAttribute('transform',`translate(${x-60},${y-45})`);refreshWiresForComponent(g);
   }
   function finish(e){
     if(!drag || (e.pointerId!=null && e.pointerId!==drag.pointerId)) return;
