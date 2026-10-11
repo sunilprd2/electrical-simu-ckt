@@ -1,0 +1,26 @@
+{
+  "group": "Coils",
+  "description": "Industrial coil and timer SVG components",
+  "components": [
+    {
+      "file": "Contactor_Coil.svg",
+      "name": "Contactor Coil",
+      "format": "svg"
+    },
+    {
+      "file": "TOF_Timer_Coil.svg",
+      "name": "TOF Timer Coil",
+      "format": "svg"
+    },
+    {
+      "file": "TON_Timer_Coil.svg",
+      "name": "TON Timer Coil",
+      "format": "svg"
+    },
+    {
+      "file": "TON_TOF_Timer_Coil.svg",
+      "name": "TON/TOF Timer Coil",
+      "format": "svg"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
+<title id="title">Contactor Coil</title>
+<g fill="none" stroke="#b7b9bc" stroke-width="2.3" stroke-linecap="square" stroke-linejoin="miter">
+<path d="M50 12 V39"/>
+<rect x="31" y="39" width="38" height="22" fill="none"/>
+<path d="M50 61 V88"/>
+</g>
+<rect x="46.5" y="5.5" width="7" height="7" fill="#b7b9bc"/>
+<rect x="46.5" y="88" width="7" height="7" fill="#b7b9bc"/>
+<g fill="#00f0c8" font-family="Arial,sans-serif" font-size="10" font-weight="bold">
+<text x="58" y="12">A1</text><text x="58" y="96">A2</text>
+</g>
+</svg>

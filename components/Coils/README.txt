@@ -1,1 +1,1 @@
-Coils component folder for ELECTRICAL SIMU CKT. Add SVG component files here later. The library is intentionally empty for the current UI stage.
+Coil and timer SVG symbols for Electrical Simu CKT. Reference designations are intentionally not drawn in the SVG. The editor assigns K1, K2... to contactor/relay coils and KT1, KT2... to timer coils when dropped into the workspace. All symbols use #b7b9bc linework, #00f0c8 terminal labels, square terminal markers, and A1/A2 labels.

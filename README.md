@@ -83,3 +83,7 @@ This build connects the supplied original SVG files to the component library.
 
 ## Power supply library
 The POWER SUPPLY category includes phase/neutral/PE terminals, 1-phase and 3-phase supply symbols, DC positive/negative, ground, transformers and AC/DC supply. These are SVG assets and are included in both the external and embedded symbol manifests for file:// preview.
+
+
+## Coil SVG library
+Four separate SVG coil/timer symbols are available in `components/Coils/`. The artwork has no K/KT reference designation; the editor assigns K1/K2... or KT1/KT2... when dropped into the workspace.
