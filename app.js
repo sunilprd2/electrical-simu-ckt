@@ -248,7 +248,7 @@ function makeDropped(d,x,y){
   // The symbol, its tails, terminal squares and labels are ONE SVG group.
   // Keep the symbol at its native 48x32 viewBox so magnetic ports line up exactly.
   const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none';
-  if(d.symbolFile && d.symbolFile.includes('/power-original/')){
+  if(d.symbolFile && /\.svg(?:$|\?)/i.test(d.symbolFile)){
     // Preserve the user's exact supplied SVG artwork in the workspace.
     ns.setAttribute('viewBox','0 0 100 100'); ns.setAttribute('x',10); ns.setAttribute('y',5); ns.setAttribute('width',100); ns.setAttribute('height',80);
     const im=document.createElementNS(NS,'image'); im.setAttribute('href',d.symbolFile); im.setAttribute('x',0); im.setAttribute('y',0); im.setAttribute('width',100); im.setAttribute('height',100); ns.appendChild(im);

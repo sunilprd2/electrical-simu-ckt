@@ -1200,3 +1200,8 @@ body.theme-light .layout > .library input::placeholder {
 .component-category{position:relative;padding-right:30px!important}
 .component-category .category-arrow{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:20px;line-height:1;font-weight:700;opacity:.9}
 .component-category[aria-expanded="true"] .category-arrow{transform:translateY(-50%) rotate(0deg)}
+
+/* Workspace Settings: Show Zoom Panel option */
+.zoom-panel-setting{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 14px;padding:10px 12px;border:1px solid rgba(148,163,184,.22);border-radius:10px;background:rgba(148,163,184,.07);font-size:13px;color:var(--text,#e5e7eb)}
+.zoom-panel-setting input{accent-color:#10b981;width:17px;height:17px;cursor:pointer}
+.zoom-panel-setting .zoom-panel-state{min-width:28px;color:#10b981;font-weight:500}
