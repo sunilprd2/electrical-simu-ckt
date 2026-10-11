@@ -750,27 +750,41 @@ renderLibrary();
   });
  }
  function renderAssets(items){
-  // Fresh component library: keep the requested category navigation, but show no symbols yet.
-  // The original SVG files and manifest remain in the project so components can be added later.
   const libraryCategories = [
-   {name:'All', color:'#168bff'},
-   {name:'Sources', color:'#0ea5e9'},
-   {name:'Others', color:'#64748b'},
-   {name:'Coils', color:'#8b5cf6'},
-   {name:'Auxiliaries', color:'#d4a017'},
-   {name:'Switches', color:'#06b6d4'},
-   {name:'Loads', color:'#f59e0b'},
-   {name:'Contactors', color:'#10b981'},
-   {name:'Protections', color:'#ef4444'},
-   {name:'Motors', color:'#2563eb'}
+   {name:'All', color:'#168bff'}, {name:'Sources', color:'#0ea5e9'},
+   {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
+   {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
+   {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
+   {name:'Protections', color:'#ef4444'}, {name:'Motors', color:'#2563eb'}
   ];
-  let activeCategory='All';
+  const normalized = (items || []).map((it, i) => {
+   const file = String(it.file || '').replace(/^\.\//,'');
+   const name = it.name || it.original_filename || file.split('/').pop().replace(/\.svg$/i,'');
+   const raw = String(it.category || '').toLowerCase() + ' ' + String(it.type || '').toLowerCase() + ' ' + name.toLowerCase();
+   let category = 'Others';
+   if (/power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
+   else if (/coil|timer|tof|ton|relay/.test(raw)) category = 'Coils';
+   else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
+   else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
+   else if (/motor/.test(raw)) category = 'Motors';
+   else if (/contactor/.test(raw)) category = 'Contactors';
+   else if (/breaker|protection|fuse|overload|thermal/.test(raw)) category = 'Protections';
+   else if (/lamp|load|bell|horn|buzzer|indicator/.test(raw)) category = 'Loads';
+   return {...it, file, name, category, type:it.type || name};
+  });
+  let activeCategory = 'All';
   function paint(){
-   const title=activeCategory==='All'?'ALL COMPONENTS':activeCategory.toUpperCase();
-   host.innerHTML=`<div class="component-category-list" role="list" aria-label="Component categories">${libraryCategories.map(c=>`<button type="button" class="component-category ${activeCategory===c.name?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${activeCategory===c.name}"><span class="category-mark"></span><span>${c.name}</span><small>0</small></button>`).join('')}</div><div class="component-results-head"><b>${title}</b><span>0 symbols</span></div><div class="component-results"><div class="library-empty">Component library is empty. Symbols will be added here later.</div></div>`;
+   const q = (document.getElementById('search')?.value || '').trim().toLowerCase();
+   const filtered = normalized.filter(it => (activeCategory==='All' || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
+   host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
+    libraryCategories.map(c=>`<button type="button" class="component-category ${activeCategory===c.name?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${activeCategory===c.name}"><span class="category-mark" aria-hidden="true"></span><span>${c.name}</span><small>${normalized.filter(it=>c.name==='All'||it.category===c.name).length}</small></button>`).join('') +
+    '</div><div class="component-results-head"><b>'+(activeCategory==='All'?'ALL COMPONENTS':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>'+
+    (filtered.length ? '<div class="component-results">'+filtered.map(it=>`<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span></button>`).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
    host.querySelectorAll('.component-category').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.category;paint()}));
+   attachCardEvents();
   }
   paint();
+  document.getElementById('search')?.addEventListener('input', paint);
  }
 
  // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.

@@ -1173,3 +1173,6 @@ body.theme-light .layout > .library .component-category.active {
 body.theme-light .layout > .library input::placeholder {
   color:#9eb8d2 !important; opacity:1 !important;
 }
+
+/* SVG component library cards */
+.component-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:8px;max-height:calc(100vh - 360px);overflow:auto}.symbol-btn{display:flex;min-width:0;min-height:84px;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:7px;border:1px solid #29445d;border-radius:8px;background:#0b1b2b;color:#eaf5ff;cursor:grab;font:inherit;font-size:11px;text-align:center}.symbol-btn:hover{border-color:#17d8b0;background:#10283a}.symbol-btn img{display:block;width:100%;height:48px;object-fit:contain}.symbol-btn span{overflow-wrap:anywhere}.component-results-head{display:flex;justify-content:space-between;gap:8px;padding:10px 9px 4px;font-size:11px;color:#d7e9f7}.component-results-head span{opacity:.7}.component-category small{margin-left:auto;opacity:.75;font-size:10px}.library-empty{padding:16px 10px;color:#a8bed0;font-size:12px;text-align:center}
