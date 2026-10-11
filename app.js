@@ -163,10 +163,21 @@ function makeDropped(d,x,y){
   g.addEventListener('dblclick',e=>{e.stopPropagation();const current=g.dataset.ref||tag.textContent;const next=prompt('Component designation (example: KM1, KM2, QF1, S0):',current);if(next&&next.trim()){g.dataset.ref=next.trim().toUpperCase();tag.textContent=g.dataset.ref;const title=g.querySelector('title');if(title)title.textContent=g.dataset.ref+' — '+d.name;}});
   return g;
 }
-function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
- const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
+function select(g, openProperties=false){
+ if(selected)selected.classList.remove('selected');
+ selected=g;
+ if(g)g.classList.add('selected');
+ const panel=document.getElementById('propertyPanel');
+ if(!panel)return;
+ panel.classList.toggle('open',!!g && openProperties);
+ panel.setAttribute('aria-hidden',String(!(g && openProperties)));
+ if(!g || !openProperties)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);put('propRotation',g.dataset.rotation||0);
+ put('propType',g.dataset.name||'IEC component');
+ put('propTag',g.dataset.ref||'');
+ put('propLabel',g.dataset.label||g.dataset.name||'');
+ put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);
+ put('propRotation',g.dataset.rotation||0);
 }
 function enableMove(g){
  let moving=false,dx=0,dy=0;
@@ -307,8 +318,14 @@ function enableMove(g){
       suppressNextComponentClick = false;
       return;
     }
-    select(g);
+    select(g, false);
     state.textContent = 'SELECTED • ' + (g.dataset.ref || g.dataset.name || 'COMPONENT');
+  });
+  // Properties open only when the placed workspace component is double-clicked.
+  g.addEventListener('dblclick', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    select(g, true);
   });
 }
 // A single shared drag handler prevents competing components from moving together.
