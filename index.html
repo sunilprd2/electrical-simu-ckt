@@ -306,8 +306,21 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const svg=document.getElementById('schematic'), sheet=document.getElementById('sheet'), drop=document.getElementById('dropLayer');
  if(!svg||!sheet)return;
  const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
- const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`)};
+ const apply=()=>{
+   svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+   // Keep the CSS grid in the same coordinate scale as the SVG drawing.
+   // A 20-unit minor grid and 100-unit major grid zoom together with symbols/wires.
+   const rect=svg.getBoundingClientRect();
+   const scale=rect.width/Math.max(1,view.w);
+   const minor=Math.max(2,20*scale), major=Math.max(10,100*scale);
+   const svgLeft=svg.offsetLeft||0, svgTop=svg.offsetTop||0;
+   const px=-view.x*scale+svgLeft, py=-view.y*scale+svgTop;
+   sheet.style.backgroundSize=`${minor}px ${minor}px, ${minor}px ${minor}px, ${major}px ${major}px, ${major}px ${major}px`;
+   sheet.style.backgroundPosition=`${px}px ${py}px, ${px}px ${py}px, ${px}px ${py}px, ${px}px ${py}px`;
+ };
  const zoom=(factor,cx=view.x+view.w/2,cy=view.y+view.h/2)=>{const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view.x=cx-(cx-view.x)*(nw/view.w);view.y=cy-(cy-view.y)*(nh/view.h);view.w=nw;view.h=nh;apply()};
+ apply();
+ window.addEventListener('resize',apply);
  document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
  document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
  document.getElementById('centerViewBtn')?.addEventListener('click',()=>{view={x:0,y:0,w:1200,h:760};apply()});
