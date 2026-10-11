@@ -336,8 +336,11 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  svg.addEventListener('contextmenu',e=>{if(document.getElementById('connectToggle')?.classList.contains('active'))e.preventDefault()});
  svg.addEventListener('pointerdown',e=>{
    const panMode=document.body.classList.contains('pan-mode');
-   if((e.button!==0 && e.button!==1) || e.target.closest('.dropped-symbol') || e.target.closest('.mag-port'))return;
-   if(e.button===0 && !panMode)return;
+   if((e.button!==0 && e.button!==1) || e.target.closest('.dropped-symbol') || e.target.closest('.mag-port') || e.target.closest('.connected-wire'))return;
+   // Left-drag on empty workspace pans the complete drawing. Component drags are
+   // handled by the existing component-drag handler and are intentionally untouched.
+   const isEmptyWorkspace=(e.target===svg || e.target.id==='dropLayer' || e.target.classList?.contains('esc-svg-grid'));
+   if(e.button===0 && !panMode && !isEmptyWorkspace)return;
    const st=document.getElementById('state')?.textContent||'';
    if(st.startsWith('WIRE START')||st.startsWith('WIRE BEND'))return;
    if(textMode){const p=point(e),value=prompt('Text to insert:','Text');if(value){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',p.x);t.setAttribute('y',p.y);t.setAttribute('class','drawing-text');t.textContent=value;t.setAttribute('fill','currentColor');t.setAttribute('font-size','16');drop.appendChild(t)}textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');return;}
