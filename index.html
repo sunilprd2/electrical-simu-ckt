@@ -46,6 +46,16 @@
 <main class="work">
   <div id="sheet">
     <svg id="schematic" viewBox="0 0 1200 760" aria-label="Electrical schematic">
+      <defs>
+        <pattern id="escMinorGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" class="esc-grid-minor-line" fill="none" stroke-width="0.7"/>
+        </pattern>
+        <pattern id="escMajorGrid" width="100" height="100" patternUnits="userSpaceOnUse">
+          <path d="M 100 0 L 0 0 0 100" class="esc-grid-major-line" fill="none" stroke-width="1.1"/>
+        </pattern>
+      </defs>
+      <rect id="escGridMinor" class="esc-svg-grid" x="-10000" y="-10000" width="20000" height="20000" fill="url(#escMinorGrid)" pointer-events="none"/>
+      <rect id="escGridMajor" class="esc-svg-grid" x="-10000" y="-10000" width="20000" height="20000" fill="url(#escMajorGrid)" pointer-events="none"/>
       <g id="engineeringSheet" aria-label="Engineering drawing sheet">
         <rect class="sheet-paper" x="24" y="24" width="1152" height="712"/>
         <g class="sheet-coordinates" text-anchor="middle" font-family="Arial,sans-serif" font-size="10">
@@ -306,25 +316,12 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const svg=document.getElementById('schematic'), sheet=document.getElementById('sheet'), drop=document.getElementById('dropLayer');
  if(!svg||!sheet)return;
  const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
- // Keep the CSS workspace grid in the exact same SVG coordinate system as symbols and wires.
- // A 20-unit minor grid and 100-unit major grid are scaled and offset from the current viewBox.
+ // Grid is drawn inside the SVG using user-space patterns. The SVG viewBox zooms
+ // grid, components, terminals and wires with one identical transform.
  const syncGrid=()=>{
-   // Keep CSS grid cells locked to the current SVG viewBox and zoom level.
-   const sr=sheet.getBoundingClientRect(), vr=svg.getBoundingClientRect();
-   const sx=vr.width/Math.max(1,view.w), sy=vr.height/Math.max(1,view.h);
-   const stepX=Math.max(.1,20*sx), stepY=Math.max(.1,20*sy), majorX=Math.max(.1,100*sx), majorY=Math.max(.1,100*sy);
-   const posX=(vr.left-sr.left)-view.x*sx, posY=(vr.top-sr.top)-view.y*sy;
-   sheet.style.setProperty('--grid-step-x',`${stepX}px`);
-   sheet.style.setProperty('--grid-step-y',`${stepY}px`);
-   sheet.style.setProperty('--grid-major-x',`${majorX}px`);
-   sheet.style.setProperty('--grid-major-y',`${majorY}px`);
-   sheet.style.setProperty('--grid-pos-x',`${posX}px`);
-   sheet.style.setProperty('--grid-pos-y',`${posY}px`);
-   // Inline !important overrides later theme rules that otherwise freeze the grid size.
-   if(!sheet.classList.contains('grid-off')){
-     sheet.style.setProperty('background-size',`${stepX}px ${stepY}px, ${stepX}px ${stepY}px, ${majorX}px ${majorY}px, ${majorX}px ${majorY}px`,'important');
-     sheet.style.setProperty('background-position',`${posX}px ${posY}px, ${posX}px ${posY}px, ${posX}px ${posY}px, ${posX}px ${posY}px`,'important');
-   }
+   sheet.style.setProperty('background-image','none','important');
+   sheet.style.removeProperty('background-size');
+   sheet.style.removeProperty('background-position');
  };
  const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);requestAnimationFrame(syncGrid)};
  new MutationObserver(()=>requestAnimationFrame(syncGrid)).observe(svg,{attributes:true,attributeFilter:['viewBox']});

@@ -1217,3 +1217,11 @@ body.theme-light .layout > .library input::placeholder {
                        var(--grid-pos-x, 0px) var(--grid-pos-y, 0px),
                        var(--grid-pos-x, 0px) var(--grid-pos-y, 0px) !important;
 }
+
+/* ESC: the grid is part of the SVG coordinate plane, so it zooms/pans exactly with components. */
+#sheet:not(.grid-off) { background-image: none !important; }
+#sheet.grid-off .esc-svg-grid, body.grid-disabled .esc-svg-grid { display: none !important; }
+.esc-grid-minor-line { stroke: rgba(100,135,165,.17); }
+.esc-grid-major-line { stroke: rgba(100,135,165,.30); }
+body.theme-light .esc-grid-minor-line { stroke: rgba(100,120,140,.14); }
+body.theme-light .esc-grid-major-line { stroke: rgba(100,120,140,.25); }
