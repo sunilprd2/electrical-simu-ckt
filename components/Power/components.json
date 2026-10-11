@@ -1,66 +1,50 @@
+
 {
-  "group": "Power",
-  "description": "Electrical Simu CKT Power SVG components",
+  "category": "Power",
   "components": [
     {
-      "file": "01_DC_Negative.svg",
-      "name": "01 DC Negative",
-      "format": "svg"
+      "name": "DC Negative",
+      "file": "01_DC_Negative.svg"
     },
     {
-      "file": "02_DC_Positive.svg",
-      "name": "02 DC Positive",
-      "format": "svg"
+      "name": "DC Positive",
+      "file": "02_DC_Positive.svg"
     },
     {
-      "file": "03_Earth_Ground.svg",
-      "name": "03 Earth Ground",
-      "format": "svg"
+      "name": "Earth Ground",
+      "file": "03_Earth_Ground.svg"
     },
     {
-      "file": "04_N_Terminal.svg",
-      "name": "04 N Terminal",
-      "format": "svg"
+      "name": "N Terminal",
+      "file": "04_N_Terminal.svg"
     },
     {
-      "file": "05_L1_Terminal.svg",
-      "name": "05 L1 Terminal",
-      "format": "svg"
+      "name": "L1 Terminal",
+      "file": "05_L1_Terminal.svg"
     },
     {
-      "file": "06_L2_Terminal.svg",
-      "name": "06 L2 Terminal",
-      "format": "svg"
+      "name": "L2 Terminal",
+      "file": "06_L2_Terminal.svg"
     },
     {
-      "file": "07_L3_Terminal.svg",
-      "name": "07 L3 Terminal",
-      "format": "svg"
+      "name": "L3 Terminal",
+      "file": "07_L3_Terminal.svg"
     },
     {
-      "file": "08_PE_Terminal.svg",
-      "name": "08 PE Terminal",
-      "format": "svg"
+      "name": "PE Terminal",
+      "file": "08_PE_Terminal.svg"
     },
     {
-      "file": "09_Three_Phase_L1_L2_L3.svg",
-      "name": "09 Three Phase L1 L2 L3",
-      "format": "svg"
+      "name": "Three Phase L1 L2 L3",
+      "file": "09_Three_Phase_L1_L2_L3.svg"
     },
     {
-      "file": "10_Three_Phase_Neutral.svg",
-      "name": "10 Three Phase Neutral",
-      "format": "svg"
+      "name": "Three Phase Neutral",
+      "file": "10_Three_Phase_Neutral.svg"
     },
     {
-      "file": "11_Three_Phase_Neutral_PE.svg",
-      "name": "11 Three Phase Neutral PE",
-      "format": "svg"
-    },
-    {
-      "file": "12_ACDC_Power_Supply_V1.svg",
-      "name": "12 ACDC Power Supply V1",
-      "format": "svg"
+      "name": "Three Phase Neutral PE",
+      "file": "11_Three_Phase_Neutral_PE.svg"
     }
   ]
 }
