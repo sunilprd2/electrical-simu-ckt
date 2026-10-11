@@ -776,10 +776,10 @@ renderLibrary();
   function paint(){
    const q = (document.getElementById('search')?.value || '').trim().toLowerCase();
    const filtered = normalized.filter(it => (activeCategory==='All' || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
-   host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
-    libraryCategories.map(c=>`<button type="button" class="component-category ${activeCategory===c.name?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${activeCategory===c.name}"><span class="category-mark" aria-hidden="true"></span><span>${c.name}</span><small>${normalized.filter(it=>c.name==='All'||it.category===c.name).length}</small></button>`).join('') +
-    '</div><div class="component-results-head"><b>'+(activeCategory==='All'?'ALL COMPONENTS':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>'+
+   const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory==='All'?'ALL COMPONENTS':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
     (filtered.length ? '<div class="component-results">'+filtered.map(it=>`<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span></button>`).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
+   host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
+    libraryCategories.map(c=>`<button type="button" class="component-category ${activeCategory===c.name?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${activeCategory===c.name}"><span class="category-mark" aria-hidden="true"></span><span>${c.name}</span><small>${normalized.filter(it=>c.name==='All'||it.category===c.name).length}</small></button>${activeCategory===c.name?resultMarkup:''}`).join('') + '</div>';
    host.querySelectorAll('.component-category').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.category;paint()}));
    attachCardEvents();
   }
