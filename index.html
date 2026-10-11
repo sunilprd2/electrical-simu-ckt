@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=29-dark-grid-icons">
+<link rel="stylesheet" href="styles.css?v=31-inline-category-fix">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -130,7 +130,7 @@
 </div>
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=29-dark-grid-icons"></script>
+<script src="app.js?v=31-inline-category-fix"></script>
 <script>
 /* Reliable fallback component-library renderer. Runs even if an earlier optional app.js initializer fails. */
 (function(){
@@ -152,7 +152,8 @@
   function paint(){
     const q=(document.getElementById('search')?.value||'').trim().toLowerCase();
     const filtered=symbols.filter(s=>(active==='All'||s.category===active)&&(!q||(s.name+' '+s.category).toLowerCase().includes(q)));
-    host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color])=>'<button type="button" class="component-category '+(active===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-pressed="'+(active===name)+'"><span class="category-mark" aria-hidden="true"></span><span>'+name+'</span><small>'+(name==='All'||name==='Sources'?symbols.length:0)+'</small></button>').join('')+'</div><div class="component-results-head"><b>'+(active==='All'?'ALL COMPONENTS':active.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>'+(filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>');
+    const resultMarkup='<div class="component-results-head"><b>'+(active==='All'?'ALL COMPONENTS':active.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>'+(filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>');
+     host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color])=>'<button type="button" class="component-category '+(active===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-pressed="'+(active===name)+'"><span class="category-mark" aria-hidden="true"></span><span>'+name+'</span><small>'+(name==='All'||name==='Sources'?symbols.length:0)+'</small></button>'+(active===name?resultMarkup:'')).join('')+'</div>';
     host.querySelectorAll('.component-category').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.category;paint()}));
     host.querySelectorAll('.symbol-btn').forEach(b=>{
       b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file}));document.getElementById('dropOverlay')?.classList.add('show');const st=document.getElementById('state');if(st)st.textContent='DRAGGING • '+b.dataset.name.toUpperCase()});
