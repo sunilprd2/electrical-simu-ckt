@@ -3,7 +3,6 @@ const sheet=document.getElementById('sheet'), sim=document.getElementById('sim')
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
 const groups=[
- {name:'All',color:'#168bff',items:[]},
  {name:'Sources',color:'#0ea5e9',items:[]},
  {name:'Others',color:'#64748b',items:[]},
  {name:'Coils',color:'#8b5cf6',items:[]},
@@ -132,7 +131,7 @@ document.getElementById('delete').onclick=()=>{if(selected){selected.remove();se
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
 
-document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('#libraryGroups .component-category').forEach(btn=>{btn.style.display=btn.dataset.category.toLowerCase().includes(q)?'flex':'none';});const head=document.querySelector('#libraryGroups .component-results-head b');if(head)head.textContent=q?'FILTERED CATEGORIES':(document.querySelector('#libraryGroups .component-category.active')?.dataset.category==='All'?'ALL COMPONENTS':(document.querySelector('#libraryGroups .component-category.active')?.dataset.category||'ALL COMPONENTS').toUpperCase());});
+document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('#libraryGroups .component-category').forEach(btn=>{btn.style.display=btn.dataset.category.toLowerCase().includes(q)?'flex':'none';});const head=document.querySelector('#libraryGroups .component-results-head b');if(head)head.textContent=q?'FILTERED CATEGORIES':((document.querySelector('#libraryGroups .component-category.active')?.dataset.category||'ALL COMPONENTS').toUpperCase());});
 
 function getPoint(e){try{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const m=svg.getScreenCTM();if(m){const p=pt.matrixTransform(m.inverse());return{x:p.x,y:p.y};}}catch(_){}const r=svg.getBoundingClientRect(),vb=svg.viewBox.baseVal;return{x:vb.x+(e.clientX-r.left)*(vb.width/r.width),y:vb.y+(e.clientY-r.top)*(vb.height/r.height)};}
 function nextReference(d){
@@ -751,7 +750,7 @@ renderLibrary();
  }
  function renderAssets(items){
   const libraryCategories = [
-   {name:'All', color:'#168bff'}, {name:'Sources', color:'#0ea5e9'},
+   {name:'Sources', color:'#0ea5e9'},
    {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
    {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
    {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
@@ -772,14 +771,14 @@ renderLibrary();
    else if (/lamp|load|bell|horn|buzzer|indicator/.test(raw)) category = 'Loads';
    return {...it, file, name, category, type:it.type || name};
   });
-  let activeCategory = 'All';
+  let activeCategory = 'Sources';
   function paint(){
    const q = (document.getElementById('search')?.value || '').trim().toLowerCase();
-   const filtered = normalized.filter(it => (activeCategory===null || activeCategory==='All' || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
-   const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory===null?'SELECT A CATEGORY':activeCategory==='All'?'ALL COMPONENTS':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
+   const filtered = normalized.filter(it => (activeCategory===null || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
+   const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory===null?'SELECT A CATEGORY':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
     (filtered.length ? '<div class="component-results">'+filtered.map(it=>`<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span></button>`).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
    host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
-    libraryCategories.map(c=>{const expanded=activeCategory===c.name;return `<button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-mark" aria-hidden="true"></span><span>${c.name}</span><small>${normalized.filter(it=>c.name==='All'||it.category===c.name).length}</small><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}`}).join('') + '</div>';
+    libraryCategories.map(c=>{const expanded=activeCategory===c.name;return `<button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-mark" aria-hidden="true"></span><span>${c.name}</span><small>${normalized.filter(it=>it.category===c.name).length}</small><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}`}).join('') + '</div>';
    host.querySelectorAll('.component-category').forEach(btn=>btn.addEventListener('click',()=>{
     // Clicking the already-open category collapses its cards; clicking another category opens that section.
     activeCategory = activeCategory === btn.dataset.category ? null : btn.dataset.category;
