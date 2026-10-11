@@ -61,21 +61,6 @@
       "file": "12_ACDC_Power_Supply_V1.svg",
       "name": "12 ACDC Power Supply V1",
       "format": "svg"
-    },
-    {
-      "file": "13_ACDC_Converter_V2.svg",
-      "name": "13 ACDC Converter V2",
-      "format": "svg"
-    },
-    {
-      "file": "14_DC_Supply_V3.svg",
-      "name": "14 DC Supply V3",
-      "format": "svg"
-    },
-    {
-      "file": "15_Generator_GS3.svg",
-      "name": "15 Generator GS3",
-      "format": "svg"
     }
   ]
 }
