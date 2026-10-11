@@ -1189,3 +1189,9 @@ body.theme-light .layout > .library input::placeholder {
 .component-results .symbol-btn:active { cursor: grabbing !important; }
 .component-results .symbol-btn img { pointer-events: none; -webkit-user-drag: none; }
 .component-results .symbol-btn span { pointer-events: none; }
+
+/* Accordion arrow: right-facing when collapsed, down-facing when expanded. */
+.layout > .library .component-category { position: relative; }
+.layout > .library .component-category .category-chevron { flex: 0 0 16px; width:16px; margin-left:7px; text-align:center; font-size:23px; line-height:1; font-weight:400; color:rgba(225,240,255,.78); transform:rotate(0deg); transition:transform .16s ease,color .16s ease; }
+.layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg); color:var(--category-accent); }
+.layout > .library .component-category:focus-visible { outline:2px solid var(--category-accent); outline-offset:1px; }
