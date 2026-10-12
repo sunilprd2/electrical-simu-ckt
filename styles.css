@@ -1275,25 +1275,20 @@ body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
 .zoom-panel-setting .zoom-switch input:focus-visible + .zoom-switch-track {outline:2px solid #7dd3fc;outline-offset:2px;}
 .zoom-panel-setting .zoom-panel-state {min-width:25px!important;}
 
-
-/* UI refinement: compact Library header and settings-only display controls */
-.settings-hidden-control{display:none!important}
-.library-heading{display:flex!important;align-items:center;gap:10px;min-height:38px;padding:3px 6px!important;margin:0 0 8px!important;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--text,#eaf4ff)!important}
-.library-heading b{font-size:15px;letter-spacing:.2px}
-.library-collapse-btn{width:30px;height:30px;flex:0 0 30px;border:1px solid #168dff;border-radius:5px;background:#0b2038;color:#dceeff;font-size:25px;line-height:20px;cursor:pointer;display:grid;place-items:center;padding:0}
-.library-collapse-btn:hover{background:#123a61}
-#escSettingsPopover .settings-section{padding:10px 0;border-bottom:1px solid rgba(120,170,210,.22)}
-#escSettingsPopover .settings-section h4{margin:0 0 9px;font-size:13px;color:#8ddfff;font-weight:700}
-#escSettingsPopover .zoom-panel-setting{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px;margin:4px 0;color:inherit;font-size:13px}
-#escSettingsPopover .zoom-switch{position:relative;display:inline-flex;align-items:center;flex:0 0 42px;width:42px;height:23px}
-#escSettingsPopover .zoom-switch input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:2}
-#escSettingsPopover .zoom-switch-track{position:absolute;inset:0;border-radius:20px;background:#3b4a5d;border:1px solid #63758a;transition:background .18s ease}
-#escSettingsPopover .zoom-switch-track:after{content:"";position:absolute;left:2px;top:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .18s ease}
-#escSettingsPopover .zoom-switch input:checked+.zoom-switch-track{background:#087ff5;border-color:#159cff}
-#escSettingsPopover .zoom-switch input:checked+.zoom-switch-track:after{transform:translateX(19px)}
-#escSettingsPopover .theme-switch-inline{display:flex;align-items:center;gap:7px;color:#d5e6fa}
-#escSettingsPopover .theme-switch-inline .zoom-switch{width:48px;flex-basis:48px}
-#escSettingsPopover .theme-switch-inline .zoom-switch input:checked+.zoom-switch-track:after{transform:translateX(25px)}
-#escSettingsPopover .settings-section>button{display:block;width:100%;margin:7px 0;padding:9px 10px;border:1px solid #176bd1;border-radius:7px;background:linear-gradient(100deg,#087ff5,#4731d9);color:#fff;font-weight:650;cursor:pointer}
-body.library-hidden .library{display:none!important}
-body.library-hidden .layout{grid-template-columns:0 minmax(0,1fr)!important}
+/* 2026-10-12 fix: dedicated sidebar hide arrow and compact settings switches. */
+.library .libtitle.library-head{display:flex!important;align-items:center!important;gap:10px!important;height:42px!important;padding:2px 6px!important;margin:0 0 6px!important;white-space:normal!important;color:#eef7ff!important;font-size:15px!important;}
+.library .libtitle.library-head #libraryCollapseArrow{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;padding:0!important;border:1px solid #1ac9f5!important;border-radius:6px!important;background:#0c2037!important;color:#eaf8ff!important;font:400 27px/1 Arial,sans-serif!important;cursor:pointer!important;}
+.library .libtitle.library-head #libraryCollapseArrow:hover{background:#12395b!important;}
+.library .libtitle.library-head b{font-size:15px!important;font-weight:700!important;}
+#escSettingsPopover .settings-section-label{margin:14px 0 5px;padding-top:8px;border-top:1px solid #294765;color:#7bdfff;font-size:12px;font-weight:800;}
+#escSettingsPopover .zoom-panel-setting{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;padding:9px 8px;border:1px solid rgba(148,163,184,.22);border-radius:9px;background:rgba(148,163,184,.07);font-size:12px;color:#e5eef8;}
+#escSettingsPopover .zoom-switch{position:relative;display:inline-flex;align-items:center;flex:0 0 42px;width:42px;height:24px;}
+#escSettingsPopover .zoom-switch input{position:absolute;inset:0;z-index:2;width:42px!important;height:24px!important;margin:0;opacity:0;cursor:pointer;}
+#escSettingsPopover .zoom-switch-track{position:absolute;inset:0;border:1px solid #55708e;border-radius:99px;background:#24384d;transition:background .16s,border-color .16s;}
+#escSettingsPopover .zoom-switch-track:after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#d9e7f5;box-shadow:0 1px 3px #0008;transition:transform .16s;}
+#escSettingsPopover .zoom-switch input:checked + .zoom-switch-track{background:#087fe8;border-color:#36baff;}
+#escSettingsPopover .zoom-switch input:checked + .zoom-switch-track:after{transform:translateX(18px);background:#fff;}
+#escSettingsPopover .theme-switch-icons{display:flex;align-items:center;gap:5px;color:#ffe18a;}
+#escSettingsPopover .zoom-panel-state{min-width:24px;text-align:right;color:#10d6a2;font-weight:700;}
+/* Remove the old center X/Y axis crosshair; retain the normal grid and engineering-sheet coordinates. */
+#escCoordinateAxes{display:none!important;}

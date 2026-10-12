@@ -906,32 +906,17 @@ function refreshWiresForComponent(moved){
 })();
 
 
-/* Removed duplicate empty-library initializer; renderAssets() owns the component panel. */
-
+/* Library controls: ribbon button toggles; the small sidebar arrow only hides. */
 (function setupLibraryCollapse(){
-  const button = document.getElementById('libraryToggle');
-  if (!button || button.dataset.libraryBound === 'true') return;
-  button.dataset.libraryBound = 'true';
-  button.addEventListener('click', () => {
-    const hidden = document.body.classList.toggle('library-hidden');
-    button.setAttribute('aria-pressed', String(!hidden));
-    button.classList.toggle('active', !hidden);
-    button.title = hidden ? 'Show component library' : 'Hide component library';
-    button.setAttribute('aria-label', button.title);
-    const icon = button.querySelector('.toolbar-icon');
-    if (icon) icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h8"/></svg>'; 
-    const label = button.querySelector('em');
-    if (label) label.textContent = 'Library';
-    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
-  });
-})();
-
-
-/* Library heading arrow uses the same state/action as the ribbon Library button. */
-(function setupLibraryHeadingArrow(){
-  const arrow=document.getElementById('libraryCollapseBtn');
-  const ribbon=document.getElementById('libraryToggle');
-  if(!arrow||!ribbon||arrow.dataset.bound==='true')return;
-  arrow.dataset.bound='true';
-  arrow.addEventListener('click',()=>ribbon.click());
+  const button=document.getElementById('libraryToggle');
+  const arrow=document.getElementById('libraryCollapseArrow');
+  const body=document.body;
+  function setHidden(hidden){
+    body.classList.toggle('library-hidden',hidden);
+    if(button){button.setAttribute('aria-pressed',String(!hidden));button.classList.toggle('active',!hidden);button.title=hidden?'Show component library':'Hide component library';button.setAttribute('aria-label',button.title);}
+    if(arrow){arrow.setAttribute('aria-label',hidden?'Library hidden':'Hide component library');arrow.title=hidden?'Library hidden':'Hide component library';}
+    requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+  }
+  if(button&&!button.dataset.libraryBound){button.dataset.libraryBound='true';button.addEventListener('click',()=>setHidden(!body.classList.contains('library-hidden')));}
+  if(arrow&&!arrow.dataset.libraryBound){arrow.dataset.libraryBound='true';arrow.addEventListener('click',()=>setHidden(true));}
 })();

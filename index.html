@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=35-category-arrows-clean">
+<link rel="stylesheet" href="styles.css?v=42-library-arrow-crossbar">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -37,15 +37,13 @@
     <button id="zoomOutBtn" class="tool-btn tool-slate" type="button" title="Zoom out"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M7.5 10.5h6"/></svg></span><em>Zoom Out</em></button>
     <button id="fitBtn" class="tool-btn tool-slate" type="button" title="Fit drawing to view"><span class="toolbar-icon">⛶</span><em>Fit</em></button>
     <button id="gridToggle" class="tool-btn tool-slate" type="button" title="Toggle schematic grid"><span class="toolbar-icon">▦</span><em>Grid</em></button>
-    <button id="sheetBtn" class="tool-btn tool-slate settings-hidden-control" type="button" title="Engineering sheet options" aria-hidden="true" tabindex="-1"><span class="toolbar-icon">▤</span><em>Sheet</em></button>
-    <button id="themeToggle" class="tool-btn tool-sun theme-toggle settings-hidden-control" type="button" title="Toggle light and dark mode" aria-label="Toggle light and dark mode" aria-pressed="false"><span class="theme-symbol theme-moon" aria-hidden="true">☾</span><span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-knob"></span></span><span class="theme-symbol theme-sun" aria-hidden="true">☼</span></button>
     <button id="settingsBtn" class="tool-btn tool-slate" type="button" title="Settings"><span class="toolbar-icon">⚙</span><em>Settings</em></button>
     <input id="openFileInput" type="file" accept=".json,.esc,application/json" hidden>
   </nav>
 </header>
 <div class="layout">
 <aside class="library">
-  <div class="libtitle library-heading"><button type="button" id="libraryCollapseBtn" class="library-collapse-btn" aria-label="Hide library" title="Hide library">‹</button><b>Library</b></div>
+  <div class="libtitle library-head"><button id="libraryCollapseArrow" type="button" title="Hide component library" aria-label="Hide component library">‹</button><b>Library</b></div>
   <input id="search" placeholder="⌕  Search IEC component...">
   <div id="libraryGroups"><div class="component-category-list" aria-label="Component categories"><button type="button" class="component-category active" data-category="Sources" aria-pressed="true"><span class="category-mark"></span><span>Sources</span></button><button type="button" class="component-category " data-category="Others" aria-pressed="false"><span class="category-mark"></span><span>Others</span></button><button type="button" class="component-category " data-category="Coils" aria-pressed="false"><span class="category-mark"></span><span>Coils</span></button><button type="button" class="component-category " data-category="Auxiliaries" aria-pressed="false"><span class="category-mark"></span><span>Auxiliaries</span></button><button type="button" class="component-category " data-category="Switches" aria-pressed="false"><span class="category-mark"></span><span>Switches</span></button><button type="button" class="component-category " data-category="Loads" aria-pressed="false"><span class="category-mark"></span><span>Loads</span></button><button type="button" class="component-category " data-category="Contactors" aria-pressed="false"><span class="category-mark"></span><span>Contactors</span></button><button type="button" class="component-category " data-category="Protections" aria-pressed="false"><span class="category-mark"></span><span>Protections</span></button><button type="button" class="component-category " data-category="Motors" aria-pressed="false"><span class="category-mark"></span><span>Motors</span></button></div><div class="library-empty">Select a category. Components will be added later.</div></div>
 </aside>
@@ -62,7 +60,6 @@
       </defs>
       <rect id="escGridMinor" class="esc-svg-grid" x="-10000" y="-10000" width="20000" height="20000" fill="url(#escMinorGrid)" pointer-events="none"/>
       <rect id="escGridMajor" class="esc-svg-grid" x="-10000" y="-10000" width="20000" height="20000" fill="url(#escMajorGrid)" pointer-events="none"/>
-      <g id="escCoordinateAxes" pointer-events="none" opacity="0.22"><path d="M -10000 380 H 10000 M 600 -10000 V 10000" stroke="#168dff" stroke-width="1.2" vector-effect="non-scaling-stroke"/></g>
       <g id="engineeringSheet" aria-label="Engineering drawing sheet">
         <rect class="sheet-paper" x="24" y="24" width="1152" height="712"/>
         <g class="sheet-coordinates" text-anchor="middle" font-family="Arial,sans-serif" font-size="10">
@@ -146,23 +143,17 @@
   <div class="sheet-settings-actions"><button id="sheetApply" type="button">Apply to drawing</button><button id="sheetReset" type="button">Reset</button></div>
 </div>
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true">
-<h3>Workspace Settings</h3>
-<section class="settings-section"><h4>Workspace Display</h4>
-<label class="zoom-panel-setting"><span>Show Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox" checked><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
-<label class="zoom-panel-setting"><span>Drawing Grid</span><span class="zoom-switch"><input id="settingsGridToggle" type="checkbox" checked><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsGridState">On</span></label>
-<label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
-</section>
-<section class="settings-section"><h4>Theme</h4>
-<label class="zoom-panel-setting"><span>Light / Dark Mode</span><span class="theme-switch-inline"><span aria-hidden="true">☼</span><span class="zoom-switch"><input id="settingsThemeToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span aria-hidden="true">☾</span></span><span class="zoom-panel-state" id="settingsThemeState">Dark</span></label>
-</section>
-<section class="settings-section"><h4>Canvas Options</h4>
-<button type="button" id="settingsFit">Fit Drawing to Workspace</button>
-<button type="button" id="settingsPrint">Print Engineering Drawing</button>
-<button type="button" id="settingsSheetOptions">Engineering Sheet Options</button>
-</section>
-<p>ESC • Design · Simulate · Control · Visualize</p></div>
+  <h3>Workspace Settings</h3>
+  <div class="settings-section-label">Workspace Display</div>
+  <label class="zoom-panel-setting"><span>Show Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
+  <label class="zoom-panel-setting"><span>Drawing Grid</span><span class="zoom-switch"><input id="settingsGridToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsGridState">On</span></label>
+  <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
+  <div class="settings-section-label">Theme</div>
+  <label class="zoom-panel-setting"><span>Light / Dark Mode</span><span class="theme-switch-icons"><span>☼</span><span class="zoom-switch"><input id="settingsThemeToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span>☾</span></span><span class="zoom-panel-state" id="settingsThemeState">Dark</span></label>
+  <p>ESC • Design · Simulate · Control · Visualize</p>
+</div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=40-smooth-pan-size-lock"></script>
+<script src="app.js?v=42-library-arrow-crossbar"></script>
 <script>
 /* Component library fallback: approved Power symbols, expandable category rows. */
 (function(){
@@ -203,19 +194,13 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const themeBtn=document.getElementById('themeToggle'), gridBtn=document.getElementById('gridToggle');
  let theme=localStorage.getItem('esim-theme')||'dark';
  let grid=localStorage.getItem('esim-grid')!=='off';
- function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);if(themeBtn){themeBtn.setAttribute('aria-pressed',String(theme==='light'));themeBtn.classList.toggle('active',theme==='light');}if(gridBtn){gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}const tt=document.getElementById('settingsThemeToggle');if(tt)tt.checked=theme==='light';const ts=document.getElementById('settingsThemeState');if(ts)ts.textContent=theme==='light'?'Light':'Dark';const gt=document.getElementById('settingsGridToggle');if(gt)gt.checked=grid;const gs=document.getElementById('settingsGridState');if(gs)gs.textContent=grid?'On':'Off';}
+ function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);if(themeBtn)themeBtn.setAttribute('aria-pressed',String(theme==='light'));if(gridBtn){gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}const tt=document.getElementById('settingsThemeToggle'),ts=document.getElementById('settingsThemeState'),gt=document.getElementById('settingsGridToggle'),gs=document.getElementById('settingsGridState');if(tt)tt.checked=theme==='light';if(ts)ts.textContent=theme==='light'?'Light':'Dark';if(gt)gt.checked=grid;if(gs)gs.textContent=grid?'On':'Off';}
  themeBtn?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render()});
- document.getElementById('settingsThemeToggle')?.addEventListener('change',e=>{theme=e.target.checked?'light':'dark';localStorage.setItem('esim-theme',theme);render();});
  const settingsBtn=document.getElementById('settingsBtn'), settingsPanel=document.getElementById('escSettingsPopover');
  if(settingsBtn&&settingsPanel){
    settingsBtn.addEventListener('click',()=>{const open=!settingsPanel.classList.contains('open');settingsPanel.classList.toggle('open',open);settingsPanel.setAttribute('aria-hidden',String(!open));settingsBtn.classList.toggle('active',open);});
-   document.getElementById('settingsTheme')?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render();});
-   document.getElementById('settingsGrid')?.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render();});
- document.getElementById('settingsGridToggle')?.addEventListener('change',e=>{grid=e.target.checked;localStorage.setItem('esim-grid',grid?'on':'off');render();});
- document.getElementById('settingsSheetToggle')?.addEventListener('change',e=>{if(sheetEnabled){sheetEnabled.checked=e.target.checked;applySheetOptions();}const ss=document.getElementById('settingsSheetState');if(ss)ss.textContent=e.target.checked?'On':'Off';});
- document.getElementById('settingsSheetOptions')?.addEventListener('click',()=>{const panel=document.getElementById('sheetSettings');if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}});
-   document.getElementById('settingsFit')?.addEventListener('click',()=>{document.getElementById('fitBtn')?.click();});
-   document.getElementById('settingsPrint')?.addEventListener('click',()=>window.print());
+   document.getElementById('settingsThemeToggle')?.addEventListener('change',e=>{theme=e.target.checked?'light':'dark';localStorage.setItem('esim-theme',theme);render();});
+   document.getElementById('settingsGridToggle')?.addEventListener('change',e=>{grid=e.target.checked;localStorage.setItem('esim-grid',grid?'on':'off');render();});
    document.addEventListener('click',e=>{if(settingsPanel.classList.contains('open')&&!settingsPanel.contains(e.target)&&!settingsBtn.contains(e.target)){settingsPanel.classList.remove('open');settingsPanel.setAttribute('aria-hidden','true');settingsBtn.classList.remove('active');}});
  }
 
@@ -254,8 +239,6 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    localStorage.setItem('esim-sheet-enabled',enabled?'on':'off');
    localStorage.setItem('esim-sheet-size',sizeText);
    localStorage.setItem('esim-sheet-orientation',sheetOrientation?.value||'landscape');
-   const sheetToggleUI=document.getElementById('settingsSheetToggle');if(sheetToggleUI)sheetToggleUI.checked=enabled;
-   const sheetStateUI=document.getElementById('settingsSheetState');if(sheetStateUI)sheetStateUI.textContent=enabled?'On':'Off';
    if(state)state.textContent=enabled?'ENGINEERING SHEET • '+sizeText.toUpperCase():'READY • NO SHEET BORDER';
  }
  loadTitleFields();
@@ -263,6 +246,10 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  if(sheetSize)sheetSize.value=localStorage.getItem('esim-sheet-size')||'A4';
  if(sheetOrientation)sheetOrientation.value=localStorage.getItem('esim-sheet-orientation')||'landscape';
  applySheetOptions();
+ const settingsSheetToggle=document.getElementById('settingsSheetToggle');
+ const settingsSheetState=document.getElementById('settingsSheetState');
+ if(settingsSheetToggle){settingsSheetToggle.checked=!!sheetEnabled?.checked;settingsSheetToggle.addEventListener('change',()=>{if(sheetEnabled){sheetEnabled.checked=settingsSheetToggle.checked;applySheetOptions();}if(settingsSheetState)settingsSheetState.textContent=settingsSheetToggle.checked?'On':'Off';});}
+ sheetEnabled?.addEventListener('change',()=>{if(settingsSheetToggle)settingsSheetToggle.checked=sheetEnabled.checked;if(settingsSheetState)settingsSheetState.textContent=sheetEnabled.checked?'On':'Off';});
  function toggleSheetPanel(){const open=!sheetPanel.classList.contains('open');sheetPanel.classList.toggle('open',open);sheetPanel.setAttribute('aria-hidden',String(!open));sheetBtn?.classList.toggle('active',open);}
  Object.keys(titleFields).forEach(id=>document.getElementById(id)?.addEventListener('input',updateTitleBlock));
  sheetSize?.addEventListener('change',updateTitleBlock);
