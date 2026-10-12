@@ -242,38 +242,62 @@ function nextReference(d){
  return p+n;
 }
 function makeDropped(d,x,y){
-  const NS='http://www.w3.org/2000/svg', W=120, H=90;
+  const NS='http://www.w3.org/2000/svg', W=180, H=140;
   const g=document.createElementNS(NS,'g');
-  g.setAttribute('class','dropped-symbol'); g.dataset.uid='esc-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7); g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name; g.dataset.ref=d.ref||nextReference(d); g.dataset.value=d.value||''; g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y; g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
+  g.setAttribute('class','dropped-symbol');
+  g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
+  g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name;
+  g.dataset.ref=d.ref||nextReference(d); g.dataset.value=d.value||'';
+  g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y;
   g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
 
-  // The symbol, its tails, terminal squares and labels are ONE SVG group.
-  // Keep the symbol at its native 48x32 viewBox so magnetic ports line up exactly.
-  const ns=document.createElementNS(NS,'svg'); ns.setAttribute('x',36); ns.setAttribute('y',28); ns.setAttribute('width',48); ns.setAttribute('height',32); ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','none'); ns.style.color=g.dataset.accent; ns.style.pointerEvents='none';
+  // Component artwork is scaled to 150 x 100 world units: one major grid square tall.
+  // Port anchors use the exact same transform so wires continue to snap to terminals.
+  const ART_X=15, ART_Y=20, ART_W=150, ART_H=100;
+  const box=document.createElementNS(NS,'rect');
+  box.setAttribute('class','select-box'); box.setAttribute('x',0); box.setAttribute('y',0);
+  box.setAttribute('width',W); box.setAttribute('height',H); box.setAttribute('rx',4);
+  const ns=document.createElementNS(NS,'svg');
+  ns.setAttribute('x',ART_X); ns.setAttribute('y',ART_Y);
+  ns.setAttribute('width',ART_W); ns.setAttribute('height',ART_H);
+  ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','xMidYMid meet');
+  ns.style.color=g.dataset.accent; ns.style.pointerEvents='none';
   if(d.symbolFile && /\.svg(?:$|\?)/i.test(d.symbolFile)){
-    // Keep every newly placed component inside the same 48x32 artwork viewport.
-    // The SVG viewBox zooms this fixed world-space footprint with all existing parts.
-    ns.setAttribute('viewBox','0 0 100 100');
-    const im=document.createElementNS(NS,'image'); im.setAttribute('href',d.symbolFile); im.setAttribute('x',0); im.setAttribute('y',0); im.setAttribute('width',48); im.setAttribute('height',32); im.setAttribute('preserveAspectRatio','xMidYMid meet'); ns.appendChild(im);
-  } else { ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,''); }
+    const im=document.createElementNS(NS,'image');
+    im.setAttribute('href',d.symbolFile); im.setAttribute('x',0); im.setAttribute('y',0);
+    im.setAttribute('width',48); im.setAttribute('height',32);
+    im.setAttribute('preserveAspectRatio','xMidYMid meet'); ns.appendChild(im);
+  } else {
+    ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+  }
   const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
   portDefs(d.symbolFile||d.type).forEach(p=>{
-    const r=document.createElementNS(NS,'circle'); r.setAttribute('class','mag-port'); r.setAttribute('cx',36+p.x); r.setAttribute('cy',28+p.y); r.setAttribute('r',2.1); r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
-    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name'); t.setAttribute('x',36+p.x); t.setAttribute('y',p.side==='top'?28+p.y-7:28+p.y+12); t.setAttribute('text-anchor','middle'); t.textContent=''; t.setAttribute('aria-label',p.label); ports.appendChild(t);
+    const px=ART_X+(p.x/48)*ART_W, py=ART_Y+(p.y/32)*ART_H;
+    const r=document.createElementNS(NS,'circle'); r.setAttribute('class','mag-port');
+    r.setAttribute('cx',px); r.setAttribute('cy',py); r.setAttribute('r',3);
+    r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
+    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name');
+    t.setAttribute('x',px); t.setAttribute('y',p.side==='top'?py-9:py+15);
+    t.setAttribute('text-anchor','middle'); t.textContent=''; t.setAttribute('aria-label',p.label); ports.appendChild(t);
   });
-  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label'); label.setAttribute('x',W/2); label.setAttribute('y',80); label.setAttribute('text-anchor','middle'); label.textContent='';
-  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag'); tag.setAttribute('x',W/2); tag.setAttribute('y',12); tag.setAttribute('text-anchor','middle'); tag.textContent=g.dataset.ref||nextReference(d);
-  const title=document.createElementNS(NS,'title'); title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
-  // Full-size transparent hit area makes the whole component selectable,
-  // even when its SVG artwork contains thin lines with tiny click targets.
-  const hit=document.createElementNS(NS,'rect');
-  hit.setAttribute('class','component-hit-area');
-  hit.setAttribute('x','0'); hit.setAttribute('y','0');
-  hit.setAttribute('width',String(W)); hit.setAttribute('height',String(H));
+  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label');
+  label.setAttribute('x',W/2); label.setAttribute('y',H-5); label.setAttribute('text-anchor','middle');
+  label.textContent='';
+  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag');
+  tag.setAttribute('x',W/2); tag.setAttribute('y',13); tag.setAttribute('text-anchor','middle');
+  tag.textContent=g.dataset.ref;
+  const title=document.createElementNS(NS,'title');
+  title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
+  const hit=document.createElementNS(NS,'rect'); hit.setAttribute('class','component-hit-area');
+  hit.setAttribute('x',0); hit.setAttribute('y',0); hit.setAttribute('width',W); hit.setAttribute('height',H);
   hit.setAttribute('fill','transparent'); hit.setAttribute('pointer-events','all');
-  g.append(title,hit,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g); return g;
+  g.append(title,box,hit,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g);
+  return g;
 }
-function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){return portsFor(g).map(p=>({x:x-60+36+p.x,y:y-45+28+p.y,label:p.label}));}
+function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){
+ const ART_X=15,ART_Y=20,ART_W=150,ART_H=100;
+ return portsFor(g).map(p=>({x:x-90+ART_X+(p.x/48)*ART_W,y:y-70+ART_Y+(p.y/32)*ART_H,label:p.label}));
+}
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
 let activeDrag = null;
 let suppressNextComponentClick = false;
