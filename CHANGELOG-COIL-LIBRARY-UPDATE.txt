@@ -1,0 +1,9 @@
+Electrical Simu CKT — Coil Library Update
+
+Added four existing SVG coil components to the live left-side component library manifest:
+- Contactor Coil
+- TON Timer Coil
+- TOF Timer Coil
+- TON/TOF Timer Coil
+
+They appear under the Coils category and retain SVG assets from components/Coils/. PWA cache version bumped to v44 so updated app assets can be loaded.
