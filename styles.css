@@ -1292,3 +1292,10 @@ body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
 #escSettingsPopover .zoom-panel-state{min-width:24px;text-align:right;color:#10d6a2;font-weight:700;}
 /* Remove the old center X/Y axis crosshair; retain the normal grid and engineering-sheet coordinates. */
 #escCoordinateAxes{display:none!important;}
+
+
+/* 2026-10-12: approved compact ribbon and empty startup workspace */
+.top nav.cad-ribbon { gap: 2px !important; }
+.top nav.cad-ribbon .ribbon-separator { display:none !important; width:0 !important; margin:0 !important; }
+.top nav.cad-ribbon .tool-btn { margin:0 !important; }
+#connectToggle { display:none !important; }

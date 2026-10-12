@@ -774,7 +774,7 @@ renderLibrary();
    else if (/lamp|load|bell|horn|buzzer|indicator/.test(raw)) category = 'Loads';
    return {...it, file, name, category, type:it.type || name};
   });
-  let activeCategory = 'Sources';
+  let activeCategory = null;
   function paint(){
    const q = (document.getElementById('search')?.value || '').trim().toLowerCase();
    const filtered = normalized.filter(it => (activeCategory===null || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
