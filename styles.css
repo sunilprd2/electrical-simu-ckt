@@ -1238,3 +1238,39 @@ body.theme-light .esc-grid-major-line { stroke: rgba(100,120,140,.25); }
 body.library-hidden #libraryToggle .toolbar-icon{transform:rotate(180deg);display:inline-block;}
 /* Remove any legacy red outline around the library title/header. */
 .library .libtitle{border-color:transparent!important;outline:none!important;}
+
+/* 2026-10-12: final logo lockup, clean library header, and slider-style zoom mode. */
+.top .brand {
+  flex: 0 0 218px !important; width:218px !important; min-width:218px !important;
+  max-width:218px !important; padding:3px 7px !important; gap:7px !important;
+  justify-content:flex-start !important; align-items:center !important; overflow:hidden !important;
+}
+.top .brand .brand-logo {
+  flex:0 0 54px !important; width:54px !important; min-width:54px !important;
+  max-width:54px !important; height:50px !important; max-height:50px !important;
+  object-fit:contain !important; object-position:center !important;
+}
+.top .brand .brand-name {
+  display:block !important; flex:1 1 auto !important; min-width:0 !important;
+  color:#f6fbff !important; font:700 11px/1.15 Arial,Helvetica,sans-serif !important;
+  letter-spacing:.25px !important; white-space:normal !important;
+}
+.top .brand .brand-name b {display:block!important;color:#39d9ff!important;font-size:14px!important;line-height:1.2!important;}
+.top .brand .brand-name small {display:block!important;color:#a9c8e5!important;font-size:8px!important;font-weight:500!important;line-height:1.25!important;margin-top:3px!important;white-space:normal!important;}
+/* Only the toolbar Library button collapses the sidebar; no extra arrow/control in its title. */
+.library .libtitle > button, .library .libtitle .library-collapse,
+.library .libtitle .category-arrow, .library .libtitle .collapse-arrow {display:none!important;}
+.library .libtitle {border:0!important;outline:0!important;box-shadow:none!important;}
+#libraryToggle .toolbar-icon {display:flex!important;align-items:center!important;justify-content:center!important;}
+#libraryToggle .toolbar-icon svg {width:22px!important;height:22px!important;}
+body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
+/* Make Show Zoom Panel a proper slider, not a checkbox/tick. */
+.zoom-panel-setting {gap:10px!important;}
+.zoom-panel-setting .zoom-switch {position:relative;display:inline-flex;align-items:center;flex:0 0 42px;width:42px;height:24px;}
+.zoom-panel-setting .zoom-switch input {position:absolute;inset:0;z-index:2;width:42px!important;height:24px!important;margin:0;opacity:0;cursor:pointer;}
+.zoom-panel-setting .zoom-switch-track {position:absolute;inset:0;border:1px solid #55708e;border-radius:99px;background:#24384d;transition:background .16s,border-color .16s;}
+.zoom-panel-setting .zoom-switch-track:after {content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#d9e7f5;box-shadow:0 1px 3px #0008;transition:transform .16s;}
+.zoom-panel-setting .zoom-switch input:checked + .zoom-switch-track {background:#087fe8;border-color:#36baff;}
+.zoom-panel-setting .zoom-switch input:checked + .zoom-switch-track:after {transform:translateX(18px);background:#fff;}
+.zoom-panel-setting .zoom-switch input:focus-visible + .zoom-switch-track {outline:2px solid #7dd3fc;outline-offset:2px;}
+.zoom-panel-setting .zoom-panel-state {min-width:25px!important;}

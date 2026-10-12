@@ -1,0 +1,6 @@
+ELECTRICAL SIMU CKT UI correction (2026-10-12)
+- Logo preserves its original square aspect ratio; brand name is rendered beside it.
+- Removed any extra library-title collapse arrow/control; the main Library toolbar button remains the sidebar toggle and keeps a library icon.
+- Show Zoom Panel now uses a slider switch and defaults to ON unless explicitly saved OFF by the user.
+- Zoom mode uses the same SVG viewBox transform for grid and all schematic components; newly inserted components retain the same native size as existing components and library artwork.
+- Kept component artwork geometry and blue selection styling unchanged.

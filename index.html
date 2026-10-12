@@ -17,9 +17,9 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><img class="brand-logo" src="esc-logo.png" alt="ELECTRICAL SIMU CKT — Simulate • Innovate • Learn • Build"></div>
+  <div class="brand"><img class="brand-logo" src="esc-logo.png" alt="Electrical Simu CKT logo"><span class="brand-name">ELECTRICAL <b>SIMU CKT</b><small>Electrical Circuit Simulation</small></span></div>
   <nav class="cad-ribbon" aria-label="Main tools">
-    <button id="libraryToggle" class="tool-btn tool-cyan library-toggle" type="button" title="Show or hide component library" aria-label="Show or hide component library" aria-pressed="true"><span class="toolbar-icon" aria-hidden="true">◀</span><em>Library</em></button>
+    <button id="libraryToggle" class="tool-btn tool-cyan library-toggle" type="button" title="Show or hide component library" aria-label="Show or hide component library" aria-pressed="true"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h8"/></svg></span><em>Library</em></button>
     <button id="newBtn" class="tool-btn tool-blue" type="button" title="New drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg></span><em>New</em></button>
     <button id="openBtn" class="tool-btn tool-purple" type="button" title="Open drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="M3 10h18"/></svg></span><em>Open</em></button>
     <button id="saveBtn" class="tool-btn tool-teal" type="button" title="Save drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h14l3 3v15H3V3z"/><path d="M7 3v6h10V3M7 21v-8h10v8"/></svg></span><em>Save</em></button>
@@ -145,7 +145,7 @@
   <label class="sheet-field">Orientation<select id="sheetOrientation"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label>
   <div class="sheet-settings-actions"><button id="sheetApply" type="button">Apply to drawing</button><button id="sheetReset" type="button">Reset</button></div>
 </div>
-<div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><label class="zoom-panel-setting"><span>Show Zoom Panel</span><input id="showZoomPanel" type="checkbox"><span class="zoom-panel-state">Off</span></label><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
+<div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><label class="zoom-panel-setting"><span>Show Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
 <script src="app.js?v=40-smooth-pan-size-lock"></script>
 <script>
@@ -323,6 +323,9 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const svg=document.getElementById('schematic'), sheet=document.getElementById('sheet'), drop=document.getElementById('dropLayer');
  if(!svg||!sheet)return;
  const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
+ const zoomKey='esc-show-zoom-panel-v1';
+ const zoomOn=localStorage.getItem(zoomKey)!=='off';
+ if(zoomOn){const cx=view.x+view.w/2,cy=view.y+view.h/2;view.w=Math.max(240,view.w/2);view.h=view.h/2;view.x=cx-view.w/2;view.y=cy-view.h/2;svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);}
  // Grid is drawn inside the SVG using user-space patterns. The SVG viewBox zooms
  // grid, components, terminals and wires with one identical transform.
  const syncGrid=()=>{
@@ -333,6 +336,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const apply=()=>{svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);requestAnimationFrame(syncGrid)};
  new MutationObserver(()=>requestAnimationFrame(syncGrid)).observe(svg,{attributes:true,attributeFilter:['viewBox']});
  const zoom=(factor,cx=view.x+view.w/2,cy=view.y+view.h/2)=>{const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view.x=cx-(cx-view.x)*(nw/view.w);view.y=cy-(cy-view.y)*(nh/view.h);view.w=nw;view.h=nh;apply()};
+ window.addEventListener('esc-zoom-mode-change',e=>{const on=!!e.detail?.enabled;const cx=view.x+view.w/2,cy=view.y+view.h/2;const factor=on?0.5:2;const nw=Math.max(240,Math.min(4000,view.w*factor)),nh=view.h*(nw/view.w);view={x:cx-nw/2,y:cy-nh/2,w:nw,h:nh};apply();});
  document.getElementById('zoomInBtn')?.addEventListener('click',()=>zoom(.8));
  document.getElementById('zoomOutBtn')?.addEventListener('click',()=>zoom(1.25));
  document.getElementById('centerViewBtn')?.addEventListener('click',()=>{view={x:0,y:0,w:1200,h:760};apply()});
@@ -496,22 +500,11 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const status=document.getElementById('state');
  if(!toggle||!host||!svg)return;
  const KEY='esc-show-zoom-panel-v1';
- let enabled=localStorage.getItem(KEY)==='on';
+ let enabled=localStorage.getItem(KEY)!=='off';
  toggle.checked=enabled;
  const label=toggle.closest('.zoom-panel-setting')?.querySelector('.zoom-panel-state');
  const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';};
- const setWorkspaceZoom=on=>{
-   const vb=svg.viewBox.baseVal;
-   if(on){
-     if(vb.width<1450)return;
-     const cx=vb.x+vb.width/2,cy=vb.y+vb.height/2;
-     const w=Math.min(4000,vb.width*1.25),h=vb.height*(w/vb.width);
-     svg.setAttribute('viewBox',`${cx-w/2} ${cy-h/2} ${w} ${h}`);
-   } else {
-     const vb2=svg.viewBox.baseVal;
-     if(vb2.width>1200){const cx=vb2.x+vb2.width/2,cy=vb2.y+vb2.height/2;const w=Math.max(1200,vb2.width/1.25),h=vb2.height*(w/vb2.width);svg.setAttribute('viewBox',`${cx-w/2} ${cy-h/2} ${w} ${h}`);}
-   }
- };
+ const setWorkspaceZoom=on=>window.dispatchEvent(new CustomEvent('esc-zoom-mode-change',{detail:{enabled:on}}));
  toggle.addEventListener('change',()=>{enabled=toggle.checked;localStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON • DOUBLE-CLICK A LIBRARY COMPONENT':'ZOOM PANEL OFF • NORMAL COMPONENT SIZE';});
  setLabel();
  host.addEventListener('dblclick',e=>{
@@ -519,13 +512,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
    e.preventDefault();e.stopPropagation();
    if(typeof makeDropped!=='function'){if(status)status.textContent='COMPONENT INSERTION IS NOT AVAILABLE YET';return;}
    const d={type:btn.dataset.symbol||btn.dataset.name,name:btn.dataset.name||btn.dataset.symbol,ref:btn.dataset.ref||'',accent:btn.dataset.accent||'#b7b9bc',symbolFile:btn.dataset.file||''};
-   const scale=enabled?1.45:1;
+   const scale=1;
    const x=600,y=380;
    const g=makeDropped(d,x,y);
    if(!g)return;
-   g.dataset.libraryScale=String(scale);
-   if(scale!==1)g.setAttribute('transform',`translate(${x},${y}) scale(${scale}) translate(-60,-45)`);
-   else g.setAttribute('transform',`translate(${x-60},${y-45})`);
+   g.dataset.libraryScale='1';
+   g.setAttribute('transform',`translate(${x-60},${y-45})`);
    g.dataset.x=String(x);g.dataset.y=String(y);
    if(status)status.textContent=`INSERTED • ${d.name.toUpperCase()}${enabled?' • ENLARGED':''}`;
  });
