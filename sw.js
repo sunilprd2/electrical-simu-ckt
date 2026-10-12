@@ -1,4 +1,4 @@
-const CACHE='electrical-simu-ckt-v50-rotate-theme-symbols';
+const CACHE='electrical-simu-ckt-v51-arrow-cursor-select-fix';
 const ASSETS=[
   './',
   './index.html',

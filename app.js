@@ -173,7 +173,7 @@ function enableMove(g){
  // Do not attach a second per-component pointer controller; competing
  // pointer-capture handlers prevented reliable dragging in the workspace.
  g.style.pointerEvents = 'all';
- g.style.cursor = 'grab';
+ g.style.cursor = 'default';
 }
 
 svg.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy';overlay.classList.add('show');});
@@ -313,7 +313,7 @@ function enableMove(g){
   // Each placed component is its own SVG group. Only the group that received
   // pointerdown is allowed to change position during this drag operation.
   g.style.pointerEvents = 'all';
-  g.style.cursor = 'grab';
+  g.style.cursor = 'default';
   g.addEventListener('pointerdown', e => {
     if (e.button !== 0) return;
     if (e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
@@ -332,7 +332,7 @@ function enableMove(g){
       moved: false
     };
     g.classList.add('moving');
-    g.style.cursor = 'grabbing';
+    g.style.cursor = 'default';
     try { svg.setPointerCapture(e.pointerId); } catch (_) {}
   });
   g.addEventListener('click', e => {
@@ -366,7 +366,7 @@ function finishComponentDrag(e) {
   const wasMoved = activeDrag.moved;
   if (g) {
     g.classList.remove('moving');
-    g.style.cursor = 'grab';
+    g.style.cursor = 'default';
     select(g);
   }
   activeDrag = null;
@@ -891,6 +891,19 @@ function refreshWiresForComponent(moved){
  }
 }
 
+/* V51: make every placed component reliably selectable by click. The property inspector follows the clicked component. */
+(function installClickSelectionFallback(){
+  const layer=document.getElementById('dropLayer');
+  if(!layer) return;
+  layer.addEventListener('click', function(e){
+    if(e.target && e.target.closest && e.target.closest('.mag-port')) return;
+    const g=e.target && e.target.closest ? e.target.closest('.dropped-symbol') : null;
+    if(!g) return;
+    select(g);
+    state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
+  }, true);
+})();
+
 /* V18: final, delegated single-component selection and drag controller.
    It takes priority over older per-component handlers to avoid conflicts. */
 (function installReliableIndividualDrag(){
@@ -914,7 +927,7 @@ function refreshWiresForComponent(moved){
     const p=point(e);
     drag={g,pointerId:e.pointerId,dx:p.x-(+g.dataset.x||0),dy:p.y-(+g.dataset.y||0),moved:false};
     g.classList.add('moving');
-    g.style.cursor='grabbing';
+    g.style.cursor='default';
     try{canvas.setPointerCapture(e.pointerId)}catch(_){}
   },true);
   function move(e){
@@ -930,7 +943,7 @@ function refreshWiresForComponent(moved){
   function finish(e){
     if(!drag || (e.pointerId!=null && e.pointerId!==drag.pointerId)) return;
     const g=drag.g;
-    if(g){g.classList.remove('moving');g.style.cursor='grab';select(g);}
+    if(g){g.classList.remove('moving');g.style.cursor='default';select(g);}
     if(drag.moved && g) state.textContent='MOVED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
     drag=null;
   }

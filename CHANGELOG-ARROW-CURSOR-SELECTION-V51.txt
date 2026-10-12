@@ -1,0 +1,7 @@
+Electrical Simu CKT v51 — Arrow cursor and reliable selection
+
+- Kept the standard arrow cursor over the schematic, placed components, and library component cards.
+- Added delegated click-selection fallback for existing workspace components.
+- Clicking a placed component now updates the selected highlight and property inspector fields.
+- Kept magnetic terminal hit targets active for wiring.
+- Updated asset query and service-worker cache version to v51.

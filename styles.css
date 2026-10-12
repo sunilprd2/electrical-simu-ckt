@@ -1368,3 +1368,12 @@ body.theme-light #dropLayer .dropped-symbol image { filter:brightness(0)!importa
 #dropLayer .dropped-symbol > .drop-tag { fill:var(--component-accent,#0879df)!important; stroke:none!important; }
 /* Rotation tool uses the same orange accent as the replaced Reset control. */
 .top nav.cad-ribbon #rotateBtn .toolbar-icon svg { width:22px!important;height:22px!important; }
+
+
+/* V51: keep the normal arrow over the schematic and placed components. */
+#schematic, #sheet, #dropLayer, #dropLayer .dropped-symbol,
+#dropLayer .dropped-symbol *, .component-results .symbol-btn,
+.component-results .symbol-btn * { cursor: default !important; }
+#dropLayer .dropped-symbol .component-hit-area,
+#dropLayer .dropped-symbol .select-box { pointer-events: all !important; }
+#dropLayer .dropped-symbol > svg { pointer-events: none; }
