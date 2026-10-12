@@ -919,7 +919,7 @@ function refreshWiresForComponent(moved){
     button.title = hidden ? 'Show component library' : 'Hide component library';
     button.setAttribute('aria-label', button.title);
     const icon = button.querySelector('.toolbar-icon');
-    if (icon) icon.textContent = hidden ? '☰' : '☷';
+    if (icon) icon.textContent = '◀';
     const label = button.querySelector('em');
     if (label) label.textContent = 'Library';
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));

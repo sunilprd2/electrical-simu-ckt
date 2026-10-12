@@ -1225,3 +1225,16 @@ body.theme-light .layout > .library input::placeholder {
 .esc-grid-major-line { stroke: rgba(100,135,165,.30); }
 body.theme-light .esc-grid-minor-line { stroke: rgba(100,120,140,.14); }
 body.theme-light .esc-grid-major-line { stroke: rgba(100,120,140,.25); }
+
+/* User-requested targeted UI refinements (preserve existing component geometry/zoom). */
+.libtitle{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;}
+.libtitle::before,.libtitle::after{content:none!important;display:none!important;}
+/* Selected workspace component uses the blue highlight shown in the reference. */
+.dropped-symbol.selected{filter:drop-shadow(0 0 5px rgba(22,141,255,.75))!important;}
+.dropped-symbol.selected .mag-port{fill:#168dff!important;stroke:#fff!important;stroke-width:1.6!important;filter:drop-shadow(0 0 4px rgba(22,141,255,.9))!important;}
+.dropped-symbol.selected .drop-tag{fill:#168dff!important;filter:drop-shadow(0 0 3px rgba(22,141,255,.6));}
+/* Library control is an arrow toggle; the existing handler still controls collapse/restore. */
+#libraryToggle .toolbar-icon{font-size:24px;line-height:1;}
+body.library-hidden #libraryToggle .toolbar-icon{transform:rotate(180deg);display:inline-block;}
+/* Remove any legacy red outline around the library title/header. */
+.library .libtitle{border-color:transparent!important;outline:none!important;}
