@@ -3,15 +3,15 @@ const sheet=document.getElementById('sheet'), sim=document.getElementById('sim')
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
 const groups=[
- {name:'Sources',color:'#0ea5e9',items:[]},
- {name:'Others',color:'#64748b',items:[]},
- {name:'Coils',color:'#8b5cf6',items:[]},
- {name:'Auxiliaries',color:'#d4a017',items:[]},
- {name:'Switches',color:'#06b6d4',items:[]},
- {name:'Loads',color:'#f59e0b',items:[]},
- {name:'Contactors',color:'#10b981',items:[]},
- {name:'Protections',color:'#ef4444',items:[]},
- {name:'Motors',color:'#2563eb',items:[]}
+ {name:'Sources',color:'#00e6a8',items:[]},
+ {name:'Others',color:'#08b7f4',items:[]},
+ {name:'Coils',color:'#b78cff',items:[]},
+ {name:'Auxiliaries',color:'#d36cff',items:[]},
+ {name:'Switches',color:'#ffd43b',items:[]},
+ {name:'Loads',color:'#18d9ef',items:[]},
+ {name:'Contactors',color:'#ff8a3d',items:[]},
+ {name:'Protections',color:'#27e6ad',items:[]},
+ {name:'Motors',color:'#ff4f91',items:[]}
 ];
 
 function icon(type){
@@ -777,11 +777,11 @@ renderLibrary();
  }
  function renderAssets(items){
   const libraryCategories = [
-   {name:'Sources', color:'#0ea5e9'},
-   {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
-   {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
-   {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
-   {name:'Protections', color:'#ef4444'}, {name:'Motors', color:'#2563eb'}
+   {name:'Sources', color:'#00e6a8'},
+   {name:'Others', color:'#08b7f4'}, {name:'Coils', color:'#b78cff'},
+   {name:'Auxiliaries', color:'#d36cff'}, {name:'Switches', color:'#ffd43b'},
+   {name:'Loads', color:'#18d9ef'}, {name:'Contactors', color:'#ff8a3d'},
+   {name:'Protections', color:'#27e6ad'}, {name:'Motors', color:'#ff4f91'}
   ];
   const normalized = (items || []).map((it, i) => {
    const file = String(it.file || '').replace(/^\.\//,'');
