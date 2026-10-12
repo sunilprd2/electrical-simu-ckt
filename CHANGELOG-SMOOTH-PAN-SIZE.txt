@@ -1,0 +1,6 @@
+ELECTRICAL SIMU CKT — Smooth Pan and Consistent Component Size
+
+- Background panning uses pointer screen deltas converted to SVG world units from the starting view, preventing feedback jitter.
+- Empty workspace cursor stays a standard arrow; placed components retain their drag cursor.
+- SVG component assets are normalized into the same 48x32 world-space artwork viewport as built-in icons, so newly added components scale with the current workspace zoom and share a consistent footprint.
+- Existing grid-in-SVG coordinate system and component world coordinates are preserved.

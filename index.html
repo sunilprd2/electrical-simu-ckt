@@ -8,6 +8,12 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
+<style id="esc-workspace-cursor-fix">
+  #schematic, #sheet, #dropLayer, .esc-svg-grid { cursor: default !important; }
+  #schematic.panning, #schematic.panning * { cursor: default !important; }
+  #dropLayer .dropped-symbol { cursor: grab; }
+  #dropLayer .dropped-symbol.moving { cursor: grabbing; }
+</style>
 </head>
 <body>
 <header class="top">
@@ -140,7 +146,7 @@
 </div>
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true"><h3>Workspace Settings</h3><label class="zoom-panel-setting"><span>Show Zoom Panel</span><input id="showZoomPanel" type="checkbox"><span class="zoom-panel-state">Off</span></label><button type="button" id="settingsTheme">Toggle Light / Dark Mode</button><button type="button" id="settingsGrid">Toggle Drawing Grid</button><button type="button" id="settingsFit">Fit Drawing to Workspace</button><button type="button" id="settingsPrint">Print Engineering Drawing</button><p>ESC • Design · Simulate · Control · Visualize</p></div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=38-drag-capture-fix"></script>
+<script src="app.js?v=40-smooth-pan-size-lock"></script>
 <script>
 /* Component library fallback: approved Power symbols, expandable category rows. */
 (function(){
@@ -344,10 +350,20 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    const st=document.getElementById('state')?.textContent||'';
    if(st.startsWith('WIRE START')||st.startsWith('WIRE BEND'))return;
    if(textMode){const p=point(e),value=prompt('Text to insert:','Text');if(value){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',p.x);t.setAttribute('y',p.y);t.setAttribute('class','drawing-text');t.textContent=value;t.setAttribute('fill','currentColor');t.setAttribute('font-size','16');drop.appendChild(t)}textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');return;}
-   const p=point(e);pan={startX:p.x,startY:p.y,x:view.x,y:view.y};svg.classList.add('panning');try{svg.setPointerCapture(e.pointerId)}catch{}
+   const rect=svg.getBoundingClientRect();
+   pan={clientX:e.clientX,clientY:e.clientY,x:view.x,y:view.y,unitsPerPixelX:view.w/Math.max(1,rect.width),unitsPerPixelY:view.h/Math.max(1,rect.height),pointerId:e.pointerId};
+   svg.classList.add('panning');e.preventDefault();
+   try{svg.setPointerCapture(e.pointerId)}catch{}
  });
- svg.addEventListener('pointermove',e=>{if(!pan)return;const p=point(e);view.x=pan.x-(p.x-pan.startX);view.y=pan.y-(p.y-pan.startY);apply()});
- const stop=e=>{if(pan){pan=null;svg.classList.remove('panning');try{svg.releasePointerCapture(e.pointerId)}catch{}}};
+ svg.addEventListener('pointermove',e=>{
+   if(!pan || (e.pointerId!=null && e.pointerId!==pan.pointerId))return;
+   // Calculate from the original screen position, not a world point that changes
+   // as the viewBox moves. This prevents feedback/jitter and keeps panning smooth.
+   view.x=pan.x-(e.clientX-pan.clientX)*pan.unitsPerPixelX;
+   view.y=pan.y-(e.clientY-pan.clientY)*pan.unitsPerPixelY;
+   apply();
+ });
+ const stop=e=>{if(pan){const id=pan.pointerId;pan=null;svg.classList.remove('panning');try{if(svg.hasPointerCapture(id))svg.releasePointerCapture(id)}catch{}}};
  svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
  window.addEventListener('resize',()=>requestAnimationFrame(syncGrid));
  if(window.ResizeObserver){new ResizeObserver(()=>requestAnimationFrame(syncGrid)).observe(sheet);new ResizeObserver(()=>requestAnimationFrame(syncGrid)).observe(svg)}
