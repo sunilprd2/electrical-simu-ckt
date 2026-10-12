@@ -925,3 +925,13 @@ function refreshWiresForComponent(moved){
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
   });
 })();
+
+
+/* Library heading arrow uses the same state/action as the ribbon Library button. */
+(function setupLibraryHeadingArrow(){
+  const arrow=document.getElementById('libraryCollapseBtn');
+  const ribbon=document.getElementById('libraryToggle');
+  if(!arrow||!ribbon||arrow.dataset.bound==='true')return;
+  arrow.dataset.bound='true';
+  arrow.addEventListener('click',()=>ribbon.click());
+})();
