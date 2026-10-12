@@ -788,9 +788,9 @@ renderLibrary();
    const name = it.name || it.original_filename || file.split('/').pop().replace(/\.svg$/i,'');
    const raw = String(it.category || '').toLowerCase() + ' ' + String(it.type || '').toLowerCase() + ' ' + name.toLowerCase();
    let category = 'Others';
-   // Honor explicit manifest categories first; infer from the filename only as fallback.
+   // Explicit manifest category must win over name-based guessing.
    const declared = String(it.category || '').trim().toLowerCase();
-   if (declared === 'coils' || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file) || /coil|timer|tof|ton/.test(name.toLowerCase())) category = 'Coils';
+   if (declared === 'coils' || /coil|timer|tof|ton/.test(name.toLowerCase()) || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file)) category = 'Coils';
    else if (declared === 'power' || /power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
    else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
    else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
