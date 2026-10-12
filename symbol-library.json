@@ -1,6 +1,6 @@
 {
   "project": "ELECTRICAL SIMU CKT",
-  "count": 130,
+  "count": 127,
   "symbols": [
     {
       "file": "assets/symbols/ac-motor-3p-3-terminal.svg",
@@ -73,18 +73,6 @@
       "name": "circuit-breaker-thermal-magnetic-3p",
       "category": "Breakers & Protection",
       "original_filename": "circuit-breaker-thermal-magnetic-3p.svg"
-    },
-    {
-      "file": "assets/symbols/coil (1).svg",
-      "name": "coil (1)",
-      "category": "Contactors & Coils",
-      "original_filename": "coil (1).svg"
-    },
-    {
-      "file": "assets/symbols/coil.svg",
-      "name": "coil",
-      "category": "Contactors & Coils",
-      "original_filename": "coil.svg"
     },
     {
       "file": "assets/symbols/contactor-3p-automatic-tripping.svg",
@@ -267,12 +255,6 @@
       "original_filename": "key-switch-no-maintained.svg"
     },
     {
-      "file": "assets/symbols/led-coil.svg",
-      "name": "led-coil",
-      "category": "Contactors & Coils",
-      "original_filename": "led-coil.svg"
-    },
-    {
       "file": "assets/symbols/limit-switch-nc.svg",
       "name": "limit-switch-nc",
       "category": "Control Devices & Switches",
@@ -393,18 +375,6 @@
       "original_filename": "off-delay-no-contact.svg"
     },
     {
-      "file": "assets/symbols/off-delay-timer (1).svg",
-      "name": "off-delay-timer (1)",
-      "category": "Timers",
-      "original_filename": "off-delay-timer (1).svg"
-    },
-    {
-      "file": "assets/symbols/off-delay-timer.svg",
-      "name": "off-delay-timer",
-      "category": "Timers",
-      "original_filename": "off-delay-timer.svg"
-    },
-    {
       "file": "assets/symbols/on-delay-nc-contact(1).svg",
       "name": "on-delay-nc-contact(1)",
       "category": "Contacts & Relays",
@@ -421,18 +391,6 @@
       "name": "on-delay-no-contact",
       "category": "Contacts & Relays",
       "original_filename": "on-delay-no-contact.svg"
-    },
-    {
-      "file": "assets/symbols/on-delay-timer (1).svg",
-      "name": "on-delay-timer (1)",
-      "category": "Timers",
-      "original_filename": "on-delay-timer (1).svg"
-    },
-    {
-      "file": "assets/symbols/on-delay-timer.svg",
-      "name": "on-delay-timer",
-      "category": "Timers",
-      "original_filename": "on-delay-timer.svg"
     },
     {
       "file": "assets/symbols/on-off-delay-nc-contact.svg",
@@ -814,6 +772,34 @@
       "category": "Power Supply",
       "original_filename": "gemini-svg (16).svg",
       "source_artwork": "User-uploaded original SVG; artwork preserved unchanged"
+    },
+    {
+      "file": "assets/symbols/esc-contactor-coil.svg",
+      "name": "Contactor Coil",
+      "category": "Coils",
+      "original_filename": "Contactor_Coil.svg",
+      "type": "Contactor Coil"
+    },
+    {
+      "file": "assets/symbols/esc-tof-timer-coil.svg",
+      "name": "TOF Timer Coil (Off Delay)",
+      "category": "Coils",
+      "original_filename": "TOF_Timer_Coil.svg",
+      "type": "TOF Timer Coil (Off Delay)"
+    },
+    {
+      "file": "assets/symbols/esc-ton-tof-timer-coil.svg",
+      "name": "TON/TOF Timer Coil (ON/OFF Delay)",
+      "category": "Coils",
+      "original_filename": "TON_TOF_Timer_Coil.svg",
+      "type": "TON/TOF Timer Coil (ON/OFF Delay)"
+    },
+    {
+      "file": "assets/symbols/esc-ton-timer-coil.svg",
+      "name": "TON Timer Coil (On Delay)",
+      "category": "Coils",
+      "original_filename": "TON_Timer_Coil.svg",
+      "type": "TON Timer Coil (On Delay)"
     }
   ]
 }

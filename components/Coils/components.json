@@ -8,18 +8,18 @@
       "format": "svg"
     },
     {
-      "file": "TOF_Timer_Coil.svg",
-      "name": "TOF Timer Coil",
+      "file": "TON_Timer_Coil.svg",
+      "name": "TON Timer Coil (On Delay)",
       "format": "svg"
     },
     {
-      "file": "TON_Timer_Coil.svg",
-      "name": "TON Timer Coil",
+      "file": "TOF_Timer_Coil.svg",
+      "name": "TOF Timer Coil (Off Delay)",
       "format": "svg"
     },
     {
       "file": "TON_TOF_Timer_Coil.svg",
-      "name": "TON/TOF Timer Coil",
+      "name": "TON/TOF Timer Coil (ON/OFF Delay)",
       "format": "svg"
     }
   ]

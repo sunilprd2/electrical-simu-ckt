@@ -1,0 +1,13 @@
+Electrical Simu CKT — Coil Library Update (2026-10-12)
+
+- Replaced the prior coil/timer-coil SVG entries in the active symbol library.
+- Added four SVGs from ESC_Coil_Timer_SVGs.zip to the live component library under Coils.
+- Preserved original SVG artwork, A1/A2 terminals, and labels.
+- Added copies under components/Coils for organized component source files.
+- Bumped the service-worker cache version to v44-coil-library.
+
+New components:
+1. Contactor Coil
+2. TON Timer Coil (On Delay)
+3. TOF Timer Coil (Off Delay)
+4. TON/TOF Timer Coil (ON/OFF Delay)
