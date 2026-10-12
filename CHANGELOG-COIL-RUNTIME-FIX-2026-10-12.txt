@@ -1,0 +1,12 @@
+Electrical Simu CKT — Coil Runtime Library Fix (2026-10-12)
+
+Root cause:
+app.js contained a hard-coded embeddedSymbolManifest with only the 11 Power SVGs.
+The component sidebar count and contents are rendered from that embedded manifest,
+so the four new coil SVGs on disk and in symbol-library.json were ignored by the live UI.
+
+Fix:
+- Added the four coil SVG entries to the embedded runtime manifest in app.js.
+- Preserved the original 11 source/power SVG entries.
+- The runtime manifest now contains 15 entries total: 11 Power and 4 Coils.
+- Bumped the service-worker cache version to v45-coil-runtime-fix to prevent stale cached JS.
