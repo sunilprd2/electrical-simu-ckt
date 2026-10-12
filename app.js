@@ -3,7 +3,7 @@ const sheet=document.getElementById('sheet'), sim=document.getElementById('sim')
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
 const groups=[
- {name:'Sources',color:'#0ea5e9',items:[]},
+ {name:'Power',color:'#00dba5',items:[]},
  {name:'Others',color:'#64748b',items:[]},
  {name:'Coils',color:'#8b5cf6',items:[]},
  {name:'Auxiliaries',color:'#d4a017',items:[]},
@@ -777,7 +777,7 @@ renderLibrary();
  }
  function renderAssets(items){
   const libraryCategories = [
-   {name:'Sources', color:'#0ea5e9'},
+   {name:'Power', color:'#00dba5'},
    {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
    {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
    {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
@@ -791,7 +791,7 @@ renderLibrary();
    // Explicit manifest category must win over name-based guessing.
    const declared = String(it.category || '').trim().toLowerCase();
    if (declared === 'coils' || /coil|timer|tof|ton/.test(name.toLowerCase()) || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file)) category = 'Coils';
-   else if (declared === 'power' || /power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
+   else if (declared === 'power' || declared === 'source' || /power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Power';
    else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
    else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
    else if (/motor/.test(raw)) category = 'Motors';

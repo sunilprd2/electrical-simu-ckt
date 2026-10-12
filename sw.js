@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v47-cache-coil-fix';
+const CACHE='electrical-simu-ckt-v48-power-library-config-fix';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=47-cache-coil-fix',
-  './app.js?v=47-cache-coil-fix',
+  './styles.css?v=48-power-library-config-fix',
+  './app.js?v=48-power-library-config-fix',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
