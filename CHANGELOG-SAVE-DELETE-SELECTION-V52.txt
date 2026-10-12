@@ -1,0 +1,7 @@
+Electrical Simu CKT v52
+- Select the clicked placed component before pointer propagation is stopped.
+- Save stores the current drawing in browser localStorage; Save As downloads an .esc.json file.
+- Delete ribbon removes the selected component and any connected wires.
+- Removed Delete Component from the property panel.
+- Property panel Save applies Tag/Label edits and saves the drawing locally.
+- Cache/version strings bumped to v52.

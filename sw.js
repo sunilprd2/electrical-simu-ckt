@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v51-arrow-cursor-select-fix';
+const CACHE='electrical-simu-ckt-v52-save-delete-selection';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=50-rotate-theme-symbols',
-  './app.js?v=50-rotate-theme-symbols',
+  './styles.css?v=52-save-delete-selection',
+  './app.js?v=52-save-delete-selection',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {

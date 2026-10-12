@@ -1377,3 +1377,7 @@ body.theme-light #dropLayer .dropped-symbol image { filter:brightness(0)!importa
 #dropLayer .dropped-symbol .component-hit-area,
 #dropLayer .dropped-symbol .select-box { pointer-events: all !important; }
 #dropLayer .dropped-symbol > svg { pointer-events: none; }
+
+/* V52: compact property Save action; deletion lives in the ribbon only. */
+.property-actions{display:flex;justify-content:flex-start;gap:8px;margin-top:14px}
+.property-ok{flex:0 0 auto;min-width:104px;min-height:40px;padding:9px 22px;border-radius:8px;font-size:13px}

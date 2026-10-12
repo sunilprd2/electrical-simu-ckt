@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=50-rotate-theme-symbols">
+<link rel="stylesheet" href="styles.css?v=52-save-delete-selection">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -107,8 +107,7 @@
   <label>Tag<input id="propTag"></label>
   <label>Label<input id="propLabel"></label>
   <div class="property-actions">
-   <button id="propertyOk" class="property-ok" type="button">OK</button>
-   <button id="propertyDelete" class="property-delete" type="button">Delete Component</button>
+   <button id="propertyOk" class="property-ok" type="button">Save</button>
   </div>
  </div>
 </aside>
@@ -147,7 +146,7 @@
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=50-rotate-theme-symbols"></script>
+<script src="app.js?v=52-save-delete-selection"></script>
 <script>
 /* Component library fallback: Sources and Coils SVG symbols, expandable category rows. */
 (function(){
@@ -429,11 +428,15 @@ document.querySelectorAll(".top nav button").forEach(button => {
    if(!drop){setStatus('SAVE FAILED • DRAWING LAYER NOT FOUND');return}
    if(forceName){const n=prompt('Save drawing as (name only):',currentName);if(n===null)return;currentName=(n.trim()||'Untitled ESC Drawing')}
    const project={format:'ESC-DRAWING',version:1,name:currentName,savedAt:new Date().toISOString(),viewBox:svg?.getAttribute('viewBox')||'0 0 1200 760',elements:drop.innerHTML};
-   const blob=new Blob([JSON.stringify(project,null,2)],{type:'application/json'});
-   const url=URL.createObjectURL(blob),a=document.createElement('a');
-   a.href=url;a.download=currentName.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_')+'.esc.json';
-   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-   setStatus('SAVED • '+currentName.toUpperCase());
+   const serialized=JSON.stringify(project,null,2);
+   try{localStorage.setItem('esc-simu-ckt-saved-drawing',serialized);localStorage.setItem('esc-simu-ckt-saved-name',currentName);}catch(err){setStatus('BROWSER STORAGE FULL • USE SAVE AS');}
+   if(forceName){
+     const blob=new Blob([serialized],{type:'application/json'});
+     const url=URL.createObjectURL(blob),a=document.createElement('a');
+     a.href=url;a.download=currentName.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_')+'.esc.json';
+     document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+     setStatus('SAVED FILE • '+currentName.toUpperCase());
+   }else setStatus('SAVED IN THIS BROWSER • '+currentName.toUpperCase());
  }
  $('newBtn')?.addEventListener('click',()=>{
    if(drop&&drop.children.length&&!confirm('Start a new drawing? Download or save your current drawing first.'))return;
@@ -555,6 +558,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
     if(!g)return;
     const p=point(e),x=Number(g.dataset.x)||0,y=Number(g.dataset.y)||0;
     active={g,id:e.pointerId,dx:p.x-x,dy:p.y-y,startX:p.x,startY:p.y,moved:false};
+    // Select before stopping propagation so the inspector always follows the clicked component.
+    if(typeof select==='function') select(g);
+    const status=document.getElementById('state'); if(status) status.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
     g.classList.add('moving');g.style.cursor='grabbing';
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     try{svg.setPointerCapture(e.pointerId)}catch(_){ }
@@ -577,6 +583,42 @@ document.querySelectorAll(".top nav button").forEach(button => {
   }
   window.addEventListener('pointerup',finish,true);
   window.addEventListener('pointercancel',finish,true);
+})();
+</script>
+
+
+<script>
+/* V52: definitive selection, Save and Delete actions. */
+(()=>{
+ const $=id=>document.getElementById(id), layer=$('dropLayer'), status=$('state');
+ const setStatus=t=>{if(status)status.textContent=t};
+ function removeSelected(){
+   const g=typeof selected!=='undefined'?selected:null;
+   if(!g||!g.isConnected){setStatus('SELECT A COMPONENT FIRST');return;}
+   const uid=g.dataset.uid;
+   document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{if((uid&&w.dataset.fromG===uid)||(uid&&w.dataset.toG===uid))w.remove();});
+   g.remove(); if(typeof select==='function')select(null); setStatus('COMPONENT DELETED');
+ }
+ // Capture-phase selection makes the clicked placed component authoritative.
+ layer?.addEventListener('pointerdown',e=>{
+   if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+   const g=e.target.closest?.('.dropped-symbol'); if(!g)return;
+   if(typeof select==='function')select(g);
+   setStatus('SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
+ },true);
+ $('delete')?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();removeSelected();},true);
+ $('propertyDelete')?.remove();
+ $('propertyOk')?.addEventListener('click',e=>{
+   e.preventDefault();
+   const g=typeof selected!=='undefined'?selected:null;
+   if(!g||!g.isConnected){setStatus('NO COMPONENT SELECTED');return;}
+   const tag=$('propTag')?.value.trim(),label=$('propLabel')?.value.trim();
+   if(tag){g.dataset.ref=tag;const t=g.querySelector('.drop-tag');if(t)t.textContent=tag;}
+   if(label){g.dataset.label=label;const t=g.querySelector('.drop-label');if(t)t.textContent=label;}
+   setStatus('COMPONENT PROPERTIES SAVED');
+   $('saveBtn')?.click();
+ });
+ document.addEventListener('keydown',e=>{if(e.key==='Delete'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)&&selected){e.preventDefault();removeSelected();}},true);
 })();
 </script>
 
