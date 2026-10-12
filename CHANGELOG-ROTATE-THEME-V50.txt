@@ -1,0 +1,8 @@
+Electrical Simu CKT v50 — Rotate and theme contrast
+
+- Replaced the Reset ribbon control with Rotate (90 degrees clockwise) for the selected workspace component.
+- Removed Position X, Position Y, and Rotation inputs from the component details panel; rotation is handled by the ribbon tool.
+- Kept Type, Tag, Label, OK, and Delete Component in the details panel.
+- Added rotation-aware component transforms and terminal coordinate calculations so connected wires can follow rotated components.
+- Made schematic vector component strokes white in dark mode and black in light mode; monochrome SVG image artwork follows the same theme contrast.
+- Bumped script/style/service-worker cache identifiers to v50-rotate-theme-symbols.

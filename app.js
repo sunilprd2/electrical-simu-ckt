@@ -166,7 +166,7 @@ function makeDropped(d,x,y){
 function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
  const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);put('propRotation',g.dataset.rotation||0);
+ const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');
 }
 function enableMove(g){
  // Movement is handled once by installReliableIndividualDrag() below.
@@ -294,9 +294,17 @@ function makeDropped(d,x,y){
   g.append(title,box,hit,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g);
   return g;
 }
+function applyComponentTransform(g,x=Number(g.dataset.x||0),y=Number(g.dataset.y||0)){
+ const angle=((Number(g.dataset.rotation)||0)%360+360)%360;
+ g.setAttribute('transform',`translate(${x-90},${y-70}) rotate(${angle} 90 70)`);
+}
 function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){
  const ART_X=15,ART_Y=20,ART_W=150,ART_H=100;
- return portsFor(g).map(p=>({x:x-90+ART_X+(p.x/48)*ART_W,y:y-70+ART_Y+(p.y/32)*ART_H,label:p.label}));
+ const angle=(Number(g.dataset.rotation)||0)*Math.PI/180,cos=Math.cos(angle),sin=Math.sin(angle);
+ return portsFor(g).map(p=>{
+   const lx=ART_X+(p.x/48)*ART_W,ly=ART_Y+(p.y/32)*ART_H,dx=lx-90,dy=ly-70;
+   return {x:x+dx*cos-dy*sin,y:y+dx*sin+dy*cos,label:p.label};
+ });
 }
 function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
 let activeDrag = null;
@@ -350,7 +358,7 @@ svg.addEventListener('pointermove', e => {
   // IMPORTANT: update only this exact component group, never the shared layer.
   g.dataset.x = x;
   g.dataset.y = y;
-  g.setAttribute('transform', `translate(${x - 60},${y - 45})`);
+  applyComponentTransform(g,x,y);
 });
 function finishComponentDrag(e) {
   if (!activeDrag || (e.pointerId != null && e.pointerId !== activeDrag.pointerId)) return;
@@ -379,7 +387,7 @@ svg.addEventListener('pointercancel', finishComponentDrag);
  $('propertyClose')?.addEventListener('click',()=>select(null));
  $('propertyDelete')?.addEventListener('click',()=>{if(selected){selected.remove();select(null);state.textContent='COMPONENT DELETED';}});
  const setData=(id,key)=>$(id)?.addEventListener('change',e=>{if(!selected)return;selected.dataset[key]=e.target.value;if(key==='ref')selected.dataset.label=e.target.value;if(key==='x'||key==='y'){const x=+(selected.dataset.x||0),y=+(selected.dataset.y||0);selected.setAttribute('transform',`translate(${x-36},${y-22})`);}if(key==='ref'||key==='label'){const tag=selected.querySelector('.drop-tag');if(tag)tag.textContent=e.target.value;}});
- setData('propTag','ref');setData('propLabel','label');setData('propX','x');setData('propY','y');setData('propRotation','rotation');
+ setData('propTag','ref');setData('propLabel','label');
  $('propShowTag')?.addEventListener('change',e=>{if(selected){const t=selected.querySelector('.drop-tag');if(t)t.style.display=e.target.checked?'':'none';}});
  $('propLineColor')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('path,line,circle,rect,polyline').forEach(n=>{if(n.closest('.mag-port'))return;n.style.stroke=e.target.value;});});
  $('propTextColor')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('text').forEach(n=>n.style.fill=e.target.value);});
@@ -874,7 +882,7 @@ document.querySelectorAll('.top nav button').forEach(button=>{
 /* Keep terminal-to-terminal wires attached when a component moves. */
 function refreshWiresForComponent(moved){
  const layer=document.getElementById('wireLayer');if(!layer||!moved?.dataset?.uid)return;
- const portAt=(g,label)=>{const p=(portsFor(g)||[]).find(x=>x.label===label);return p?{x:(+g.dataset.x||0)-24+p.x,y:(+g.dataset.y||0)-20+p.y}:null};
+ const portAt=(g,label)=>{const p=(absolutePorts(g)||[]).find(x=>x.label===label);return p?{x:p.x,y:p.y}:null};
  for(const wire of layer.querySelectorAll('.connected-wire')){
   if(wire.dataset.fromG!==moved.dataset.uid&&wire.dataset.toG!==moved.dataset.uid)continue;
   const aG=document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.fromG}"]`),bG=document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.toG}"]`);
@@ -917,7 +925,7 @@ function refreshWiresForComponent(moved){
     const p=point(e), x=p.x-drag.dx, y=p.y-drag.dy;
     if(Math.hypot(x-(+g.dataset.x||0),y-(+g.dataset.y||0))>0.5) drag.moved=true;
     g.dataset.x=x; g.dataset.y=y;
-    g.setAttribute('transform',`translate(${x-60},${y-45})`);refreshWiresForComponent(g);
+    applyComponentTransform(g,x,y);refreshWiresForComponent(g);
   }
   function finish(e){
     if(!drag || (e.pointerId!=null && e.pointerId!==drag.pointerId)) return;

@@ -1343,3 +1343,28 @@ body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
 .property-actions{display:flex;gap:8px;margin-top:18px}
 .property-ok{flex:1;border:1px solid #08d9f3;border-radius:8px;padding:10px 14px;color:#03121f;background:linear-gradient(135deg,#14d9f4,#00c8a5);font-weight:800;cursor:pointer}
 .property-actions .property-delete{flex:1;margin-top:0!important}
+
+
+/* v50: consistent IEC component contrast in dark/light workspace themes. */
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) path,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) line,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) rect,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) circle,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:#ffffff!important; }
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:#ffffff!important; stroke:none!important; }
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) path,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) line,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) rect,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) circle,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:#000000!important; }
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:#000000!important; stroke:none!important; }
+body.theme-dark #dropLayer .dropped-symbol image { filter:brightness(0) invert(1)!important; }
+body.theme-light #dropLayer .dropped-symbol image { filter:brightness(0)!important; }
+/* Keep component reference tags in their assigned accent colour in both themes. */
+#dropLayer .dropped-symbol > .drop-tag { fill:var(--component-accent,#0879df)!important; stroke:none!important; }
+/* Rotation tool uses the same orange accent as the replaced Reset control. */
+.top nav.cad-ribbon #rotateBtn .toolbar-icon svg { width:22px!important;height:22px!important; }

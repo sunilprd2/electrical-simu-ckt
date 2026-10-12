@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v49-coils-visible';
+const CACHE='electrical-simu-ckt-v50-rotate-theme-symbols';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=49-coils-visible',
-  './app.js?v=49-coils-visible',
+  './styles.css?v=50-rotate-theme-symbols',
+  './app.js?v=50-rotate-theme-symbols',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
