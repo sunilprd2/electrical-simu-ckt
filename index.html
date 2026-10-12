@@ -101,20 +101,17 @@
 
 
 <aside id="propertyPanel" class="property-panel" aria-hidden="true">
- <div class="property-head"><span class="property-icon">☷</span><b>Component Properties</b><button id="propertyClose" type="button" title="Close properties">×</button></div>
+ <div class="property-head"><span class="property-icon">☷</span><b id="propertyTitle">Component</b><button id="propertyClose" type="button" title="Close properties">×</button></div>
  <div class="property-content">
   <label>Type<input id="propType" readonly></label>
   <label>Tag<input id="propTag"></label>
   <label>Label<input id="propLabel"></label>
   <div class="property-grid"><label>Position X<input id="propX" type="number"></label><label>Position Y<input id="propY" type="number"></label></div>
   <label>Rotation<input id="propRotation" type="number" min="0" max="359" value="0"></label>
-  <div class="property-section"><span>🎨</span><b>Appearance</b></div>
-  <label>Line Color<input id="propLineColor" type="color" value="#000000"></label>
-  <label>Line Width<select id="propLineWidth"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
-  <label>Text Color<input id="propTextColor" type="color" value="#2563eb"></label>
-  <label>Font Size<select id="propFontSize"><option>10</option><option>12</option><option selected>14</option><option>16</option><option>18</option></select></label>
-  <label class="showtag"><span>Show Tag</span><input id="propShowTag" type="checkbox" checked></label>
-  <button id="propertyDelete" class="property-delete" type="button">▤ Delete Component</button>
+  <div class="property-actions">
+   <button id="propertyOk" class="property-ok" type="button">OK</button>
+   <button id="propertyDelete" class="property-delete" type="button">Delete Component</button>
+  </div>
  </div>
 </aside>
 

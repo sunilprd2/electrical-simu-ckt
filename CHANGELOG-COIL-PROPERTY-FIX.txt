@@ -1,0 +1,9 @@
+Electrical Simu CKT — Coil Library and Properties Update
+
+Fixes:
+- Coils are explicitly classified into the Coils category from manifest metadata and coil filenames.
+- Property panel heading now shows the selected component name (for example, DC Negative) instead of "Component Properties".
+- Removed the Appearance block (Line Color, Line Width, Text Color, Font Size, Show Tag).
+- Added an OK button to close the component properties panel.
+- Kept Delete Component available.
+- Bumped service-worker cache version to v46-coil-property-fix.

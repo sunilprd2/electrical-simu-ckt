@@ -1329,3 +1329,11 @@ body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
 .layout > .library .component-category .category-arrow{font-size:19px!important;flex:0 0 12px!important}
 .layout > .library #search{min-height:36px!important;padding:7px 10px!important;border-radius:9px!important;font-size:12px!important}
 @media(max-width:600px){.layout > .library .component-category{min-height:40px!important;height:40px!important;gap:6px!important;padding:4px 7px!important}.layout > .library .component-category .category-icon{width:22px!important;height:22px!important;flex-basis:22px!important}.layout > .library .component-category .category-icon svg{width:22px!important;height:22px!important}.layout > .library .component-category .category-mark{height:22px!important}}
+
+/* Property panel compact layout: component name is the header, no Appearance block. */
+.property-head b { font-size: 14px; }
+.property-head .property-icon { display:none; }
+.property-head::before { content: ' '; }
+.property-actions { display:flex; gap:8px; margin-top:18px; }
+.property-ok { flex:1; border:1px solid #08d9f3; border-radius:8px; padding:10px 14px; color:#03121f; background:linear-gradient(135deg,#14d9f4,#00c8a5); font-weight:800; cursor:pointer; }
+.property-delete { flex:1; margin-top:0 !important; }

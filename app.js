@@ -3,15 +3,15 @@ const sheet=document.getElementById('sheet'), sim=document.getElementById('sim')
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
    Exact reference designators can be overridden per project/component. */
 const groups=[
- {name:'Sources',color:'#00e6a8',items:[]},
- {name:'Others',color:'#08b7f4',items:[]},
- {name:'Coils',color:'#b78cff',items:[]},
- {name:'Auxiliaries',color:'#d36cff',items:[]},
- {name:'Switches',color:'#ffd43b',items:[]},
- {name:'Loads',color:'#18d9ef',items:[]},
- {name:'Contactors',color:'#ff8a3d',items:[]},
- {name:'Protections',color:'#27e6ad',items:[]},
- {name:'Motors',color:'#ff4f91',items:[]}
+ {name:'Sources',color:'#0ea5e9',items:[]},
+ {name:'Others',color:'#64748b',items:[]},
+ {name:'Coils',color:'#8b5cf6',items:[]},
+ {name:'Auxiliaries',color:'#d4a017',items:[]},
+ {name:'Switches',color:'#06b6d4',items:[]},
+ {name:'Loads',color:'#f59e0b',items:[]},
+ {name:'Contactors',color:'#10b981',items:[]},
+ {name:'Protections',color:'#ef4444',items:[]},
+ {name:'Motors',color:'#2563eb',items:[]}
 ];
 
 function icon(type){
@@ -166,7 +166,7 @@ function makeDropped(d,x,y){
 function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
  const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);put('propRotation',g.dataset.rotation||0);
+ const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propX',g.dataset.x||0);put('propY',g.dataset.y||0);put('propRotation',g.dataset.rotation||0);
 }
 function enableMove(g){
  // Movement is handled once by installReliableIndividualDrag() below.
@@ -777,19 +777,21 @@ renderLibrary();
  }
  function renderAssets(items){
   const libraryCategories = [
-   {name:'Sources', color:'#00e6a8'},
-   {name:'Others', color:'#08b7f4'}, {name:'Coils', color:'#b78cff'},
-   {name:'Auxiliaries', color:'#d36cff'}, {name:'Switches', color:'#ffd43b'},
-   {name:'Loads', color:'#18d9ef'}, {name:'Contactors', color:'#ff8a3d'},
-   {name:'Protections', color:'#27e6ad'}, {name:'Motors', color:'#ff4f91'}
+   {name:'Sources', color:'#0ea5e9'},
+   {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
+   {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
+   {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
+   {name:'Protections', color:'#ef4444'}, {name:'Motors', color:'#2563eb'}
   ];
   const normalized = (items || []).map((it, i) => {
    const file = String(it.file || '').replace(/^\.\//,'');
    const name = it.name || it.original_filename || file.split('/').pop().replace(/\.svg$/i,'');
    const raw = String(it.category || '').toLowerCase() + ' ' + String(it.type || '').toLowerCase() + ' ' + name.toLowerCase();
    let category = 'Others';
-   if (/power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
-   else if (/coil|timer|tof|ton|relay/.test(raw)) category = 'Coils';
+   // Honor explicit manifest categories first; infer from the filename only as fallback.
+   const declared = String(it.category || '').trim().toLowerCase();
+   if (declared === 'coils' || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file) || /coil|timer|tof|ton/.test(name.toLowerCase())) category = 'Coils';
+   else if (declared === 'power' || /power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
    else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
    else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
    else if (/motor/.test(raw)) category = 'Motors';
