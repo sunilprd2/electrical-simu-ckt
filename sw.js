@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v57-clean-selection-doubleclick';
+const CACHE='electrical-simu-ckt-v60-switches-category-fix';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=57-clean-selection-doubleclick',
-  './app.js?v=57-clean-selection-doubleclick',
+  './styles.css?v=60-switches-category-fix',
+  './app.js?v=60-switches-category-fix',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {

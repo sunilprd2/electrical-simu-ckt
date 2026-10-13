@@ -1,6 +1,6 @@
 {
   "project": "ELECTRICAL SIMU CKT",
-  "count": 127,
+  "count": 147,
   "symbols": [
     {
       "file": "assets/symbols/ac-motor-3p-3-terminal.svg",
@@ -800,6 +800,126 @@
       "category": "Coils",
       "original_filename": "TON_Timer_Coil.svg",
       "type": "TON Timer Coil (On Delay)"
+    },
+    {
+      "file": "components/Switches/Contact_01.svg",
+      "name": "Auxiliary Contact 01",
+      "category": "Switches",
+      "original_filename": "Contact_01.svg"
+    },
+    {
+      "file": "components/Switches/Contact_02.svg",
+      "name": "Auxiliary Contact 02",
+      "category": "Switches",
+      "original_filename": "Contact_02.svg"
+    },
+    {
+      "file": "components/Switches/Contact_03.svg",
+      "name": "Auxiliary Contact 03",
+      "category": "Switches",
+      "original_filename": "Contact_03.svg"
+    },
+    {
+      "file": "components/Switches/Contact_04.svg",
+      "name": "Auxiliary Contact 04",
+      "category": "Switches",
+      "original_filename": "Contact_04.svg"
+    },
+    {
+      "file": "components/Switches/Contact_05.svg",
+      "name": "Auxiliary Contact 05",
+      "category": "Switches",
+      "original_filename": "Contact_05.svg"
+    },
+    {
+      "file": "components/Switches/Contact_06.svg",
+      "name": "Auxiliary Contact 06",
+      "category": "Switches",
+      "original_filename": "Contact_06.svg"
+    },
+    {
+      "file": "components/Switches/Contact_07.svg",
+      "name": "Auxiliary Contact 07",
+      "category": "Switches",
+      "original_filename": "Contact_07.svg"
+    },
+    {
+      "file": "components/Switches/Contact_08.svg",
+      "name": "Auxiliary Contact 08",
+      "category": "Switches",
+      "original_filename": "Contact_08.svg"
+    },
+    {
+      "file": "components/Switches/Contact_09.svg",
+      "name": "Auxiliary Contact 09",
+      "category": "Switches",
+      "original_filename": "Contact_09.svg"
+    },
+    {
+      "file": "components/Switches/Contact_10.svg",
+      "name": "Auxiliary Contact 10",
+      "category": "Switches",
+      "original_filename": "Contact_10.svg"
+    },
+    {
+      "file": "components/Switches/Contact_11.svg",
+      "name": "Auxiliary Contact 11",
+      "category": "Switches",
+      "original_filename": "Contact_11.svg"
+    },
+    {
+      "file": "components/Switches/Contact_12.svg",
+      "name": "Auxiliary Contact 12",
+      "category": "Switches",
+      "original_filename": "Contact_12.svg"
+    },
+    {
+      "file": "components/Switches/Contact_13.svg",
+      "name": "Auxiliary Contact 13",
+      "category": "Switches",
+      "original_filename": "Contact_13.svg"
+    },
+    {
+      "file": "components/Switches/Contact_14.svg",
+      "name": "Auxiliary Contact 14",
+      "category": "Switches",
+      "original_filename": "Contact_14.svg"
+    },
+    {
+      "file": "components/Switches/Contact_15.svg",
+      "name": "Auxiliary Contact 15",
+      "category": "Switches",
+      "original_filename": "Contact_15.svg"
+    },
+    {
+      "file": "components/Switches/Contact_16.svg",
+      "name": "Auxiliary Contact 16",
+      "category": "Switches",
+      "original_filename": "Contact_16.svg"
+    },
+    {
+      "file": "components/Switches/Contact_17.svg",
+      "name": "Auxiliary Contact 17",
+      "category": "Switches",
+      "original_filename": "Contact_17.svg"
+    },
+    {
+      "file": "components/Switches/Contact_18.svg",
+      "name": "Auxiliary Contact 18",
+      "category": "Switches",
+      "original_filename": "Contact_18.svg"
+    },
+    {
+      "file": "components/Switches/Contact_19.svg",
+      "name": "Auxiliary Contact 19",
+      "category": "Switches",
+      "original_filename": "Contact_19.svg"
+    },
+    {
+      "file": "components/Switches/Contact_20.svg",
+      "name": "Auxiliary Contact 20",
+      "category": "Switches",
+      "original_filename": "Contact_20.svg"
     }
   ]
 }

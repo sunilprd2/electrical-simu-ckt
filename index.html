@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=57-clean-selection-doubleclick">
+<link rel="stylesheet" href="styles.css?v=60-switches-category-fix">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -150,7 +150,7 @@
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=57-clean-selection-doubleclick"></script>
+<script src="app.js?v=60-switches-category-fix"></script>
 <script>
 /* Component library fallback: Sources and Coils SVG symbols, expandable category rows. */
 (function(){
@@ -609,6 +609,16 @@ document.querySelectorAll(".top nav button").forEach(button => {
    const g=e.target.closest?.('.dropped-symbol'); if(!g)return;
    if(typeof select==='function')select(g);
    setStatus('SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
+ },true);
+ // Delegated handler also covers components restored from a saved drawing.
+ // Their per-node listeners are not retained when SVG markup is reloaded.
+ layer?.addEventListener('dblclick',e=>{
+   const g=e.target.closest?.('.dropped-symbol');
+   if(!g || e.target.closest?.('.mag-port') || e.target.closest?.('.connected-wire'))return;
+   e.preventDefault();
+   e.stopPropagation();
+   if(typeof select==='function')select(g,true);
+   setStatus('COMPONENT DETAILS • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
  },true);
  $('delete')?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();removeSelected();},true);
  $('propertyDelete')?.remove();

@@ -807,10 +807,18 @@ renderLibrary();
    const name = it.name || it.original_filename || file.split('/').pop().replace(/\.svg$/i,'');
    const raw = String(it.category || '').toLowerCase() + ' ' + String(it.type || '').toLowerCase() + ' ' + name.toLowerCase();
    let category = 'Others';
-   // Explicit manifest category must win over name-based guessing.
+   // Respect an explicit manifest category FIRST. Names like 'Auxiliary Contact 01'
+   // must stay in Switches when the manifest says Switches; do not reclassify them.
    const declared = String(it.category || '').trim().toLowerCase();
-   if (declared === 'coils' || /coil|timer|tof|ton/.test(name.toLowerCase()) || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file)) category = 'Coils';
-   else if (declared === 'power' || declared === 'source' || /power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Power';
+   const explicitCategory = {
+    'power':'Power','source':'Power','sources':'Power',
+    'others':'Others','coils':'Coils','auxiliaries':'Auxiliaries',
+    'switches':'Switches','loads':'Loads','contactors':'Contactors',
+    'protections':'Protections','motors':'Motors'
+   }[declared];
+   if (explicitCategory) category = explicitCategory;
+   else if (/coil|timer|tof|ton/.test(name.toLowerCase()) || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file)) category = 'Coils';
+   else if (/power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Power';
    else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
    else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
    else if (/motor/.test(raw)) category = 'Motors';
@@ -839,7 +847,7 @@ renderLibrary();
  }
 
  // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.
- const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":15,"symbols":[{"file":"components/Power/01_DC_Negative.svg","name":"01 DC Negative","category":"Power","original_filename":"01_DC_Negative.svg"},{"file":"components/Power/02_DC_Positive.svg","name":"02 DC Positive","category":"Power","original_filename":"02_DC_Positive.svg"},{"file":"components/Power/03_Earth_Ground.svg","name":"03 Earth Ground","category":"Power","original_filename":"03_Earth_Ground.svg"},{"file":"components/Power/04_N_Terminal.svg","name":"04 N Terminal","category":"Power","original_filename":"04_N_Terminal.svg"},{"file":"components/Power/05_L1_Terminal.svg","name":"05 L1 Terminal","category":"Power","original_filename":"05_L1_Terminal.svg"},{"file":"components/Power/06_L2_Terminal.svg","name":"06 L2 Terminal","category":"Power","original_filename":"06_L2_Terminal.svg"},{"file":"components/Power/07_L3_Terminal.svg","name":"07 L3 Terminal","category":"Power","original_filename":"07_L3_Terminal.svg"},{"file":"components/Power/08_PE_Terminal.svg","name":"08 PE Terminal","category":"Power","original_filename":"08_PE_Terminal.svg"},{"file":"components/Power/09_Three_Phase_L1_L2_L3.svg","name":"09 Three Phase L1 L2 L3","category":"Power","original_filename":"09_Three_Phase_L1_L2_L3.svg"},{"file":"components/Power/10_Three_Phase_Neutral.svg","name":"10 Three Phase Neutral","category":"Power","original_filename":"10_Three_Phase_Neutral.svg"},{"file":"components/Power/11_Three_Phase_Neutral_PE.svg","name":"11 Three Phase Neutral PE","category":"Power","original_filename":"11_Three_Phase_Neutral_PE.svg"},{"file":"assets/symbols/esc-contactor-coil.svg","name":"Contactor Coil","category":"Coils","original_filename":"Contactor_Coil.svg","type":"Contactor Coil"},{"file":"assets/symbols/esc-tof-timer-coil.svg","name":"TOF Timer Coil (Off Delay)","category":"Coils","original_filename":"TOF_Timer_Coil.svg","type":"TOF Timer Coil (Off Delay)"},{"file":"assets/symbols/esc-ton-tof-timer-coil.svg","name":"TON/TOF Timer Coil (ON/OFF Delay)","category":"Coils","original_filename":"TON_TOF_Timer_Coil.svg","type":"TON/TOF Timer Coil (ON/OFF Delay)"},{"file":"assets/symbols/esc-ton-timer-coil.svg","name":"TON Timer Coil (On Delay)","category":"Coils","original_filename":"TON_Timer_Coil.svg","type":"TON Timer Coil (On Delay)"}]};
+ const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":35,"symbols":[{"file":"components/Power/01_DC_Negative.svg","name":"01 DC Negative","category":"Power","original_filename":"01_DC_Negative.svg"},{"file":"components/Power/02_DC_Positive.svg","name":"02 DC Positive","category":"Power","original_filename":"02_DC_Positive.svg"},{"file":"components/Power/03_Earth_Ground.svg","name":"03 Earth Ground","category":"Power","original_filename":"03_Earth_Ground.svg"},{"file":"components/Power/04_N_Terminal.svg","name":"04 N Terminal","category":"Power","original_filename":"04_N_Terminal.svg"},{"file":"components/Power/05_L1_Terminal.svg","name":"05 L1 Terminal","category":"Power","original_filename":"05_L1_Terminal.svg"},{"file":"components/Power/06_L2_Terminal.svg","name":"06 L2 Terminal","category":"Power","original_filename":"06_L2_Terminal.svg"},{"file":"components/Power/07_L3_Terminal.svg","name":"07 L3 Terminal","category":"Power","original_filename":"07_L3_Terminal.svg"},{"file":"components/Power/08_PE_Terminal.svg","name":"08 PE Terminal","category":"Power","original_filename":"08_PE_Terminal.svg"},{"file":"components/Power/09_Three_Phase_L1_L2_L3.svg","name":"09 Three Phase L1 L2 L3","category":"Power","original_filename":"09_Three_Phase_L1_L2_L3.svg"},{"file":"components/Power/10_Three_Phase_Neutral.svg","name":"10 Three Phase Neutral","category":"Power","original_filename":"10_Three_Phase_Neutral.svg"},{"file":"components/Power/11_Three_Phase_Neutral_PE.svg","name":"11 Three Phase Neutral PE","category":"Power","original_filename":"11_Three_Phase_Neutral_PE.svg"},{"file":"assets/symbols/esc-contactor-coil.svg","name":"Contactor Coil","category":"Coils","original_filename":"Contactor_Coil.svg","type":"Contactor Coil"},{"file":"assets/symbols/esc-tof-timer-coil.svg","name":"TOF Timer Coil (Off Delay)","category":"Coils","original_filename":"TOF_Timer_Coil.svg","type":"TOF Timer Coil (Off Delay)"},{"file":"assets/symbols/esc-ton-tof-timer-coil.svg","name":"TON/TOF Timer Coil (ON/OFF Delay)","category":"Coils","original_filename":"TON_TOF_Timer_Coil.svg","type":"TON/TOF Timer Coil (ON/OFF Delay)"},{"file":"assets/symbols/esc-ton-timer-coil.svg","name":"TON Timer Coil (On Delay)","category":"Coils","original_filename":"TON_Timer_Coil.svg","type":"TON Timer Coil (On Delay)"},{"file":"components/Switches/Contact_01.svg","name":"Auxiliary Contact 01","category":"Switches","original_filename":"Contact_01.svg","type":"Auxiliary Contact 01"},{"file":"components/Switches/Contact_02.svg","name":"Auxiliary Contact 02","category":"Switches","original_filename":"Contact_02.svg","type":"Auxiliary Contact 02"},{"file":"components/Switches/Contact_03.svg","name":"Auxiliary Contact 03","category":"Switches","original_filename":"Contact_03.svg","type":"Auxiliary Contact 03"},{"file":"components/Switches/Contact_04.svg","name":"Auxiliary Contact 04","category":"Switches","original_filename":"Contact_04.svg","type":"Auxiliary Contact 04"},{"file":"components/Switches/Contact_05.svg","name":"Auxiliary Contact 05","category":"Switches","original_filename":"Contact_05.svg","type":"Auxiliary Contact 05"},{"file":"components/Switches/Contact_06.svg","name":"Auxiliary Contact 06","category":"Switches","original_filename":"Contact_06.svg","type":"Auxiliary Contact 06"},{"file":"components/Switches/Contact_07.svg","name":"Auxiliary Contact 07","category":"Switches","original_filename":"Contact_07.svg","type":"Auxiliary Contact 07"},{"file":"components/Switches/Contact_08.svg","name":"Auxiliary Contact 08","category":"Switches","original_filename":"Contact_08.svg","type":"Auxiliary Contact 08"},{"file":"components/Switches/Contact_09.svg","name":"Auxiliary Contact 09","category":"Switches","original_filename":"Contact_09.svg","type":"Auxiliary Contact 09"},{"file":"components/Switches/Contact_10.svg","name":"Auxiliary Contact 10","category":"Switches","original_filename":"Contact_10.svg","type":"Auxiliary Contact 10"},{"file":"components/Switches/Contact_11.svg","name":"Auxiliary Contact 11","category":"Switches","original_filename":"Contact_11.svg","type":"Auxiliary Contact 11"},{"file":"components/Switches/Contact_12.svg","name":"Auxiliary Contact 12","category":"Switches","original_filename":"Contact_12.svg","type":"Auxiliary Contact 12"},{"file":"components/Switches/Contact_13.svg","name":"Auxiliary Contact 13","category":"Switches","original_filename":"Contact_13.svg","type":"Auxiliary Contact 13"},{"file":"components/Switches/Contact_14.svg","name":"Auxiliary Contact 14","category":"Switches","original_filename":"Contact_14.svg","type":"Auxiliary Contact 14"},{"file":"components/Switches/Contact_15.svg","name":"Auxiliary Contact 15","category":"Switches","original_filename":"Contact_15.svg","type":"Auxiliary Contact 15"},{"file":"components/Switches/Contact_16.svg","name":"Auxiliary Contact 16","category":"Switches","original_filename":"Contact_16.svg","type":"Auxiliary Contact 16"},{"file":"components/Switches/Contact_17.svg","name":"Auxiliary Contact 17","category":"Switches","original_filename":"Contact_17.svg","type":"Auxiliary Contact 17"},{"file":"components/Switches/Contact_18.svg","name":"Auxiliary Contact 18","category":"Switches","original_filename":"Contact_18.svg","type":"Auxiliary Contact 18"},{"file":"components/Switches/Contact_19.svg","name":"Auxiliary Contact 19","category":"Switches","original_filename":"Contact_19.svg","type":"Auxiliary Contact 19"},{"file":"components/Switches/Contact_20.svg","name":"Auxiliary Contact 20","category":"Switches","original_filename":"Contact_20.svg","type":"Auxiliary Contact 20"}]};
   const assetItems = (embeddedSymbolManifest.symbols || []).filter(it => it.file && /\.svg$/i.test(it.file));
  if (assetItems.length) renderAssets(assetItems);
  else {
@@ -977,4 +985,37 @@ function refreshWiresForComponent(moved){
   }
   if(button&&!button.dataset.libraryBound){button.dataset.libraryBound='true';button.addEventListener('click',()=>setHidden(!body.classList.contains('library-hidden')));}
   if(arrow&&!arrow.dataset.libraryBound){arrow.dataset.libraryBound='true';arrow.addEventListener('click',()=>setHidden(true));}
+})();
+
+
+/* V59: robust delegated double-click property opening for all placed symbols,
+   including SVG library components and components restored from saved drawings. */
+(function fixDelegatedPropertyDoubleClick(){
+  const canvas = document.getElementById('schematic');
+  const layer = document.getElementById('dropLayer');
+  if (!canvas || !layer || typeof select !== 'function') return;
+  function openForEvent(e) {
+    const target = e.target;
+    const g = target && target.closest ? target.closest('#dropLayer .dropped-symbol') : null;
+    if (!g) return;
+    // Avoid treating terminal squares as component body double-clicks; double-click
+    // on the component's visible SVG or its surrounding symbol group is supported.
+    select(g, true);
+    const panel = document.getElementById('propertyPanel');
+    if (panel) {
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+  }
+  // Use capture so older click/drag handlers cannot immediately close the panel.
+  canvas.addEventListener('dblclick', openForEvent, true);
+  // Some browser/SVG combinations suppress dblclick after drag-enabled pointer events.
+  // A second click (detail === 2) opens the same panel as a reliable fallback.
+  canvas.addEventListener('click', function(e) {
+    if (e.detail !== 2) return;
+    openForEvent(e);
+  }, true);
 })();
