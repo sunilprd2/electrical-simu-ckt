@@ -1,5 +1,0 @@
-Electrical Simu CKT v49
-- Kept the Sources sidebar category as requested.
-- Added the four components/Coils SVGs to the inline fallback library.
-- Category counts now reflect the symbols assigned to each category.
-- Updated cache version to v49-coils-visible.
