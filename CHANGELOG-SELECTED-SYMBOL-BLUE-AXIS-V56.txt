@@ -1,5 +1,0 @@
-Electrical Simu CKT v56
-- Fresh component/border color preference keys prevent stale yellow/red colors from older settings overriding intended defaults.
-- Selected component artwork defaults to blue; external reference tags remain separate.
-- Crosshair axes use neutral grey independently of selection-border color.
-- Keeps component colour and selection-border settings available.
