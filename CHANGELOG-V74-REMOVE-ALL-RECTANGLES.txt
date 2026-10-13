@@ -1,0 +1,1 @@
+Version 74: Removed visible rectangular hit-area, select-box, and component-selection-outline borders in all states. The hit-area remains transparent and interactive for selecting/dragging. Updated cache identifiers.

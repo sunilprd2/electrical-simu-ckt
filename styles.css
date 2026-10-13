@@ -1490,3 +1490,127 @@ body.theme-light .esc-color-setting{color:#1e293b;background:rgba(148,163,184,.0
 .layout > .library { display:block !important; }
 body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; max-width:0 !important; flex:0 0 0 !important; padding:0 !important; border:0 !important; overflow:hidden !important; }
 body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; min-width:0 !important; }
+
+
+/* V70: tight selection frame hugs the visible symbol, sits behind artwork. */
+.dropped-symbol .component-selection-outline{
+ display:none; fill:none; stroke:#2d7dff; stroke-width:1.5;
+ vector-effect:non-scaling-stroke; pointer-events:none;
+}
+.dropped-symbol.selected .component-selection-outline{display:block;}
+.dropped-symbol .select-box{display:none!important;fill:none!important;stroke:none!important;}
+.dropped-symbol.selected{filter:none!important;}
+.dropped-symbol.selected .mag-port{filter:none!important;}
+.dropped-symbol .mag-port.port-selected{
+ fill:transparent!important; stroke:#2d7dff!important; stroke-width:1.5!important;
+ vector-effect:non-scaling-stroke; filter:none!important;
+}
+
+
+/* V72: match the reference interaction: hover stays neutral; selected artwork turns blue. */
+#dropLayer .dropped-symbol,
+#dropLayer .dropped-symbol:hover {
+  background: transparent !important;
+  filter: none !important;
+}
+#dropLayer .dropped-symbol:hover .component-selection-outline,
+#dropLayer .dropped-symbol:hover .select-box {
+  display: none !important;
+  fill: none !important;
+  stroke: none !important;
+  opacity: 0 !important;
+}
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) path,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) line,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) circle,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) rect,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
+  stroke: revert !important;
+  filter: none !important;
+}
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
+  fill: revert !important;
+  filter: none !important;
+}
+#dropLayer .dropped-symbol.selected .component-selection-outline {
+  display: block !important;
+  fill: none !important;
+  stroke: var(--esc-selection-border, #2d7dff) !important;
+  stroke-width: 1.5px !important;
+  stroke-opacity: 1 !important;
+  stroke-dasharray: none !important;
+  vector-effect: non-scaling-stroke !important;
+  pointer-events: none !important;
+}
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) path,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) line,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) circle,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) rect,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) polyline,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) polygon,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) ellipse {
+  stroke: var(--esc-selected-component, #2d7dff) !important;
+}
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) text,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) tspan {
+  fill: var(--esc-selected-component, #2d7dff) !important;
+  stroke: none !important;
+}
+#dropLayer .dropped-symbol.selected > .drop-tag,
+#dropLayer .dropped-symbol.selected > .drop-comment {
+  filter: none !important;
+}
+
+
+/* V73: remove the unwanted hover rectangle around an unselected component.
+   The hit-area stays transparent and interactive for selection/dragging. */
+#dropLayer .dropped-symbol:not(.selected):hover .component-hit-area,
+#dropLayer .dropped-symbol:not(.selected):hover .select-box,
+#dropLayer .dropped-symbol:not(.selected):hover .component-selection-outline {
+  fill: none !important;
+  fill-opacity: 0 !important;
+  stroke: none !important;
+  stroke-opacity: 0 !important;
+  stroke-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+  display: none !important;
+}
+#dropLayer .dropped-symbol:not(.selected) > .component-hit-area {
+  fill: transparent !important;
+  stroke: transparent !important;
+  pointer-events: all !important;
+}
+
+/* V74: remove every rectangular component hit/selection frame completely.
+   The transparent hit target remains interactive for selecting and dragging. */
+#dropLayer .dropped-symbol > .component-hit-area,
+#dropLayer .dropped-symbol:hover > .component-hit-area,
+#dropLayer .dropped-symbol.selected > .component-hit-area {
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: none !important;
+  stroke-opacity: 0 !important;
+  stroke-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  pointer-events: all !important;
+}
+#dropLayer .dropped-symbol > .select-box,
+#dropLayer .dropped-symbol:hover > .select-box,
+#dropLayer .dropped-symbol.selected > .select-box,
+#dropLayer .dropped-symbol > .component-selection-outline,
+#dropLayer .dropped-symbol:hover > .component-selection-outline,
+#dropLayer .dropped-symbol.selected > .component-selection-outline {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  fill: none !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  pointer-events: none !important;
+}

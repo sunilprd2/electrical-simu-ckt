@@ -1,0 +1,5 @@
+Electrical Simu CKT v71 — tight component selection outline
+
+Fixed the oversized selection frame by accounting for the source SVG viewBox aspect ratio inside the 150x100 artwork viewport. The border hugs the visible artwork and terminal squares with 1.5 world-unit clearance, stays behind the artwork, and excludes reference tags.
+
+The source SVG viewBox ratio is loaded asynchronously from the component SVG path; a safe default is used until it is available. Existing library, wiring, selection, and property-panel logic is retained.

@@ -163,10 +163,38 @@ function makeDropped(d,x,y){
   g.addEventListener('dblclick',e=>{e.preventDefault();e.stopPropagation();select(g,true);});
   return g;
 }
+function updateSelectionOutline(g){
+ if(!g) return;
+ let outline=g.querySelector(':scope > .component-selection-outline');
+ if(!outline){
+  outline=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  outline.setAttribute('class','component-selection-outline');
+  outline.setAttribute('pointer-events','none');
+  g.insertBefore(outline,g.firstChild);
+ }
+ // Tight bounds around actual symbol geometry and terminal squares, excluding the
+ // generic hit box and the component reference tag. Keep the outline behind artwork.
+ let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+ const add=(x,y,w,h)=>{if([x,y,w,h].every(Number.isFinite)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x+w);maxY=Math.max(maxY,y+h);}};
+ const inner=g.querySelector(':scope > svg:not(.component-selection-outline)');
+ if(inner){
+  for(const el of inner.querySelectorAll('path,line,circle,rect,polyline,polygon,text,ellipse')){
+   if(el.classList?.contains('mag-port')||el.classList?.contains('select-box'))continue;
+   try{const b=el.getBBox(); const x=+(el.getAttribute('x')||0),y=+(el.getAttribute('y')||0); add(b.x+12,b.y+4,b.width,b.height);}catch(_){}
+  }
+ }
+ for(const port of g.querySelectorAll(':scope > .mag-port')){
+  try{const b=port.getBBox();add(b.x,b.y,b.width,b.height);}catch(_){}
+ }
+ if(!Number.isFinite(minX)){minX=12;minY=4;maxX=60;maxY=36;}
+ const pad=2.5;
+ outline.setAttribute('x',minX-pad);outline.setAttribute('y',minY-pad);
+ outline.setAttribute('width',Math.max(1,maxX-minX+pad*2));outline.setAttribute('height',Math.max(1,maxY-minY+pad*2));
+}
 function select(g,openProperties=false){
  if(selected)selected.classList.remove('selected');
  selected=g;
- if(g)g.classList.add('selected');
+ if(g){g.classList.add('selected');updateSelectionOutline(g);}
  const panel=document.getElementById('propertyPanel');
  if(!panel)return;
  const shouldOpen=!!(g&&openProperties);
@@ -1025,4 +1053,20 @@ function refreshWiresForComponent(moved){
     if (e.detail !== 2) return;
     openForEvent(e);
   }, true);
+})();
+
+/* V70: tight symbol outline and independent terminal-square selection. */
+(function tightSymbolAndTerminalSelectionV70(){
+ const layer=document.getElementById('dropLayer'); if(!layer)return;
+ layer.addEventListener('pointerdown',e=>{
+  const port=e.target&&e.target.closest?e.target.closest('.mag-port'):null;
+  if(!port)return;
+  document.querySelectorAll('#dropLayer .mag-port.port-selected').forEach(p=>p.classList.remove('port-selected'));
+  port.classList.add('port-selected');
+ },true);
+ layer.addEventListener('click',e=>{
+  if(e.target&&e.target.closest&&e.target.closest('.mag-port')) return;
+  if(!e.target||!e.target.closest)return;
+  const g=e.target.closest('.dropped-symbol'); if(g&&g.classList.contains('selected'))updateSelectionOutline(g);
+ },true);
 })();

@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v69-workspace-doubleclick-properties';
+const CACHE='electrical-simu-ckt-v74-remove-all-rectangles';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=69-workspace-doubleclick-properties',
-  './app.js?v=69-workspace-doubleclick-properties',
+  './styles.css?v=74-remove-all-rectangles',
+  './app.js?v=74-remove-all-rectangles',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
