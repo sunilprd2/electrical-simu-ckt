@@ -1,1 +1,0 @@
-New Power SVG files are stored in components/Power/. They are separate from the existing legacy symbol folders. Uploading these files to GitHub stores them but does not automatically register them in the Sources toolbar; app.js still needs a loader/catalog entry if these exact files should appear in the editor.
