@@ -1,6 +1,0 @@
-ESC UI update: Engineering sheet frame and title block
-- Integrated the segmented engineering border and coordinate cells with the same SVG sheet/grid.
-- Added editable Project, Title, Document No., Date, Drawn By, Revision, Checked By, Approved By and Sheet No. fields.
-- Sheet details update the title block live and persist in localStorage.
-- Preserved optional sheet border/title block toggles and light/dark styles.
-- Updated service worker cache name.
