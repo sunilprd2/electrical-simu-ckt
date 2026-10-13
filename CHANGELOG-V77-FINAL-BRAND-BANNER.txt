@@ -1,5 +1,0 @@
-Electrical Simu CKT — V77 final brand banner
-- Added the user-approved banner to the header.
-- Preserved original esc-logo.png for the engineering drawing/title block.
-- Kept app icons and circuit/library files unchanged.
-- Bumped the service-worker cache version.
