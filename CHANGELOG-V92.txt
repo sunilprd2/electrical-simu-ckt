@@ -1,0 +1,5 @@
+V92 — Category count and arrow layout fix
+- Category name and parenthesized count now render as separate elements.
+- Expand chevron is positioned at the far right for every category.
+- Updated app script URL and service-worker cache version.
+- Preserved the Proximity Sensor category and existing project assets.

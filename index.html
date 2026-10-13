@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v90-verified-library">
+<link rel="stylesheet" href="styles.css?v=v91-proximity-tab">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -155,7 +155,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v90-verified-library"></script>
+<script src="app.js?v=v92-category-count-chevron"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -175,9 +175,11 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
     ['TOF_Timer_Coil.svg','TOF Timer Coil'],['TON_TOF_Timer_Coil.svg','TON/TOF Timer Coil']
   ].map(([file,name])=>({file:'components/Coils/'+file,name,category:'Coils',type:name}))).concat(
     Array.from({length:20},(_,i)=>{const n=String(i+1).padStart(2,'0');return {file:'components/Switches/Contact_'+n+'.svg',name:'Contact '+n,category:'Switches',type:'Auxiliary Contact '+n};})
-  );
-  const cats=[['Sources','#12d6a0','source'],['Others','#08b7f4','others'],['Coils','#a78bfa','coil'],['Auxiliaries','#c084fc','aux'],['Switches','#facc15','switch'],['Loads','#22d3ee','load'],['Contactors','#fb923c','contactor'],['Protections','#34d399','protection'],['Motors','#fb7185','motor']];
-  const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>'};
+  ).concat([
+    {file:'components/Proximity Sensor/Inductive_Proximity_Sensor.svg',name:'Inductive Proximity Sensor',category:'Proximity Sensor',type:'Proximity Sensor'}
+  ]);
+  const cats=[['Sources','#12d6a0','source'],['Others','#08b7f4','others'],['Coils','#a78bfa','coil'],['Auxiliaries','#c084fc','aux'],['Switches','#facc15','switch'],['Loads','#22d3ee','load'],['Contactors','#fb923c','contactor'],['Protections','#34d399','protection'],['Motors','#fb7185','motor'],['Proximity Sensor','#a78bfa','proximity']];
+  const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>',proximity:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/>'};
   let expanded=null; // Start with every library category collapsed; users expand a category manually.
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function paint(){

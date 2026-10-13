@@ -1,6 +1,6 @@
 {
   "project": "ELECTRICAL SIMU CKT",
-  "count": 147,
+  "count": 148,
   "symbols": [
     {
       "file": "assets/symbols/ac-motor-3p-3-terminal.svg",
@@ -920,6 +920,13 @@
       "name": "Auxiliary Contact 20",
       "category": "Switches",
       "original_filename": "Contact_20.svg"
+    },
+    {
+      "file": "components/Proximity Sensor/Inductive_Proximity_Sensor.svg",
+      "name": "Inductive Proximity Sensor",
+      "category": "Proximity Sensor",
+      "original_filename": "Inductive_Proximity_Sensor.svg",
+      "type": "Proximity Sensor"
     }
   ]
 }

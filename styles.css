@@ -1794,3 +1794,12 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   padding:0!important;
   position:static!important;
 }
+
+
+/* V92: category name, parenthesized count, and expand arrow are separate elements. */
+.layout > .library .component-category { display:flex!important; align-items:center!important; }
+.layout > .library .component-category .category-name { flex:0 0 auto!important; min-width:0!important; margin:0!important; white-space:nowrap!important; }
+.layout > .library .component-category .category-count { flex:0 0 auto!important; display:inline-block!important; margin-left:4px!important; white-space:nowrap!important; color:#9bb8d8!important; font-size:11px!important; font-weight:700!important; line-height:1!important; }
+.layout > .library .component-category .category-chevron { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 16px!important; width:16px!important; min-width:16px!important; margin-left:auto!important; padding:0!important; position:static!important; text-align:center!important; font-size:22px!important; line-height:1!important; color:rgba(225,240,255,.85)!important; }
+.layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg)!important; color:var(--category-accent)!important; }
+.layout > .library .component-category .category-arrow { margin-left:auto!important; flex:0 0 16px!important; width:16px!important; text-align:center!important; }
