@@ -1,0 +1,6 @@
+V85 LOGO PATH FIX
+- Confirmed assets/esc-user-logo.png exists and is a valid PNG in the source ZIP.
+- Added a root-level copy of the exact same logo as a fallback for two-phase GitHub uploads.
+- Header logo falls back to ./esc-user-logo.png if the nested asset URL fails.
+- Updated cache and script/style query versions to v85-logo-path-fix.
+- Service worker caches both logo paths.

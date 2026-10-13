@@ -1,11 +1,14 @@
-const CACHE='electrical-simu-ckt-v84-clean-brand';
+const CACHE='electrical-simu-ckt-v85-logo-path-fix';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=84-clean-brand',
-  './app.js?v=84-clean-brand',
+  './styles.css?v=85-logo-path-fix',
+  './app.js?v=85-logo-path-fix',
   './manifest.webmanifest',
-  './assets/esc-user-logo.png?v=84-clean-brand'
+  './assets/esc-user-logo.png?v=85-logo-path-fix',
+  './assets/esc-user-logo.png',
+  './esc-user-logo.png?v=85-logo-path-fix',
+  './esc-user-logo.png'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(
