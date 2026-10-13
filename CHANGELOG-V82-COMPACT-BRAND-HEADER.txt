@@ -1,5 +1,0 @@
-Electrical Simu CKT V82
-- Reverted the oversized full-page banner to a compact brand lockup on the left of the toolbar.
-- Keeps the supplied original banner artwork intact and uses contain sizing so the slogan remains visible.
-- Preserves the existing simulator, symbols, and component folders.
-- Bumped CSS, script, image, and service-worker cache versions.
