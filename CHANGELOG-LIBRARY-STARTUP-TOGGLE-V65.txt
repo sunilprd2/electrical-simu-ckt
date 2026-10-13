@@ -1,5 +1,0 @@
-Electrical Simu CKT v65 — Library startup/toggle fix
-
-Root cause: the previous stylesheet had incomplete selectors `body.library-hidden .layout >` and therefore never hid `.library`.
-
-Fix: explicitly hide `.layout > .library` when body has `library-hidden`, and restore normal display when that class is removed. The existing JavaScript ribbon toggle remains responsible for adding/removing the class. Updated cache-busting references and service-worker cache name.
