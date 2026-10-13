@@ -1,6 +1,0 @@
-Electrical Simu CKT v58 — Double-click property panel fix
-
-- Added a delegated double-click handler on the persistent workspace component layer.
-- Double-click opens the selected component property panel for both newly placed and restored/reopened components.
-- Single-click continues to select the component without opening the property panel.
-- Bumped app and service-worker cache versions.
