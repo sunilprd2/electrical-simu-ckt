@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=65-library-startup-toggle-fix">
+<link rel="stylesheet" href="styles.css?v=69-workspace-doubleclick-properties">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -155,7 +155,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=68-library-categories-collapsed"></script>
+<script src="app.js?v=69-workspace-doubleclick-properties"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -863,5 +863,44 @@ document.querySelectorAll(".top nav button").forEach(button => {
 })();
 </script>
 
+
+<script id="esc-v69-workspace-doubleclick-fallback">
+/* V69: open properties reliably even when drag pointer handlers suppress dblclick.
+   Detect two quick pointer presses on the same placed component at document capture,
+   then open after pointerup/drag handlers have finished selecting it. */
+(function workspaceDoubleClickPropertiesV69(){
+  let previous = null;
+  let moved = false;
+  let start = null;
+  document.addEventListener('pointerdown', function(e){
+    if (e.button !== 0) return;
+    const g = e.target && e.target.closest ? e.target.closest('#dropLayer .dropped-symbol') : null;
+    if (!g || e.target.closest('.mag-port') || e.target.closest('.connected-wire')) { previous = null; start = null; moved = false; return; }
+    const now = Date.now();
+    const sameDouble = previous && previous.g === g && now - previous.time <= 500 && !previous.moved;
+    previous = {g, time:now, moved:false};
+    start = {x:e.clientX, y:e.clientY, g};
+    moved = false;
+    if (sameDouble) {
+      const target = g;
+      window.setTimeout(function(){
+        if (!target.isConnected || typeof select !== 'function') return;
+        select(target, true);
+        const panel = document.getElementById('propertyPanel');
+        if (panel) { panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); }
+        const status = document.getElementById('state');
+        if (status) status.textContent = 'COMPONENT DETAILS • ' + (target.dataset.ref || target.dataset.name || 'COMPONENT');
+      }, 220);
+      previous = null;
+    }
+  }, true);
+  document.addEventListener('pointermove', function(e){
+    if (!start || !previous || start.g !== previous.g) return;
+    if (Math.hypot(e.clientX-start.x, e.clientY-start.y) > 5) { moved = true; previous.moved = true; }
+  }, true);
+  document.addEventListener('pointerup', function(){ start = null; moved = false; }, true);
+  document.addEventListener('pointercancel', function(){ start = null; previous = null; moved = false; }, true);
+})();
+</script>
 </body>
 </html>

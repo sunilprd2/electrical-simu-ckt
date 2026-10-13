@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v68-library-categories-collapsed';
+const CACHE='electrical-simu-ckt-v69-workspace-doubleclick-properties';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=67-library-toggle-capture-fix',
-  './app.js?v=68-library-categories-collapsed',
+  './styles.css?v=69-workspace-doubleclick-properties',
+  './app.js?v=69-workspace-doubleclick-properties',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
