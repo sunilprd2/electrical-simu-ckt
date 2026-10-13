@@ -1,1 +1,0 @@
-V78: Updated website header brand banner to use the user-provided cyan circuit icon with transparent outside corners, navy header-matched background, Electrical Simu CKT wordmark, and slogan. Existing simulator functionality and other assets preserved.
