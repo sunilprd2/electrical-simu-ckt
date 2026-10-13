@@ -1,0 +1,4 @@
+V64 Library Toggle Fix
+
+Cause: an unconditional .library { display:none !important } CSS rule hid the library even after the body library-hidden class was removed.
+Fix: removed unscoped hide rules; the library is hidden only while body.library-hidden is present. Ribbon Library button toggles visibility; sidebar arrow hides it.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=63-library-hidden-default">
+<link rel="stylesheet" href="styles.css?v=65-library-startup-toggle-fix">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -13,6 +13,11 @@
   #schematic.panning, #schematic.panning * { cursor: default !important; }
   #dropLayer .dropped-symbol { cursor: grab; }
   #dropLayer .dropped-symbol.moving { cursor: grabbing; }
+</style>
+<style id="library-toggle-v66">
+.layout > .library { display:block; width:218px; min-width:218px; max-width:218px; flex:0 0 218px; }
+body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; max-width:0 !important; flex:0 0 0 !important; padding:0 !important; border:0 !important; overflow:hidden !important; }
+body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; min-width:0 !important; }
 </style>
 </head>
 <body class="library-hidden">
@@ -150,7 +155,7 @@
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=63-library-hidden-default"></script>
+<script src="app.js?v=68-library-categories-collapsed"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -173,7 +178,7 @@
   );
   const cats=[['Sources','#12d6a0','source'],['Others','#08b7f4','others'],['Coils','#a78bfa','coil'],['Auxiliaries','#c084fc','aux'],['Switches','#facc15','switch'],['Loads','#22d3ee','load'],['Contactors','#fb923c','contactor'],['Protections','#34d399','protection'],['Motors','#fb7185','motor']];
   const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>'};
-  let expanded='Sources';
+  let expanded=null; // Start with every library category collapsed; users expand a category manually.
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function paint(){
     const q=(document.getElementById('search')?.value||'').trim().toLowerCase();
@@ -790,6 +795,71 @@ document.querySelectorAll(".top nav button").forEach(button => {
   },true);
   // Do not create any hover tint: the selection frame is transparent except for its border.
   update();
+})();
+</script>
+
+
+<script id="library-toggle-v68">
+/* V67: capture the library controls before any older/duplicate handlers can override them. */
+(function () {
+  const body = document.body;
+  const getNodes = () => {
+    const layout = document.querySelector('.layout');
+    return {
+      button: document.getElementById('libraryToggle'),
+      arrow: document.getElementById('libraryCollapseArrow'),
+      library: layout && layout.querySelector('.library'),
+      work: layout && layout.querySelector('.work')
+    };
+  };
+  function apply(hidden) {
+    const n = getNodes();
+    body.classList.toggle('library-hidden', hidden);
+    if (n.library) {
+      if (hidden) {
+        n.library.style.setProperty('display', 'none', 'important');
+        ['width','min-width','max-width','flex-basis','padding-left','padding-right','border-left-width','border-right-width'].forEach(p => n.library.style.setProperty(p, '0', 'important'));
+        n.library.style.setProperty('flex', '0 0 0', 'important');
+        n.library.style.setProperty('overflow', 'hidden', 'important');
+      } else {
+        n.library.style.setProperty('display', 'block', 'important');
+        n.library.style.setProperty('width', '206px', 'important');
+        n.library.style.setProperty('min-width', '206px', 'important');
+        n.library.style.setProperty('max-width', '206px', 'important');
+        n.library.style.setProperty('flex', '0 0 206px', 'important');
+        ['padding-left','padding-right','border-left-width','border-right-width','overflow'].forEach(p => n.library.style.removeProperty(p));
+      }
+    }
+    if (n.work) {
+      n.work.style.setProperty('min-width', '0', 'important');
+      n.work.style.setProperty('flex', hidden ? '1 1 100%' : '1 1 auto', 'important');
+      n.work.style.setProperty('width', hidden ? '100%' : 'auto', 'important');
+      n.work.style.setProperty('max-width', hidden ? '100%' : 'none', 'important');
+    }
+    if (n.button) {
+      n.button.setAttribute('aria-pressed', String(!hidden));
+      n.button.title = hidden ? 'Show component library' : 'Hide component library';
+      n.button.setAttribute('aria-label', n.button.title);
+    }
+    if (n.arrow) {
+      n.arrow.title = hidden ? 'Library hidden' : 'Hide component library';
+      n.arrow.setAttribute('aria-label', n.arrow.title);
+    }
+    window.dispatchEvent(new Event('resize'));
+  }
+  document.addEventListener('click', function (event) {
+    const n = getNodes();
+    const button = event.target.closest && event.target.closest('#libraryToggle');
+    const arrow = event.target.closest && event.target.closest('#libraryCollapseArrow');
+    if (!button && !arrow) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    if (arrow) apply(true);
+    else apply(!body.classList.contains('library-hidden'));
+  }, true);
+  // Always start collapsed, including on a fresh page load.
+  apply(true);
 })();
 </script>
 

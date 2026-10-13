@@ -919,7 +919,7 @@ body.theme-dark #sheet:not(.grid-off) { background-image:linear-gradient(rgba(10
 .top nav.cad-ribbon .tool-btn{flex-shrink:0!important}
 .top nav.cad-ribbon .library-toggle{flex:0 0 55px!important;min-width:55px!important;width:55px!important;background:linear-gradient(155deg,#00c8ef,#006eae)!important;border:1px solid #36e2ff!important;color:#fff!important}
 .library{width:218px!important;flex:0 0 218px!important;min-width:218px!important;padding:8px 7px!important;background:linear-gradient(180deg,#07182f,#071329)!important;border-right:2px solid #1d4e84!important;box-shadow:none!important;transition:width .18s ease,flex-basis .18s ease,padding .18s ease}
-.library-hidden .layout .library{display:none!important}
+.library-hidden .layout 
 .library-hidden .layout .work{flex:1 1 100%!important;width:100%!important;min-width:0!important}
 .library-hidden .layout{grid-template-columns:minmax(0,1fr)!important}
 .component-category-list{display:flex!important;flex-direction:column!important;gap:3px!important;margin:4px 0!important}
@@ -978,7 +978,7 @@ body.theme-dark #sheet:not(.grid-off) { background-image:linear-gradient(rgba(10
   flex: 0 0 218px !important;
 }
 /* The Library button collapses the entire sidebar and lets the work area take its place. */
-body.library-hidden .layout > .library { display: none !important; }
+body.library-hidden .layout > 
 body.library-hidden .layout > .work { flex: 1 1 100% !important; width: 100% !important; max-width: 100% !important; }
 #libraryToggle { flex: 0 0 auto; }
 @media (max-width: 620px) {
@@ -992,7 +992,7 @@ body.library-hidden .layout > .work { flex: 1 1 100% !important; width: 100% !im
 .layout { height:calc(100vh - 64px) !important; min-height:0 !important; }
 .layout > .library { width:218px !important; min-width:218px !important; max-width:218px !important; flex:0 0 218px !important; }
 .layout > .work { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }
-body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; flex:0 0 0 !important; border:0 !important; padding:0 !important; }
+body.library-hidden .layout > 
 body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; }
 .component-category-list { display:flex !important; flex-direction:column !important; gap:4px !important; margin:4px 0 10px !important; }
 .component-category {
@@ -1484,3 +1484,9 @@ body.theme-light .esc-color-setting{color:#1e293b;background:rgba(148,163,184,.0
 #dropLayer .dropped-symbol.selected .drop-tag{fill:var(--component-accent,#50f0a1)!important;filter:none!important;}
 #dropLayer .dropped-symbol.selected .drop-label{fill:var(--component-accent,#dce3e5)!important;filter:none!important;}
 #dropLayer .dropped-symbol.selected .drop-comment{filter:none!important;}
+
+
+/* v65: reliably collapse the library at startup while allowing the ribbon toggle to reopen it. */
+.layout > .library { display:block !important; }
+body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; max-width:0 !important; flex:0 0 0 !important; padding:0 !important; border:0 !important; overflow:hidden !important; }
+body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; min-width:0 !important; }

@@ -972,23 +972,28 @@ function refreshWiresForComponent(moved){
 })();
 
 
-/* Library controls: ribbon button toggles; the small sidebar arrow only hides. */
-(function setupLibraryCollapse(){
-  const button=document.getElementById('libraryToggle');
-  const arrow=document.getElementById('libraryCollapseArrow');
-  const body=document.body;
-  function setHidden(hidden){
-    body.classList.toggle('library-hidden',hidden);
-    if(button){button.setAttribute('aria-pressed',String(!hidden));button.classList.toggle('active',!hidden);button.title=hidden?'Show component library':'Hide component library';button.setAttribute('aria-label',button.title);}
-    if(arrow){arrow.setAttribute('aria-label',hidden?'Library hidden':'Hide component library');arrow.title=hidden?'Library hidden':'Hide component library';}
-    requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+/* V66: deterministic library toggle with explicit layout updates. */
+(function setupLibraryCollapseV66(){
+ const button=document.getElementById('libraryToggle');
+ const arrow=document.getElementById('libraryCollapseArrow');
+ const body=document.body, layout=document.querySelector('.layout');
+ const library=layout&&layout.querySelector(':scope > .library');
+ const work=layout&&layout.querySelector(':scope > .work');
+ function setHidden(hidden){
+  hidden=!!hidden; body.classList.toggle('library-hidden',hidden);
+  if(library){
+   if(hidden){['display','width','min-width','max-width','flex','padding','border-width'].forEach((k)=>library.style.setProperty(k,({'display':'none','width':'0','min-width':'0','max-width':'0','flex':'0 0 0','padding':'0','border-width':'0'})[k],'important'));}
+   else {library.style.setProperty('display','block','important');library.style.setProperty('width','218px','important');library.style.setProperty('min-width','218px','important');library.style.setProperty('max-width','218px','important');library.style.setProperty('flex','0 0 218px','important');library.style.removeProperty('padding');library.style.removeProperty('border-width');}
   }
-  if(button&&!button.dataset.libraryBound){button.dataset.libraryBound='true';button.addEventListener('click',()=>setHidden(!body.classList.contains('library-hidden')));}
-  if(arrow&&!arrow.dataset.libraryBound){arrow.dataset.libraryBound='true';arrow.addEventListener('click',()=>setHidden(true));}
-  // Sync the ribbon button's accessible/visual state with the initial collapsed layout.
-  setHidden(body.classList.contains('library-hidden'));
+  if(work){work.style.setProperty('min-width','0','important');work.style.setProperty('flex',hidden?'1 1 100%':'1 1 auto','important');work.style.setProperty('width',hidden?'100%':'auto','important');work.style.setProperty('max-width',hidden?'100%':'none','important');}
+  if(button){button.setAttribute('aria-pressed',String(!hidden));button.classList.toggle('active',!hidden);button.title=hidden?'Show component library':'Hide component library';button.setAttribute('aria-label',button.title);}
+  if(arrow){arrow.title=hidden?'Library hidden':'Hide component library';arrow.setAttribute('aria-label',arrow.title);}
+  window.dispatchEvent(new Event('resize'));
+ }
+ if(button) button.onclick=function(e){e.preventDefault();e.stopPropagation();setHidden(!body.classList.contains('library-hidden'));};
+ if(arrow) arrow.onclick=function(e){e.preventDefault();e.stopPropagation();setHidden(true);};
+ setHidden(true);
 })();
-
 
 /* V59: robust delegated double-click property opening for all placed symbols,
    including SVG library components and components restored from saved drawings. */

@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v63-library-hidden-default';
+const CACHE='electrical-simu-ckt-v68-library-categories-collapsed';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=63-library-hidden-default',
-  './app.js?v=63-library-hidden-default',
+  './styles.css?v=67-library-toggle-capture-fix',
+  './app.js?v=68-library-categories-collapsed',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
