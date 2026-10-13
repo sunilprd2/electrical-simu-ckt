@@ -1,8 +1,0 @@
-Electrical Simu CKT v59 — Double-click properties and Switches library
-
-- Added Contact_01.svg through Contact_20.svg under components/Switches/.
-- Registered all 20 auxiliary contact symbols in the embedded app library manifest and symbol-library.json as Switches.
-- Added capture-phase delegated double-click handling plus a second-click fallback to open the property panel for placed components.
-- Bumped app, stylesheet, and service-worker cache versions to avoid stale browser assets.
-
-Note: The 20 supplied contact SVGs are contour-traced from raster references per their source README; verify their electrical geometry before relying on simulation behavior.
