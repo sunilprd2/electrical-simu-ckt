@@ -1,0 +1,1 @@
+V61: Added components/Switches/components.json registering all 20 Contact_01.svg through Contact_20.svg symbols. Normalized embedded manifest entries to category Switches and bumped cache identifiers.
