@@ -1,7 +1,0 @@
-Electrical Simu CKT v72 — Hover and selected appearance
-
-- Hovering over an unselected workspace component leaves its original artwork colour unchanged.
-- No selection border or filled background appears on hover.
-- Clicking/selecting a component colours the actual SVG symbol blue and shows a thin, close-fitting border.
-- Component reference tags and comments remain independent of the symbol tint.
-- Existing workspace interactions and library files are preserved.
