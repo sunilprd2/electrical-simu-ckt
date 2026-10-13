@@ -1,0 +1,5 @@
+Electrical Simu CKT v90
+- Verified category markup: category name and count are one text span, e.g. Sources (11), followed by the expansion arrow at far right.
+- Strong CSS overrides prevent the count from being styled as a separate right-aligned item.
+- Proximity Sensor category and Inductive Proximity Sensor symbol retained.
+- New app/style URLs and service-worker cache version.

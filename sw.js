@@ -1,9 +1,10 @@
-const CACHE='electrical-simu-ckt-v85-logo-path-fix';
+const CACHE='electrical-simu-ckt-v90-verified-library';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=85-logo-path-fix',
-  './app.js?v=85-logo-path-fix',
+  './components/Proximity Sensor/Inductive_Proximity_Sensor.svg',
+  './styles.css?v=v90-verified-library',
+  './app.js?v=v90-verified-library',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',

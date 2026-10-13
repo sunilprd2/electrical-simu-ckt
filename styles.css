@@ -1764,3 +1764,33 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 .top .brand-title span { color:#00d9f5!important; }
 .top .brand-slogan { color:#c4d6e7!important; font-size:7.4px!important; line-height:1.2!important; letter-spacing:.35px!important; white-space:nowrap!important; margin-top:0!important; }
 @media(max-width:760px) { .top .brand { flex-basis:190px!important; width:190px!important; min-width:190px!important; max-width:190px!important; height:58px!important; min-height:58px!important; max-height:58px!important; gap:5px!important; padding:3px 5px!important; } .top .brand .brand-logo { flex-basis:36px!important; width:36px!important; height:36px!important; max-width:36px!important; max-height:36px!important; } .top .brand-title { font-size:12px!important; } .top .brand-slogan { font-size:6.2px!important; letter-spacing:.15px!important; } }
+
+/* v89: count belongs immediately after category name; arrow stays at far right */
+.layout > .library .component-category .category-name{
+  flex:1 1 auto!important;min-width:0!important;white-space:nowrap!important;
+}
+.layout > .library .component-category .category-chevron{
+  flex:0 0 15px!important;width:15px!important;margin-left:8px!important;
+  text-align:center!important;font-size:20px!important;line-height:1!important;
+}
+
+/* v90 verified layout: count is part of the category name, arrow is a separate rightmost control */
+.layout > .library .component-category .category-name {
+  display:block!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  margin:0!important;
+  white-space:nowrap!important;
+  text-align:left!important;
+}
+.layout > .library .component-category .category-chevron {
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 14px!important;
+  width:14px!important;
+  min-width:14px!important;
+  margin-left:6px!important;
+  padding:0!important;
+  position:static!important;
+}

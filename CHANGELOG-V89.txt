@@ -1,0 +1,5 @@
+Electrical Simu CKT v89 - source corrected
+- Category component count displays immediately after name in parentheses, e.g. Sources (11), with expansion arrow at far right.
+- Added Proximity Sensor category and Inductive Proximity Sensor SVG.
+- Updated script, stylesheet, and service worker cache versions.
+- Built from the latest ZIP uploaded in this conversation.
