@@ -1,5 +1,0 @@
-Electrical Simu CKT v68
-
-- Library panel can open from the ribbon while all component categories remain collapsed.
-- Users choose a category manually; Sources no longer expands automatically.
-- Updated service-worker cache identifier to avoid stale UI assets.
