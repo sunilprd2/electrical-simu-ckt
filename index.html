@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=52-save-delete-selection">
+<link rel="stylesheet" href="styles.css?v=56-blue-symbol-axis-fix">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -106,6 +106,7 @@
   <label>Type<input id="propType" readonly></label>
   <label>Tag<input id="propTag"></label>
   <label>Label<input id="propLabel"></label>
+  <label>Comment<input id="propComment" placeholder="Optional component note"></label>
   <div class="property-actions">
    <button id="propertyOk" class="property-ok" type="button">Save</button>
   </div>
@@ -141,12 +142,15 @@
   <label class="zoom-panel-setting"><span>Show Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
   <label class="zoom-panel-setting"><span>Drawing Grid</span><span class="zoom-switch"><input id="settingsGridToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsGridState">On</span></label>
   <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
+  <div class="settings-section-label">Component Appearance</div>
+  <label class="esc-color-setting"><span>Selected component colour</span><input id="escComponentColor" type="color" value="#2584ff" aria-label="Selected component colour"></label>
+  <label class="esc-color-setting"><span>Selection border colour</span><input id="escBorderColor" type="color" value="#f59e0b" aria-label="Selection border colour"></label>
   <div class="settings-section-label">Theme</div>
   <label class="zoom-panel-setting"><span>Light / Dark Mode</span><span class="theme-switch-icons"><span>☼</span><span class="zoom-switch"><input id="settingsThemeToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span>☾</span></span><span class="zoom-panel-state" id="settingsThemeState">Dark</span></label>
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=52-save-delete-selection"></script>
+<script src="app.js?v=56-blue-symbol-axis-fix"></script>
 <script>
 /* Component library fallback: Sources and Coils SVG symbols, expandable category rows. */
 (function(){
@@ -588,7 +592,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
 
 
 <script>
-/* V52: definitive selection, Save and Delete actions. */
+/* V53: tight component selection outline and vertical component comments. */
 (()=>{
  const $=id=>document.getElementById(id), layer=$('dropLayer'), status=$('state');
  const setStatus=t=>{if(status)status.textContent=t};
@@ -612,13 +616,168 @@ document.querySelectorAll(".top nav button").forEach(button => {
    e.preventDefault();
    const g=typeof selected!=='undefined'?selected:null;
    if(!g||!g.isConnected){setStatus('NO COMPONENT SELECTED');return;}
-   const tag=$('propTag')?.value.trim(),label=$('propLabel')?.value.trim();
+   const tag=$('propTag')?.value.trim(),label=$('propLabel')?.value.trim(),comment=$('propComment')?.value.trim()||'';
    if(tag){g.dataset.ref=tag;const t=g.querySelector('.drop-tag');if(t)t.textContent=tag;}
-   if(label){g.dataset.label=label;const t=g.querySelector('.drop-label');if(t)t.textContent=label;}
+   if(label!==undefined){g.dataset.label=label;const t=g.querySelector('.drop-label');if(t)t.textContent=label;}
+   g.dataset.comment=comment;
+   let note=g.querySelector('.drop-comment');
+   if(!note){note=document.createElementNS('http://www.w3.org/2000/svg','text');note.setAttribute('class','drop-comment');note.setAttribute('x','36');note.setAttribute('y','70');note.setAttribute('text-anchor','middle');note.setAttribute('transform','rotate(-90 36 70)');g.appendChild(note);}
+   note.textContent=comment;note.style.display=comment?'':'none';
+   const title=g.querySelector('title');if(title)title.textContent=(g.dataset.ref||'')+' — '+(g.dataset.name||'Component')+(comment?' • '+comment:'');
    setStatus('COMPONENT PROPERTIES SAVED');
    $('saveBtn')?.click();
  });
  document.addEventListener('keydown',e=>{if(e.key==='Delete'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)&&selected){e.preventDefault();removeSelected();}},true);
+})();
+</script>
+
+
+<script>
+/* V54: tight artwork frame, configurable selected colours, no hover fill, and selected-component crosshair axes. */
+(function ESCV54(){
+  const svg=document.getElementById('schematic');
+  const layer=document.getElementById('dropLayer');
+  const settings=document.getElementById('escSettingsPopover');
+  if(!svg||!layer) return;
+  const NS='http://www.w3.org/2000/svg';
+  const get=(id)=>document.getElementById(id);
+  const componentPicker=get('escComponentColor'), borderPicker=get('escBorderColor');
+  const componentKey='esc-selected-component-color-v56', borderKey='esc-selection-border-color-v56';
+  let componentColor=localStorage.getItem(componentKey)||'#2584ff';
+  let borderColor=localStorage.getItem(borderKey)||'#168dff';
+  if(componentPicker) componentPicker.value=componentColor;
+  if(borderPicker) borderPicker.value=borderColor;
+
+  let defs=svg.querySelector('defs');
+  if(!defs){defs=document.createElementNS(NS,'defs');svg.insertBefore(defs,svg.firstChild);}
+  let filter=defs.querySelector('#escSelectedComponentTint');
+  if(!filter){
+    filter=document.createElementNS(NS,'filter');
+    filter.setAttribute('id','escSelectedComponentTint');
+    filter.setAttribute('x','-20%');filter.setAttribute('y','-20%');
+    filter.setAttribute('width','140%');filter.setAttribute('height','140%');
+    filter.setAttribute('color-interpolation-filters','sRGB');
+    const flood=document.createElementNS(NS,'feFlood');
+    flood.setAttribute('id','escSelectedTintFlood');flood.setAttribute('flood-color',componentColor);flood.setAttribute('result','tint');
+    const composite=document.createElementNS(NS,'feComposite');
+    composite.setAttribute('in','tint');composite.setAttribute('in2','SourceAlpha');composite.setAttribute('operator','in');composite.setAttribute('result','colored');
+    filter.append(flood,composite);defs.appendChild(filter);
+  }
+  const flood=get('escSelectedTintFlood');
+  const axes=document.createElementNS(NS,'g');
+  axes.setAttribute('id','escSelectedComponentAxes');
+  axes.setAttribute('display','none');
+  axes.setAttribute('pointer-events','none');
+  const horizontal=document.createElementNS(NS,'line');
+  const vertical=document.createElementNS(NS,'line');
+  [horizontal,vertical].forEach(line=>{
+    line.setAttribute('stroke','#8793a3');
+    line.setAttribute('stroke-width','2.4');
+    line.setAttribute('stroke-opacity','.42');
+    line.setAttribute('vector-effect','non-scaling-stroke');
+  });
+  horizontal.setAttribute('x1','0');horizontal.setAttribute('x2','1200');
+  vertical.setAttribute('y1','0');vertical.setAttribute('y2','760');
+  axes.append(horizontal,vertical);
+  layer.insertBefore(axes,layer.firstChild);
+
+  function applyBox(g){
+    const box=g.querySelector(':scope > .select-box');
+    if(!box) return;
+    const fallback={w:78,h:82};
+    const set=(ar)=>{
+      // The SVG artwork is rendered inside a 150 x 100 viewport from a 48 x 32 viewBox.
+      // Respect the source aspect ratio so the frame hugs the visible artwork, with modest padding.
+      let w,h;
+      if(ar>=1.5){w=150;h=150/ar;}
+      else {w=100*ar;h=100;}
+      if(!Number.isFinite(w)||!Number.isFinite(h)||w<24||h<24){w=fallback.w;h=fallback.h;}
+      const pad=5;
+      box.setAttribute('x',String(90-(w/2)-pad));
+      box.setAttribute('y',String(70-(h/2)-pad));
+      box.setAttribute('width',String(w+pad*2));
+      box.setAttribute('height',String(h+pad*2));
+      box.setAttribute('rx','1');
+    };
+    const path=g.dataset.porttype||'';
+    if(!/\.svg(?:$|\?)/i.test(path)){set(1);return;}
+    if(g.dataset.escBoxReady==='1')return;
+    g.dataset.escBoxReady='1';
+    fetch(path).then(r=>r.ok?r.text():Promise.reject()).then(text=>{
+      const match=text.match(/viewBox\s*=\s*["']\s*([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)\s*["']/i);
+      if(match){const w=Number(match[3]),h=Number(match[4]);if(w>0&&h>0)set(w/h);else set(1);}
+      else set(1);
+    }).catch(()=>set(1));
+  }
+  function update(){
+    const selected=layer.querySelector('.dropped-symbol.selected');
+    axes.setAttribute('display',selected?'':'none');
+    if(selected){
+      const x=Number(selected.dataset.x)||0, y=Number(selected.dataset.y)||0;
+      horizontal.setAttribute('y1',String(y));horizontal.setAttribute('y2',String(y));
+      vertical.setAttribute('x1',String(x));vertical.setAttribute('x2',String(x));
+      selected.style.setProperty('--esc-selection-border',borderColor);
+      selected.style.setProperty('--esc-selected-component',componentColor);
+      const nsSvg=selected.querySelector(':scope > svg');
+      if(nsSvg){
+        nsSvg.style.color=componentColor;
+        const image=nsSvg.querySelector('image');
+        if(image) image.setAttribute('filter','url(#escSelectedComponentTint)');
+        // Tint the actual symbol artwork, not the external reference tag (X1, KM1, etc.).
+        // Force the chosen stroke colour over theme defaults, while preserving unfilled outlines.
+        nsSvg.querySelectorAll('path,line,circle,rect,polyline,polygon,ellipse').forEach(el=>{
+          if(!image){
+            el.style.setProperty('stroke',componentColor,'important');
+            const originalFill=(el.getAttribute('fill')||'').trim().toLowerCase();
+            if(originalFill && originalFill!=='none' && originalFill!=='transparent'){
+              el.style.setProperty('fill',componentColor,'important');
+            }
+          }
+        });
+        nsSvg.querySelectorAll('text,tspan').forEach(el=>{
+          if(!image) el.style.setProperty('fill',componentColor,'important');
+        });
+      }
+      selected.querySelectorAll('.mag-port').forEach(p=>{p.style.setProperty('fill',componentColor,'important');p.style.setProperty('stroke',borderColor,'important');});
+      applyBox(selected);
+    }
+    layer.querySelectorAll('.dropped-symbol:not(.selected)').forEach(g=>{
+      g.style.removeProperty('--esc-selection-border');g.style.removeProperty('--esc-selected-component');
+      const image=g.querySelector(':scope > svg image');if(image)image.removeAttribute('filter');
+      const nsSvg=g.querySelector(':scope > svg');
+      if(nsSvg){
+        nsSvg.style.removeProperty('color');
+        nsSvg.querySelectorAll('path,line,circle,rect,polyline,polygon,ellipse,text,tspan').forEach(el=>{
+          el.style.removeProperty('stroke');
+          el.style.removeProperty('fill');
+        });
+      }
+      g.querySelectorAll('.mag-port').forEach(p=>{p.style.removeProperty('fill');p.style.removeProperty('stroke');});
+      applyBox(g);
+    });
+    if(flood)flood.setAttribute('flood-color',componentColor);
+    horizontal.setAttribute('stroke','#8793a3');
+    vertical.setAttribute('stroke','#8793a3');
+  }
+  function setColors(){
+    componentColor=componentPicker?.value||componentColor;
+    borderColor=borderPicker?.value||borderColor;
+    localStorage.setItem(componentKey,componentColor);
+    localStorage.setItem(borderKey,borderColor);
+    update();
+  }
+  componentPicker?.addEventListener('input',setColors);
+  borderPicker?.addEventListener('input',setColors);
+  // Recompute the overlay when selection, component position, rotation, or drawing contents change.
+  const observer=new MutationObserver(()=>update());
+  observer.observe(layer,{subtree:true,childList:true,attributes:true,attributeFilter:['class','transform','data-x','data-y','data-rotation']});
+  // Update the axis center during a component drag without intercepting pointer or wire handling.
+  layer.addEventListener('pointermove',()=>{
+    const selected=layer.querySelector('.dropped-symbol.selected');
+    if(selected){const x=Number(selected.dataset.x)||0,y=Number(selected.dataset.y)||0;horizontal.setAttribute('y1',y);horizontal.setAttribute('y2',y);vertical.setAttribute('x1',x);vertical.setAttribute('x2',x);}
+  },true);
+  // Do not create any hover tint: the selection frame is transparent except for its border.
+  update();
 })();
 </script>
 

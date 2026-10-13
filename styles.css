@@ -1381,3 +1381,87 @@ body.theme-light #dropLayer .dropped-symbol image { filter:brightness(0)!importa
 /* V52: compact property Save action; deletion lives in the ribbon only. */
 .property-actions{display:flex;justify-content:flex-start;gap:8px;margin-top:14px}
 .property-ok{flex:0 0 auto;min-width:104px;min-height:40px;padding:9px 22px;border-radius:8px;font-size:13px}
+
+
+/* V53: compact selection frame hugs the component artwork; hit area remains independent. */
+#dropLayer .dropped-symbol .select-box{display:block!important;fill:transparent!important;fill-opacity:0!important;stroke:transparent!important;stroke-width:1!important;stroke-dasharray:none!important;pointer-events:none!important;}
+#dropLayer .dropped-symbol.selected .select-box{display:block!important;fill:rgba(22,141,255,.035)!important;fill-opacity:1!important;stroke:#168dff!important;stroke-width:1.5!important;stroke-dasharray:4 3!important;stroke-opacity:1!important;}
+#dropLayer .dropped-symbol .component-hit-area{fill:transparent!important;stroke:none!important;pointer-events:all!important;}
+#dropLayer .dropped-symbol .drop-comment{fill:#b8860b!important;stroke:none!important;font-family:Arial,sans-serif!important;font-size:11px!important;font-weight:600!important;pointer-events:none!important;paint-order:stroke!important;}
+body.theme-light #dropLayer .dropped-symbol .drop-comment{fill:#9a6b00!important;}
+
+
+/* V54: artwork-tight selection frame; never fill the component hit area on hover or selection. */
+#dropLayer .dropped-symbol .select-box{
+  fill:transparent!important;
+  fill-opacity:0!important;
+  stroke:transparent!important;
+  stroke-opacity:0!important;
+  stroke-width:1!important;
+  stroke-dasharray:none!important;
+  pointer-events:none!important;
+}
+#dropLayer .dropped-symbol.selected .select-box{
+  fill:transparent!important;
+  fill-opacity:0!important;
+  stroke:var(--esc-selection-border,#f59e0b)!important;
+  stroke-opacity:1!important;
+  stroke-width:2!important;
+  stroke-dasharray:none!important;
+  vector-effect:non-scaling-stroke;
+}
+#dropLayer .dropped-symbol .component-hit-area,
+#dropLayer .dropped-symbol:hover .component-hit-area,
+#dropLayer .dropped-symbol.selected .component-hit-area{
+  fill:transparent!important;
+  fill-opacity:0!important;
+  stroke:transparent!important;
+  stroke-width:0!important;
+  pointer-events:all!important;
+}
+#dropLayer .dropped-symbol.selected{filter:none!important;}
+#dropLayer .dropped-symbol.selected .drop-tag{fill:var(--esc-selected-component,#2584ff)!important;}
+#dropLayer .dropped-symbol.selected .drop-label{fill:var(--esc-selected-component,#2584ff)!important;}
+#dropLayer .dropped-symbol .drop-comment{fill:#b8860b!important;}
+#escSelectedComponentAxes{pointer-events:none!important;}
+.esc-color-setting{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 10px;margin:6px 0;border:1px solid rgba(148,163,184,.22);
+  border-radius:9px;background:rgba(148,163,184,.07);font-size:12px;color:#e5eef8;
+}
+.esc-color-setting input[type="color"]{
+  width:44px;height:28px;min-width:44px;padding:2px;
+  border:1px solid #55708e;border-radius:6px;background:#0b1b2d;cursor:pointer;
+}
+body.theme-light .esc-color-setting{color:#1e293b;background:rgba(148,163,184,.08);}
+
+
+/* V55: component colour applies to the actual selected SVG symbol, never its reference tag. */
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) path,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) line,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) circle,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) rect,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) polyline,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) polygon,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) ellipse {
+  stroke: var(--esc-selected-component, #2584ff) !important;
+}
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) text,
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) tspan {
+  fill: var(--esc-selected-component, #2584ff) !important;
+  stroke: none !important;
+}
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) image {
+  filter: url(#escSelectedComponentTint) !important;
+}
+#dropLayer .dropped-symbol.selected > svg:not(.select-box) [fill]:not([fill="none"]):not([fill="transparent"]) {
+  fill: var(--esc-selected-component, #2584ff) !important;
+}
+#dropLayer .dropped-symbol.selected > .drop-tag,
+#dropLayer .dropped-symbol.selected > .drop-comment {
+  filter: none !important;
+}
+
+
+/* V56: selected-symbol colour uses a fresh setting key; axes stay neutral grey, independent of the border colour. */
+#escSelectedComponentAxes line{stroke:#8793a3!important;stroke-opacity:.42!important;stroke-width:2.4!important;vector-effect:non-scaling-stroke!important;}

@@ -1,0 +1,8 @@
+ELECTRICAL SIMU CKT — V54
+- Selection frame dynamically follows the SVG source aspect ratio to hug component artwork with modest padding.
+- Removed selected/hover translucent background fill; selection is border-only.
+- Added persistent user-selectable selected component colour and selection border colour in Workspace Settings.
+- Selected SVG artwork is tinted using an SVG alpha-mask filter; built-in symbols use the chosen component colour.
+- Added crosshair axis lines through the selected component center; axes follow selection and movement.
+- Updated index and service-worker cache version to avoid stale deployed assets.
+- Preserved existing component, comment, wiring, save, rotate, and library code.

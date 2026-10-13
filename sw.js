@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v52-save-delete-selection';
+const CACHE='electrical-simu-ckt-v55-symbol-colour-fix';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=52-save-delete-selection',
-  './app.js?v=52-save-delete-selection',
+  './styles.css?v=54-selection-colours-axis',
+  './app.js?v=54-selection-colours-axis',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {

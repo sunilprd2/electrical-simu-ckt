@@ -166,7 +166,8 @@ function makeDropped(d,x,y){
 function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
  const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');
+ const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propComment',g.dataset.comment||'');
+ const note=g.querySelector('.drop-comment');if(note){note.textContent=g.dataset.comment||'';note.style.display=g.dataset.comment?'':'none';}
 }
 function enableMove(g){
  // Movement is handled once by installReliableIndividualDrag() below.
@@ -255,8 +256,8 @@ function makeDropped(d,x,y){
   // Port anchors use the exact same transform so wires continue to snap to terminals.
   const ART_X=15, ART_Y=20, ART_W=150, ART_H=100;
   const box=document.createElementNS(NS,'rect');
-  box.setAttribute('class','select-box'); box.setAttribute('x',0); box.setAttribute('y',0);
-  box.setAttribute('width',W); box.setAttribute('height',H); box.setAttribute('rx',4);
+  box.setAttribute('class','select-box'); box.setAttribute('x',48); box.setAttribute('y',15);
+  box.setAttribute('width',84); box.setAttribute('height',110); box.setAttribute('rx',2);
   const ns=document.createElementNS(NS,'svg');
   ns.setAttribute('x',ART_X); ns.setAttribute('y',ART_Y);
   ns.setAttribute('width',ART_W); ns.setAttribute('height',ART_H);
@@ -288,10 +289,14 @@ function makeDropped(d,x,y){
   tag.textContent=g.dataset.ref;
   const title=document.createElementNS(NS,'title');
   title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
+  const comment=document.createElementNS(NS,'text'); comment.setAttribute('class','drop-comment');
+  comment.setAttribute('x','36'); comment.setAttribute('y','70'); comment.setAttribute('text-anchor','middle');
+  comment.setAttribute('transform','rotate(-90 36 70)'); comment.textContent=g.dataset.comment||'';
+  comment.style.display=g.dataset.comment?'':'none';
   const hit=document.createElementNS(NS,'rect'); hit.setAttribute('class','component-hit-area');
   hit.setAttribute('x',0); hit.setAttribute('y',0); hit.setAttribute('width',W); hit.setAttribute('height',H);
   hit.setAttribute('fill','transparent'); hit.setAttribute('pointer-events','all');
-  g.append(title,box,hit,ns,ports,label,tag); dropLayer.appendChild(g); select(g); enableMove(g);
+  g.append(title,box,hit,ns,ports,label,tag,comment); dropLayer.appendChild(g); select(g); enableMove(g);
   return g;
 }
 function applyComponentTransform(g,x=Number(g.dataset.x||0),y=Number(g.dataset.y||0)){
@@ -559,11 +564,8 @@ renderLibrary();
     if(e.target.classList && e.target.classList.contains('mag-port')) e.stopPropagation();
   },true);
 
-  // Remove any accidental selection rectangle if an older function creates one.
-  const cleanBoxes=()=>document.querySelectorAll('.dropped-symbol .select-box').forEach(x=>x.remove());
-  cleanBoxes();
-  const observer=new MutationObserver(cleanBoxes);
-  observer.observe(dropLayerEl,{childList:true,subtree:true});
+  // V53: retain the compact select-box attached to each component. Its transparent
+  // hit area remains independent, while CSS only displays the tight outline on selection.
 
   const hint=document.querySelector('.hint');
   if(hint) hint.textContent='Click one terminal, then click a terminal on another component to connect. Press Escape to cancel.';
