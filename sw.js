@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v61-switches-manifest-switches-category-fix';
+const CACHE='electrical-simu-ckt-v62-switches-fallback-fix';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=61-switches-manifest',
-  './app.js?v=61-switches-manifest',
+  './styles.css?v=62-switches-fallback-fix',
+  './app.js?v=62-switches-fallback-fix',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {
