@@ -1,7 +1,0 @@
-Electrical Simu CKT v66 — Library toggle repair
-
-- Library starts hidden.
-- Ribbon Library button toggles visibility using a direct onclick handler.
-- Sidebar arrow hides the library.
-- Explicitly sets library/workspace dimensions to avoid conflicting legacy CSS.
-- Updated app.js URL and service-worker cache version.
