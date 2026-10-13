@@ -1,1 +1,0 @@
-V84 brand header update: removed visible frame/border around the brand area, made dark edge pixels around the supplied logo transparent, and added a cyan underline beneath Electrical Simu CKT. Existing simulator features and component libraries are retained. Cache and asset query versions bumped to v84-clean-brand.
