@@ -160,13 +160,22 @@ function makeDropped(d,x,y){
  const title=document.createElementNS(NS,'title');title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');g.appendChild(title);
  const tag=document.createElementNS(NS,'text');tag.setAttribute('class','drop-tag');tag.setAttribute('x',8);tag.setAttribute('y',23);tag.setAttribute('text-anchor','end');tag.setAttribute('fill',g.dataset.accent);tag.style.fill=g.dataset.accent;tag.style.fontWeight='400';tag.textContent=g.dataset.ref;
  g.append(box,ns,tag);dropLayer.appendChild(g);select(g);enableMove(g);
-  g.addEventListener('dblclick',e=>{e.stopPropagation();const current=g.dataset.ref||tag.textContent;const next=prompt('Component designation (example: KM1, KM2, QF1, S0):',current);if(next&&next.trim()){g.dataset.ref=next.trim().toUpperCase();tag.textContent=g.dataset.ref;const title=g.querySelector('title');if(title)title.textContent=g.dataset.ref+' — '+d.name;}});
+  g.addEventListener('dblclick',e=>{e.preventDefault();e.stopPropagation();select(g,true);});
   return g;
 }
-function select(g){if(selected)selected.classList.remove('selected');selected=g;if(g)g.classList.add('selected');
- const panel=document.getElementById('propertyPanel');if(!panel)return;panel.classList.toggle('open',!!g);panel.setAttribute('aria-hidden',String(!g));if(!g)return;
+function select(g,openProperties=false){
+ if(selected)selected.classList.remove('selected');
+ selected=g;
+ if(g)g.classList.add('selected');
+ const panel=document.getElementById('propertyPanel');
+ if(!panel)return;
+ const shouldOpen=!!(g&&openProperties);
+ panel.classList.toggle('open',shouldOpen);
+ panel.setAttribute('aria-hidden',String(!shouldOpen));
+ if(!shouldOpen)return;
  const put=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v??''};
- const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propComment',g.dataset.comment||'');
+ const title=document.getElementById('propertyTitle');if(title)title.textContent=g.dataset.name||'Component';
+ put('propType',g.dataset.name||'IEC component');put('propTag',g.dataset.ref||'');put('propLabel',g.dataset.label||g.dataset.name||'');put('propComment',g.dataset.comment||'');
  const note=g.querySelector('.drop-comment');if(note){note.textContent=g.dataset.comment||'';note.style.display=g.dataset.comment?'':'none';}
 }
 function enableMove(g){
@@ -389,7 +398,7 @@ svg.addEventListener('pointercancel', finishComponentDrag);
 // Final UI properties inspector: show only while a workspace component is selected.
 (function initPropertyPanel(){
  const $=id=>document.getElementById(id);const panel=$('propertyPanel');if(!panel)return;
- $('propertyClose')?.addEventListener('click',()=>select(null));
+ $('propertyClose')?.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true');});
  $('propertyDelete')?.addEventListener('click',()=>{if(selected){selected.remove();select(null);state.textContent='COMPONENT DELETED';}});
  const setData=(id,key)=>$(id)?.addEventListener('change',e=>{if(!selected)return;selected.dataset[key]=e.target.value;if(key==='ref')selected.dataset.label=e.target.value;if(key==='x'||key==='y'){const x=+(selected.dataset.x||0),y=+(selected.dataset.y||0);selected.setAttribute('transform',`translate(${x-36},${y-22})`);}if(key==='ref'||key==='label'){const tag=selected.querySelector('.drop-tag');if(tag)tag.textContent=e.target.value;}});
  setData('propTag','ref');setData('propLabel','label');

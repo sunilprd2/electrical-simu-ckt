@@ -1465,3 +1465,22 @@ body.theme-light .esc-color-setting{color:#1e293b;background:rgba(148,163,184,.0
 
 /* V56: selected-symbol colour uses a fresh setting key; axes stay neutral grey, independent of the border colour. */
 #escSelectedComponentAxes line{stroke:#8793a3!important;stroke-opacity:.42!important;stroke-width:2.4!important;vector-effect:non-scaling-stroke!important;}
+
+/* V57: clean selection UX — no axes, no selection frame/fill; only the actual SVG artwork changes colour. */
+#escSelectedComponentAxes{display:none!important;visibility:hidden!important;opacity:0!important;}
+#dropLayer .dropped-symbol .select-box,
+#dropLayer .dropped-symbol:hover .select-box,
+#dropLayer .dropped-symbol.selected .select-box{
+  display:none!important;fill:transparent!important;fill-opacity:0!important;
+  stroke:transparent!important;stroke-opacity:0!important;stroke-width:0!important;
+}
+#dropLayer .dropped-symbol .component-hit-area,
+#dropLayer .dropped-symbol:hover .component-hit-area,
+#dropLayer .dropped-symbol.selected .component-hit-area{
+  fill:transparent!important;fill-opacity:0!important;stroke:transparent!important;
+  stroke-opacity:0!important;stroke-width:0!important;
+}
+#dropLayer .dropped-symbol.selected{filter:none!important;background:transparent!important;}
+#dropLayer .dropped-symbol.selected .drop-tag{fill:var(--component-accent,#50f0a1)!important;filter:none!important;}
+#dropLayer .dropped-symbol.selected .drop-label{fill:var(--component-accent,#dce3e5)!important;filter:none!important;}
+#dropLayer .dropped-symbol.selected .drop-comment{filter:none!important;}

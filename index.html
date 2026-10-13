@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=56-blue-symbol-axis-fix">
+<link rel="stylesheet" href="styles.css?v=57-clean-selection-doubleclick">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -150,7 +150,7 @@
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=56-blue-symbol-axis-fix"></script>
+<script src="app.js?v=57-clean-selection-doubleclick"></script>
 <script>
 /* Component library fallback: Sources and Coils SVG symbols, expandable category rows. */
 (function(){
@@ -642,7 +642,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
   const NS='http://www.w3.org/2000/svg';
   const get=(id)=>document.getElementById(id);
   const componentPicker=get('escComponentColor'), borderPicker=get('escBorderColor');
-  const componentKey='esc-selected-component-color-v56', borderKey='esc-selection-border-color-v56';
+  const componentKey='esc-selected-component-color-v57', borderKey='esc-selection-border-color-v57';
   let componentColor=localStorage.getItem(componentKey)||'#2584ff';
   let borderColor=localStorage.getItem(borderKey)||'#168dff';
   if(componentPicker) componentPicker.value=componentColor;
