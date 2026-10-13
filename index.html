@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=62-switches-fallback-fix">
+<link rel="stylesheet" href="styles.css?v=63-library-hidden-default">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -15,11 +15,11 @@
   #dropLayer .dropped-symbol.moving { cursor: grabbing; }
 </style>
 </head>
-<body>
+<body class="library-hidden">
 <header class="top">
   <div class="brand"><img class="brand-logo" src="esc-logo.png" alt="Electrical Simu CKT logo"><span class="brand-name">ELECTRICAL <b>SIMU CKT</b><small>Electrical Circuit Simulation</small></span></div>
   <nav class="cad-ribbon" aria-label="Main tools">
-    <button id="libraryToggle" class="tool-btn tool-cyan library-toggle" type="button" title="Show or hide component library" aria-label="Show or hide component library" aria-pressed="true"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h8"/></svg></span><em>Library</em></button>
+    <button id="libraryToggle" class="tool-btn tool-cyan library-toggle" type="button" title="Show component library" aria-label="Show component library" aria-pressed="false"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h8"/></svg></span><em>Library</em></button>
     <button id="newBtn" class="tool-btn tool-blue" type="button" title="New drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg></span><em>New</em></button>
     <button id="openBtn" class="tool-btn tool-purple" type="button" title="Open drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="M3 10h18"/></svg></span><em>Open</em></button>
     <button id="saveBtn" class="tool-btn tool-teal" type="button" title="Save drawing"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h14l3 3v15H3V3z"/><path d="M7 3v6h10V3M7 21v-8h10v8"/></svg></span><em>Save</em></button>
@@ -150,7 +150,7 @@
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=62-switches-fallback-fix"></script>
+<script src="app.js?v=63-library-hidden-default"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){

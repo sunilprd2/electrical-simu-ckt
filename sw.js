@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v62-switches-fallback-fix';
+const CACHE='electrical-simu-ckt-v63-library-hidden-default';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=62-switches-fallback-fix',
-  './app.js?v=62-switches-fallback-fix',
+  './styles.css?v=63-library-hidden-default',
+  './app.js?v=63-library-hidden-default',
   './manifest.webmanifest'
 ];
 self.addEventListener('install', event => {

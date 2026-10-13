@@ -985,6 +985,8 @@ function refreshWiresForComponent(moved){
   }
   if(button&&!button.dataset.libraryBound){button.dataset.libraryBound='true';button.addEventListener('click',()=>setHidden(!body.classList.contains('library-hidden')));}
   if(arrow&&!arrow.dataset.libraryBound){arrow.dataset.libraryBound='true';arrow.addEventListener('click',()=>setHidden(true));}
+  // Sync the ribbon button's accessible/visual state with the initial collapsed layout.
+  setHidden(body.classList.contains('library-hidden'));
 })();
 
 
