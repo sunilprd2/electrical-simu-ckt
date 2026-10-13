@@ -1,0 +1,1 @@
+V80 brand-only header lockup: uses the user-supplied blue circuit icon with Electrical Simu in white and CKT in cyan. Removed the slogan from the compact header logo so the brand remains legible. Engineering-sheet logo and PWA icons use the supplied icon artwork. Cache-busted header assets.

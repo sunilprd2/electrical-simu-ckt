@@ -1614,3 +1614,153 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   stroke-width: 0 !important;
   pointer-events: none !important;
 }
+
+
+/* V77: Approved Electrical Simu CKT banner. Original esc-logo.png remains unchanged. */
+.top .brand {
+  flex: 0 0 218px !important; width: 218px !important;
+  min-width: 218px !important; max-width: 218px !important;
+  height: 58px !important; padding: 0 !important; margin: 0 !important;
+  display: flex !important; align-items: center !important;
+  justify-content: center !important; gap: 0 !important; overflow: hidden !important;
+  border-right: 1px solid #294b76 !important;
+}
+.top .brand .brand-logo {
+  display: block !important; flex: 0 0 100% !important;
+  width: 100% !important; max-width: 100% !important;
+  height: 100% !important; max-height: 100% !important;
+  object-fit: cover !important; object-position: center center !important;
+}
+.top .brand .brand-name { display: none !important; }
+@media (max-width: 900px) {
+  .top .brand { flex-basis: 180px !important; width: 180px !important; min-width: 180px !important; max-width: 180px !important; }
+}
+@media (max-width: 620px) {
+  .top .brand { flex-basis: 142px !important; width: 142px !important; min-width: 142px !important; max-width: 142px !important; }
+}
+
+
+/* V81: Display the supplied full brand banner without cropping its logo or slogan. */
+.top {
+  height: 72px !important;
+  padding-left: 6px !important;
+}
+.top .brand {
+  flex: 0 0 204px !important;
+  width: 204px !important;
+  min-width: 204px !important;
+  max-width: 204px !important;
+  height: 68px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  border-right: 1px solid #294b76 !important;
+}
+.top .brand .brand-logo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+.layout { height: calc(100vh - 72px) !important; }
+@media (max-width: 900px) {
+  .top .brand {
+    flex-basis: 180px !important;
+    width: 180px !important;
+    min-width: 180px !important;
+    max-width: 180px !important;
+  }
+}
+@media (max-width: 620px) {
+  .top .brand {
+    flex-basis: 142px !important;
+    width: 142px !important;
+    min-width: 142px !important;
+    max-width: 142px !important;
+  }
+}
+
+
+/* V82: Compact left-side brand lockup like the approved toolbar reference.
+   Keep the complete supplied banner artwork visible, including its slogan. */
+.top {
+  height: 70px !important;
+  min-height: 70px !important;
+  padding: 0 6px !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+.top .brand {
+  flex: 0 0 205px !important;
+  width: 205px !important;
+  min-width: 205px !important;
+  max-width: 205px !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  margin: 0 7px 0 0 !important;
+  padding: 2px 5px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  border-right: 1px solid #24496b !important;
+  background: transparent !important;
+}
+.top .brand .brand-logo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+.layout { height: calc(100vh - 70px) !important; }
+@media (max-width: 1100px) {
+  .top .brand { flex-basis: 180px !important; width: 180px !important; min-width: 180px !important; max-width: 180px !important; }
+}
+@media (max-width: 760px) {
+  .top { height: 64px !important; min-height: 64px !important; }
+  .top .brand { flex-basis: 145px !important; width: 145px !important; min-width: 145px !important; max-width: 145px !important; height: 58px !important; min-height: 58px !important; }
+  .layout { height: calc(100vh - 64px) !important; }
+}
+
+
+/* V83: Use the user's exact circuit icon with readable brand name and slogan inside the compact left header box. */
+.top .brand {
+  box-sizing: border-box !important; flex: 0 0 232px !important; width:232px !important; min-width:232px !important; max-width:232px !important;
+  height: 82px !important; min-height:82px !important; max-height:82px !important; padding:5px 7px !important; margin:0 7px 0 0 !important;
+  display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:flex-start !important; gap:7px !important;
+  overflow:hidden !important; border:1px solid #164c70 !important; border-right:1px solid #245575 !important; background:transparent !important;
+}
+.top .brand .brand-logo { flex:0 0 44px !important; width:44px !important; height:44px !important; max-width:44px !important; max-height:44px !important; object-fit:contain !important; object-position:center !important; }
+.top .brand-copy { min-width:0 !important; flex:1 1 auto !important; display:flex !important; flex-direction:column !important; justify-content:center !important; gap:4px !important; overflow:hidden !important; }
+.top .brand-title { color:#f5f9ff !important; font-size:15px !important; line-height:1.05 !important; font-weight:800 !important; letter-spacing:-.55px !important; white-space:nowrap !important; }
+.top .brand-title span { color:#00d9f5 !important; }
+.top .brand-slogan { color:#c4d6e7 !important; font-size:7.4px !important; line-height:1.2 !important; letter-spacing:.35px !important; white-space:nowrap !important; }
+@media(max-width:1100px) { .top .brand { flex-basis:232px !important; width:232px !important; min-width:232px !important; max-width:232px !important; } }
+@media(max-width:760px) { .top .brand { flex-basis:190px !important; width:190px !important; min-width:190px !important; max-width:190px !important; height:58px !important; min-height:58px !important; max-height:58px !important; gap:5px !important; padding:3px 5px !important; } .top .brand .brand-logo { flex-basis:36px !important; width:36px !important; height:36px !important; max-width:36px !important; max-height:36px !important; } .top .brand-title { font-size:12px !important; } .top .brand-slogan { font-size:6.2px !important; letter-spacing:.15px !important; } }
+
+
+/* V84: clean compact brand lockup, transparent icon corners, cyan title underline, no frame. */
+.top .brand {
+  box-sizing:border-box!important; flex:0 0 232px!important; width:232px!important; min-width:232px!important; max-width:232px!important;
+  height:82px!important; min-height:82px!important; max-height:82px!important; padding:5px 7px!important; margin:0 7px 0 0!important;
+  display:flex!important; flex-direction:row!important; align-items:center!important; justify-content:flex-start!important; gap:7px!important;
+  overflow:hidden!important; border:0!important; border-right:0!important; border-radius:0!important; background:transparent!important; box-shadow:none!important;
+}
+.top .brand .brand-logo { flex:0 0 44px!important; width:44px!important; height:44px!important; max-width:44px!important; max-height:44px!important; object-fit:contain!important; object-position:center!important; background:transparent!important; border:0!important; box-shadow:none!important; }
+.top .brand-copy { min-width:0!important; flex:1 1 auto!important; display:flex!important; flex-direction:column!important; justify-content:center!important; gap:4px!important; overflow:hidden!important; }
+.top .brand-title { color:#f5f9ff!important; font-size:15px!important; line-height:1.05!important; font-weight:800!important; letter-spacing:-.55px!important; white-space:nowrap!important; padding-bottom:4px!important; border-bottom:2px solid #00d9f5!important; }
+.top .brand-title span { color:#00d9f5!important; }
+.top .brand-slogan { color:#c4d6e7!important; font-size:7.4px!important; line-height:1.2!important; letter-spacing:.35px!important; white-space:nowrap!important; margin-top:0!important; }
+@media(max-width:760px) { .top .brand { flex-basis:190px!important; width:190px!important; min-width:190px!important; max-width:190px!important; height:58px!important; min-height:58px!important; max-height:58px!important; gap:5px!important; padding:3px 5px!important; } .top .brand .brand-logo { flex-basis:36px!important; width:36px!important; height:36px!important; max-width:36px!important; max-height:36px!important; } .top .brand-title { font-size:12px!important; } .top .brand-slogan { font-size:6.2px!important; letter-spacing:.15px!important; } }

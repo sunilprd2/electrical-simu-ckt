@@ -1,0 +1,1 @@
+V79: Replaced website header logo, engineering-sheet logo, and PWA icons with the exact user-supplied blue circuit icon. No logo artwork redesign performed.

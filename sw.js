@@ -1,10 +1,11 @@
-const CACHE='electrical-simu-ckt-v74-remove-all-rectangles';
+const CACHE='electrical-simu-ckt-v84-clean-brand';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=74-remove-all-rectangles',
-  './app.js?v=74-remove-all-rectangles',
-  './manifest.webmanifest'
+  './styles.css?v=84-clean-brand',
+  './app.js?v=84-clean-brand',
+  './manifest.webmanifest',
+  './assets/esc-user-logo.png?v=84-clean-brand'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(

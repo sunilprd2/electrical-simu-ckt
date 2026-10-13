@@ -1,0 +1,4 @@
+V81 full brand banner
+- Uses the user's supplied Electrical Simu CKT banner image without altering its artwork.
+- Header image uses object-fit: contain so the full logo, brand name, and slogan remain visible.
+- Bumped CSS and service-worker cache version.
