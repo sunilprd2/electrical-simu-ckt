@@ -1,9 +1,0 @@
-Electrical Simu CKT v57 changes
-
-- Removed selected-component axis crosshairs.
-- Removed selection border and translucent selection fill; only the actual SVG symbol changes to the selected colour.
-- Property panel now opens on double-click of a placed component, not a single click.
-- Clicking blank workspace deselects the component and restores its normal colour.
-- Property panel Close hides the panel without deleting the component.
-- Property Save updates Tag, Label, Comment and saves the drawing to browser storage.
-- Updated script/style cache versions and service-worker cache name.
