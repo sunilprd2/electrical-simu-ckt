@@ -1803,3 +1803,15 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 .layout > .library .component-category .category-chevron { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 16px!important; width:16px!important; min-width:16px!important; margin-left:auto!important; padding:0!important; position:static!important; text-align:center!important; font-size:22px!important; line-height:1!important; color:rgba(225,240,255,.85)!important; }
 .layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg)!important; color:var(--category-accent)!important; }
 .layout > .library .component-category .category-arrow { margin-left:auto!important; flex:0 0 16px!important; width:16px!important; text-align:center!important; }
+
+
+/* V96 root-cause fix: category renderer and CSS now share one markup contract. */
+.layout > .library .component-category-list { display:flex!important; flex-direction:column!important; gap:5px!important; }
+.layout > .library .component-category { display:flex!important; align-items:center!important; gap:10px!important; position:relative!important; padding-right:10px!important; }
+.layout > .library .component-category .category-icon { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 26px!important; width:26px!important; height:28px!important; margin:0!important; color:#f4fbff!important; }
+.layout > .library .component-category .category-icon svg { display:block!important; width:30px!important; height:28px!important; overflow:visible!important; }
+.layout > .library .component-category .category-mark { display:inline-block!important; flex:0 0 4px!important; width:4px!important; }
+.layout > .library .component-category .category-name { flex:0 1 auto!important; min-width:0!important; margin:0!important; white-space:nowrap!important; }
+.layout > .library .component-category .category-count { display:inline-block!important; flex:0 0 auto!important; margin:0 0 0 7px!important; white-space:nowrap!important; color:#9bb8d8!important; font-size:11px!important; font-weight:700!important; line-height:1!important; }
+.layout > .library .component-category .category-chevron { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 16px!important; width:16px!important; min-width:16px!important; margin-left:auto!important; padding:0!important; position:static!important; font-size:22px!important; line-height:1!important; color:#eaf4ff!important; }
+.layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg)!important; color:var(--category-accent)!important; }

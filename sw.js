@@ -1,10 +1,10 @@
-const CACHE='electrical-simu-ckt-v92-category-count-chevron';
+const CACHE='electrical-simu-ckt-v97-library-render-guard';
 const ASSETS=[
   './',
   './index.html',
   './components/Proximity Sensor/Inductive_Proximity_Sensor.svg',
-  './styles.css?v=v92-category-count-chevron',
-  './app.js?v=v92-category-count-chevron',
+  './styles.css?v=v97-library-render-guard',
+  './app.js?v=v97-library-render-guard',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',

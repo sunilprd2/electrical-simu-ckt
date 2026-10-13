@@ -824,13 +824,25 @@ renderLibrary();
  }
  function renderAssets(items){
   const libraryCategories = [
-   {name:'Power', color:'#00dba5'},
+   {name:'Sources', color:'#00dba5'},
    {name:'Others', color:'#64748b'}, {name:'Coils', color:'#8b5cf6'},
    {name:'Auxiliaries', color:'#d4a017'}, {name:'Switches', color:'#06b6d4'},
    {name:'Loads', color:'#f59e0b'}, {name:'Contactors', color:'#10b981'},
    {name:'Protections', color:'#ef4444'}, {name:'Motors', color:'#2563eb'},
    {name:'Proximity Sensor', color:'#f97316'}
   ];
+  const categoryIcons = {
+   'Sources':'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',
+   'Others':'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+   'Coils':'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',
+   'Auxiliaries':'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',
+   'Switches':'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',
+   'Loads':'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',
+   'Contactors':'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',
+   'Protections':'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',
+   'Motors':'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>',
+   'Proximity Sensor':'<rect x="3" y="7" width="9" height="18" rx="1"/><path d="M16 10 Q23 16 16 22 M20 7 Q29 16 20 25 M24 4 Q34 16 24 28"/>'
+  };
   const normalized = (items || []).map((it, i) => {
    const file = String(it.file || '').replace(/^\.\//,'');
    const name = it.name || it.original_filename || file.split('/').pop().replace(/\.svg$/i,'');
@@ -840,14 +852,14 @@ renderLibrary();
    // must stay in Switches when the manifest says Switches; do not reclassify them.
    const declared = String(it.category || '').trim().toLowerCase();
    const explicitCategory = {
-    'power':'Power','source':'Power','sources':'Power',
+    'power':'Sources','source':'Sources','sources':'Sources',
     'others':'Others','coils':'Coils','auxiliaries':'Auxiliaries',
     'switches':'Switches','loads':'Loads','contactors':'Contactors',
     'protections':'Protections','motors':'Motors','proximity sensor':'Proximity Sensor'
    }[declared];
    if (explicitCategory) category = explicitCategory;
    else if (/coil|timer|tof|ton/.test(name.toLowerCase()) || /(?:^|\/)esc-(?:contactor|ton|tof).*coil\.svg$/i.test(file)) category = 'Coils';
-   else if (/power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Power';
+   else if (/power|source|supply|terminal|earth|ground|battery|acdc|three.phase|dc.positive|dc.negative/.test(raw)) category = 'Sources';
    else if (/auxiliar|auxiliary|aux contact/.test(raw)) category = 'Auxiliaries';
    else if (/switch|push.button|selector|isolator/.test(raw)) category = 'Switches';
    else if (/motor/.test(raw)) category = 'Motors';
@@ -863,7 +875,7 @@ renderLibrary();
    const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory===null?'SELECT A CATEGORY':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
     (filtered.length ? '<div class="component-results">'+filtered.map(it=>`<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span></button>`).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
    host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
-    libraryCategories.map(c=>{const expanded=activeCategory===c.name;const count=normalized.filter(it=>it.category===c.name).length;return `<button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-mark" aria-hidden="true"></span><span class="category-name">${c.name}</span><span class="category-count">(${count})</span><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}`}).join('') + '</div>';
+    libraryCategories.map(c=>{const expanded=activeCategory===c.name;const count=normalized.filter(it=>it.category===c.name).length;return `<button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-icon ${c.name==='Proximity Sensor'?'proximity-category-icon':''}" aria-hidden="true"><svg viewBox="0 0 36 32" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${categoryIcons[c.name]||''}</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">${c.name}</span><span class="category-count">(${count})</span><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}`}).join('') + '</div>';
    host.querySelectorAll('.component-category').forEach(btn=>btn.addEventListener('click',()=>{
     // Clicking the already-open category collapses its cards; clicking another category opens that section.
     activeCategory = activeCategory === btn.dataset.category ? null : btn.dataset.category;

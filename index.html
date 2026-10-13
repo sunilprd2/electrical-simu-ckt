@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v91-proximity-tab">
+<link rel="stylesheet" href="styles.css?v=v97-library-render-guard">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -155,13 +155,18 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v92-category-count-chevron"></script>
+<script src="app.js?v=v97-library-render-guard"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
   const host=document.getElementById('libraryGroups');
   if(!host) return;
-  if(host.querySelector('.component-results')) return;
+  // Only trust app.js markup when it contains the required count and separate chevron.
+  // The old static placeholder also used .component-category-list but had neither, so it
+  // prevented this fallback from rendering when app.js failed before library initialization.
+  const renderedLibrary = host.querySelector('.component-category-list');
+  if(renderedLibrary && renderedLibrary.querySelector('.category-count') && renderedLibrary.querySelector('.category-chevron')) return;
+  host.innerHTML = '';
   const symbols=[
     ['01_DC_Negative.svg','DC Negative'],['02_DC_Positive.svg','DC Positive'],
     ['03_Earth_Ground.svg','Earth Ground'],['04_N_Terminal.svg','N Terminal'],
@@ -179,14 +184,14 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
     {file:'components/Proximity Sensor/Inductive_Proximity_Sensor.svg',name:'Inductive Proximity Sensor',category:'Proximity Sensor',type:'Proximity Sensor'}
   ]);
   const cats=[['Sources','#12d6a0','source'],['Others','#08b7f4','others'],['Coils','#a78bfa','coil'],['Auxiliaries','#c084fc','aux'],['Switches','#facc15','switch'],['Loads','#22d3ee','load'],['Contactors','#fb923c','contactor'],['Protections','#34d399','protection'],['Motors','#fb7185','motor'],['Proximity Sensor','#a78bfa','proximity']];
-  const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>',proximity:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/>'};
+  const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>',proximity:'<rect x="3" y="7" width="9" height="18" rx="1"/><path d="M16 10 Q23 16 16 22 M20 7 Q29 16 20 25 M24 4 Q34 16 24 28"/>'};
   let expanded=null; // Start with every library category collapsed; users expand a category manually.
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function paint(){
     const q=(document.getElementById('search')?.value||'').trim().toLowerCase();
     const filtered=expanded ? symbols.filter(s=>s.category===expanded&&(!q||(s.name+' '+s.category).toLowerCase().includes(q))) : [];
     const resultMarkup=expanded?('<div class="component-results-head"><b>'+expanded.toUpperCase()+'</b><span>'+filtered.length+' symbols</span></div>'+(filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>')):'';
-    host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color,key])=>'<div class="library-category-wrap"><button type="button" class="component-category '+(expanded===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-expanded="'+(expanded===name)+'" aria-pressed="'+(expanded===name)+'"><span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+icons[key]+'</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">'+name+'</span><small>'+symbols.filter(s=>s.category===name).length+'</small><span class="category-arrow" aria-hidden="true">'+(expanded===name?'⌄':'›')+'</span></button>'+(expanded===name?resultMarkup:'')+'</div>').join('')+'</div>';
+    host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color,key])=>'<div class="library-category-wrap"><button type="button" class="component-category '+(expanded===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-expanded="'+(expanded===name)+'" aria-pressed="'+(expanded===name)+'"><span class="category-icon" aria-hidden="true"><svg viewBox="0 0 36 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+icons[key]+'</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">'+name+'</span><span class="category-count">('+symbols.filter(s=>s.category===name).length+')</span><span class="category-chevron '+(expanded===name?'expanded':'')+'" aria-hidden="true">›</span></button>'+(expanded===name?resultMarkup:'')+'</div>').join('')+'</div>';
     host.querySelectorAll('.component-category').forEach(b=>b.addEventListener('click',()=>{expanded=expanded===b.dataset.category?null:b.dataset.category;paint()}));
     host.querySelectorAll('.symbol-btn').forEach(b=>{
       b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file}));document.getElementById('dropOverlay')?.classList.add('show');const st=document.getElementById('state');if(st)st.textContent='DRAGGING • '+b.dataset.name.toUpperCase()});

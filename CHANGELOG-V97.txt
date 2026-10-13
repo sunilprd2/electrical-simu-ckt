@@ -1,0 +1,8 @@
+Electrical Simu CKT — V97
+
+Root-cause fix for blank/unstyled category rows:
+- The static initial library placeholder incorrectly contained .component-category-list.
+- The fallback script treated that placeholder as fully initialized and returned early, leaving category icons, counts, and chevrons absent if app.js failed before its library renderer ran.
+- The fallback now checks for both .category-count and .category-chevron before accepting existing markup. Otherwise it renders the complete category rows itself.
+- Updated asset query strings and service-worker cache name to V97.
+- Preserves the Proximity Sensor category and SVG entry.
