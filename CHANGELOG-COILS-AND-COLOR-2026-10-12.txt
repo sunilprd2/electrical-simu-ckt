@@ -1,7 +1,0 @@
-Electrical Simu CKT — Colorful Library and Coil Visibility Fix
-
-- Preserved 11 source/power SVGs and the 4 coil SVGs in the embedded runtime manifest.
-- Kept all four coil SVG assets in the package and under the Coils category.
-- Applied distinct accent colors to each component category.
-- Fixed service-worker cache handling: use the current cache only, remove old electrical-simu-ckt caches, and use version v46-colorful-coils.
-- This avoids an old cached app.js overriding the updated runtime library.
