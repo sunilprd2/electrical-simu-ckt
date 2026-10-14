@@ -1765,53 +1765,20 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 .top .brand-slogan { color:#c4d6e7!important; font-size:7.4px!important; line-height:1.2!important; letter-spacing:.35px!important; white-space:nowrap!important; margin-top:0!important; }
 @media(max-width:760px) { .top .brand { flex-basis:190px!important; width:190px!important; min-width:190px!important; max-width:190px!important; height:58px!important; min-height:58px!important; max-height:58px!important; gap:5px!important; padding:3px 5px!important; } .top .brand .brand-logo { flex-basis:36px!important; width:36px!important; height:36px!important; max-width:36px!important; max-height:36px!important; } .top .brand-title { font-size:12px!important; } .top .brand-slogan { font-size:6.2px!important; letter-spacing:.15px!important; } }
 
-/* v89: count belongs immediately after category name; arrow stays at far right */
-.layout > .library .component-category .category-name{
-  flex:1 1 auto!important;min-width:0!important;white-space:nowrap!important;
+
+/* ESC V111: restore a dotted outline ONLY for the selected component.
+   V74 hides the selection frame globally; this later, narrowly scoped rule
+   re-enables the existing artwork-tight select-box without changing hit areas. */
+#dropLayer .dropped-symbol.selected > .select-box {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: var(--esc-selection-border, #f59e0b) !important;
+  stroke-opacity: 1 !important;
+  stroke-width: 1.8 !important;
+  stroke-dasharray: 4 3 !important;
+  pointer-events: none !important;
+  vector-effect: non-scaling-stroke !important;
 }
-.layout > .library .component-category .category-chevron{
-  flex:0 0 15px!important;width:15px!important;margin-left:8px!important;
-  text-align:center!important;font-size:20px!important;line-height:1!important;
-}
-
-/* v90 verified layout: count is part of the category name, arrow is a separate rightmost control */
-.layout > .library .component-category .category-name {
-  display:block!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  margin:0!important;
-  white-space:nowrap!important;
-  text-align:left!important;
-}
-.layout > .library .component-category .category-chevron {
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  flex:0 0 14px!important;
-  width:14px!important;
-  min-width:14px!important;
-  margin-left:6px!important;
-  padding:0!important;
-  position:static!important;
-}
-
-
-/* V92: category name, parenthesized count, and expand arrow are separate elements. */
-.layout > .library .component-category { display:flex!important; align-items:center!important; }
-.layout > .library .component-category .category-name { flex:0 0 auto!important; min-width:0!important; margin:0!important; white-space:nowrap!important; }
-.layout > .library .component-category .category-count { flex:0 0 auto!important; display:inline-block!important; margin-left:4px!important; white-space:nowrap!important; color:#9bb8d8!important; font-size:11px!important; font-weight:700!important; line-height:1!important; }
-.layout > .library .component-category .category-chevron { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 16px!important; width:16px!important; min-width:16px!important; margin-left:auto!important; padding:0!important; position:static!important; text-align:center!important; font-size:22px!important; line-height:1!important; color:rgba(225,240,255,.85)!important; }
-.layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg)!important; color:var(--category-accent)!important; }
-.layout > .library .component-category .category-arrow { margin-left:auto!important; flex:0 0 16px!important; width:16px!important; text-align:center!important; }
-
-
-/* V96 root-cause fix: category renderer and CSS now share one markup contract. */
-.layout > .library .component-category-list { display:flex!important; flex-direction:column!important; gap:5px!important; }
-.layout > .library .component-category { display:flex!important; align-items:center!important; gap:10px!important; position:relative!important; padding-right:10px!important; }
-.layout > .library .component-category .category-icon { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 26px!important; width:26px!important; height:28px!important; margin:0!important; color:#f4fbff!important; }
-.layout > .library .component-category .category-icon svg { display:block!important; width:30px!important; height:28px!important; overflow:visible!important; }
-.layout > .library .component-category .category-mark { display:inline-block!important; flex:0 0 4px!important; width:4px!important; }
-.layout > .library .component-category .category-name { flex:0 1 auto!important; min-width:0!important; margin:0!important; white-space:nowrap!important; }
-.layout > .library .component-category .category-count { display:inline-block!important; flex:0 0 auto!important; margin:0 0 0 7px!important; white-space:nowrap!important; color:#9bb8d8!important; font-size:11px!important; font-weight:700!important; line-height:1!important; }
-.layout > .library .component-category .category-chevron { display:inline-flex!important; align-items:center!important; justify-content:center!important; flex:0 0 16px!important; width:16px!important; min-width:16px!important; margin-left:auto!important; padding:0!important; position:static!important; font-size:22px!important; line-height:1!important; color:#eaf4ff!important; }
-.layout > .library .component-category .category-chevron.expanded { transform:rotate(90deg)!important; color:var(--category-accent)!important; }
