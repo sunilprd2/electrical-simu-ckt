@@ -165,31 +165,53 @@ function makeDropped(d,x,y){
 }
 function updateSelectionOutline(g){
  if(!g) return;
+ const NS='http://www.w3.org/2000/svg';
  let outline=g.querySelector(':scope > .component-selection-outline');
  if(!outline){
-  outline=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  outline=document.createElementNS(NS,'rect');
   outline.setAttribute('class','component-selection-outline');
   outline.setAttribute('pointer-events','none');
   g.insertBefore(outline,g.firstChild);
  }
- // Tight bounds around actual symbol geometry and terminal squares, excluding the
- // generic hit box and the component reference tag. Keep the outline behind artwork.
+ // Calculate the visible artwork bounds in the parent component's coordinate system.
+ // Ignore the transparent hit area, generic selection box, and reference tag.
  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
- const add=(x,y,w,h)=>{if([x,y,w,h].every(Number.isFinite)){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x+w);maxY=Math.max(maxY,y+h);}};
- const inner=g.querySelector(':scope > svg:not(.component-selection-outline)');
+ const add=(x,y,w,h)=>{
+  if([x,y,w,h].every(Number.isFinite)){
+   minX=Math.min(minX,x); minY=Math.min(minY,y);
+   maxX=Math.max(maxX,x+w); maxY=Math.max(maxY,y+h);
+  }
+ };
+ const inner=g.querySelector(':scope > svg');
  if(inner){
-  for(const el of inner.querySelectorAll('path,line,circle,rect,polyline,polygon,text,ellipse')){
-   if(el.classList?.contains('mag-port')||el.classList?.contains('select-box'))continue;
-   try{const b=el.getBBox(); const x=+(el.getAttribute('x')||0),y=+(el.getAttribute('y')||0); add(b.x+12,b.y+4,b.width,b.height);}catch(_){}
+  const ix=Number(inner.getAttribute('x')||0);
+  const iy=Number(inner.getAttribute('y')||0);
+  const iw=Number(inner.getAttribute('width')||48);
+  const ih=Number(inner.getAttribute('height')||32);
+  const vb=(inner.getAttribute('viewBox')||'0 0 48 32').trim().split(/[ ,]+/).map(Number);
+  const sx=vb.length===4&&vb[2] ? iw/vb[2] : 1;
+  const sy=vb.length===4&&vb[3] ? ih/vb[3] : 1;
+  for(const el of inner.querySelectorAll('path,line,circle,rect,polyline,polygon,text,ellipse,image')){
+   try{
+    const b=el.getBBox();
+    add(ix+(b.x-(vb[0]||0))*sx,iy+(b.y-(vb[1]||0))*sy,b.width*sx,b.height*sy);
+   }catch(_){}
   }
  }
- for(const port of g.querySelectorAll(':scope > .mag-port')){
-  try{const b=port.getBBox();add(b.x,b.y,b.width,b.height);}catch(_){}
+ // Terminals are inside .component-ports in the current component layout.
+ for(const port of g.querySelectorAll('.mag-port')){
+  try{
+   const b=port.getBBox();
+   // Terminal geometry is positioned in the component group's coordinate system.
+   add(b.x,b.y,b.width,b.height);
+  }catch(_){}
  }
- if(!Number.isFinite(minX)){minX=12;minY=4;maxX=60;maxY=36;}
+ if(!Number.isFinite(minX)){minX=15;minY=20;maxX=165;maxY=120;}
  const pad=2.5;
- outline.setAttribute('x',minX-pad);outline.setAttribute('y',minY-pad);
- outline.setAttribute('width',Math.max(1,maxX-minX+pad*2));outline.setAttribute('height',Math.max(1,maxY-minY+pad*2));
+ outline.setAttribute('x',minX-pad);
+ outline.setAttribute('y',minY-pad);
+ outline.setAttribute('width',Math.max(1,maxX-minX+pad*2));
+ outline.setAttribute('height',Math.max(1,maxY-minY+pad*2));
 }
 function select(g,openProperties=false){
  if(selected)selected.classList.remove('selected');
