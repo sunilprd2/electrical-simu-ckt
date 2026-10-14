@@ -836,12 +836,21 @@ renderLibrary();
   if(/pilot|bell|horn/.test(n))return 'Indicators & Signalling';
   return 'Other';
  }
+ let lastLibraryDragEnd = 0;
  function attachCardEvents(){
   host.querySelectorAll('.cat-head').forEach(head=>head.addEventListener('click',()=>{const cat=head.parentElement;cat.classList.toggle('open');head.querySelector('i').textContent=cat.classList.contains('open')?'⌃':'⌄'}));
   host.querySelectorAll('.symbol-btn').forEach(b=>{
    b.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('application/json',JSON.stringify({type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file}));document.getElementById('dropOverlay').classList.add('show');state.textContent='DRAGGING • '+b.dataset.name.toUpperCase()});
-   b.addEventListener('dragend',()=>document.getElementById('dropOverlay').classList.remove('show'));
-   b.addEventListener('click',()=>{state.textContent='HOLD AND DRAG '+b.dataset.name.toUpperCase()+' INTO SCHEMATIC'});
+   b.addEventListener('dragend',()=>{lastLibraryDragEnd=Date.now();document.getElementById('dropOverlay').classList.remove('show');});
+   b.addEventListener('click',e=>{
+    if(Date.now()-lastLibraryDragEnd<500)return;
+    const r=svg.getBoundingClientRect();
+    const p=getPoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2});
+    const d={type:b.dataset.symbol,name:b.dataset.name,ref:b.dataset.ref,accent:b.dataset.accent,symbolFile:b.dataset.file};
+    makeDropped(d,Math.round(p.x),Math.round(p.y));
+    state.textContent='PLACED • '+d.name.toUpperCase();
+    e.preventDefault();
+   });
   });
  }
  function renderAssets(items){
