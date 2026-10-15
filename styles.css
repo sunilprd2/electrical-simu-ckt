@@ -1832,7 +1832,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 }
 #wireLayer .connected-wire {
   fill: none !important;
-  stroke: #e7edf0 !important;
+  stroke: #475569 !important;
   stroke-width: 2.2px !important;
   stroke-linejoin: round !important;
   stroke-linecap: round !important;
@@ -1858,4 +1858,16 @@ body.theme-light #wireLayer .connected-wire {
   stroke-linecap: round !important;
   pointer-events: none !important;
   vector-effect: non-scaling-stroke !important;
+}
+
+/* ESC V100: Uniform pole size across 1-phase, 2-pole, 3-phase, and 3-phase+N sources in Library cards */
+.layout > .library .component-results .symbol-btn {
+  padding: 5px 2px !important;
+}
+.layout > .library .component-results .symbol-btn img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  object-fit: contain !important;
 }

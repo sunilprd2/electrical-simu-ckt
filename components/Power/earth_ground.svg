@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg width="450" height="480" viewBox="0 0 450 480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="225" y1="22" x2="225" y2="373" id="svg_10"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="78" y1="376" x2="372" y2="376" id="svg_1"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="143" y1="408" x2="307" y2="408" id="svg_2"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="175" y1="437" x2="275" y2="437" id="svg_3"/>
+ </g>
+</svg>

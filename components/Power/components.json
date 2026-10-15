@@ -1,50 +1,41 @@
-
 {
   "category": "Power",
   "components": [
     {
-      "name": "DC Negative",
-      "file": "01_DC_Negative.svg"
-    },
-    {
-      "name": "DC Positive",
-      "file": "02_DC_Positive.svg"
-    },
-    {
       "name": "Earth Ground",
-      "file": "03_Earth_Ground.svg"
+      "file": "earth_ground.svg"
     },
     {
-      "name": "N Terminal",
-      "file": "04_N_Terminal.svg"
+      "name": "Earth PE",
+      "file": "earth_pe.svg"
     },
     {
-      "name": "L1 Terminal",
-      "file": "05_L1_Terminal.svg"
+      "name": "Source DC Negative",
+      "file": "source_dc_negative.svg"
     },
     {
-      "name": "L2 Terminal",
-      "file": "06_L2_Terminal.svg"
+      "name": "Source DC Positive",
+      "file": "source_dc_positive.svg"
     },
     {
-      "name": "L3 Terminal",
-      "file": "07_L3_Terminal.svg"
+      "name": "Source DC Supply Pair",
+      "file": "source_dc_supply_pair.svg"
     },
     {
-      "name": "PE Terminal",
-      "file": "08_PE_Terminal.svg"
+      "name": "Terminal L1 L2 L3",
+      "file": "terminal_l1_l2_l3.svg"
     },
     {
-      "name": "Three Phase L1 L2 L3",
-      "file": "09_Three_Phase_L1_L2_L3.svg"
+      "name": "Terminal L1 L2 L3 N",
+      "file": "terminal_l1_l2_l3_n.svg"
     },
     {
-      "name": "Three Phase Neutral",
-      "file": "10_Three_Phase_Neutral.svg"
+      "name": "Terminal Neutral N",
+      "file": "terminal_neutral_n.svg"
     },
     {
-      "name": "Three Phase Neutral PE",
-      "file": "11_Three_Phase_Neutral_PE.svg"
+      "name": "Terminal Phase L",
+      "file": "terminal_phase_l.svg"
     }
   ]
 }

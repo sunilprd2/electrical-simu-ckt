@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v98-terminal-wiring-fix">
+<link rel="stylesheet" href="styles.css?v=v99-sources-9-components">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -155,7 +155,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v98-terminal-wiring-fix"></script>
+<script src="app.js?v=v99-sources-9-components"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -168,13 +168,11 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   if(renderedLibrary && renderedLibrary.querySelector('.category-count') && renderedLibrary.querySelector('.category-chevron')) return;
   host.innerHTML = '';
   const symbols=[
-    ['01_DC_Negative.svg','DC Negative'],['02_DC_Positive.svg','DC Positive'],
-    ['03_Earth_Ground.svg','Earth Ground'],['04_N_Terminal.svg','N Terminal'],
-    ['05_L1_Terminal.svg','L1 Terminal'],['06_L2_Terminal.svg','L2 Terminal'],
-    ['07_L3_Terminal.svg','L3 Terminal'],['08_PE_Terminal.svg','PE Terminal'],
-    ['09_Three_Phase_L1_L2_L3.svg','Three Phase L1 L2 L3'],
-    ['10_Three_Phase_Neutral.svg','Three Phase Neutral'],
-    ['11_Three_Phase_Neutral_PE.svg','Three Phase Neutral PE']
+    ['earth_ground.svg','Earth Ground'],['earth_pe.svg','Earth PE'],
+    ['source_dc_negative.svg','Source DC Negative'],['source_dc_positive.svg','Source DC Positive'],
+    ['source_dc_supply_pair.svg','Source DC Supply Pair'],['terminal_l1_l2_l3.svg','Terminal L1 L2 L3'],
+    ['terminal_l1_l2_l3_n.svg','Terminal L1 L2 L3 N'],['terminal_neutral_n.svg','Terminal Neutral N'],
+    ['terminal_phase_l.svg','Terminal Phase L']
   ].map(([file,name])=>({file:'components/Power/'+file,name,category:'Sources',type:name})).concat([
     ['Contactor_Coil.svg','Contactor Coil'],['TON_Timer_Coil.svg','TON Timer Coil'],
     ['TOF_Timer_Coil.svg','TOF Timer Coil'],['TON_TOF_Timer_Coil.svg','TON/TOF Timer Coil']
@@ -750,10 +748,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
     if(!box) return;
     const fallback={w:78,h:82};
     const set=(ar)=>{
-      // The SVG artwork is rendered inside a 90 x 63 viewport centered at (60, 44.5).
-      let w,h;
-      if(ar>=90/63){w=90;h=90/ar;}
-      else {w=63*ar;h=63;}
+      // Height-locked scaling: every component has height 63 centered at (60, 44.5),
+      // and width scales proportionally with aspect ratio so multi-pole sources match 1-pole height.
+      let h=63, w=63*ar;
       if(!Number.isFinite(w)||!Number.isFinite(h)||w<18||h<18){w=52;h=56;}
       const pad=4;
       box.setAttribute('x',String(60-(w/2)-pad));
@@ -762,8 +759,20 @@ document.querySelectorAll(".top nav button").forEach(button => {
       box.setAttribute('height',String(h+pad*2));
       box.setAttribute('rx','1');
     };
-    const path=g.dataset.porttype||'';
+    const path=g.dataset.symbolFile||g.dataset.porttype||'';
     if(!/\.svg(?:$|\?)/i.test(path)){set(1);return;}
+    if(typeof window.getSvgCatalogEntry==='function'){
+      const catEntry=window.getSvgCatalogEntry(path);
+      if(catEntry&&catEntry.vb){
+        const vb=catEntry.vb;
+        const vw=vb.length===4?vb[2]:vb[0], vh=vb.length===4?vb[3]:vb[1];
+        if(vw>0&&vh>0){
+          set(vw/vh);
+          g.dataset.escBoxReady='1';
+          return;
+        }
+      }
+    }
     if(g.dataset.escBoxReady==='1')return;
     g.dataset.escBoxReady='1';
     fetch(path).then(r=>r.ok?r.text():Promise.reject()).then(text=>{

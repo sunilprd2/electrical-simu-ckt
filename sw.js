@@ -1,10 +1,10 @@
-const CACHE='electrical-simu-ckt-v98-terminal-wiring-fix';
+const CACHE='electrical-simu-ckt-v99-sources-9-components';
 const ASSETS=[
   './',
   './index.html',
   './components/Proximity Sensor/Inductive_Proximity_Sensor.svg',
-  './styles.css?v=v98-terminal-wiring-fix',
-  './app.js?v=v98-terminal-wiring-fix',
+  './styles.css?v=v99-sources-9-components',
+  './app.js?v=v99-sources-9-components',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',

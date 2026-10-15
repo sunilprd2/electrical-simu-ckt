@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg width="720" height="480" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <ellipse fill="#000000" stroke="#666666" stroke-width="13" cx="96" cy="120" rx="71" ry="71" fill-opacity="0"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="96" y1="190" x2="96" y2="400"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m78.5,412.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="96" y="143" font-size="62" font-family="Sans-serif" text-anchor="middle" font-weight="normal">L1</text>
+  <ellipse fill="#000000" stroke="#666666" stroke-width="13" cx="272" cy="120" rx="71" ry="71" fill-opacity="0"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="272" y1="190" x2="272" y2="400"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m254.5,412.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="272" y="143" font-size="62" font-family="Sans-serif" text-anchor="middle" font-weight="normal">L2</text>
+  <ellipse fill="#000000" stroke="#666666" stroke-width="13" cx="448" cy="120" rx="71" ry="71" fill-opacity="0"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="448" y1="190" x2="448" y2="400"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m430.5,412.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="448" y="143" font-size="62" font-family="Sans-serif" text-anchor="middle" font-weight="normal">L3</text>
+  <ellipse fill="#000000" stroke="#666666" stroke-width="13" cx="624" cy="120" rx="71" ry="71" fill-opacity="0"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="624" y1="190" x2="624" y2="400"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m606.5,412.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="624" y="143" font-size="66" font-family="Sans-serif" text-anchor="middle" font-weight="bold">N</text>
+ </g>
+</svg>
