@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg width="450" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 450 480">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <ellipse fill="#000000" stroke="#666666" stroke-width="13" cx="213" cy="121" rx="71" ry="71" id="svg_11" fill-opacity="0"/>
+  <line fill="none" stroke="#666666" stroke-width="13" x1="213" y1="191" x2="213" y2="401" id="svg_10"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m195,413.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" id="svg_25"/>
+  <path fill="#666666" stroke="#666666" stroke-width="10" d="m627.5,266.32l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" id="svg_26"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="79" y="270" id="svg_1" font-size="24" font-family="Sans-serif" text-anchor="middle" xml:space="preserve" transform="matrix(3.23822 0 0 2.74874 -39.8193 -597.298)" font-weight="bold">N</text>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="79" y="270" id="svg_2" font-size="24" font-family="Helvetica" text-anchor="middle" xml:space="preserve" transform="matrix(6.88455 0 0 4.2203 196.621 -910.288)" font-weight="bold"/>
+  <text fill="#666666" stroke="#666666" stroke-width="0" x="79" y="270" id="svg_3" font-size="24" font-family="Helvetica" text-anchor="middle" xml:space="preserve" transform="matrix(3.23822 0 0 2.74874 252.181 -646.278)" font-weight="bold">L1</text>
+ </g>
+</svg>
