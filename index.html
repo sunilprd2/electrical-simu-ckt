@@ -168,13 +168,9 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   if(renderedLibrary && renderedLibrary.querySelector('.category-count') && renderedLibrary.querySelector('.category-chevron')) return;
   host.innerHTML = '';
   const symbols=[
-    ['01_DC_Negative.svg','DC Negative'],['02_DC_Positive.svg','DC Positive'],
-    ['03_Earth_Ground.svg','Earth Ground'],['04_N_Terminal.svg','N Terminal'],
-    ['05_L1_Terminal.svg','L1 Terminal'],['06_L2_Terminal.svg','L2 Terminal'],
-    ['07_L3_Terminal.svg','L3 Terminal'],['08_PE_Terminal.svg','PE Terminal'],
-    ['09_Three_Phase_L1_L2_L3.svg','Three Phase L1 L2 L3'],
-    ['10_Three_Phase_Neutral.svg','Three Phase Neutral'],
-    ['11_Three_Phase_Neutral_PE.svg','Three Phase Neutral PE']
+    ['source_dc_negative.svg','DC Negative Pole'],
+    ['source_dc_positive.svg','DC Positive Pole'],
+    ['source_dc_supply_pair.svg','DC Supply Pair']
   ].map(([file,name])=>({file:'components/Power/'+file,name,category:'Sources',type:name})).concat([
     ['Contactor_Coil.svg','Contactor Coil'],['TON_Timer_Coil.svg','TON Timer Coil'],
     ['TOF_Timer_Coil.svg','TOF Timer Coil'],['TON_TOF_Timer_Coil.svg','TON/TOF Timer Coil']

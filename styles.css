@@ -1782,3 +1782,70 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   pointer-events: none !important;
   vector-effect: non-scaling-stroke !important;
 }
+
+/* V2: the actual hexagonal terminal outline glows red; the symbol body remains unchanged. */
+#dropLayer .terminal-glow-ring { opacity:0; fill:#fff; stroke:#ff3030; stroke-width:10; stroke-linejoin:round; pointer-events:none; filter:none; transition:opacity .12s ease,filter .12s ease; }
+#dropLayer .terminal-glow-ring.terminal-highlight { opacity:1!important; fill:#fff!important; stroke:#ff3030!important; stroke-width:12!important; filter:drop-shadow(0 0 8px #ff3030) drop-shadow(0 0 14px #ff3030)!important; }
+#dropLayer .terminal-hit-target { r:7.5px!important; opacity:0!important; fill:transparent!important; stroke:transparent!important; stroke-width:0!important; pointer-events:all!important; cursor:crosshair; }
+#dropLayer .terminal-hit-target.port-selected { opacity:0!important; fill:transparent!important; stroke:transparent!important; }
+
+/* V5: source-terminal hit targets are interactive without triggering component selection. */
+#dropLayer .dropped-symbol .terminal-hit-target { pointer-events:all !important; cursor:crosshair !important; }
+#dropLayer .dropped-symbol .terminal-glow-ring { pointer-events:none !important; }
+#dropLayer .dropped-symbol:has(.terminal-hit-target) .terminal-hit-target { touch-action:manipulation; }
+
+/* ESC V112: robust terminal picking uses the hexagon path itself as a wide invisible hit stroke. */
+#dropLayer .terminal-hit-target { opacity:0 !important; fill:transparent !important; stroke:transparent !important; stroke-width:48 !important; pointer-events:stroke !important; cursor:crosshair !important; }
+#dropLayer .terminal-hit-target.port-selected { opacity:0 !important; }
+#dropLayer .terminal-glow-ring { pointer-events:none !important; }
+#dropLayer .dropped-symbol:has(.terminal-hit-target) { touch-action:manipulation; }
+
+/* ESC V113: hide all component boundary/selection rectangles in the workspace.
+   Keep transparent hit targets interactive; only the actual symbol artwork remains visible. */
+#dropLayer .dropped-symbol > .select-box,
+#dropLayer .dropped-symbol:hover > .select-box,
+#dropLayer .dropped-symbol.selected > .select-box,
+#dropLayer .dropped-symbol > .component-selection-outline,
+#dropLayer .dropped-symbol:hover > .component-selection-outline,
+#dropLayer .dropped-symbol.selected > .component-selection-outline,
+#dropLayer .dropped-symbol > .component-hit-area,
+#dropLayer .dropped-symbol:hover > .component-hit-area,
+#dropLayer .dropped-symbol.selected > .component-hit-area {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  fill: none !important;
+  fill-opacity: 0 !important;
+  stroke: none !important;
+  stroke-opacity: 0 !important;
+  stroke-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Selection remains functional via the component group; only its visual box is removed. */
+#dropLayer .dropped-symbol { outline: none !important; }
+
+/* ESC V114: CAD-style hover boundary. The drawing sheet/grid remain fixed;
+   only the individual dropped component group moves. The boundary is a
+   non-interactive overlay and appears only while hovering an unselected part. */
+#dropLayer .dropped-symbol > .select-box {
+  display:none !important; visibility:hidden !important; opacity:0 !important;
+  fill:transparent !important; fill-opacity:0 !important;
+  stroke:#22c8e8 !important; stroke-width:1.5 !important;
+  stroke-dasharray:4 3 !important; pointer-events:none !important;
+  vector-effect:non-scaling-stroke !important;
+}
+#dropLayer .dropped-symbol:hover:not(.selected) > .select-box {
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  fill:transparent !important; fill-opacity:0 !important;
+  stroke:#22c8e8 !important; stroke-opacity:.95 !important;
+  stroke-width:1.5 !important; stroke-dasharray:4 3 !important;
+  pointer-events:none !important;
+}
+#dropLayer .dropped-symbol.selected > .select-box,
+#dropLayer .dropped-symbol.moving > .select-box {
+  display:none !important; visibility:hidden !important; opacity:0 !important;
+}
+#schematic, #engineeringSheet, #sheet, #dropLayer { transform-origin:0 0; }
+#dropLayer .dropped-symbol { transform-box:fill-box; }
+#dropLayer .dropped-symbol.moving { cursor:grabbing !important; }

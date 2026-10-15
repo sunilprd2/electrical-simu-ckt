@@ -1,0 +1,7 @@
+Source library reset based on electrical-simu-ckt-main (7)(3).zip.
+Removed the previous SVGs from components/Power and added only:
+- source_dc_negative.svg
+- source_dc_positive.svg
+- source_dc_supply_pair.svg
+Updated components/Power/components.json, the index.html fallback library, and app.js embedded manifest.
+Other component groups and the rest of the base website were preserved.

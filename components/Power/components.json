@@ -1,50 +1,17 @@
-
 {
   "category": "Power",
   "components": [
     {
-      "name": "DC Negative",
-      "file": "01_DC_Negative.svg"
+      "name": "DC Negative Pole",
+      "file": "source_dc_negative.svg"
     },
     {
-      "name": "DC Positive",
-      "file": "02_DC_Positive.svg"
+      "name": "DC Positive Pole",
+      "file": "source_dc_positive.svg"
     },
     {
-      "name": "Earth Ground",
-      "file": "03_Earth_Ground.svg"
-    },
-    {
-      "name": "N Terminal",
-      "file": "04_N_Terminal.svg"
-    },
-    {
-      "name": "L1 Terminal",
-      "file": "05_L1_Terminal.svg"
-    },
-    {
-      "name": "L2 Terminal",
-      "file": "06_L2_Terminal.svg"
-    },
-    {
-      "name": "L3 Terminal",
-      "file": "07_L3_Terminal.svg"
-    },
-    {
-      "name": "PE Terminal",
-      "file": "08_PE_Terminal.svg"
-    },
-    {
-      "name": "Three Phase L1 L2 L3",
-      "file": "09_Three_Phase_L1_L2_L3.svg"
-    },
-    {
-      "name": "Three Phase Neutral",
-      "file": "10_Three_Phase_Neutral.svg"
-    },
-    {
-      "name": "Three Phase Neutral PE",
-      "file": "11_Three_Phase_Neutral_PE.svg"
+      "name": "DC Supply Pair",
+      "file": "source_dc_supply_pair.svg"
     }
   ]
 }

@@ -1,4 +1,8 @@
-Electrical Simu CKT — Power SVG components
+Electrical Simu CKT Power SVG library
 
-The 15 SVG files in this folder are loaded into the Sources category by app.js.
-Keep file names and paths aligned with the embedded symbol manifest.
+Current approved source components:
+- source_dc_negative.svg
+- source_dc_positive.svg
+- source_dc_supply_pair.svg
+
+Each placed source component has unique terminal IDs and workspace click targets. Clicking a hexagonal terminal highlights that hexagon in red; clicking it again or clicking elsewhere clears the highlight.
