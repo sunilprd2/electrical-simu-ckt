@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v97-library-render-guard">
+<link rel="stylesheet" href="styles.css?v=v98-terminal-wiring-fix">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -155,7 +155,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v97-library-render-guard"></script>
+<script src="app.js?v=v98-terminal-wiring-fix"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -168,9 +168,13 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   if(renderedLibrary && renderedLibrary.querySelector('.category-count') && renderedLibrary.querySelector('.category-chevron')) return;
   host.innerHTML = '';
   const symbols=[
-    ['source_dc_negative.svg','DC Negative Pole'],
-    ['source_dc_positive.svg','DC Positive Pole'],
-    ['source_dc_supply_pair.svg','DC Supply Pair']
+    ['01_DC_Negative.svg','DC Negative'],['02_DC_Positive.svg','DC Positive'],
+    ['03_Earth_Ground.svg','Earth Ground'],['04_N_Terminal.svg','N Terminal'],
+    ['05_L1_Terminal.svg','L1 Terminal'],['06_L2_Terminal.svg','L2 Terminal'],
+    ['07_L3_Terminal.svg','L3 Terminal'],['08_PE_Terminal.svg','PE Terminal'],
+    ['09_Three_Phase_L1_L2_L3.svg','Three Phase L1 L2 L3'],
+    ['10_Three_Phase_Neutral.svg','Three Phase Neutral'],
+    ['11_Three_Phase_Neutral_PE.svg','Three Phase Neutral PE']
   ].map(([file,name])=>({file:'components/Power/'+file,name,category:'Sources',type:name})).concat([
     ['Contactor_Coil.svg','Contactor Coil'],['TON_Timer_Coil.svg','TON Timer Coil'],
     ['TOF_Timer_Coil.svg','TOF Timer Coil'],['TON_TOF_Timer_Coil.svg','TON/TOF Timer Coil']
@@ -296,7 +300,10 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  function rebind(){
    drop.querySelectorAll('.dropped-symbol').forEach(g=>{
      if(typeof enableMove==='function')enableMove(g);
+     if(typeof syncComponentPorts==='function')syncComponentPorts(g);
    });
+   if(typeof refreshAllWires==='function')refreshAllWires();
+   if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
  }
  function apply(s){
    restoreInProgress=true;
@@ -372,7 +379,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    const isEmptyWorkspace=(e.target===svg || e.target.id==='dropLayer' || e.target.classList?.contains('esc-svg-grid'));
    if(e.button===0 && !panMode && !isEmptyWorkspace)return;
    const st=document.getElementById('state')?.textContent||'';
-   if(st.startsWith('WIRE START')||st.startsWith('WIRE BEND'))return;
+   if(window.__escWiringActive||st.startsWith('WIRE START')||st.startsWith('WIRE BEND')||st.startsWith('TERMINAL SELECTED'))return;
    if(textMode){const p=point(e),value=prompt('Text to insert:','Text');if(value){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',p.x);t.setAttribute('y',p.y);t.setAttribute('class','drawing-text');t.textContent=value;t.setAttribute('fill','currentColor');t.setAttribute('font-size','16');drop.appendChild(t)}textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');return;}
    const rect=svg.getBoundingClientRect();
    pan={clientX:e.clientX,clientY:e.clientY,x:view.x,y:view.y,unitsPerPixelX:view.w/Math.max(1,rect.width),unitsPerPixelY:view.h/Math.max(1,rect.height),pointerId:e.pointerId};
@@ -441,7 +448,10 @@ document.querySelectorAll(".top nav button").forEach(button => {
  function exportProject(forceName=false){
    if(!drop){setStatus('SAVE FAILED • DRAWING LAYER NOT FOUND');return}
    if(forceName){const n=prompt('Save drawing as (name only):',currentName);if(n===null)return;currentName=(n.trim()||'Untitled ESC Drawing')}
-   const project={format:'ESC-DRAWING',version:1,name:currentName,savedAt:new Date().toISOString(),viewBox:svg?.getAttribute('viewBox')||'0 0 1200 760',elements:drop.innerHTML};
+   const wireLayerEl=document.getElementById('wireLayer');
+   const wiresClone=wireLayerEl?wireLayerEl.cloneNode(true):null;
+   wiresClone?.querySelectorAll('.wire-preview').forEach(n=>n.remove());
+   const project={format:'ESC-DRAWING',version:1,name:currentName,savedAt:new Date().toISOString(),viewBox:svg?.getAttribute('viewBox')||'0 0 1200 760',elements:drop.innerHTML,wires:wiresClone?wiresClone.innerHTML:''};
    const serialized=JSON.stringify(project,null,2);
    try{localStorage.setItem('esc-simu-ckt-saved-drawing',serialized);localStorage.setItem('esc-simu-ckt-saved-name',currentName);}catch(err){setStatus('BROWSER STORAGE FULL • USE SAVE AS');}
    if(forceName){
@@ -455,6 +465,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
  $('newBtn')?.addEventListener('click',()=>{
    if(drop&&drop.children.length&&!confirm('Start a new drawing? Download or save your current drawing first.'))return;
    if(drop)drop.replaceChildren();
+   document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>w.remove());
+   if(typeof window.cancelActiveWiring==='function')window.cancelActiveWiring('');
    currentName='Untitled ESC Drawing';
    $('stop')?.click();setStatus('READY • NEW DRAWING');
    selectBtn?.click();
@@ -477,14 +489,33 @@ document.querySelectorAll(".top nav button").forEach(button => {
        for(const a of [...node.attributes])if(!/^on/i.test(a.name)&&a.name!=='style'&&a.name!=='href'&&a.name!=='xlink:href')el.setAttribute(a.name,a.value);
        if(node.localName==='image'||node.localName==='use'){
          const href=node.getAttribute('href')||node.getAttributeNS('http://www.w3.org/1999/xlink','href')||'';
-         if(href.startsWith('assets/')||href.startsWith('power-original/')||href.startsWith('#'))el.setAttribute('href',href);
+         if(href.startsWith('assets/')||href.startsWith('components/')||href.startsWith('power-original/')||href.startsWith('#'))el.setAttribute('href',href);
        }
        [...node.childNodes].forEach(c=>{const clean=cleanNode(c);if(clean)el.appendChild(clean)});
        return el;
      };
      const fragment=document.createDocumentFragment();
      [...parsed.documentElement.childNodes].forEach(n=>{const clean=cleanNode(n);if(clean)fragment.appendChild(clean)});
-     drop.replaceChildren(fragment);currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
+     drop.replaceChildren(fragment);
+     const wireLayerEl=document.getElementById('wireLayer');
+     if(wireLayerEl){
+       wireLayerEl.querySelectorAll('.connected-wire').forEach(w=>w.remove());
+       if(typeof data.wires==='string' && data.wires.trim()){
+         const wp=parser.parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+data.wires+'</svg>','image/svg+xml');
+         const previewEl=wireLayerEl.querySelector('.wire-preview');
+         [...wp.documentElement.childNodes].forEach(n=>{
+           const clean=cleanNode(n);
+           if(clean && clean.classList?.contains('connected-wire')){
+             if(previewEl)wireLayerEl.insertBefore(clean,previewEl);
+             else wireLayerEl.appendChild(clean);
+           }
+         });
+       }
+     }
+     drop.querySelectorAll('.dropped-symbol').forEach(g=>{if(typeof syncComponentPorts==='function')syncComponentPorts(g);});
+     if(typeof refreshAllWires==='function')refreshAllWires();
+     if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
+     currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
      if(svg&&data.viewBox)svg.setAttribute('viewBox',data.viewBox);
      setStatus('OPENED • '+currentName.toUpperCase());
    }catch(err){alert('Could not open this drawing: '+err.message);setStatus('OPEN FAILED')}
@@ -568,6 +599,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
   }
   svg.addEventListener('pointerdown',function(e){
     if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+    if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11))return;
     const g=e.target.closest?.('#dropLayer .dropped-symbol');
     if(!g)return;
     const p=point(e),x=Number(g.dataset.x)||0,y=Number(g.dataset.y)||0;
@@ -585,7 +617,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
     const p=point(e),x=p.x-active.dx,y=p.y-active.dy;
     if(Math.hypot(p.x-active.startX,p.y-active.startY)>2)active.moved=true;
     g.dataset.x=String(x);g.dataset.y=String(y);
-    g.setAttribute('transform',`translate(${x-60},${y-45})`);
+    if(typeof applyComponentTransform==='function')applyComponentTransform(g,x,y);
+    else g.setAttribute('transform',`translate(${x-60},${y-45})`);
     if(typeof refreshWiresForComponent==='function')refreshWiresForComponent(g);
     if(active.moved)e.preventDefault();
   },{capture:true,passive:false});
@@ -607,15 +640,26 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const $=id=>document.getElementById(id), layer=$('dropLayer'), status=$('state');
  const setStatus=t=>{if(status)status.textContent=t};
  function removeSelected(){
+   if(window.selectedWire && window.selectedWire.isConnected){
+     window.selectedWire.remove();
+     window.selectedWire=null;
+     if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
+     setStatus('WIRE DELETED');
+     return;
+   }
    const g=typeof selected!=='undefined'?selected:null;
-   if(!g||!g.isConnected){setStatus('SELECT A COMPONENT FIRST');return;}
+   if(!g||!g.isConnected){setStatus('SELECT A COMPONENT OR WIRE FIRST');return;}
    const uid=g.dataset.uid;
    document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{if((uid&&w.dataset.fromG===uid)||(uid&&w.dataset.toG===uid))w.remove();});
-   g.remove(); if(typeof select==='function')select(null); setStatus('COMPONENT DELETED');
+   if(typeof window.cancelActiveWiring==='function')window.cancelActiveWiring('');
+   g.remove(); if(typeof select==='function')select(null);
+   if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
+   setStatus('COMPONENT DELETED');
  }
  // Capture-phase selection makes the clicked placed component authoritative.
  layer?.addEventListener('pointerdown',e=>{
    if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+   if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11))return;
    const g=e.target.closest?.('.dropped-symbol'); if(!g)return;
    if(typeof select==='function')select(g);
    setStatus('SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
@@ -647,7 +691,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    setStatus('COMPONENT PROPERTIES SAVED');
    $('saveBtn')?.click();
  });
- document.addEventListener('keydown',e=>{if(e.key==='Delete'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)&&selected){e.preventDefault();removeSelected();}},true);
+ document.addEventListener('keydown',e=>{if(e.key==='Delete'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)&&(selected||window.selectedWire)){e.preventDefault();removeSelected();}},true);
 })();
 </script>
 
@@ -706,15 +750,14 @@ document.querySelectorAll(".top nav button").forEach(button => {
     if(!box) return;
     const fallback={w:78,h:82};
     const set=(ar)=>{
-      // The SVG artwork is rendered inside a 150 x 100 viewport from a 48 x 32 viewBox.
-      // Respect the source aspect ratio so the frame hugs the visible artwork, with modest padding.
+      // The SVG artwork is rendered inside a 90 x 63 viewport centered at (60, 44.5).
       let w,h;
-      if(ar>=1.5){w=150;h=150/ar;}
-      else {w=100*ar;h=100;}
-      if(!Number.isFinite(w)||!Number.isFinite(h)||w<24||h<24){w=fallback.w;h=fallback.h;}
-      const pad=5;
-      box.setAttribute('x',String(90-(w/2)-pad));
-      box.setAttribute('y',String(70-(h/2)-pad));
+      if(ar>=90/63){w=90;h=90/ar;}
+      else {w=63*ar;h=63;}
+      if(!Number.isFinite(w)||!Number.isFinite(h)||w<18||h<18){w=52;h=56;}
+      const pad=4;
+      box.setAttribute('x',String(60-(w/2)-pad));
+      box.setAttribute('y',String(44.5-(h/2)-pad));
       box.setAttribute('width',String(w+pad*2));
       box.setAttribute('height',String(h+pad*2));
       box.setAttribute('rx','1');
@@ -758,7 +801,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
           if(!image) el.style.setProperty('fill',componentColor,'important');
         });
       }
-      selected.querySelectorAll('.mag-port').forEach(p=>{p.style.setProperty('fill',componentColor,'important');p.style.setProperty('stroke',borderColor,'important');});
       applyBox(selected);
     }
     layer.querySelectorAll('.dropped-symbol:not(.selected)').forEach(g=>{
@@ -772,7 +814,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
           el.style.removeProperty('fill');
         });
       }
-      g.querySelectorAll('.mag-port').forEach(p=>{p.style.removeProperty('fill');p.style.removeProperty('stroke');});
       applyBox(g);
     });
     if(flood)flood.setAttribute('flood-color',componentColor);

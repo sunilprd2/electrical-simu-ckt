@@ -1,0 +1,127 @@
+{
+  "category": "Switches",
+  "group": "Switches",
+  "description": "IEC 60617 contact and switching symbols",
+  "components": [
+    {
+      "name": "Contact 01",
+      "file": "Contact_01.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 02",
+      "file": "Contact_02.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 03",
+      "file": "Contact_03.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 04",
+      "file": "Contact_04.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 05",
+      "file": "Contact_05.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 06",
+      "file": "Contact_06.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 07",
+      "file": "Contact_07.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 08",
+      "file": "Contact_08.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 09",
+      "file": "Contact_09.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 10",
+      "file": "Contact_10.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 11",
+      "file": "Contact_11.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 12",
+      "file": "Contact_12.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 13",
+      "file": "Contact_13.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 14",
+      "file": "Contact_14.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 15",
+      "file": "Contact_15.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 16",
+      "file": "Contact_16.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 17",
+      "file": "Contact_17.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 18",
+      "file": "Contact_18.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 19",
+      "file": "Contact_19.svg",
+      "format": "svg",
+      "category": "Switches"
+    },
+    {
+      "name": "Contact 20",
+      "file": "Contact_20.svg",
+      "format": "svg",
+      "category": "Switches"
+    }
+  ]
+}

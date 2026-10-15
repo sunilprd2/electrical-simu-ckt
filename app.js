@@ -1,3 +1,18 @@
+(function ensureStatusNodes(){
+  if (!document.getElementById("state") || !document.getElementById("sim") || !document.getElementById("motorState")) {
+    const f = document.createElement("footer");
+    f.style.display = "none";
+    f.setAttribute("aria-hidden", "true");
+    ["sim", "state", "motorState"].forEach(id => {
+      if (!document.getElementById(id)) {
+        const s = document.createElement("span");
+        s.id = id;
+        f.appendChild(s);
+      }
+    });
+    document.body.appendChild(f);
+  }
+})();
 const sheet=document.getElementById('sheet'), sim=document.getElementById('sim'), state=document.getElementById('state'), motorState=document.getElementById('motorState');
 
 /* IEC-style component library. Device designations follow common IEC/industrial practice.
@@ -94,7 +109,9 @@ document.getElementById('applyComponentDialog')?.addEventListener('click',()=>{
  g.dataset.value=document.getElementById('detailValue').value.trim();
  const terminals=document.getElementById('detailTerminals').value.split(',').map(s=>s.trim()).filter(Boolean);
  g.dataset.terminals=JSON.stringify(terminals);
- g.querySelectorAll('.mag-port').forEach((port,i)=>{if(terminals[i])port.dataset.port=terminals[i]});
+ if(typeof syncComponentPorts==='function')syncComponentPorts(g);
+ if(typeof refreshWiresForComponent==='function')refreshWiresForComponent(g);
+ if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
  if(oldTitle)oldTitle.textContent=g.dataset.ref+' — '+g.dataset.name+(g.dataset.value?' • '+g.dataset.value:'');
  state.textContent='UPDATED • '+g.dataset.ref;
  closeComponentDetails();
@@ -112,21 +129,30 @@ function render(){document.body.classList.toggle('live',running);sim.textContent
 document.getElementById('play').onclick=()=>{
  const wires=[...document.querySelectorAll('#wireLayer .connected-wire')];
  const comps=[...document.querySelectorAll('#dropLayer .dropped-symbol')];
- const sourceRx=/(power|supply|phase|neutral|source|transformer|dc\+|dc-)/i;
- const lampRx=/(pilot.?light|lamp|bulb|indicator|light.?source)/i;
- const sources=comps.filter(g=>sourceRx.test((g.dataset.name||'')+' '+(g.dataset.type||'')));
- const lamps=comps.filter(g=>lampRx.test((g.dataset.name||'')+' '+(g.dataset.type||'')));
- const ids=new Set(wires.flatMap(w=>[w.dataset.fromG,w.dataset.toG]).filter(Boolean));
- const adj=new Map([...ids].map(id=>[id,[]]));
- wires.forEach((w,i)=>{const a=w.dataset.fromG,b=w.dataset.toG;if(a&&b&&adj.has(a)&&adj.has(b)){adj.get(a).push({id:b,edge:i});adj.get(b).push({id:a,edge:i});}});
- function reaches(start,target){const seen=new Set(),stack=[start];while(stack.length){const n=stack.pop();if(n===target)return true;if(seen.has(n))continue;seen.add(n);(adj.get(n)||[]).forEach(e=>{if(!seen.has(e.id))stack.push(e.id)});}return false;}
- function hasCycle(start){const seen=new Set();function walk(n,parentEdge){seen.add(n);for(const e of adj.get(n)||[]){if(!seen.has(e.id)){if(walk(e.id,e.edge))return true;}else if(e.edge!==parentEdge)return true;}return false;}return walk(start,-1);}
- const closed=sources.some(src=>lamps.some(lamp=>src.dataset.uid&&lamp.dataset.uid&&reaches(src.dataset.uid,lamp.dataset.uid)&&hasCycle(src.dataset.uid)));
- if(!closed){running=false;document.body.classList.remove('live');sim.textContent='● OPEN CIRCUIT';sim.classList.remove('running');motorState.textContent='Motor: OFF';state.textContent='OPEN CIRCUIT • CHECK SOURCE, LOAD AND RETURN WIRE';return;}
- running=true;document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g=>{if(lampRx.test((g.dataset.name||'')+' '+(g.dataset.type||'')))g.classList.add('device-on')});document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{w.classList.add('wire-live');const ends=((w.dataset.from||'')+' '+(w.dataset.to||'')).toUpperCase();w.classList.toggle('wire-neutral',/\bN\b|NEUTRAL/.test(ends));});render();
+ if(!wires.length){
+  running=false;document.body.classList.remove('live');
+  if(sim){sim.textContent='● OPEN CIRCUIT';sim.classList.remove('running');}
+  if(motorState)motorState.textContent='Motor: OFF';
+  if(state)state.textContent='OPEN CIRCUIT • CONNECT COMPONENT TERMINALS WITH WIRES FIRST';
+  return;
+ }
+ const loadRx=/(pilot.?light|lamp|bulb|indicator|light.?source|coil|timer|motor|sensor|proximity|buzzer|siren|heater|contact)/i;
+ const connectedIds=new Set(wires.flatMap(w=>[w.dataset.fromG,w.dataset.toG]).filter(Boolean));
+ running=true;
+ comps.forEach(g=>{
+  if(connectedIds.has(g.dataset.uid) && loadRx.test((g.dataset.name||'')+' '+(g.dataset.type||''))){
+   g.classList.add('device-on');
+  }
+ });
+ wires.forEach(w=>{
+  w.classList.add('wire-live');
+  const ends=((w.dataset.from||'')+' '+(w.dataset.to||'')).toUpperCase();
+  w.classList.toggle('wire-neutral',/\bN\b|NEUTRAL|NEG|−|-/.test(ends));
+ });
+ render();
 };
 document.getElementById('stop').onclick=()=>{running=false;document.querySelectorAll('#dropLayer .device-on').forEach(g=>g.classList.remove('device-on'));document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>w.classList.remove('wire-live'));render()};
-document.getElementById('threeD').onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
+const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
 document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
@@ -242,222 +268,322 @@ svg.addEventListener('drop',e=>{e.preventDefault();overlay.classList.remove('sho
 svg.addEventListener('pointerdown',e=>{if(e.target===svg)select(null)});
 render();
 
-/* V7: clear IEC symbols with visible tails + magnetic square connection points */
+/* V7–V98: Unified IEC symbol terminal geometry, terminal selection, and wire connection engine */
 const _oldIconV7 = icon;
-function portDefs(type){
-  const v=(x,y,label,side)=>({x,y,label,side});
-  // SVG-asset terminal rails: place ports at the ends of vertical tails, not on the sides.
-  const asset=String(type||'').split('/').pop().toLowerCase();
-  if(asset.endsWith('.svg')){
-    const poles=/(?:3p|3-pole|three-phase|three-pole)/.test(asset)?3:
-                /(?:2p|2-pole|two-pole)/.test(asset)?2:
-                /(?:1p|1-pole|single-pole)/.test(asset)?1:0;
-    if(poles){
-      const xs=poles===3?[8,24,40]:poles===2?[16,32]:[24];
-      const top=poles===3?['1','3','5']:poles===2?['1','3']:['1'];
-      const bottom=poles===3?['2','4','6']:poles===2?['2','4']:['2'];
-      return [...xs.map((x,i)=>v(x,1,top[i],'top')),...xs.map((x,i)=>v(x,31,bottom[i],'bottom'))];
-    }
-    if(/(?:push-button|manual-button|emergency-stop|limit-switch|normally-open-contact|normally-close-contact|normally-closed-contact|changeover-contact)/.test(asset))
-      return [v(8,1,'1','top'),v(40,31,'2','bottom')];
-    if(/(?:coil|timer|relay)/.test(asset))
-      return [v(24,1,'A1','top'),v(24,31,'A2','bottom')];
-  }
-  if(type==='3p') return [v(8,2,'L1','top'),v(24,2,'L2','top'),v(40,2,'L3','top'),v(8,30,'L1','bottom'),v(24,30,'L2','bottom'),v(40,30,'L3','bottom')];
-  if(['l1','l2','l3','n','dc-','dc+','pe','gnd'].includes(type)) return [v(24,2,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'top'),v(24,30,type==='dc-'?'−':type==='dc+'?'+':type.toUpperCase(),'bottom')];
-  if(type==='psu') return [v(7,7,'L','top'),v(17,7,'N','top'),v(31,7,'HV','top'),v(41,7,'PE','top'),v(7,25,'+','bottom'),v(17,25,'+','bottom'),v(31,25,'−','bottom'),v(41,25,'−','bottom')];
-  if(['tr1','tr3','gen3'].includes(type)) return [v(12,2,'1','top'),v(36,2,'2','top'),v(12,30,'1','bottom'),v(36,30,'2','bottom')];
-  if(['no','nc','change','changeover','auxno','auxnc','mainno','mainnc','relayno','relaync','start','stop','estop','limitno','limitnc','foot','pressure','temperature','float','hand','tdno','tdnc','offno','offnc','timernc','timerno'].includes(type)) return [v(5,16,'1','left'),v(43,16,'2','right')];
-  if(['coil','relaycoil','powerrelay','interpose','latchrelay','ssr','reed','safetyrelay','ton','tof','multitimer','stimer','flasher','cyclic','stair','analogtimer','digitaltimer','programmable','counter','3pcont','4pcont','contaux','reverse','contimer','stardelta','latchcont'].includes(type)) return [v(24,2,'A1','top'),v(24,30,'A2','bottom')];
-  if(['motor3','motor1','motorDC','twospeed','motorsd','brake','gear'].includes(type)) return [v(14,2,'U','top'),v(24,2,'V','top'),v(34,2,'W','top'),v(24,30,'PE','bottom')];
-  if(['lamp','led','tower','pilot','buzzer','siren','heater','resistive','inductive','capacitive','solenoid'].includes(type)) return [v(24,2,'X1','top'),v(24,30,'X2','bottom')];
-  if(['ammeter','voltmeter','freq','kw','kwh','hour','multimeter'].includes(type)) return [v(24,2,'1','top'),v(24,30,'2','bottom')];
-  return [v(24,2,'1','top'),v(24,30,'2','bottom')];
-}
-function portsFor(g){
- const defs=portDefs(g.dataset.porttype||g.dataset.type);
- let labels=[];try{labels=JSON.parse(g.dataset.terminals||'null')||[]}catch{}
- return defs.map((p,i)=>({...p,label:labels[i]||p.label}));
-}
-function withPreviewPorts(type){
-  const base=icon(type).replace('</svg>','');
-  return base+'</svg>';
-}
-function nextReference(d){
- const s=((d&& (d.name||d.type))||'component').toLowerCase();
- let p='X';
- if(/contactor/.test(s))p='KM';
- else if(/overload|thermal/.test(s))p='F';
- else if(/breaker|mcb|fuse|isolator|protection/.test(s))p='Q';
- else if(/motor/.test(s))p='M';
- else if(/timer|delay/.test(s))p='KT';
- else if(/coil|relay/.test(s))p='K';
- else if(/push|button|emergency|selector|switch|limit/.test(s))p='S';
- else if(/pilot|lamp|led|indicator/.test(s))p='H';
- else if(/earth|ground/.test(s))p='PE';
- else if(/terminal|connector|block/.test(s))p='X';
- else if(/transformer/.test(s))p='T';
- else if(/sensor/.test(s))p='B';
- const n=[...dropLayer.querySelectorAll('.dropped-symbol')].filter(g=>(g.dataset.ref||'').startsWith(p)).length+1;
- return p+n;
-}
-function makeDropped(d,x,y){
-  const NS='http://www.w3.org/2000/svg', W=180, H=140;
-  const g=document.createElementNS(NS,'g');
-  g.setAttribute('class','dropped-symbol');
-  g.dataset.uid='C'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
-  g.dataset.type=d.type; g.dataset.porttype=d.symbolFile||d.type; g.dataset.name=d.name;
-  g.dataset.ref=d.ref||nextReference(d); g.dataset.value=d.value||'';
-  g.dataset.accent=d.accent||'#e9f1ed'; g.dataset.x=x; g.dataset.y=y;
-  g.setAttribute('transform',`translate(${x-W/2},${y-H/2})`);
+const SVG_TERMINAL_CATALOG = {"01_dc_negative.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"NEG","side":"bottom"}]},"02_dc_positive.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"POS","side":"bottom"}]},"03_earth_ground.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":8.0,"vw":9.0,"vh":9.0,"label":"PE","side":"top"}]},"04_n_terminal.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"N","side":"bottom"}]},"05_l1_terminal.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L1","side":"bottom"}]},"06_l2_terminal.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L2","side":"bottom"}]},"07_l3_terminal.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L3","side":"bottom"}]},"08_pe_terminal.svg":{"vb":[100.0,100.0],"ports":[{"vx":50.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"PE","side":"bottom"}]},"09_three_phase_l1_l2_l3.svg":{"vb":[160.0,100.0],"ports":[{"vx":30.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L1","side":"bottom"},{"vx":80.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L2","side":"bottom"},{"vx":130.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L3","side":"bottom"}]},"10_three_phase_neutral.svg":{"vb":[200.0,100.0],"ports":[{"vx":25.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L1","side":"bottom"},{"vx":75.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L2","side":"bottom"},{"vx":125.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L3","side":"bottom"},{"vx":175.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"N","side":"bottom"}]},"11_three_phase_neutral_pe.svg":{"vb":[250.0,100.0],"ports":[{"vx":25.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L1","side":"bottom"},{"vx":75.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L2","side":"bottom"},{"vx":125.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"L3","side":"bottom"},{"vx":175.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"N","side":"bottom"},{"vx":225.0,"vy":82.5,"vw":9.0,"vh":9.0,"label":"PE","side":"bottom"}]},"esc-contactor-coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"esc-tof-timer-coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"esc-ton-timer-coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"esc-ton-tof-timer-coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"contactor_coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"tof_timer_coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"ton_tof_timer_coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"ton_timer_coil.svg":{"vb":[100.0,120.0],"ports":[{"vx":50.0,"vy":13.0,"vw":9.0,"vh":9.0,"label":"A1","side":"top"},{"vx":50.0,"vy":95.5,"vw":9.0,"vh":9.0,"label":"A2","side":"bottom"}]},"contact_01.svg":{"vb":[127.0,148.0],"ports":[{"vx":56.5,"vy":15.5,"vw":11.0,"vh":11.0,"label":"11","side":"top"},{"vx":27.5,"vy":132.5,"vw":11.0,"vh":11.0,"label":"12","side":"bottom"},{"vx":85.5,"vy":132.5,"vw":11.0,"vh":11.0,"label":"14","side":"bottom"}]},"contact_02.svg":{"vb":[198.0,186.0],"ports":[{"vx":71.0,"vy":15.0,"vw":14.0,"vh":14.0,"label":"13","side":"top"},{"vx":147.5,"vy":15.5,"vw":15.0,"vh":15.0,"label":"21","side":"top"},{"vx":71.0,"vy":168.0,"vw":14.0,"vh":14.0,"label":"14","side":"bottom"},{"vx":147.5,"vy":167.5,"vw":15.0,"vh":15.0,"label":"22","side":"bottom"}]},"contact_03.svg":{"vb":[155.0,199.0],"ports":[{"vx":101.0,"vy":17.0,"vw":16.0,"vh":16.0,"label":"13","side":"top"},{"vx":101.0,"vy":180.0,"vw":16.0,"vh":16.0,"label":"14","side":"bottom"}]},"contact_04.svg":{"vb":[123.0,209.0],"ports":[{"vx":67.5,"vy":18.5,"vw":17.0,"vh":17.0,"label":"13","side":"top"},{"vx":67.5,"vy":189.5,"vw":17.0,"vh":17.0,"label":"14","side":"bottom"}]},"contact_05.svg":{"vb":[243.0,243.0],"ports":[{"vx":77.5,"vy":19.5,"vw":19.0,"vh":19.0,"label":"13","side":"top"},{"vx":178.5,"vy":19.5,"vw":19.0,"vh":19.0,"label":"21","side":"top"},{"vx":77.5,"vy":221.5,"vw":19.0,"vh":19.0,"label":"14","side":"bottom"},{"vx":178.5,"vy":221.5,"vw":19.0,"vh":19.0,"label":"22","side":"bottom"}]},"contact_06.svg":{"vb":[183.0,232.0],"ports":[{"vx":74.0,"vy":19.0,"vw":18.0,"vh":18.0,"label":"11","side":"top"},{"vx":26.0,"vy":211.0,"vw":18.0,"vh":18.0,"label":"12","side":"bottom"},{"vx":122.0,"vy":211.0,"vw":18.0,"vh":18.0,"label":"14","side":"bottom"}]},"contact_07.svg":{"vb":[198.0,212.0],"ports":[{"vx":68.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"13","side":"top"},{"vx":156.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"21","side":"top"},{"vx":68.5,"vy":192.5,"vw":17.0,"vh":17.0,"label":"14","side":"bottom"},{"vx":156.5,"vy":192.5,"vw":17.0,"vh":17.0,"label":"22","side":"bottom"}]},"contact_08.svg":{"vb":[145.0,225.0],"ports":[{"vx":85.0,"vy":18.0,"vw":18.0,"vh":18.0,"label":"13","side":"top"},{"vx":85.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"14","side":"bottom"}]},"contact_09.svg":{"vb":[181.0,284.0],"ports":[{"vx":107.5,"vy":21.5,"vw":23.0,"vh":23.0,"label":"13","side":"top"},{"vx":107.5,"vy":260.5,"vw":23.0,"vh":23.0,"label":"14","side":"bottom"}]},"contact_10.svg":{"vb":[224.0,226.0],"ports":[{"vx":85.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"13","side":"top"},{"vx":179.0,"vy":18.0,"vw":18.0,"vh":18.0,"label":"21","side":"top"},{"vx":85.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"14","side":"bottom"},{"vx":179.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"22","side":"bottom"}]},"contact_11.svg":{"vb":[269.0,226.0],"ports":[{"vx":132.0,"vy":18.0,"vw":18.0,"vh":18.0,"label":"11","side":"top"},{"vx":38.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"12","side":"bottom"},{"vx":226.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"14","side":"bottom"}]},"contact_12.svg":{"vb":[271.0,226.0],"ports":[{"vx":133.0,"vy":18.0,"vw":18.0,"vh":18.0,"label":"11","side":"top"},{"vx":39.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"12","side":"bottom"},{"vx":133.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"14","side":"bottom"},{"vx":226.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"16","side":"bottom"}]},"contact_13.svg":{"vb":[148.0,226.0],"ports":[{"vx":87.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"13","side":"top"},{"vx":87.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"14","side":"bottom"}]},"contact_14.svg":{"vb":[146.0,226.0],"ports":[{"vx":87.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"13","side":"top"},{"vx":87.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"14","side":"bottom"}]},"contact_15.svg":{"vb":[241.0,226.0],"ports":[{"vx":88.0,"vy":18.0,"vw":18.0,"vh":18.0,"label":"13","side":"top"},{"vx":181.5,"vy":17.5,"vw":17.0,"vh":17.0,"label":"21","side":"top"},{"vx":88.0,"vy":205.0,"vw":18.0,"vh":18.0,"label":"14","side":"bottom"},{"vx":181.5,"vy":205.5,"vw":17.0,"vh":17.0,"label":"22","side":"bottom"}]},"contact_16.svg":{"vb":[213.0,247.0],"ports":[{"vx":96.0,"vy":20.0,"vw":20.0,"vh":20.0,"label":"11","side":"top"},{"vx":44.0,"vy":225.0,"vw":20.0,"vh":20.0,"label":"12","side":"bottom"},{"vx":147.5,"vy":225.5,"vw":19.0,"vh":19.0,"label":"14","side":"bottom"}]},"contact_17.svg":{"vb":[161.0,247.0],"ports":[{"vx":96.0,"vy":20.0,"vw":20.0,"vh":20.0,"label":"13","side":"top"},{"vx":96.0,"vy":226.0,"vw":20.0,"vh":20.0,"label":"14","side":"bottom"}]},"contact_18.svg":{"vb":[124.0,189.0],"ports":[{"vx":73.5,"vy":17.5,"vw":15.0,"vh":15.0,"label":"13","side":"top"},{"vx":73.5,"vy":171.5,"vw":15.0,"vh":15.0,"label":"14","side":"bottom"}]},"contact_19.svg":{"vb":[202.0,189.0],"ports":[{"vx":74.0,"vy":17.0,"vw":14.0,"vh":14.0,"label":"13","side":"top"},{"vx":151.0,"vy":17.0,"vw":14.0,"vh":14.0,"label":"21","side":"top"},{"vx":74.0,"vy":172.0,"vw":14.0,"vh":14.0,"label":"14","side":"bottom"},{"vx":151.0,"vy":172.0,"vw":14.0,"vh":14.0,"label":"22","side":"bottom"}]},"contact_20.svg":{"vb":[164.0,189.0],"ports":[{"vx":74.0,"vy":17.0,"vw":14.0,"vh":14.0,"label":"11","side":"top"},{"vx":35.5,"vy":171.5,"vw":15.0,"vh":15.0,"label":"12","side":"bottom"},{"vx":112.5,"vy":171.5,"vw":15.0,"vh":15.0,"label":"14","side":"bottom"}]},"inductive_proximity_sensor.svg":{"vb":[160.0,100.0],"ports":[{"vx":26.0,"vy":50.0,"vw":20.0,"vh":12.0,"label":"1","side":"left"},{"vx":134.0,"vy":50.0,"vw":20.0,"vh":12.0,"label":"2","side":"right"}]}};
+const ESC_COMP_W = 120, ESC_COMP_H = 90, ESC_COMP_CX = 60, ESC_COMP_CY = 45;
+const ESC_ART_X = 15, ESC_ART_Y = 13, ESC_ART_W = 90, ESC_ART_H = 63;
 
-  // Component artwork is scaled to 150 x 100 world units: one major grid square tall.
-  // Port anchors use the exact same transform so wires continue to snap to terminals.
-  const ART_X=15, ART_Y=20, ART_W=150, ART_H=100;
-  const box=document.createElementNS(NS,'rect');
-  box.setAttribute('class','select-box'); box.setAttribute('x',48); box.setAttribute('y',15);
-  box.setAttribute('width',84); box.setAttribute('height',110); box.setAttribute('rx',2);
-  const ns=document.createElementNS(NS,'svg');
-  ns.setAttribute('x',ART_X); ns.setAttribute('y',ART_Y);
-  ns.setAttribute('width',ART_W); ns.setAttribute('height',ART_H);
-  ns.setAttribute('viewBox','0 0 48 32'); ns.setAttribute('preserveAspectRatio','xMidYMid meet');
-  ns.style.color=g.dataset.accent; ns.style.pointerEvents='none';
-  if(d.symbolFile && /\.svg(?:$|\?)/i.test(d.symbolFile)){
-    const im=document.createElementNS(NS,'image');
-    im.setAttribute('href',d.symbolFile); im.setAttribute('x',0); im.setAttribute('y',0);
-    im.setAttribute('width',48); im.setAttribute('height',32);
-    im.setAttribute('preserveAspectRatio','xMidYMid meet'); ns.appendChild(im);
-  } else {
-    ns.innerHTML=icon(d.type).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+function getSvgCatalogEntry(typeOrFile) {
+  const asset = String(typeOrFile || '').split(/[\\/]/).pop().split('?')[0].toLowerCase();
+  return SVG_TERMINAL_CATALOG[asset] || null;
+}
+
+function portDefs(type) {
+  const entry = getSvgCatalogEntry(type);
+  if (entry) {
+    const [vw, vh] = entry.vb;
+    const scale = Math.min(ESC_ART_W / vw, ESC_ART_H / vh);
+    const drawW = vw * scale, drawH = vh * scale;
+    const originX = ESC_ART_X + (ESC_ART_W - drawW) / 2;
+    const originY = ESC_ART_Y + (ESC_ART_H - drawH) / 2;
+    return entry.ports.map((p, idx) => ({
+      index: idx,
+      x: Math.round((originX + p.vx * scale) * 100) / 100,
+      y: Math.round((originY + p.vy * scale) * 100) / 100,
+      lx: Math.round((originX + p.vx * scale) * 100) / 100,
+      ly: Math.round((originY + p.vy * scale) * 100) / 100,
+      w: Math.max(8, Math.round((p.vw || 10) * scale * 10) / 10 + 2.5),
+      h: Math.max(8, Math.round((p.vh || 10) * scale * 10) / 10 + 2.5),
+      label: p.label,
+      side: p.side || 'top'
+    }));
   }
-  const ports=document.createElementNS(NS,'g'); ports.setAttribute('class','component-ports');
-  portDefs(d.symbolFile||d.type).forEach(p=>{
-    const px=ART_X+(p.x/48)*ART_W, py=ART_Y+(p.y/32)*ART_H;
-    const r=document.createElementNS(NS,'circle'); r.setAttribute('class','mag-port');
-    r.setAttribute('cx',px); r.setAttribute('cy',py); r.setAttribute('r',3);
-    r.dataset.port=p.label; r.setAttribute('data-owner','component'); ports.appendChild(r);
-    const t=document.createElementNS(NS,'text'); t.setAttribute('class','port-name');
-    t.setAttribute('x',px); t.setAttribute('y',p.side==='top'?py-9:py+15);
-    t.setAttribute('text-anchor','middle'); t.textContent=''; t.setAttribute('aria-label',p.label); ports.appendChild(t);
+  const v = (x, y, label, side) => ({ x, y, label, side });
+  const asset = String(type || '').split('/').pop().toLowerCase();
+  let raw = [];
+  if (asset.endsWith('.svg')) {
+    const poles = /(?:3p|3-pole|three-phase|three-pole)/.test(asset) ? 3 :
+                  /(?:2p|2-pole|two-pole)/.test(asset) ? 2 :
+                  /(?:1p|1-pole|single-pole)/.test(asset) ? 1 : 0;
+    if (poles) {
+      const xs = poles === 3 ? [8, 24, 40] : poles === 2 ? [16, 32] : [24];
+      const top = poles === 3 ? ['1', '3', '5'] : poles === 2 ? ['1', '3'] : ['1'];
+      const bottom = poles === 3 ? ['2', '4', '6'] : poles === 2 ? ['2', '4'] : ['2'];
+      raw = [...xs.map((x, i) => v(x, 2, top[i], 'top')), ...xs.map((x, i) => v(x, 30, bottom[i], 'bottom'))];
+    } else if (/(?:push-button|manual-button|emergency-stop|limit-switch|normally-open-contact|normally-close-contact|normally-closed-contact|changeover-contact)/.test(asset)) {
+      raw = [v(24, 2, '13', 'top'), v(24, 30, '14', 'bottom')];
+    } else if (/(?:coil|timer|relay)/.test(asset)) {
+      raw = [v(24, 2, 'A1', 'top'), v(24, 30, 'A2', 'bottom')];
+    }
+  }
+  if (!raw.length) {
+    if (type === '3p') raw = [v(8, 2, 'L1', 'top'), v(24, 2, 'L2', 'top'), v(40, 2, 'L3', 'top'), v(8, 30, 'T1', 'bottom'), v(24, 30, 'T2', 'bottom'), v(40, 30, 'T3', 'bottom')];
+    else if (['l1', 'l2', 'l3', 'n', 'dc-', 'dc+', 'pe', 'gnd'].includes(type)) {
+      const lbl = type === 'dc-' ? '−' : type === 'dc+' ? '+' : type.toUpperCase();
+      raw = [v(24, 2, lbl + '_1', 'top'), v(24, 30, lbl, 'bottom')];
+    }
+    else if (type === 'psu') raw = [v(7, 7, 'L', 'top'), v(17, 7, 'N', 'top'), v(31, 7, 'HV', 'top'), v(41, 7, 'PE', 'top'), v(7, 25, '+1', 'bottom'), v(17, 25, '+2', 'bottom'), v(31, 25, '−1', 'bottom'), v(41, 25, '−2', 'bottom')];
+    else if (['tr1', 'tr3', 'gen3'].includes(type)) raw = [v(12, 2, '1', 'top'), v(36, 2, '3', 'top'), v(12, 30, '2', 'bottom'), v(36, 30, '4', 'bottom')];
+    else if (['no', 'nc', 'change', 'changeover', 'auxno', 'auxnc', 'mainno', 'mainnc', 'relayno', 'relaync', 'start', 'stop', 'estop', 'limitno', 'limitnc', 'foot', 'pressure', 'temperature', 'float', 'hand', 'tdno', 'tdnc', 'offno', 'offnc', 'timernc', 'timerno'].includes(type)) raw = [v(5, 16, '13', 'left'), v(43, 16, '14', 'right')];
+    else if (['coil', 'relaycoil', 'powerrelay', 'interpose', 'latchrelay', 'ssr', 'reed', 'safetyrelay', 'ton', 'tof', 'multitimer', 'stimer', 'flasher', 'cyclic', 'stair', 'analogtimer', 'digitaltimer', 'programmable', 'counter', '3pcont', '4pcont', 'contaux', 'reverse', 'contimer', 'stardelta', 'latchcont'].includes(type)) raw = [v(24, 2, 'A1', 'top'), v(24, 30, 'A2', 'bottom')];
+    else if (['motor3', 'motor1', 'motorDC', 'twospeed', 'motorsd', 'brake', 'gear'].includes(type)) raw = [v(14, 2, 'U', 'top'), v(24, 2, 'V', 'top'), v(34, 2, 'W', 'top'), v(24, 30, 'PE', 'bottom')];
+    else if (['lamp', 'led', 'tower', 'pilot', 'buzzer', 'siren', 'heater', 'resistive', 'inductive', 'capacitive', 'solenoid'].includes(type)) raw = [v(24, 2, 'X1', 'top'), v(24, 30, 'X2', 'bottom')];
+    else raw = [v(24, 2, '1', 'top'), v(24, 30, '2', 'bottom')];
+  }
+  const scale = Math.min(ESC_ART_W / 48, ESC_ART_H / 32);
+  const drawW = 48 * scale, drawH = 32 * scale;
+  const originX = ESC_ART_X + (ESC_ART_W - drawW) / 2;
+  const originY = ESC_ART_Y + (ESC_ART_H - drawH) / 2;
+  return raw.map((p, idx) => {
+    const lx = Math.round((originX + p.x * scale) * 100) / 100;
+    const ly = Math.round((originY + p.y * scale) * 100) / 100;
+    return { index: idx, x: lx, y: ly, lx, ly, w: 8.5, h: 8.5, label: p.label, side: p.side || 'top' };
   });
-  const label=document.createElementNS(NS,'text'); label.setAttribute('class','drop-label');
-  label.setAttribute('x',W/2); label.setAttribute('y',H-5); label.setAttribute('text-anchor','middle');
-  label.textContent='';
-  const tag=document.createElementNS(NS,'text'); tag.setAttribute('class','drop-tag');
-  tag.setAttribute('x',W/2); tag.setAttribute('y',13); tag.setAttribute('text-anchor','middle');
-  tag.textContent=g.dataset.ref;
-  const title=document.createElementNS(NS,'title');
-  title.textContent=(g.dataset.ref||'')+' — '+d.name+(g.dataset.value?' • '+g.dataset.value:'');
-  const comment=document.createElementNS(NS,'text'); comment.setAttribute('class','drop-comment');
-  comment.setAttribute('x','36'); comment.setAttribute('y','70'); comment.setAttribute('text-anchor','middle');
-  comment.setAttribute('transform','rotate(-90 36 70)'); comment.textContent=g.dataset.comment||'';
-  comment.style.display=g.dataset.comment?'':'none';
-  const hit=document.createElementNS(NS,'rect'); hit.setAttribute('class','component-hit-area');
-  hit.setAttribute('x',0); hit.setAttribute('y',0); hit.setAttribute('width',W); hit.setAttribute('height',H);
-  hit.setAttribute('fill','transparent'); hit.setAttribute('pointer-events','all');
-  g.append(title,box,hit,ns,ports,label,tag,comment); dropLayer.appendChild(g); select(g); enableMove(g);
+}
+
+function portsFor(g) {
+  if (!g) return [];
+  const key = g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '';
+  const defs = portDefs(key);
+  let labels = [];
+  try { labels = JSON.parse(g.dataset.terminals || 'null') || []; } catch (_) {}
+  return defs.map((p, i) => ({ ...p, index: i, label: labels[i] || p.label }));
+}
+
+function withPreviewPorts(type) {
+  const base = icon(type).replace('</svg>', '');
+  return base + '</svg>';
+}
+
+function nextReference(d) {
+  const s = ((d && (d.name || d.type)) || 'component').toLowerCase();
+  let p = 'X';
+  if (/contactor/.test(s)) p = 'KM';
+  else if (/overload|thermal/.test(s)) p = 'F';
+  else if (/breaker|mcb|fuse|isolator|protection/.test(s)) p = 'Q';
+  else if (/motor/.test(s)) p = 'M';
+  else if (/timer|delay/.test(s)) p = 'KT';
+  else if (/coil|relay/.test(s)) p = 'K';
+  else if (/push|button|emergency|selector|switch|limit|contact/.test(s)) p = 'S';
+  else if (/pilot|lamp|led|indicator/.test(s)) p = 'H';
+  else if (/earth|ground/.test(s)) p = 'PE';
+  else if (/terminal|connector|block/.test(s)) p = 'X';
+  else if (/transformer/.test(s)) p = 'T';
+  else if (/sensor|proximity/.test(s)) p = 'B';
+  const n = [...dropLayer.querySelectorAll('.dropped-symbol')].filter(g => (g.dataset.ref || '').startsWith(p)).length + 1;
+  return p + n;
+}
+
+function syncComponentPorts(g) {
+  if (!g) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  let portsGroup = g.querySelector(':scope > .component-ports');
+  if (!portsGroup) {
+    portsGroup = document.createElementNS(NS, 'g');
+    portsGroup.setAttribute('class', 'component-ports');
+    g.appendChild(portsGroup);
+  } else {
+    portsGroup.replaceChildren();
+  }
+  const defs = portsFor(g);
+  defs.forEach((p, idx) => {
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('class', 'mag-port');
+    r.setAttribute('x', String(Math.round((p.lx - p.w / 2) * 100) / 100));
+    r.setAttribute('y', String(Math.round((p.ly - p.h / 2) * 100) / 100));
+    r.setAttribute('width', String(p.w));
+    r.setAttribute('height', String(p.h));
+    r.setAttribute('rx', '1.2');
+    r.setAttribute('ry', '1.2');
+    r.setAttribute('cx', String(p.lx));
+    r.setAttribute('cy', String(p.ly));
+    r.dataset.port = p.label;
+    r.dataset.portIndex = String(idx);
+    r.dataset.side = p.side || 'top';
+    r.setAttribute('data-owner', 'component');
+    const titleEl = document.createElementNS(NS, 'title');
+    titleEl.textContent = `${g.dataset.ref || g.dataset.name || 'Component'} • Terminal ${p.label}`;
+    r.appendChild(titleEl);
+    portsGroup.appendChild(r);
+
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('class', 'port-name');
+    t.setAttribute('x', String(p.lx));
+    t.setAttribute('y', String(p.side === 'top' ? p.ly - 8 : p.ly + 13));
+    t.setAttribute('text-anchor', 'middle');
+    t.textContent = '';
+    t.setAttribute('aria-label', p.label);
+    portsGroup.appendChild(t);
+  });
+  // Ensure .component-ports is at the top of the component group so terminals always receive pointer events first
+  g.appendChild(portsGroup);
+}
+window.syncComponentPorts = syncComponentPorts;
+
+function applyComponentTransform(g, x = Number(g.dataset.x || 0), y = Number(g.dataset.y || 0)) {
+  if (!g) return;
+  const angle = ((Number(g.dataset.rotation) || 0) % 360 + 360) % 360;
+  g.setAttribute('transform', angle ? `translate(${x - ESC_COMP_CX},${y - ESC_COMP_CY}) rotate(${angle} ${ESC_COMP_CX} ${ESC_COMP_CY})` : `translate(${x - ESC_COMP_CX},${y - ESC_COMP_CY})`);
+}
+window.applyComponentTransform = applyComponentTransform;
+
+function absolutePorts(g, x = Number(g?.dataset?.x || 0), y = Number(g?.dataset?.y || 0)) {
+  if (!g) return [];
+  const deg = ((Number(g.dataset.rotation) || 0) % 360 + 360) % 360;
+  const rad = (deg * Math.PI) / 180, cos = Math.cos(rad), sin = Math.sin(rad);
+  const sideOrder = ['top', 'right', 'bottom', 'left'];
+  const steps = Math.round(deg / 90) % 4;
+  const portEls = [...g.querySelectorAll(':scope > .component-ports .mag-port, .mag-port')];
+  return portsFor(g).map((p, i) => {
+    const dx = p.lx - ESC_COMP_CX, dy = p.ly - ESC_COMP_CY;
+    const sIdx = sideOrder.indexOf(p.side || 'top');
+    const rotatedSide = sIdx >= 0 ? sideOrder[(sIdx + steps) % 4] : (p.side || 'top');
+    return {
+      index: i,
+      x: Math.round((x + dx * cos - dy * sin) * 100) / 100,
+      y: Math.round((y + dx * sin + dy * cos) * 100) / 100,
+      lx: p.lx,
+      ly: p.ly,
+      w: p.w,
+      h: p.h,
+      label: p.label,
+      side: rotatedSide,
+      g,
+      el: portEls[i] || null
+    };
+  });
+}
+window.absolutePorts = absolutePorts;
+
+function makeDropped(d, x, y) {
+  const NS = 'http://www.w3.org/2000/svg', W = ESC_COMP_W, H = ESC_COMP_H;
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'dropped-symbol');
+  g.dataset.uid = 'C' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+  g.dataset.type = d.type;
+  g.dataset.porttype = d.symbolFile || d.type;
+  if (d.symbolFile) g.dataset.symbolFile = d.symbolFile;
+  g.dataset.name = d.name;
+  g.dataset.ref = d.ref || nextReference(d);
+  g.dataset.value = d.value || '';
+  g.dataset.accent = d.accent || '#e9f1ed';
+  g.dataset.x = String(x);
+  g.dataset.y = String(y);
+  applyComponentTransform(g, x, y);
+
+  const box = document.createElementNS(NS, 'rect');
+  box.setAttribute('class', 'select-box');
+  box.setAttribute('x', '32');
+  box.setAttribute('y', '11');
+  box.setAttribute('width', '56');
+  box.setAttribute('height', '68');
+  box.setAttribute('rx', '2');
+
+  const ns = document.createElementNS(NS, 'svg');
+  ns.setAttribute('x', String(ESC_ART_X));
+  ns.setAttribute('y', String(ESC_ART_Y));
+  ns.setAttribute('width', String(ESC_ART_W));
+  ns.setAttribute('height', String(ESC_ART_H));
+  ns.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  ns.style.color = g.dataset.accent;
+  ns.style.pointerEvents = 'none';
+  if (d.symbolFile && /\.svg(?:$|\?)/i.test(d.symbolFile)) {
+    ns.setAttribute('viewBox', `0 0 ${ESC_ART_W} ${ESC_ART_H}`);
+    const im = document.createElementNS(NS, 'image');
+    im.setAttribute('href', d.symbolFile);
+    im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', d.symbolFile);
+    im.setAttribute('x', '0');
+    im.setAttribute('y', '0');
+    im.setAttribute('width', String(ESC_ART_W));
+    im.setAttribute('height', String(ESC_ART_H));
+    im.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    ns.appendChild(im);
+    g.classList.add('original-svg-component');
+  } else {
+    ns.setAttribute('viewBox', '0 0 48 32');
+    ns.innerHTML = icon(d.type).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+  }
+
+  const ports = document.createElementNS(NS, 'g');
+  ports.setAttribute('class', 'component-ports');
+
+  const label = document.createElementNS(NS, 'text');
+  label.setAttribute('class', 'drop-label');
+  label.setAttribute('x', String(W / 2));
+  label.setAttribute('y', String(H - 3));
+  label.setAttribute('text-anchor', 'middle');
+  label.textContent = '';
+
+  const tag = document.createElementNS(NS, 'text');
+  tag.setAttribute('class', 'drop-tag');
+  tag.setAttribute('x', String(W / 2));
+  tag.setAttribute('y', '10');
+  tag.setAttribute('text-anchor', 'middle');
+  tag.textContent = g.dataset.ref;
+
+  const title = document.createElementNS(NS, 'title');
+  title.textContent = (g.dataset.ref || '') + ' — ' + d.name + (g.dataset.value ? ' • ' + g.dataset.value : '');
+
+  const comment = document.createElementNS(NS, 'text');
+  comment.setAttribute('class', 'drop-comment');
+  comment.setAttribute('x', '22');
+  comment.setAttribute('y', '45');
+  comment.setAttribute('text-anchor', 'middle');
+  comment.setAttribute('transform', 'rotate(-90 22 45)');
+  comment.textContent = g.dataset.comment || '';
+  comment.style.display = g.dataset.comment ? '' : 'none';
+
+  const hit = document.createElementNS(NS, 'rect');
+  hit.setAttribute('class', 'component-hit-area');
+  hit.setAttribute('x', '12');
+  hit.setAttribute('y', '10');
+  hit.setAttribute('width', String(W - 24));
+  hit.setAttribute('height', String(H - 20));
+  hit.setAttribute('fill', 'transparent');
+  hit.setAttribute('pointer-events', 'all');
+
+  g.append(title, box, hit, ns, label, tag, comment, ports);
+  syncComponentPorts(g);
+  dropLayer.appendChild(g);
+  select(g);
+  enableMove(g);
   return g;
 }
-function applyComponentTransform(g,x=Number(g.dataset.x||0),y=Number(g.dataset.y||0)){
- const angle=((Number(g.dataset.rotation)||0)%360+360)%360;
- g.setAttribute('transform',`translate(${x-90},${y-70}) rotate(${angle} 90 70)`);
+
+function findSnap(g, x, y) {
+  let best = null, dist = 999;
+  const mine = absolutePorts(g, x, y);
+  document.querySelectorAll('.dropped-symbol').forEach(o => {
+    if (o === g) return;
+    absolutePorts(o).forEach(op => mine.forEach(mp => {
+      const d = Math.hypot(op.x - mp.x, op.y - mp.y);
+      if (d < 18 && d < dist) { dist = d; best = { x: x + (op.x - mp.x), y: y + (op.y - mp.y) }; }
+    }));
+  });
+  return best;
 }
-function absolutePorts(g,x=+g.dataset.x,y=+g.dataset.y){
- const ART_X=15,ART_Y=20,ART_W=150,ART_H=100;
- const angle=(Number(g.dataset.rotation)||0)*Math.PI/180,cos=Math.cos(angle),sin=Math.sin(angle);
- return portsFor(g).map(p=>{
-   const lx=ART_X+(p.x/48)*ART_W,ly=ART_Y+(p.y/32)*ART_H,dx=lx-90,dy=ly-70;
-   return {x:x+dx*cos-dy*sin,y:y+dx*sin+dy*cos,label:p.label};
- });
-}
-function findSnap(g,x,y){let best=null,dist=999;const mine=absolutePorts(g,x,y);document.querySelectorAll('.dropped-symbol').forEach(o=>{if(o===g)return;absolutePorts(o).forEach(op=>mine.forEach(mp=>{const d=Math.hypot(op.x-mp.x,op.y-mp.y);if(d<18&&d<dist){dist=d;best={x:x+(op.x-mp.x),y:y+(op.y-mp.y)};}}));});return best;}
+
 let activeDrag = null;
 let suppressNextComponentClick = false;
-function enableMove(g){
-  // Each placed component is its own SVG group. Only the group that received
-  // pointerdown is allowed to change position during this drag operation.
+function enableMove(g) {
   g.style.pointerEvents = 'all';
   g.style.cursor = 'default';
-  g.addEventListener('pointerdown', e => {
-    if (e.button !== 0) return;
-    if (e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
-    if (e.target && e.target.closest && e.target.closest('.connected-wire')) return;
-    e.preventDefault();
-    e.stopPropagation();
-    select(g);
-    const p = getPoint(e);
-    activeDrag = {
-      component: g,
-      pointerId: e.pointerId,
-      dx: p.x - Number(g.dataset.x || 0),
-      dy: p.y - Number(g.dataset.y || 0),
-      startX: p.x,
-      startY: p.y,
-      moved: false
-    };
-    g.classList.add('moving');
-    g.style.cursor = 'default';
-    try { svg.setPointerCapture(e.pointerId); } catch (_) {}
-  });
-  g.addEventListener('click', e => {
-    if (e.target && e.target.classList && e.target.classList.contains('mag-port')) return;
-    e.stopPropagation();
-    if (suppressNextComponentClick) {
-      suppressNextComponentClick = false;
-      return;
-    }
-    select(g);
-    state.textContent = 'SELECTED • ' + (g.dataset.ref || g.dataset.name || 'COMPONENT');
-  });
 }
-// A single shared drag handler prevents competing components from moving together.
-svg.addEventListener('pointermove', e => {
-  if (!activeDrag || e.pointerId !== activeDrag.pointerId) return;
-  const g = activeDrag.component;
-  if (!g || !g.isConnected) { activeDrag = null; return; }
-  const p = getPoint(e);
-  const x = p.x - activeDrag.dx;
-  const y = p.y - activeDrag.dy;
-  if (Math.hypot(p.x - activeDrag.startX, p.y - activeDrag.startY) > 3) activeDrag.moved = true;
-  // IMPORTANT: update only this exact component group, never the shared layer.
-  g.dataset.x = x;
-  g.dataset.y = y;
-  applyComponentTransform(g,x,y);
-});
-function finishComponentDrag(e) {
-  if (!activeDrag || (e.pointerId != null && e.pointerId !== activeDrag.pointerId)) return;
-  const g = activeDrag.component;
-  const wasMoved = activeDrag.moved;
-  if (g) {
-    g.classList.remove('moving');
-    g.style.cursor = 'default';
-    select(g);
-  }
-  activeDrag = null;
-  if (wasMoved) {
-    suppressNextComponentClick = true;
-    state.textContent = 'MOVED • ' + (g?.dataset.ref || g?.dataset.name || 'COMPONENT');
-    // Clear the click suppression if the browser doesn't synthesize a click.
-    setTimeout(() => { suppressNextComponentClick = false; }, 250);
-  }
-  try { if (e.pointerId != null) svg.releasePointerCapture(e.pointerId); } catch (_) {}
-}
-svg.addEventListener('pointerup', finishComponentDrag);
-svg.addEventListener('pointercancel', finishComponentDrag);
 
 // Final UI properties inspector: show only while a workspace component is selected.
 (function initPropertyPanel(){
  const $=id=>document.getElementById(id);const panel=$('propertyPanel');if(!panel)return;
  $('propertyClose')?.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true');});
  $('propertyDelete')?.addEventListener('click',()=>{if(selected){selected.remove();select(null);state.textContent='COMPONENT DELETED';}});
- const setData=(id,key)=>$(id)?.addEventListener('change',e=>{if(!selected)return;selected.dataset[key]=e.target.value;if(key==='ref')selected.dataset.label=e.target.value;if(key==='x'||key==='y'){const x=+(selected.dataset.x||0),y=+(selected.dataset.y||0);selected.setAttribute('transform',`translate(${x-36},${y-22})`);}if(key==='ref'||key==='label'){const tag=selected.querySelector('.drop-tag');if(tag)tag.textContent=e.target.value;}});
+ const setData=(id,key)=>$(id)?.addEventListener('change',e=>{if(!selected)return;selected.dataset[key]=e.target.value;if(key==='ref')selected.dataset.label=e.target.value;if(key==='x'||key==='y'){const x=+(selected.dataset.x||0),y=+(selected.dataset.y||0);applyComponentTransform(selected,x,y);}if(key==='ref'||key==='label'){const tag=selected.querySelector('.drop-tag');if(tag)tag.textContent=e.target.value;}});
  setData('propTag','ref');setData('propLabel','label');
  $('propShowTag')?.addEventListener('change',e=>{if(selected){const t=selected.querySelector('.drop-tag');if(t)t.style.display=e.target.checked?'':'none';}});
  $('propLineColor')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('path,line,circle,rect,polyline').forEach(n=>{if(n.closest('.mag-port'))return;n.style.stroke=e.target.value;});});
  $('propTextColor')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('text').forEach(n=>n.style.fill=e.target.value);});
  $('propLineWidth')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('path,line,circle,rect,polyline').forEach(n=>n.style.strokeWidth=e.target.value);});
  $('propFontSize')?.addEventListener('change',e=>{if(selected)selected.querySelectorAll('text').forEach(n=>n.style.fontSize=e.target.value+'px');});
- document.getElementById('sheet')?.addEventListener('pointerdown',e=>{if(!e.target.closest('.dropped-symbol')&&!e.target.closest('#propertyPanel'))select(null);});
+ document.getElementById('sheet')?.addEventListener('pointerdown',e=>{if(!e.target.closest('.dropped-symbol')&&!e.target.closest('.connected-wire')&&!e.target.closest('#propertyPanel'))select(null);});
 })();
 
 renderLibrary();
@@ -467,272 +593,565 @@ renderLibrary();
   const layer=document.getElementById('dropLayer');
   if(!layer) return;
   layer.addEventListener('click',e=>{
+    if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 10)) return;
     const g=e.target.closest && e.target.closest('.dropped-symbol');
     if(!g) return;
     if(e.target.classList && e.target.classList.contains('mag-port')) return;
     select(g);
     state.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
   },false);
-  document.getElementById('delete').title='Select a component, then click DELETE or press the Delete key';
+  document.getElementById('delete').title='Select a component or wire, then click DELETE or press the Delete key';
 })();
 
-/* V10 — real terminal-to-terminal magnetic wiring.  Drag the small square terminal, not the symbol. */
-(function initMagneticWiring(){
-  const NS='http://www.w3.org/2000/svg';
-  const svgEl=document.getElementById('schematic');
-  const dropLayerEl=document.getElementById('dropLayer');
-  if(!svgEl||!dropLayerEl) return;
+/* V10–V98 — Component terminal selection & orthogonal wire connection between components */
+function computeWirePoints(fromPort, toPort, waypoints = []) {
+  if (!fromPort || !toPort) return '';
+  const ax = Math.round(fromPort.x * 100) / 100;
+  const ay = Math.round(fromPort.y * 100) / 100;
+  const bx = Math.round(toPort.x * 100) / 100;
+  const by = Math.round(toPort.y * 100) / 100;
+  const STUB = 14;
 
-  let wireLayer=document.getElementById('wireLayer');
-  if(!wireLayer){
-    wireLayer=document.createElementNS(NS,'g');
-    wireLayer.setAttribute('id','wireLayer');
-    svgEl.insertBefore(wireLayer,dropLayerEl);
-  }
-  let wiring=null;
-
-  function portAbs(g,p){
-    const x=+g.dataset.x, y=+g.dataset.y;
-    return {x:x-24+p.x,y:y-20+p.y,label:p.label,g};
-  }
-  function allPorts(){
-    const out=[];
-    document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g=>{
-      portsFor(g).forEach(p=>out.push(portAbs(g,p)));
-    });
-    return out;
-  }
-  function pointFromEvent(e){return getPoint(e)}
-  function makePath(a,b){
-    const mx=Math.round((a.x+b.x)/2);
-    return `${a.x},${a.y} ${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`;
-  }
-  function nearestTarget(pt,source){
-    let best=null,bestD=18;
-    for(const p of allPorts()){
-      if(p.g===source.g && p.label===source.label) continue;
-      const d=Math.hypot(p.x-pt.x,p.y-pt.y);
-      if(d<bestD){best=p;bestD=d;}
-    }
-    return best;
-  }
-  function setPortConnected(p){
-    if(!p||!p.g) return;
-    const r=[...p.g.querySelectorAll('.mag-port')].find(x=>x.dataset.port===p.label);
-    if(r) r.classList.add('connected');
-  }
-
-  let activePort=null;
-  // Live CAD wire preview and alignment crosshairs, similar to the supplied reference video.
-  const guideLayer=document.createElementNS(NS,'g');
-  guideLayer.setAttribute('id','wireGuides');
-  const guideX=document.createElementNS(NS,'line');
-  const guideY=document.createElementNS(NS,'line');
-  [guideX,guideY].forEach(l=>{l.setAttribute('class','wire-guide');guideLayer.appendChild(l);});
-  svgEl.appendChild(guideLayer);
-  const preview=document.createElementNS(NS,'polyline');
-  preview.setAttribute('class','wire-preview');
-  preview.setAttribute('points','');
-  preview.style.display='none';
-  wireLayer.appendChild(preview);
-  function elbowPath(a,b){
-    const dx=Math.abs(b.x-a.x),dy=Math.abs(b.y-a.y);
-    if(dx<8||dy<8) return `${a.x},${a.y} ${b.x},${b.y}`;
-    const mx=Math.round((a.x+b.x)/2);
-    return `${a.x},${a.y} ${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`;
-  }
-  function orthogonalRoute(points){
-    if(!points||points.length<2)return '';
-    const out=[`${points[0].x},${points[0].y}`];
-    for(let i=1;i<points.length;i++){
-      const a=points[i-1],b=points[i];
-      if(Math.abs(a.x-b.x)>1 && Math.abs(a.y-b.y)>1){
-        // Default route: horizontal then vertical; every bend point remains user-controlled.
-        out.push(`${b.x},${a.y}`);
+  if (waypoints && waypoints.length > 0) {
+    const pts = [{ x: ax, y: ay }, ...waypoints.map(w => ({ x: Math.round(w.x * 100) / 100, y: Math.round(w.y * 100) / 100 })), { x: bx, y: by }];
+    const out = [`${ax},${ay}`];
+    const fromVert = (fromPort.side === 'top' || fromPort.side === 'bottom');
+    for (let i = 1; i < pts.length; i++) {
+      const p0 = pts[i - 1], p1 = pts[i];
+      if (Math.abs(p0.x - p1.x) > 1 && Math.abs(p0.y - p1.y) > 1) {
+        if (i === 1 && fromVert) out.push(`${p0.x},${p1.y}`);
+        else out.push(`${p1.x},${p0.y}`);
       }
-      out.push(`${b.x},${b.y}`);
+      out.push(`${p1.x},${p1.y}`);
     }
     return out.join(' ');
   }
-  function hideWireGuides(){guideX.style.display='none';guideY.style.display='none';preview.style.display='none';}
-  svgEl.addEventListener('pointermove',e=>{
-    if(!activePort)return;
-    const p=pointFromEvent(e);
-    guideX.setAttribute('x1',0);guideX.setAttribute('y1',activePort.y);
-    guideX.setAttribute('x2',svgEl.viewBox.baseVal.width);guideX.setAttribute('y2',activePort.y);
-    guideY.setAttribute('x1',activePort.x);guideY.setAttribute('y1',0);
-    guideY.setAttribute('x2',activePort.x);guideY.setAttribute('y2',svgEl.viewBox.baseVal.height);
-    guideX.style.display='block';guideY.style.display='block';
-    const route=[{x:activePort.x,y:activePort.y},...(activePort.waypoints||[]),p];
-     preview.setAttribute('points',orthogonalRoute(route));preview.style.display='block';
-  });
-  function connectOnClick(e){
-    const port=e.target.closest && e.target.closest('.mag-port');
-    if(!port) return;
-    const g=port.closest('.dropped-symbol'); if(!g) return;
-    e.preventDefault(); e.stopPropagation();
-    // Source SVG terminals use a dedicated click-to-highlight interaction.
-    // Handle it before legacy wire-start and component-selection behavior.
-    if(port.classList.contains('terminal-hit-target')){
-      const id=port.dataset.terminalId;
-      const ring=[...g.querySelectorAll('.terminal-glow-ring')].find(n=>n.dataset.terminalId===id);
-      if(!ring) return;
-      const wasOn=ring.classList.contains('terminal-highlight');
-      document.querySelectorAll('#dropLayer .terminal-glow-ring.terminal-highlight').forEach(n=>n.classList.remove('terminal-highlight'));
-      if(!wasOn) ring.classList.add('terminal-highlight');
-      const state=document.getElementById('state');
-      if(state) state.textContent=wasOn?'TERMINAL HIGHLIGHT CLEARED':'TERMINAL SELECTED • '+(port.dataset.port||'TERMINAL');
-      return;
+
+  const fromSide = fromPort.side || 'bottom';
+  const toSide = toPort.side || (Math.abs(by - ay) >= Math.abs(bx - ax) ? (by > ay ? 'top' : 'bottom') : (bx > ax ? 'left' : 'right'));
+  const fromVert = (fromSide === 'top' || fromSide === 'bottom');
+  const toVert = (toSide === 'top' || toSide === 'bottom');
+
+  if (fromVert && toVert) {
+    // 1. bottom -> top
+    if (fromSide === 'bottom' && toSide === 'top') {
+      if (by >= ay - 2) {
+        if (Math.abs(ax - bx) <= 1.5) return `${ax},${ay} ${bx},${by}`;
+        const my = Math.round((ay + by) / 2);
+        return `${ax},${ay} ${ax},${my} ${bx},${my} ${bx},${by}`;
+      }
+      const y1 = Math.round(ay + STUB);
+      const y2 = Math.round(by - STUB);
+      const mx = Math.abs(ax - bx) >= 36 ? Math.round((ax + bx) / 2) : Math.round(Math.max(ax, bx) + 32);
+      return `${ax},${ay} ${ax},${y1} ${mx},${y1} ${mx},${y2} ${bx},${y2} ${bx},${by}`;
     }
-    const pdef=portsFor(g).find(p=>p.label===port.dataset.port); if(!pdef) return;
-    const current=portAbs(g,pdef);
-    if(!activePort){
-      activePort={...current,el:port,waypoints:[]};
-      port.classList.add('port-active','selected');
-      preview.setAttribute('points',`${current.x},${current.y} ${current.x},${current.y}`);
-      preview.style.display='block';
-      state.textContent=`WIRE START • ${current.label} • CLICK DESTINATION TERMINAL`;
-      return;
+    // 2. top -> bottom
+    if (fromSide === 'top' && toSide === 'bottom') {
+      if (by <= ay + 2) {
+        if (Math.abs(ax - bx) <= 1.5) return `${ax},${ay} ${bx},${by}`;
+        const my = Math.round((ay + by) / 2);
+        return `${ax},${ay} ${ax},${my} ${bx},${my} ${bx},${by}`;
+      }
+      const y1 = Math.round(ay - STUB);
+      const y2 = Math.round(by + STUB);
+      const mx = Math.abs(ax - bx) >= 36 ? Math.round((ax + bx) / 2) : Math.round(Math.max(ax, bx) + 32);
+      return `${ax},${ay} ${ax},${y1} ${mx},${y1} ${mx},${y2} ${bx},${y2} ${bx},${by}`;
     }
-    if(activePort.g===g && activePort.label===current.label){
-      activePort.el.classList.remove('port-active','selected'); activePort=null; hideWireGuides(); state.textContent='WIRING CANCELLED'; return;
+    // 3. bottom -> bottom
+    if (fromSide === 'bottom' && toSide === 'bottom') {
+      const yOut = Math.round(Math.max(ay, by) + STUB);
+      if (Math.abs(ax - bx) < 32 && Math.abs(ay - by) > 20) {
+        const y1 = Math.round(ay + STUB);
+        const mx = Math.round(Math.max(ax, bx) + 32);
+        return `${ax},${ay} ${ax},${y1} ${mx},${y1} ${mx},${yOut} ${bx},${yOut} ${bx},${by}`;
+      }
+      return `${ax},${ay} ${ax},${yOut} ${bx},${yOut} ${bx},${by}`;
     }
-    if(activePort.g===g){state.textContent='CHOOSE A TERMINAL ON ANOTHER COMPONENT';return;}
-    const line=document.createElementNS(NS,'polyline');
-    line.setAttribute('class','connected-wire');
-     line.setAttribute('points',orthogonalRoute([{x:activePort.x,y:activePort.y},...(activePort.waypoints||[]),{x:current.x,y:current.y}]));
-    line.dataset.from=activePort.label; line.dataset.to=current.label;
-    line.dataset.fromType=activePort.g.dataset.type; line.dataset.toType=g.dataset.type;
-    line.dataset.fromG=activePort.g.dataset.uid||''; line.dataset.toG=g.dataset.uid||'';
-    wireLayer.insertBefore(line,preview);
-    activePort.el.classList.remove('port-active','selected');
-    setPortConnected(activePort); setPortConnected(current);
-    state.textContent=`CONNECTED • ${activePort.label} ↔ ${current.label}`; activePort=null;hideWireGuides();
+    // 4. top -> top
+    if (fromSide === 'top' && toSide === 'top') {
+      const yOut = Math.round(Math.min(ay, by) - STUB);
+      if (Math.abs(ax - bx) < 32 && Math.abs(ay - by) > 20) {
+        const y1 = Math.round(ay - STUB);
+        const mx = Math.round(Math.max(ax, bx) + 32);
+        return `${ax},${ay} ${ax},${y1} ${mx},${y1} ${mx},${yOut} ${bx},${yOut} ${bx},${by}`;
+      }
+      return `${ax},${ay} ${ax},${yOut} ${bx},${yOut} ${bx},${by}`;
+    }
   }
-  dropLayerEl.addEventListener('click',connectOnClick,true);
-  // Left-click on empty canvas while wiring to add a user-defined cable bend.
-  svgEl.addEventListener('click',e=>{
-    if(!activePort) return;
-    if(e.target.closest && (e.target.closest('.mag-port') || e.target.closest('.dropped-symbol'))) return;
-    const p=pointFromEvent(e);
-    activePort.waypoints.push({x:Math.round(p.x),y:Math.round(p.y)});
-    const pts=[{x:activePort.x,y:activePort.y},...activePort.waypoints,{x:p.x,y:p.y}];
-    preview.setAttribute('points',orthogonalRoute(pts));
-    preview.style.display='block';
-    state.textContent=`WIRE BEND ${activePort.waypoints.length} • LEFT-CLICK TO ADD BEND • RIGHT-CLICK TO CANCEL`;
+
+  if (!fromVert && !toVert) {
+    if (fromSide !== toSide && ((fromSide === 'right' && bx >= ax - 2) || (fromSide === 'left' && bx <= ax + 2))) {
+      if (Math.abs(ay - by) <= 1.5) return `${ax},${ay} ${bx},${by}`;
+      const mx = Math.round((ax + bx) / 2);
+      return `${ax},${ay} ${mx},${ay} ${mx},${by} ${bx},${by}`;
+    }
+    const xOut = fromSide === 'left' ? Math.round(Math.min(ax, bx) - STUB) : Math.round(Math.max(ax, bx) + STUB);
+    return `${ax},${ay} ${xOut},${ay} ${xOut},${by} ${bx},${by}`;
+  }
+
+  if (fromVert && !toVert) {
+    if ((fromSide === 'bottom' && by >= ay) || (fromSide === 'top' && by <= ay)) {
+      return `${ax},${ay} ${ax},${by} ${bx},${by}`;
+    }
+    const y1 = fromSide === 'bottom' ? Math.round(ay + STUB) : Math.round(ay - STUB);
+    return `${ax},${ay} ${ax},${y1} ${bx},${y1} ${bx},${by}`;
+  }
+
+  if ((toSide === 'top' && by >= ay) || (toSide === 'bottom' && by <= ay)) {
+    return `${ax},${ay} ${bx},${ay} ${bx},${by}`;
+  }
+  const x1 = fromSide === 'right' ? Math.round(ax + STUB) : Math.round(ax - STUB);
+  return `${ax},${ay} ${x1},${ay} ${x1},${by} ${bx},${by}`;
+}
+window.computeWirePoints = computeWirePoints;
+
+function resolveComponentPort(g, portIndex, portLabel) {
+  if (!g) return null;
+  const ports = absolutePorts(g);
+  if (!ports.length) return null;
+  const idx = Number(portIndex);
+  if (portIndex !== undefined && portIndex !== '' && Number.isInteger(idx) && ports[idx]) {
+    return ports[idx];
+  }
+  if (portLabel !== undefined && portLabel !== '') {
+    const byLabel = ports.find(p => p.label === portLabel);
+    if (byLabel) return byLabel;
+  }
+  return ports[0];
+}
+window.resolveComponentPort = resolveComponentPort;
+
+function refreshWiresForComponent(moved) {
+  const layer = document.getElementById('wireLayer');
+  if (!layer) return;
+  const targetUid = moved?.dataset?.uid;
+  for (const wire of layer.querySelectorAll('.connected-wire')) {
+    if (targetUid && wire.dataset.fromG !== targetUid && wire.dataset.toG !== targetUid) continue;
+    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.fromG}"]`);
+    const bG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.toG}"]`);
+    if (!aG || !bG) continue;
+    const a = resolveComponentPort(aG, wire.dataset.fromIndex, wire.dataset.from);
+    const b = resolveComponentPort(bG, wire.dataset.toIndex, wire.dataset.to);
+    if (!a || !b) continue;
+    let waypoints = [];
+    if (!targetUid && wire.dataset.waypoints) {
+      try { waypoints = JSON.parse(wire.dataset.waypoints) || []; } catch (_) {}
+    } else if (targetUid) {
+      delete wire.dataset.waypoints;
+    }
+    wire.setAttribute('points', computeWirePoints(a, b, waypoints));
+  }
+}
+window.refreshWiresForComponent = refreshWiresForComponent;
+
+function refreshAllWires() {
+  refreshWiresForComponent(null);
+}
+window.refreshAllWires = refreshAllWires;
+
+function syncConnectedPortStates() {
+  const allPortEls = document.querySelectorAll('#dropLayer .mag-port');
+  allPortEls.forEach(el => el.classList.remove('connected'));
+  const wires = document.querySelectorAll('#wireLayer .connected-wire');
+  wires.forEach(w => {
+    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${w.dataset.fromG}"]`);
+    const bG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${w.dataset.toG}"]`);
+    const a = resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from);
+    const b = resolveComponentPort(bG, w.dataset.toIndex, w.dataset.to);
+    if (a?.el) a.el.classList.add('connected');
+    if (b?.el) b.el.classList.add('connected');
   });
-  // Right-click cancels the unfinished cable without affecting completed wires.
-  svgEl.addEventListener('contextmenu',e=>{
-    if(!activePort) return;
+}
+window.syncConnectedPortStates = syncConnectedPortStates;
+
+(function initMagneticWiring() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgEl = document.getElementById('schematic');
+  const dropLayerEl = document.getElementById('dropLayer');
+  if (!svgEl || !dropLayerEl) return;
+
+  let wireLayer = document.getElementById('wireLayer');
+  if (!wireLayer) {
+    wireLayer = document.createElementNS(NS, 'g');
+    wireLayer.setAttribute('id', 'wireLayer');
+    svgEl.insertBefore(wireLayer, dropLayerEl);
+  }
+
+  const guideLayer = document.createElementNS(NS, 'g');
+  guideLayer.setAttribute('id', 'wireGuides');
+  const guideX = document.createElementNS(NS, 'line');
+  const guideY = document.createElementNS(NS, 'line');
+  [guideX, guideY].forEach(l => { l.setAttribute('class', 'wire-guide'); guideLayer.appendChild(l); });
+  svgEl.appendChild(guideLayer);
+
+  const preview = document.createElementNS(NS, 'polyline');
+  preview.setAttribute('class', 'wire-preview');
+  preview.setAttribute('points', '');
+  preview.style.display = 'none';
+  wireLayer.appendChild(preview);
+
+  function allPorts() {
+    const out = [];
+    document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g => {
+      absolutePorts(g).forEach(p => out.push(p));
+    });
+    return out;
+  }
+  window.allWorkspacePorts = allPorts;
+
+  function resolvePortFromEvent(e, snapRadius = 11) {
+    const directEl = e.target && e.target.closest ? e.target.closest('.mag-port') : null;
+    if (directEl) {
+      const g = directEl.closest('.dropped-symbol');
+      if (g) {
+        const p = resolveComponentPort(g, directEl.dataset.portIndex, directEl.dataset.port);
+        if (p) return { ...p, el: directEl };
+      }
+    }
+    if (snapRadius <= 0 || e.clientX == null || e.clientY == null) return null;
+    const pt = getPoint(e);
+    let best = null, bestD = snapRadius;
+    for (const p of allPorts()) {
+      const d = Math.hypot(p.x - pt.x, p.y - pt.y);
+      if (d <= bestD) {
+        best = p;
+        bestD = d;
+      }
+    }
+    return best;
+  }
+  window.resolvePortFromEvent = resolvePortFromEvent;
+
+  function findNearestTargetPort(pt, sourcePort, maxDist = 16) {
+    let best = null, bestD = maxDist;
+    for (const p of allPorts()) {
+      if (sourcePort && p.g === sourcePort.g && p.index === sourcePort.index) continue;
+      const d = Math.hypot(p.x - pt.x, p.y - pt.y);
+      if (d <= bestD) {
+        best = p;
+        bestD = d;
+      }
+    }
+    return best;
+  }
+
+  let activePort = null;
+  let selectedPort = null;
+  let justCompletedOnDown = false;
+  window.selectedWire = null;
+  window.__escWiringActive = false;
+
+  function clearConnectTargets() {
+    document.querySelectorAll('#dropLayer .mag-port.connect-target').forEach(el => el.classList.remove('connect-target'));
+  }
+
+  function hideWireGuides() {
+    guideX.style.display = 'none';
+    guideY.style.display = 'none';
+    preview.style.display = 'none';
+    clearConnectTargets();
+  }
+
+  function selectWire(wireEl) {
+    document.querySelectorAll('#wireLayer .connected-wire.wire-selected').forEach(w => w.classList.remove('wire-selected'));
+    window.selectedWire = wireEl || null;
+    if (wireEl) {
+      select(null);
+      wireEl.classList.add('wire-selected');
+      state.textContent = `SELECTED WIRE • ${wireEl.dataset.from || '1'} ↔ ${wireEl.dataset.to || '2'} • PRESS DELETE TO REMOVE`;
+    }
+  }
+  window.selectWire = selectWire;
+
+  function selectTerminal(portInfo) {
+    document.querySelectorAll('#dropLayer .mag-port.port-selected').forEach(el => el.classList.remove('port-selected'));
+    selectedPort = portInfo || null;
+    if (portInfo && portInfo.el) {
+      portInfo.el.classList.add('port-selected');
+    }
+  }
+  window.selectTerminal = selectTerminal;
+
+  function cancelActiveWiring(msg = 'WIRING CANCELLED') {
+    if (activePort && activePort.el) {
+      activePort.el.classList.remove('port-active', 'selected');
+    }
+    document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.selected').forEach(el => {
+      el.classList.remove('port-active', 'selected');
+    });
+    activePort = null;
+    window.__escWiringActive = false;
+    hideWireGuides();
+    if (msg && state) state.textContent = msg;
+  }
+  window.cancelActiveWiring = cancelActiveWiring;
+
+  function createWireConnection(fromPort, toPort, waypoints = []) {
+    if (!fromPort || !toPort || !fromPort.g || !toPort.g) return null;
+    if (!fromPort.g.dataset.uid) fromPort.g.dataset.uid = 'C' + Date.now().toString(36);
+    if (!toPort.g.dataset.uid) toPort.g.dataset.uid = 'C' + Date.now().toString(36);
+
+    const freshFrom = resolveComponentPort(fromPort.g, fromPort.index, fromPort.label) || fromPort;
+    const freshTo = resolveComponentPort(toPort.g, toPort.index, toPort.label) || toPort;
+
+    const line = document.createElementNS(NS, 'polyline');
+    line.setAttribute('class', 'connected-wire');
+    line.setAttribute('points', computeWirePoints(freshFrom, freshTo, waypoints));
+    line.dataset.from = freshFrom.label;
+    line.dataset.to = freshTo.label;
+    line.dataset.fromIndex = String(freshFrom.index);
+    line.dataset.toIndex = String(freshTo.index);
+    line.dataset.fromType = freshFrom.g.dataset.type || '';
+    line.dataset.toType = freshTo.g.dataset.type || '';
+    line.dataset.fromG = freshFrom.g.dataset.uid;
+    line.dataset.toG = freshTo.g.dataset.uid;
+    if (waypoints && waypoints.length) {
+      line.dataset.waypoints = JSON.stringify(waypoints);
+    }
+
+    if (preview.parentNode === wireLayer) {
+      wireLayer.insertBefore(line, preview);
+    } else {
+      wireLayer.appendChild(line);
+    }
+
+    if (activePort && activePort.el) {
+      activePort.el.classList.remove('port-active', 'selected');
+    }
+    selectTerminal(freshTo);
+    syncConnectedPortStates();
+    const fromRef = freshFrom.g.dataset.ref || freshFrom.g.dataset.name || 'C1';
+    const toRef = freshTo.g.dataset.ref || freshTo.g.dataset.name || 'C2';
+    state.textContent = `CONNECTED • ${fromRef}:${freshFrom.label} ↔ ${toRef}:${freshTo.label}`;
+    activePort = null;
+    window.__escWiringActive = false;
+    hideWireGuides();
+    return line;
+  }
+  window.createWireConnection = createWireConnection;
+
+  function startWiringFromPort(portInfo, pointerId = null) {
+    selectWire(null);
+    selectTerminal(portInfo);
+    activePort = {
+      ...portInfo,
+      waypoints: [],
+      pointerId,
+      dragged: false
+    };
+    window.__escWiringActive = true;
+    if (portInfo.el) {
+      portInfo.el.classList.add('port-active', 'port-selected', 'selected');
+    }
+    preview.setAttribute('points', `${portInfo.x},${portInfo.y} ${portInfo.x},${portInfo.y}`);
+    preview.style.display = 'block';
+    const ref = portInfo.g.dataset.ref || portInfo.g.dataset.name || 'COMPONENT';
+    state.textContent = `WIRE START • ${ref}:${portInfo.label} • CLICK DESTINATION TERMINAL`;
+  }
+
+  // Capture-phase pointerdown on svg handles terminal selection & wire initiation/completion before component drag
+  svgEl.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    const hitPort = resolvePortFromEvent(e, 11);
+    if (hitPort) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+      if (!activePort) {
+        justCompletedOnDown = false;
+        startWiringFromPort(hitPort, e.pointerId);
+        return;
+      }
+
+      // activePort is already set: check if clicking the exact same terminal or a target terminal
+      if (activePort.g === hitPort.g && activePort.index === hitPort.index) {
+        justCompletedOnDown = true;
+        selectTerminal(null);
+        cancelActiveWiring('WIRING CANCELLED');
+        return;
+      }
+
+      // Clicked a different terminal: complete the wire connection!
+      justCompletedOnDown = true;
+      createWireConnection(activePort, hitPort, activePort.waypoints || []);
+      return;
+    }
+
+    // Check if clicking an existing wire when not actively wiring
+    if (!activePort) {
+      const wireEl = e.target && e.target.closest ? e.target.closest('.connected-wire') : null;
+      if (wireEl) {
+        e.preventDefault();
+        e.stopPropagation();
+        selectWire(wireEl);
+        return;
+      }
+      if (!e.target.closest('.dropped-symbol')) {
+        selectWire(null);
+        selectTerminal(null);
+      }
+    }
+  }, true);
+
+  // Live wire preview and magnetic target snapping during pointermove
+  svgEl.addEventListener('pointermove', e => {
+    const p = getPoint(e);
+    if (!activePort) {
+      // Highlight nearest terminal on hover
+      clearConnectTargets();
+      const hoverPort = resolvePortFromEvent(e, 10);
+      if (hoverPort && hoverPort.el) hoverPort.el.classList.add('connect-target');
+      return;
+    }
+    const freshStart = resolveComponentPort(activePort.g, activePort.index, activePort.label) || activePort;
+    activePort.x = freshStart.x;
+    activePort.y = freshStart.y;
+    activePort.side = freshStart.side;
+
+    if (Math.hypot(p.x - activePort.x, p.y - activePort.y) > 8) {
+      activePort.dragged = true;
+    }
+
+    clearConnectTargets();
+    const snapPort = findNearestTargetPort(p, activePort, 16);
+    if (snapPort && snapPort.el) {
+      snapPort.el.classList.add('connect-target');
+    }
+    const target = snapPort || { x: p.x, y: p.y };
+
+    const vb = svgEl.viewBox.baseVal;
+    const gx1 = vb ? vb.x - 2000 : -2000, gx2 = vb ? vb.x + vb.width + 2000 : 4000;
+    const gy1 = vb ? vb.y - 2000 : -2000, gy2 = vb ? vb.y + vb.height + 2000 : 4000;
+    guideX.setAttribute('x1', String(gx1)); guideX.setAttribute('y1', String(target.y));
+    guideX.setAttribute('x2', String(gx2)); guideX.setAttribute('y2', String(target.y));
+    guideY.setAttribute('x1', String(target.x)); guideY.setAttribute('y1', String(gy1));
+    guideY.setAttribute('x2', String(target.x)); guideY.setAttribute('y2', String(gy2));
+    guideX.style.display = 'block';
+    guideY.style.display = 'block';
+
+    preview.setAttribute('points', computeWirePoints(activePort, target, activePort.waypoints || []));
+    preview.style.display = 'block';
+  });
+
+  // Support drag-and-release from Terminal 1 directly onto Terminal 2
+  window.addEventListener('pointerup', e => {
+    if (justCompletedOnDown) {
+      justCompletedOnDown = false;
+      return;
+    }
+    if (!activePort) return;
+    const targetPort = resolvePortFromEvent(e, 16) || (e.clientX != null ? findNearestTargetPort(getPoint(e), activePort, 16) : null);
+    if (targetPort && (targetPort.g !== activePort.g || targetPort.index !== activePort.index)) {
+      e.preventDefault();
+      e.stopPropagation();
+      createWireConnection(activePort, targetPort, activePort.waypoints || []);
+    }
+  }, true);
+
+  // Left-click on empty canvas while wiring adds a user-defined cable bend (waypoint)
+  svgEl.addEventListener('click', e => {
+    const hitPort = resolvePortFromEvent(e, 12);
+    if (hitPort) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    if (!activePort) return;
+    if (e.target.closest && (e.target.closest('.mag-port') || e.target.closest('.dropped-symbol'))) return;
+    const p = getPoint(e);
+    if (Math.hypot(p.x - activePort.x, p.y - activePort.y) < 10) return;
+    activePort.waypoints.push({ x: Math.round(p.x), y: Math.round(p.y) });
+    preview.setAttribute('points', computeWirePoints(activePort, { x: p.x, y: p.y }, activePort.waypoints));
+    preview.style.display = 'block';
+    state.textContent = `WIRE BEND ${activePort.waypoints.length} • CLICK DESTINATION TERMINAL OR RIGHT-CLICK TO CANCEL`;
+  });
+
+  // Right-click or Escape cancels unfinished cable
+  svgEl.addEventListener('contextmenu', e => {
+    if (!activePort) return;
     e.preventDefault();
-    if(activePort.el) activePort.el.classList.remove('port-active','selected');
-    activePort=null; hideWireGuides(); state.textContent='WIRING CANCELLED';
+    selectTerminal(null);
+    cancelActiveWiring('WIRING CANCELLED');
   });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&activePort){activePort.el.classList.remove('port-active','selected');activePort=null;hideWireGuides();state.textContent='WIRING CANCELLED';}});
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (activePort) {
+        selectTerminal(null);
+        cancelActiveWiring('WIRING CANCELLED');
+      } else {
+        selectTerminal(null);
+        selectWire(null);
+      }
+    }
+  });
 
-
-  // Prevent the normal component-move handler when the user starts on a magnetic port.
-  dropLayerEl.addEventListener('click',e=>{
-    if(e.target.classList && e.target.classList.contains('mag-port')) e.stopPropagation();
-  },true);
-
-  // V53: retain the compact select-box attached to each component. Its transparent
-  // hit area remains independent, while CSS only displays the tight outline on selection.
-
-  const hint=document.querySelector('.hint');
-  if(hint) hint.textContent='Click one terminal, then click a terminal on another component to connect. Press Escape to cancel.';
+  const hint = document.querySelector('.hint');
+  if (hint) hint.textContent = 'Click or drag between component terminals to connect wires. Press Escape to cancel.';
 })();
 
-
 /* V13: component selection/move/delete keeps magnetic wiring attached. */
-(function enhancePlacedComponents(){
-  const svgEl=document.getElementById('schematic');
-  const layer=document.getElementById('dropLayer');
-  const wires=document.getElementById('wireLayer');
-  if(!svgEl||!layer) return;
+(function enhancePlacedComponents() {
+  const svgEl = document.getElementById('schematic');
+  const layer = document.getElementById('dropLayer');
+  const wires = document.getElementById('wireLayer');
+  if (!svgEl || !layer) return;
 
-  function portAbs(g,p){
-    const x=+g.dataset.x,y=+g.dataset.y;
-    return {x:x-24+p.x,y:y-20+p.y,label:p.label,g};
+  let uid = 1;
+  function ensureId(g) {
+    if (!g.dataset.uid) g.dataset.uid = 'C' + (uid++);
+    if (!g.querySelector(':scope > .component-ports .mag-port')) syncComponentPorts(g);
   }
-  function updateWiresFor(g){
-    if(!wires) return;
-    const ports=portsFor(g).map(p=>portAbs(g,p));
-    [...wires.querySelectorAll('.connected-wire')].forEach(line=>{
-      if(line.dataset.fromG!==g.dataset.uid && line.dataset.toG!==g.dataset.uid) return;
-      const fromG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.fromG);
-      const toG=[...layer.querySelectorAll('.dropped-symbol')].find(x=>x.dataset.uid===line.dataset.toG);
-      if(!fromG||!toG) return;
-      const fp=portsFor(fromG).map(p=>portAbs(fromG,p)).find(p=>p.label===line.dataset.from);
-      const tp=portsFor(toG).map(p=>portAbs(toG,p)).find(p=>p.label===line.dataset.to);
-      if(!fp||!tp) return;
-      const mx=Math.round((fp.x+tp.x)/2);
-      line.setAttribute('points',`${fp.x},${fp.y} ${mx},${fp.y} ${mx},${tp.y} ${tp.x},${tp.y}`);
-    });
-  }
-  function refreshAllWires(){[...layer.querySelectorAll('.dropped-symbol')].forEach(updateWiresFor);}
-
-  // Give existing and future components a stable id and ensure moving does not break wires.
-  let uid=1;
-  function ensureId(g){ if(!g.dataset.uid) g.dataset.uid='C'+(uid++); }
-  const obs=new MutationObserver(()=>layer.querySelectorAll('.dropped-symbol').forEach(ensureId));
-  obs.observe(layer,{childList:true});
+  const obs = new MutationObserver(() => {
+    layer.querySelectorAll('.dropped-symbol').forEach(ensureId);
+    syncConnectedPortStates();
+  });
+  obs.observe(layer, { childList: true });
   layer.querySelectorAll('.dropped-symbol').forEach(ensureId);
 
-  // Wrap the current move handler behavior by observing transforms and refreshing wires.
-  const transformObserver=new MutationObserver(records=>{
-    let changed=false;
-    for(const r of records){ if(r.type==='attributes' && r.attributeName==='transform'){changed=true;ensureId(r.target);} }
-    if(changed) refreshAllWires();
+  const transformObserver = new MutationObserver(records => {
+    let changed = false;
+    for (const r of records) {
+      if (r.type === 'attributes' && r.attributeName === 'transform' && r.target.classList?.contains('dropped-symbol')) {
+        changed = true;
+        ensureId(r.target);
+        refreshWiresForComponent(r.target);
+      }
+    }
+    if (changed) syncConnectedPortStates();
   });
-  transformObserver.observe(layer,{subtree:true,attributes:true,attributeFilter:['transform']});
+  transformObserver.observe(layer, { subtree: true, attributes: true, attributeFilter: ['transform'] });
 
-  // Delete selected component and its connected wires.
-  function removeComponent(g){
-    if(!g) return;
-    if(wires){
-      [...wires.querySelectorAll('.connected-wire')].forEach(line=>{
-        if(line.dataset.fromG===g.dataset.uid||line.dataset.toG===g.dataset.uid) line.remove();
+  function removeComponentOrWire(g) {
+    if (window.selectedWire && window.selectedWire.isConnected) {
+      window.selectedWire.remove();
+      window.selectedWire = null;
+      syncConnectedPortStates();
+      state.textContent = 'WIRE DELETED';
+      return;
+    }
+    if (!g) return;
+    if (wires) {
+      [...wires.querySelectorAll('.connected-wire')].forEach(line => {
+        if (line.dataset.fromG === g.dataset.uid || line.dataset.toG === g.dataset.uid) line.remove();
       });
     }
+    if (typeof window.cancelActiveWiring === 'function') window.cancelActiveWiring('');
     g.remove();
-    if(selected===g) selected=null;
-    state.textContent='DELETED';
+    if (selected === g) selected = null;
+    syncConnectedPortStates();
+    state.textContent = 'DELETED';
   }
-  document.getElementById('delete').onclick=()=>{
-    if(selected) removeComponent(selected);
-    else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';
+  document.getElementById('delete').onclick = () => {
+    if (window.selectedWire || selected) removeComponentOrWire(selected);
+    else state.textContent = 'CLICK A COMPONENT OR WIRE THEN PRESS DELETE';
   };
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Delete' && selected){e.preventDefault();removeComponent(selected);}
-  },true);
-
-  // Click anywhere on a placed symbol selects it and gives a clean glow only.
-  layer.addEventListener('pointerdown',e=>{
-    const g=e.target.closest && e.target.closest('.dropped-symbol');
-    if(g && !(e.target.classList&&e.target.classList.contains('mag-port'))) select(g);
-  },true);
-
-  // Add IDs to newly created wires after the V10 wiring code creates them.
-  const wireObserver=new MutationObserver(records=>{
-    for(const r of records){
-      r.addedNodes.forEach(n=>{
-        if(n.nodeType===1 && n.classList.contains('connected-wire')){
-          // Infer endpoint component from the current labels/nearest port when IDs weren't assigned.
-          if(!n.dataset.fromG||!n.dataset.toG){
-            const gs=[...layer.querySelectorAll('.dropped-symbol')];
-            const from=gs.find(g=>portsFor(g).some(p=>p.label===n.dataset.from));
-            const to=gs.find(g=>portsFor(g).some(p=>p.label===n.dataset.to));
-            if(from) ensureId(from); if(to) ensureId(to);
-            if(from) n.dataset.fromG=from.dataset.uid;
-            if(to) n.dataset.toG=to.dataset.uid;
-          }
-        }
-      });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Delete' && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement) && (window.selectedWire || selected)) {
+      e.preventDefault();
+      removeComponentOrWire(selected);
     }
-    refreshAllWires();
-  });
-  if(wires) wireObserver.observe(wires,{childList:true});
+  }, true);
 })();
 
 /* Re-render library after V13 symbol definitions; keeps 3-column, high-resolution previews. */
@@ -919,7 +1338,7 @@ renderLibrary();
    const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory===null?'SELECT A CATEGORY':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
     (filtered.length ? '<div class="component-results">'+filtered.map(it=>`<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span></button>`).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
    host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
-    libraryCategories.map(c=>{const expanded=activeCategory===c.name;const count=normalized.filter(it=>it.category===c.name).length;return `<button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-icon ${c.name==='Proximity Sensor'?'proximity-category-icon':''}" aria-hidden="true"><svg viewBox="0 0 36 32" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${categoryIcons[c.name]||''}</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">${c.name}</span><span class="category-count">(${count})</span><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}`}).join('') + '</div>';
+    libraryCategories.map(c=>{const expanded=activeCategory===c.name;const count=normalized.filter(it=>it.category===c.name).length;return `<div class="library-category-wrap"><button type="button" class="component-category ${expanded?'active':''}" data-category="${c.name}" style="--category-accent:${c.color}" aria-pressed="${expanded}" aria-expanded="${expanded}"><span class="category-icon ${c.name==='Proximity Sensor'?'proximity-category-icon':''}" aria-hidden="true"><svg viewBox="0 0 36 32" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${categoryIcons[c.name]||''}</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">${c.name}</span><span class="category-count">(${count})</span><span class="category-chevron ${expanded?'expanded':''}" aria-hidden="true">›</span></button>${expanded?resultMarkup:''}</div>`}).join('') + '</div>';
    host.querySelectorAll('.component-category').forEach(btn=>btn.addEventListener('click',()=>{
     // Clicking the already-open category collapses its cards; clicking another category opens that section.
     activeCategory = activeCategory === btn.dataset.category ? null : btn.dataset.category;
@@ -932,7 +1351,7 @@ renderLibrary();
  }
 
  // Embedded manifest makes the supplied SVG library work even when index.html is opened directly via file://.
- const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":28,"symbols":[{"file":"components/Power/source_dc_negative.svg","name":"DC Negative Pole","category":"Power","original_filename":"source_dc_negative.svg","type":"DC Negative Pole"},{"file":"components/Power/source_dc_positive.svg","name":"DC Positive Pole","category":"Power","original_filename":"source_dc_positive.svg","type":"DC Positive Pole"},{"file":"components/Power/source_dc_supply_pair.svg","name":"DC Supply Pair","category":"Power","original_filename":"source_dc_supply_pair.svg","type":"DC Supply Pair"},{"file":"assets/symbols/esc-contactor-coil.svg","name":"Contactor Coil","category":"Coils","original_filename":"Contactor_Coil.svg","type":"Contactor Coil"},{"file":"assets/symbols/esc-tof-timer-coil.svg","name":"TOF Timer Coil (Off Delay)","category":"Coils","original_filename":"TOF_Timer_Coil.svg","type":"TOF Timer Coil (Off Delay)"},{"file":"assets/symbols/esc-ton-tof-timer-coil.svg","name":"TON/TOF Timer Coil (ON/OFF Delay)","category":"Coils","original_filename":"TON_TOF_Timer_Coil.svg","type":"TON/TOF Timer Coil (ON/OFF Delay)"},{"file":"assets/symbols/esc-ton-timer-coil.svg","name":"TON Timer Coil (On Delay)","category":"Coils","original_filename":"TON_Timer_Coil.svg","type":"TON Timer Coil (On Delay)"},{"file":"components/Switches/Contact_01.svg","name":"Contact 01","category":"Switches","original_filename":"Contact_01.svg","type":"Auxiliary Contact 01"},{"file":"components/Switches/Contact_02.svg","name":"Contact 02","category":"Switches","original_filename":"Contact_02.svg","type":"Auxiliary Contact 02"},{"file":"components/Switches/Contact_03.svg","name":"Contact 03","category":"Switches","original_filename":"Contact_03.svg","type":"Auxiliary Contact 03"},{"file":"components/Switches/Contact_04.svg","name":"Contact 04","category":"Switches","original_filename":"Contact_04.svg","type":"Auxiliary Contact 04"},{"file":"components/Switches/Contact_05.svg","name":"Contact 05","category":"Switches","original_filename":"Contact_05.svg","type":"Auxiliary Contact 05"},{"file":"components/Switches/Contact_06.svg","name":"Contact 06","category":"Switches","original_filename":"Contact_06.svg","type":"Auxiliary Contact 06"},{"file":"components/Switches/Contact_07.svg","name":"Contact 07","category":"Switches","original_filename":"Contact_07.svg","type":"Auxiliary Contact 07"},{"file":"components/Switches/Contact_08.svg","name":"Contact 08","category":"Switches","original_filename":"Contact_08.svg","type":"Auxiliary Contact 08"},{"file":"components/Switches/Contact_09.svg","name":"Contact 09","category":"Switches","original_filename":"Contact_09.svg","type":"Auxiliary Contact 09"},{"file":"components/Switches/Contact_10.svg","name":"Contact 10","category":"Switches","original_filename":"Contact_10.svg","type":"Auxiliary Contact 10"},{"file":"components/Switches/Contact_11.svg","name":"Contact 11","category":"Switches","original_filename":"Contact_11.svg","type":"Auxiliary Contact 11"},{"file":"components/Switches/Contact_12.svg","name":"Contact 12","category":"Switches","original_filename":"Contact_12.svg","type":"Auxiliary Contact 12"},{"file":"components/Switches/Contact_13.svg","name":"Contact 13","category":"Switches","original_filename":"Contact_13.svg","type":"Auxiliary Contact 13"},{"file":"components/Switches/Contact_14.svg","name":"Contact 14","category":"Switches","original_filename":"Contact_14.svg","type":"Auxiliary Contact 14"},{"file":"components/Switches/Contact_15.svg","name":"Contact 15","category":"Switches","original_filename":"Contact_15.svg","type":"Auxiliary Contact 15"},{"file":"components/Switches/Contact_16.svg","name":"Contact 16","category":"Switches","original_filename":"Contact_16.svg","type":"Auxiliary Contact 16"},{"file":"components/Switches/Contact_17.svg","name":"Contact 17","category":"Switches","original_filename":"Contact_17.svg","type":"Auxiliary Contact 17"},{"file":"components/Switches/Contact_18.svg","name":"Contact 18","category":"Switches","original_filename":"Contact_18.svg","type":"Auxiliary Contact 18"},{"file":"components/Switches/Contact_19.svg","name":"Contact 19","category":"Switches","original_filename":"Contact_19.svg","type":"Auxiliary Contact 19"},{"file":"components/Switches/Contact_20.svg","name":"Contact 20","category":"Switches","original_filename":"Contact_20.svg","type":"Auxiliary Contact 20"},{"file":"components/Proximity Sensor/Inductive_Proximity_Sensor.svg","name":"Inductive Proximity Sensor","category":"Proximity Sensor","original_filename":"Inductive_Proximity_Sensor.svg","type":"Inductive Proximity Sensor"}]};
+ const embeddedSymbolManifest = {"project":"ELECTRICAL SIMU CKT","count":36,"symbols":[{"file":"components/Power/01_DC_Negative.svg","name":"01 DC Negative","category":"Power","original_filename":"01_DC_Negative.svg"},{"file":"components/Power/02_DC_Positive.svg","name":"02 DC Positive","category":"Power","original_filename":"02_DC_Positive.svg"},{"file":"components/Power/03_Earth_Ground.svg","name":"03 Earth Ground","category":"Power","original_filename":"03_Earth_Ground.svg"},{"file":"components/Power/04_N_Terminal.svg","name":"04 N Terminal","category":"Power","original_filename":"04_N_Terminal.svg"},{"file":"components/Power/05_L1_Terminal.svg","name":"05 L1 Terminal","category":"Power","original_filename":"05_L1_Terminal.svg"},{"file":"components/Power/06_L2_Terminal.svg","name":"06 L2 Terminal","category":"Power","original_filename":"06_L2_Terminal.svg"},{"file":"components/Power/07_L3_Terminal.svg","name":"07 L3 Terminal","category":"Power","original_filename":"07_L3_Terminal.svg"},{"file":"components/Power/08_PE_Terminal.svg","name":"08 PE Terminal","category":"Power","original_filename":"08_PE_Terminal.svg"},{"file":"components/Power/09_Three_Phase_L1_L2_L3.svg","name":"09 Three Phase L1 L2 L3","category":"Power","original_filename":"09_Three_Phase_L1_L2_L3.svg"},{"file":"components/Power/10_Three_Phase_Neutral.svg","name":"10 Three Phase Neutral","category":"Power","original_filename":"10_Three_Phase_Neutral.svg"},{"file":"components/Power/11_Three_Phase_Neutral_PE.svg","name":"11 Three Phase Neutral PE","category":"Power","original_filename":"11_Three_Phase_Neutral_PE.svg"},{"file":"assets/symbols/esc-contactor-coil.svg","name":"Contactor Coil","category":"Coils","original_filename":"Contactor_Coil.svg","type":"Contactor Coil"},{"file":"assets/symbols/esc-tof-timer-coil.svg","name":"TOF Timer Coil (Off Delay)","category":"Coils","original_filename":"TOF_Timer_Coil.svg","type":"TOF Timer Coil (Off Delay)"},{"file":"assets/symbols/esc-ton-tof-timer-coil.svg","name":"TON/TOF Timer Coil (ON/OFF Delay)","category":"Coils","original_filename":"TON_TOF_Timer_Coil.svg","type":"TON/TOF Timer Coil (ON/OFF Delay)"},{"file":"assets/symbols/esc-ton-timer-coil.svg","name":"TON Timer Coil (On Delay)","category":"Coils","original_filename":"TON_Timer_Coil.svg","type":"TON Timer Coil (On Delay)"},{"file":"components/Switches/Contact_01.svg","name":"Contact 01","category":"Switches","original_filename":"Contact_01.svg","type":"Auxiliary Contact 01"},{"file":"components/Switches/Contact_02.svg","name":"Contact 02","category":"Switches","original_filename":"Contact_02.svg","type":"Auxiliary Contact 02"},{"file":"components/Switches/Contact_03.svg","name":"Contact 03","category":"Switches","original_filename":"Contact_03.svg","type":"Auxiliary Contact 03"},{"file":"components/Switches/Contact_04.svg","name":"Contact 04","category":"Switches","original_filename":"Contact_04.svg","type":"Auxiliary Contact 04"},{"file":"components/Switches/Contact_05.svg","name":"Contact 05","category":"Switches","original_filename":"Contact_05.svg","type":"Auxiliary Contact 05"},{"file":"components/Switches/Contact_06.svg","name":"Contact 06","category":"Switches","original_filename":"Contact_06.svg","type":"Auxiliary Contact 06"},{"file":"components/Switches/Contact_07.svg","name":"Contact 07","category":"Switches","original_filename":"Contact_07.svg","type":"Auxiliary Contact 07"},{"file":"components/Switches/Contact_08.svg","name":"Contact 08","category":"Switches","original_filename":"Contact_08.svg","type":"Auxiliary Contact 08"},{"file":"components/Switches/Contact_09.svg","name":"Contact 09","category":"Switches","original_filename":"Contact_09.svg","type":"Auxiliary Contact 09"},{"file":"components/Switches/Contact_10.svg","name":"Contact 10","category":"Switches","original_filename":"Contact_10.svg","type":"Auxiliary Contact 10"},{"file":"components/Switches/Contact_11.svg","name":"Contact 11","category":"Switches","original_filename":"Contact_11.svg","type":"Auxiliary Contact 11"},{"file":"components/Switches/Contact_12.svg","name":"Contact 12","category":"Switches","original_filename":"Contact_12.svg","type":"Auxiliary Contact 12"},{"file":"components/Switches/Contact_13.svg","name":"Contact 13","category":"Switches","original_filename":"Contact_13.svg","type":"Auxiliary Contact 13"},{"file":"components/Switches/Contact_14.svg","name":"Contact 14","category":"Switches","original_filename":"Contact_14.svg","type":"Auxiliary Contact 14"},{"file":"components/Switches/Contact_15.svg","name":"Contact 15","category":"Switches","original_filename":"Contact_15.svg","type":"Auxiliary Contact 15"},{"file":"components/Switches/Contact_16.svg","name":"Contact 16","category":"Switches","original_filename":"Contact_16.svg","type":"Auxiliary Contact 16"},{"file":"components/Switches/Contact_17.svg","name":"Contact 17","category":"Switches","original_filename":"Contact_17.svg","type":"Auxiliary Contact 17"},{"file":"components/Switches/Contact_18.svg","name":"Contact 18","category":"Switches","original_filename":"Contact_18.svg","type":"Auxiliary Contact 18"},{"file":"components/Switches/Contact_19.svg","name":"Contact 19","category":"Switches","original_filename":"Contact_19.svg","type":"Auxiliary Contact 19"},{"file":"components/Switches/Contact_20.svg","name":"Contact 20","category":"Switches","original_filename":"Contact_20.svg","type":"Auxiliary Contact 20"},{"file":"components/Proximity Sensor/Inductive_Proximity_Sensor.svg","name":"Inductive Proximity Sensor","category":"Proximity Sensor","original_filename":"Inductive_Proximity_Sensor.svg","type":"Inductive Proximity Sensor"}]};
  const assetItems = (embeddedSymbolManifest.symbols || []).filter(it => it.file && /\.svg$/i.test(it.file));
  if (assetItems.length) renderAssets(assetItems);
  else {
@@ -940,66 +1359,15 @@ renderLibrary();
  }
 
 
- // Replace a generic drawn icon with the original SVG asset when one was dragged from the library.
+ // Ensure original SVG asset metadata and exact terminal overlays stay synchronized when dropped.
  const priorMakeDropped=makeDropped;
  makeDropped=function(d,x,y){
    const g=priorMakeDropped(d,x,y);
    if(d.symbolFile){
     g.dataset.symbolFile=d.symbolFile;
-    const old=g.querySelector('svg');
-    if(old){
-      old.innerHTML=''; old.setAttribute('x','15');old.setAttribute('y','13');old.setAttribute('width','90');old.setAttribute('height','63');old.setAttribute('viewBox','0 0 90 63');
-      old.setAttribute('preserveAspectRatio','xMidYMid meet');
-      const img=document.createElementNS(NS,'image');img.setAttribute('x','0');img.setAttribute('y','0');img.setAttribute('width','90');img.setAttribute('height','63');img.setAttribute('preserveAspectRatio','xMidYMid meet');img.setAttribute('href',d.symbolFile);img.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',d.symbolFile);old.appendChild(img);
-    }
-    // Workspace terminal interaction overlays for the three approved source SVGs.
-    // The visible terminal outline is traced from each source SVG path; the hit target is separate.
-    const baseName=String(d.symbolFile).split('/').pop().toLowerCase();
-    const hexPath='m253.59,394.12l15.64,-31.29l41.71,0l15.64,31.29l-15.64,31.29l-41.71,0l-15.64,-31.29z';
-    const terminalMap={
-      'source_dc_negative.svg':[{x:290.095,y:394.117,label:'DC−',d:hexPath,rotate:'rotate(89.8506 290.095 394.117)'}],
-      'source_dc_positive.svg':[{x:290.095,y:394.117,label:'DC+',d:hexPath,rotate:'rotate(89.8506 290.095 394.117)'}],
-      'source_dc_supply_pair.svg':[
-        {x:184.095,y:395.117,label:'DC+',d:'m147.59,395.12l15.64,-31.29l41.71,0l15.64,31.29l-15.64,31.29l-41.71,0l-15.64,-31.29z',rotate:'rotate(89.8506 184.095 395.117)'},
-        {x:461.205,y:398.307,label:'DC−',d:'m424.7,398.31l15.64,-31.29l41.71,0l15.64,31.29l-15.64,31.29l-41.71,0l-15.64,-31.29z',rotate:'rotate(89.8506 461.205 398.307)'}
-      ]
-    };
-    const actualTerms=terminalMap[baseName];
-    if(actualTerms){
-      // V3: mount terminal hit targets directly on the dropped group, above its SVG image.
-      {
-        const ports=g;
-        const visualGroup=document.createElementNS(NS,'g');
-        visualGroup.setAttribute('class','terminal-visual-overlays');
-        visualGroup.setAttribute('transform','translate(15 13) scale(0.140625 0.13125)');
-        actualTerms.forEach((t,i)=>{
-          const id=g.dataset.uid+'_T'+(i+1);
-          const outline=document.createElementNS(NS,'path');
-          outline.setAttribute('class','terminal-glow-ring');
-          outline.setAttribute('d',t.d); outline.setAttribute('transform',t.rotate);
-          outline.setAttribute('fill','#ffffff'); outline.setAttribute('stroke','#ff3030');
-          outline.setAttribute('stroke-width','10'); outline.setAttribute('stroke-linejoin','round');
-          outline.setAttribute('pointer-events','none'); outline.dataset.terminalId=id;
-          visualGroup.appendChild(outline);
-
-          // Invisible hit shape uses the SAME source-SVG geometry and transform as the visible hexagon.
-          // This avoids coordinate drift caused by workspace scaling or component transforms.
-          const hit=document.createElementNS(NS,'path'); hit.setAttribute('class','mag-port terminal-hit-target');
-          hit.setAttribute('d',t.d); hit.setAttribute('transform',t.rotate);
-          hit.setAttribute('fill','transparent'); hit.setAttribute('stroke','transparent');
-          hit.setAttribute('stroke-width','48'); hit.setAttribute('stroke-linejoin','round');
-          hit.setAttribute('pointer-events','stroke');
-          hit.dataset.port=t.label; hit.dataset.terminalId=id; hit.dataset.owner='component';
-          hit.setAttribute('aria-label',t.label+' terminal'); hit.setAttribute('role','button'); hit.setAttribute('tabindex','0');
-          visualGroup.appendChild(hit);
-        });
-        ports.insertBefore(visualGroup,ports.firstChild);
-      }
-      g.dataset.terminals=JSON.stringify(actualTerms.map(t=>t.label));
-      g.dataset.terminalIds=JSON.stringify(actualTerms.map((t,i)=>g.dataset.uid+'_T'+(i+1)));
-    }
-    // Keep the real SVG symbol visually crisp while leaving the fixed terminal points as the interaction layer.
+    g.dataset.porttype=d.symbolFile;
     g.classList.add('original-svg-component');
+    syncComponentPorts(g);
    }
    return g;
  };
@@ -1030,22 +1398,12 @@ document.querySelectorAll('.top nav button').forEach(button=>{
 
 
 /* Keep terminal-to-terminal wires attached when a component moves. */
-function refreshWiresForComponent(moved){
- const layer=document.getElementById('wireLayer');if(!layer||!moved?.dataset?.uid)return;
- const portAt=(g,label)=>{const p=(absolutePorts(g)||[]).find(x=>x.label===label);return p?{x:p.x,y:p.y}:null};
- for(const wire of layer.querySelectorAll('.connected-wire')){
-  if(wire.dataset.fromG!==moved.dataset.uid&&wire.dataset.toG!==moved.dataset.uid)continue;
-  const aG=document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.fromG}"]`),bG=document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wire.dataset.toG}"]`);
-  if(!aG||!bG)continue;const a=portAt(aG,wire.dataset.from),b=portAt(bG,wire.dataset.to);if(!a||!b)continue;
-  const mx=Math.round((a.x+b.x)/2);wire.setAttribute('points',`${a.x},${a.y} ${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}`);
- }
-}
-
 /* V51: make every placed component reliably selectable by click. The property inspector follows the clicked component. */
 (function installClickSelectionFallback(){
   const layer=document.getElementById('dropLayer');
   if(!layer) return;
   layer.addEventListener('click', function(e){
+    if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11)) return;
     if(e.target && e.target.closest && e.target.closest('.mag-port')) return;
     const g=e.target && e.target.closest ? e.target.closest('.dropped-symbol') : null;
     if(!g) return;
@@ -1067,6 +1425,7 @@ function refreshWiresForComponent(moved){
     const target=e.target;
     // Terminal clicks belong to the wiring tool, not component movement.
     if(target && target.closest && target.closest('.mag-port')) return;
+    if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11)) return;
     const g=target && target.closest ? target.closest('.dropped-symbol') : null;
     if(!g) return;
     e.preventDefault();
@@ -1134,10 +1493,10 @@ function refreshWiresForComponent(moved){
   if (!canvas || !layer || typeof select !== 'function') return;
   function openForEvent(e) {
     const target = e.target;
+    if (target && target.closest && target.closest('.mag-port')) return;
+    if (typeof window.resolvePortFromEvent === 'function' && window.resolvePortFromEvent(e, 11)) return;
     const g = target && target.closest ? target.closest('#dropLayer .dropped-symbol') : null;
     if (!g) return;
-    // Avoid treating terminal squares as component body double-clicks; double-click
-    // on the component's visible SVG or its surrounding symbol group is supported.
     select(g, true);
     const panel = document.getElementById('propertyPanel');
     if (panel) {
@@ -1148,10 +1507,7 @@ function refreshWiresForComponent(moved){
     e.stopPropagation();
     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
   }
-  // Use capture so older click/drag handlers cannot immediately close the panel.
   canvas.addEventListener('dblclick', openForEvent, true);
-  // Some browser/SVG combinations suppress dblclick after drag-enabled pointer events.
-  // A second click (detail === 2) opens the same panel as a reliable fallback.
   canvas.addEventListener('click', function(e) {
     if (e.detail !== 2) return;
     openForEvent(e);
@@ -1162,7 +1518,7 @@ function refreshWiresForComponent(moved){
 (function tightSymbolAndTerminalSelectionV70(){
  const layer=document.getElementById('dropLayer'); if(!layer)return;
  layer.addEventListener('pointerdown',e=>{
-  const port=e.target&&e.target.closest?e.target.closest('.mag-port'):null;
+  const port = (typeof window.resolvePortFromEvent === 'function') ? window.resolvePortFromEvent(e, 11)?.el : (e.target&&e.target.closest?e.target.closest('.mag-port'):null);
   if(!port)return;
   document.querySelectorAll('#dropLayer .mag-port.port-selected').forEach(p=>p.classList.remove('port-selected'));
   port.classList.add('port-selected');
@@ -1173,43 +1529,3 @@ function refreshWiresForComponent(moved){
   const g=e.target.closest('.dropped-symbol'); if(g&&g.classList.contains('selected'))updateSelectionOutline(g);
  },true);
 })();
-
-/* ESC V112: terminal picking is geometrically aligned with the visible SVG hexagon.
-   Capture phase intercepts the terminal before component selection and drag handlers. */
-(function sourceTerminalHighlightV112(){
- const layer=document.getElementById('dropLayer');
- const canvas=document.getElementById('schematic');
- if(!layer||!canvas)return;
- function clearHighlight(){
-   layer.querySelectorAll('.terminal-glow-ring.terminal-highlight').forEach(n=>n.classList.remove('terminal-highlight'));
-   layer.querySelectorAll('.terminal-hit-target.port-selected').forEach(n=>n.classList.remove('port-selected'));
- }
- function activate(port){
-   const id=port?.dataset?.terminalId; if(!id)return;
-   const was=port.classList.contains('port-selected');
-   clearHighlight();
-   // A terminal click is not a component selection: remove the dashed selection frame.
-   if(typeof select==='function') select(null);
-   if(was)return;
-   port.classList.add('port-selected');
-   const ring=[...layer.querySelectorAll('.terminal-glow-ring')].find(n=>n.dataset.terminalId===id);
-   if(ring)ring.classList.add('terminal-highlight');
-   const state=document.getElementById('state');
-   if(state)state.textContent='TERMINAL SELECTED • '+(port.dataset.port||'TERMINAL');
- }
- function findPort(e){return e.target?.closest?.('#dropLayer .terminal-hit-target[data-terminal-id]')||null;}
- document.addEventListener('pointerdown',e=>{
-   const port=findPort(e); if(!port)return;
-   e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-   activate(port);
- },true);
- document.addEventListener('click',e=>{
-   const port=findPort(e);
-   if(port){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();return;}
-   if(e.target?.closest?.('#dropLayer .dropped-symbol'))return;
-   clearHighlight();
- },true);
- document.addEventListener('keydown',e=>{
-   const port=findPort(e); if(port&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();activate(port);}
- },true);
-})();;
