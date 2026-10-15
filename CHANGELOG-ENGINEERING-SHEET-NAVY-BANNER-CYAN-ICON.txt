@@ -1,0 +1,6 @@
+Engineering sheet logo update
+
+- Engineering-sheet banner background is dark navy.
+- Logo icon tile is bright cyan to match the supplied brand reference.
+- Electrical Simu text remains white; CKT and underline are cyan; tagline remains white.
+- Only the engineering-sheet banner asset and its cache key were changed.
