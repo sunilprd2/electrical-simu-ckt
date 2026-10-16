@@ -870,7 +870,7 @@ body.engineering-sheet-on #engineeringSheet{display:inline!important}
 body.title-block-off #engineeringSheet .sheet-titleblock{display:none!important}
 body.engineering-sheet-on #engineeringSheet .sheet-paper{fill:transparent!important;stroke:#71879a!important;stroke-width:1.5!important}
 body.theme-dark.engineering-sheet-on #engineeringSheet .sheet-paper{stroke:#7792ad!important}
-.sheet-settings{position:fixed;z-index:1200;top:82px;right:14px;width:300px;max-width:calc(100vw - 24px);padding:0 14px 14px;display:none;background:#202b3a;color:#edf5ff;border:1px solid #456486;border-radius:13px;box-shadow:0 16px 40px #0009;font:12px/1.45 Arial,sans-serif}
+.sheet-settings{position:fixed;z-index:1200;top:50%;left:50%;right:auto;transform:translate(-50%,-50%);width:460px;max-width:calc(100vw - 28px);max-height:calc(100vh - 36px);overflow:auto;box-sizing:border-box;padding:0 16px 16px;display:none;background:#202b3a;color:#edf5ff;border:1px solid #456486;border-radius:13px;box-shadow:0 0 0 100vmax #020916b8,0 16px 40px #0009;font:12px/1.45 Arial,sans-serif}
 .sheet-settings.open{display:block}
 .sheet-settings-head{display:flex;align-items:center;justify-content:space-between;margin:0 -14px 10px;padding:12px 14px;background:linear-gradient(90deg,#087fff,#5330dc);border-radius:12px 12px 0 0;font-size:14px}
 .sheet-settings-head button{border:0;border-radius:5px;background:#ffffff22;color:#fff;font-size:22px;width:28px;height:28px;cursor:pointer}
@@ -1870,4 +1870,193 @@ body.theme-light #wireLayer .connected-wire {
   height: 50px !important;
   max-height: 50px !important;
   object-fit: contain !important;
+}
+
+
+/* V102: Engineering Sheet popup mirrors the branded title-block rectangle. */
+.sheet-brand-titleblock{
+  display:grid;grid-template-columns:minmax(155px, 0.95fr) minmax(0,2.7fr);
+  margin:0 0 12px;border:1px solid #526b7c;background:#0b1e31;
+  min-height:76px;overflow:hidden;
+}
+.sheet-brand-logo{
+  display:flex;align-items:center;justify-content:center;padding:6px;
+  background:#07192a;border-right:1px solid #526b7c;min-width:0;
+}
+.sheet-brand-logo img{display:block;width:100%;max-width:250px;height:auto;object-fit:contain}
+.sheet-brand-cells{
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;
+  grid-template-rows:repeat(3,minmax(24px,auto));min-width:0;
+}
+.sheet-brand-cells>div{
+  display:flex;flex-direction:column;justify-content:center;gap:2px;
+  padding:3px 6px;border-right:1px solid #526b7c;border-bottom:1px solid #526b7c;
+  min-width:0;overflow:hidden;
+}
+.sheet-brand-cells>div b{font-size:8px;line-height:1.1;color:#edf5ff;font-weight:700}
+.sheet-brand-cells>div span{font-size:10px;line-height:1.15;color:#edf5ff;overflow-wrap:anywhere;min-height:1px}
+.sheet-brand-cells>div:nth-child(1){grid-column:1;grid-row:1}
+.sheet-brand-cells>div:nth-child(2){grid-column:2;grid-row:1}
+.sheet-brand-cells>div:nth-child(3){grid-column:1;grid-row:2}
+.sheet-brand-cells>div:nth-child(4){grid-column:2;grid-row:2}
+.sheet-brand-cells>div:nth-child(5){grid-column:3;grid-row:2}
+.sheet-brand-cells>div:nth-child(6){grid-column:3;grid-row:1}
+.sheet-brand-cells>div:nth-child(7){grid-column:1;grid-row:3}
+.sheet-brand-cells>div:nth-child(8){grid-column:3;grid-row:3}
+.sheet-brand-cells>div:nth-child(9){grid-column:2;grid-row:3}
+.sheet-brand-cells>div:nth-child(2),.sheet-brand-cells>div:nth-child(5),.sheet-brand-cells>div:nth-child(8){border-right:0}
+.sheet-brand-cells>div:nth-child(7),.sheet-brand-cells>div:nth-child(8),.sheet-brand-cells>div:nth-child(9){border-bottom:0}
+.sheet-settings .sheet-field input[type="date"]{
+  color-scheme:dark;background:#0c1d30;color:#eef7ff;border:1px solid #536b84;
+}
+body.theme-light .sheet-settings .sheet-field input[type="date"],
+body.light-mode .sheet-settings .sheet-field input[type="date"],
+body.theme-light-mode .sheet-settings .sheet-field input[type="date"]{
+  color-scheme:light;background:#fff;color:#172033;border-color:#8b9bad;
+}
+.sheet-settings .sheet-field input[type="date"]::-webkit-calendar-picker-indicator{
+  cursor:pointer;filter:invert(1);opacity:1;
+}
+body.theme-light .sheet-settings .sheet-field input[type="date"]::-webkit-calendar-picker-indicator,
+body.light-mode .sheet-settings .sheet-field input[type="date"]::-webkit-calendar-picker-indicator,
+body.theme-light-mode .sheet-settings .sheet-field input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:none;opacity:1;
+}
+@media(max-width:560px){
+ .sheet-brand-titleblock{grid-template-columns:1fr}
+ .sheet-brand-logo{border-right:0;border-bottom:1px solid #526b7c}
+ .sheet-brand-logo img{max-width:210px}
+ .sheet-brand-cells>div b{font-size:7px}
+}
+
+
+/* V103: The popup itself is the engineering-sheet title block; fields are edited in place. */
+.sheet-settings.sheet-titleblock-editor{
+  top:50%;left:50%;right:auto;transform:translate(-50%,-50%);
+  width:min(1135px,calc(100vw - 20px));max-width:calc(100vw - 20px);
+  max-height:calc(100vh - 28px);overflow:visible;box-sizing:border-box;
+  padding:0;background:#0b1e31;color:#edf5ff;
+  border:1px solid #71879a;border-radius:4px;
+  box-shadow:0 0 0 100vmax #020916b8,0 16px 40px #0009;
+  font:12px/1.2 Arial,sans-serif;
+}
+.sheet-titleblock-editor .sheet-settings-head{
+  margin:0;padding:8px 10px;background:#0b1e31;border-bottom:1px solid #526b7c;
+  border-radius:3px 3px 0 0;font-size:12px;min-height:30px;box-sizing:border-box;
+}
+.sheet-titleblock-editor .sheet-settings-head b{font-weight:700;color:#eef7ff}
+.sheet-titleblock-editor .sheet-settings-head button{
+  width:24px;height:24px;background:#18334a;border:1px solid #526b7c;color:#fff;
+  font-size:18px;border-radius:3px;flex:0 0 auto;
+}
+.sheet-form-titleblock{
+  display:grid;width:100%;box-sizing:border-box;overflow:hidden;
+  grid-template-columns:21.5% 16.7% 16% 17.6% 14.8% 13.4%;
+  grid-template-rows:repeat(3,minmax(32px,auto));
+  grid-template-areas:
+    "brand project project drawing drawing sheet"
+    "brand title checked approved date size"
+    "brand drawn drawn drawn revision revision";
+  background:#0b1e31;border:1px solid #526b7c;
+}
+.sheet-form-brand{
+  grid-area:brand;display:flex;align-items:center;justify-content:center;
+  padding:5px;min-width:0;min-height:0;box-sizing:border-box;
+  background:#07192a;border-right:1px solid #526b7c;
+}
+.sheet-form-brand img{display:block;width:100%;max-width:240px;height:auto;max-height:100%;object-fit:contain}
+.sheet-cell{
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;
+  gap:2px;min-width:0;min-height:0;box-sizing:border-box;
+  padding:3px 6px;border-right:1px solid #526b7c;border-bottom:1px solid #526b7c;
+  background:#0b1e31;color:#edf5ff;cursor:text;
+}
+.sheet-cell>span{font-size:clamp(7px,.72vw,9px);font-weight:700;line-height:1.05;color:#edf5ff}
+.sheet-cell input,.sheet-cell select{
+  display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;
+  margin:0;padding:1px 2px;border:1px solid transparent;border-radius:2px;
+  outline:none;background:transparent;color:#edf5ff;
+  font:clamp(8px,.82vw,11px)/1.2 Arial,sans-serif;
+}
+.sheet-cell input::placeholder{color:#8fa7bc;opacity:.8}
+.sheet-cell input:focus,.sheet-cell select:focus{
+  border-color:#10d5e7;background:#102a40;box-shadow:0 0 0 1px #10d5e755;
+}
+.sheet-cell select{appearance:auto;cursor:pointer}
+.sheet-cell select option{background:#0b1e31;color:#edf5ff}
+.sheet-cell input[type="date"]{color-scheme:dark;cursor:pointer}
+.sheet-cell input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:1;cursor:pointer}
+.sheet-cell-project{grid-area:project}
+.sheet-cell-drawing{grid-area:drawing}
+.sheet-cell-sheet{grid-area:sheet}
+.sheet-cell-title{grid-area:title}
+.sheet-cell-checked{grid-area:checked}
+.sheet-cell-approved{grid-area:approved}
+.sheet-cell-date{grid-area:date}
+.sheet-cell-size{grid-area:size}
+.sheet-cell-drawn{grid-area:drawn}
+.sheet-cell-revision{grid-area:revision;border-right:0}
+.sheet-cell-sheet,.sheet-cell-size{border-right:0}
+.sheet-cell-drawn{border-bottom:0}
+.sheet-cell-revision{border-bottom:0}
+.sheet-form-options{
+  display:flex;align-items:center;gap:12px;padding:7px 10px;
+  border:1px solid #526b7c;border-top:0;background:#0b1e31;box-sizing:border-box;
+  color:#b9cce0;font-size:10px;
+}
+.sheet-form-options>label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.sheet-form-options select{
+  padding:4px 7px;background:#0b1e31;color:#edf5ff;border:1px solid #526b7c;border-radius:3px;
+}
+.sheet-form-options>span{flex:1}
+.sheet-titleblock-editor .sheet-settings-actions{display:flex;gap:6px;margin:0 0 0 auto}
+.sheet-titleblock-editor .sheet-settings-actions button{
+  flex:0 0 auto;min-width:72px;padding:6px 14px;border:1px solid #08c9dc;
+  border-radius:3px;background:#08bcca;color:#061827;font-weight:700;cursor:pointer;
+}
+.sheet-titleblock-editor .sheet-settings-actions #sheetReset{
+  background:#142c40;color:#edf5ff;border-color:#526b7c;
+}
+body.theme-light .sheet-titleblock-editor .sheet-form-titleblock,
+body.theme-light .sheet-titleblock-editor .sheet-cell,
+body.theme-light .sheet-titleblock-editor .sheet-form-options{
+  background:#fff;color:#172033;
+}
+body.theme-light .sheet-titleblock-editor .sheet-cell>span{color:#172033}
+body.theme-light .sheet-titleblock-editor .sheet-cell input,
+body.theme-light .sheet-titleblock-editor .sheet-cell select,
+body.theme-light .sheet-titleblock-editor .sheet-form-options select{
+  color:#172033;background:transparent;
+}
+body.theme-light .sheet-titleblock-editor .sheet-cell input::placeholder{color:#657589}
+body.theme-light .sheet-titleblock-editor .sheet-cell input:focus,
+body.theme-light .sheet-titleblock-editor .sheet-cell select:focus{background:#eef8ff}
+body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]{color-scheme:light}
+body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]::-webkit-calendar-picker-indicator{filter:none}
+@media(max-width:640px){
+ .sheet-form-titleblock{grid-template-rows:repeat(3,minmax(35px,auto))}
+ .sheet-cell{padding:2px 3px}
+ .sheet-form-brand{padding:3px}
+ .sheet-titleblock-editor .sheet-settings-head{font-size:10px;padding:5px 7px}
+ .sheet-form-options{gap:6px;padding:5px;flex-wrap:wrap}
+ .sheet-form-options>span{display:none}
+ .sheet-titleblock-editor .sheet-settings-actions button{min-width:48px;padding:5px 8px}
+}
+
+
+/* V104 finishing touches for Engineering Sheet title-block popup */
+.sheet-titleblock-editor .sheet-settings-head{
+  background:linear-gradient(105deg,#087cff 0%,#0757c9 100%);
+  border-bottom:1px solid #278bff;
+}
+.sheet-titleblock-editor .sheet-settings-head b{color:#fff}
+.sheet-titleblock-editor .sheet-settings-head button{
+  background:#ed334f;border:1px solid #ff7184;color:#fff;
+}
+.sheet-titleblock-editor .sheet-settings-head button:hover{background:#c91e3a}
+.sheet-titleblock-editor .sheet-cell input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:invert(1);opacity:1;cursor:pointer;
+}
+body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:none;opacity:1;
 }

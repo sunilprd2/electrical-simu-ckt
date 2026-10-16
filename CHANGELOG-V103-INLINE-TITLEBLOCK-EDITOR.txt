@@ -1,0 +1,8 @@
+V103 — Inline Engineering Sheet Title-Block Editor
+
+- Replaced the vertical form and separate preview with a single horizontal title-block popup matching the engineering-sheet bottom details.
+- Preserved the Electrical SimuCKT logo banner and navy/cyan branding.
+- Project, Drawing No., Sheet No., Title, Checked, Approved, Date, Size, Drawn and Revision are editable directly in their title-block cells.
+- Date remains a native calendar field with dark/light theme-aware styling.
+- Paper size options and orientation selection are retained; OK applies entered details to the engineering sheet.
+- Updated stylesheet and service-worker cache version.

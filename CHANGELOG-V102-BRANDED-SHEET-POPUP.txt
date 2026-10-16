@@ -1,0 +1,6 @@
+V102 targeted changes
+
+- Added a rectangular title-block-style brand preview to the Engineering Sheet popup.
+- Uses the same Electrical SimuCKT brand banner asset as the engineering sheet, with navy background, cyan icon and CKT accent, and tagline.
+- Date input/calendar uses dark styling on dark theme and light styling on light theme, including the calendar icon.
+- Updated cache version to ensure the new styles load.

@@ -1,0 +1,7 @@
+V100 targeted changes
+
+- Text formatting toolbar is positioned at the top-right of the workspace while editing.
+- Removed the textarea's duplicate dashed border; the SVG text editing rectangle remains with 20% stroke opacity.
+- Engineering Sheet settings open as a centered modal with Project, Title, Document No., Date, Drawn by, Revision, Checked by, Approved by, Sheet No., paper size and orientation.
+- Paper size choices include A5, A4, A3, A2, A1, A0 and Custom. Apply action is labeled OK.
+- Updated local PWA cache key for stylesheet changes.

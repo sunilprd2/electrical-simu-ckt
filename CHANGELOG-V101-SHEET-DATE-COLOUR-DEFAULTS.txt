@@ -1,0 +1,8 @@
+V101 requested updates
+
+- Engineering Sheet is OFF by default on startup.
+- Enabling Engineering Sheet opens the settings popup; OK applies the title-block fields and enables the sheet.
+- Date field uses the browser's native calendar picker and displays DD-MM-YYYY in the title block.
+- Paper sizes include A5, A4, A3, A2, A1, A0 and Custom.
+- Component / Wire colour picker uses white by default in dark mode and black in light mode.
+- When 'Use selected colour as default' is checked, the selected colour is saved and applied; when unchecked, theme-based white/black defaults are restored.
