@@ -1,0 +1,8 @@
+Electrical Simu CKT v107 - Text anchor and delete fix
+
+Changes:
+- Removed the visible dashed square around text while preserving the transparent hit area for selection and movement.
+- New text and the text-size control default to 10.
+- Made toolbar Delete remove selected text before editor blur can interfere; component deletion remains the existing fallback when no text is selected.
+
+Validation: JavaScript syntax and ZIP integrity checked. Live browser interaction not tested.

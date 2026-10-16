@@ -399,7 +399,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    if(e.button===0 && !panMode && !isEmptyWorkspace)return;
    const st=document.getElementById('state')?.textContent||'';
    if(window.__escWiringActive||st.startsWith('WIRE START')||st.startsWith('WIRE BEND')||st.startsWith('TERMINAL SELECTED'))return;
-   if(textMode){const p=point(e),g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill','var(--drawing-text-color, #ffffff)');t.setAttribute('font-size','16');t.setAttribute('xml:space','preserve');t.textContent='Double-click to edit';g.appendChild(t);const hit=document.createElementNS('http://www.w3.org/2000/svg','rect');hit.setAttribute('class','drawing-text-hit');hit.setAttribute('x','-8');hit.setAttribute('y','-24');hit.setAttribute('width','210');hit.setAttribute('height','34');hit.setAttribute('fill','transparent');hit.setAttribute('stroke','none');g.insertBefore(hit,t);drop.appendChild(g);enableDrawingText(g);selectDrawingText(g);textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');document.getElementById('state').textContent='TEXT ADDED • DOUBLE-CLICK TO EDIT';return;}
+   if(textMode){const p=point(e),g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill','var(--drawing-text-color, #ffffff)');t.setAttribute('font-size','10');t.setAttribute('xml:space','preserve');t.textContent='Double-click to edit';g.appendChild(t);const hit=document.createElementNS('http://www.w3.org/2000/svg','rect');hit.setAttribute('class','drawing-text-hit');hit.setAttribute('x','-8');hit.setAttribute('y','-24');hit.setAttribute('width','210');hit.setAttribute('height','34');hit.setAttribute('fill','transparent');hit.setAttribute('stroke','none');g.insertBefore(hit,t);drop.appendChild(g);enableDrawingText(g);selectDrawingText(g);textMode=false;document.getElementById('insertTextBtn')?.classList.remove('active');document.getElementById('state').textContent='TEXT ADDED • DOUBLE-CLICK TO EDIT';return;}
    const rect=svg.getBoundingClientRect();
    pan={clientX:e.clientX,clientY:e.clientY,x:view.x,y:view.y,unitsPerPixelX:view.w/Math.max(1,rect.width),unitsPerPixelY:view.h/Math.max(1,rect.height),pointerId:e.pointerId};
    svg.classList.add('panning');e.preventDefault();
@@ -1045,7 +1045,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  function ensureEditorTools(){
    if($('escTextEditorTools'))return;
    const panel=document.createElement('div');panel.id='escTextEditorTools';
-   panel.innerHTML='<label>Text colour <input id="escTextColour" type="color" value="#ffff00"></label><label>Size <input id="escTextSize" type="number" min="6" max="96" value="16"></label><button id="escTextDone" type="button">Done</button>';
+   panel.innerHTML='<label>Text colour <input id="escTextColour" type="color" value="#ffff00"></label><label>Size <input id="escTextSize" type="number" min="6" max="96" value="10"></label><button id="escTextDone" type="button">Done</button>';
    document.body.appendChild(panel);
    $('escTextColour').addEventListener('input',()=>{if(window.__escEditingText){window.__escEditingText.dataset.textColor=$('escTextColour').value;window.__escEditingText.querySelector('text.drawing-text').setAttribute('fill',$('escTextColour').value);}});
    $('escTextSize').addEventListener('input',()=>{if(window.__escEditingText){window.__escEditingText.dataset.textSize=$('escTextSize').value;window.__escEditingText.querySelector('text.drawing-text').setAttribute('font-size',$('escTextSize').value);textBounds(window.__escEditingText);}});
@@ -1057,13 +1057,16 @@ document.querySelectorAll(".top nav button").forEach(button => {
    if(keep&&editTarget){const t=editTarget.querySelector('text.drawing-text');t.textContent=editArea.value;textBounds(editTarget);}
    const finishedTarget=editTarget;
    editArea.remove();editArea=null;editTarget=null;window.__escEditingText=null;
-   if(finishedTarget)finishedTarget.classList.remove('editing-text');
+   if(finishedTarget){finishedTarget.classList.remove('editing-text');const renderedText=finishedTarget.querySelector('text.drawing-text');if(renderedText)renderedText.style.visibility='';}
    const tools=$('escTextEditorTools');if(tools)tools.style.display='none';
    layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));
  }
  function beginEdit(g){
    finishEdit(true);ensureEditorTools();editTarget=g;window.__escEditingText=g;g.classList.add('editing-text');
    const t=g.querySelector('text.drawing-text'), pos=moveOf(g);
+   // The textarea is the live typing surface. Hide the SVG copy while editing
+   // so each character is rendered only once; restore it on Done/blur.
+   t.style.visibility='hidden';
    const screen=svg.createSVGPoint();screen.x=pos.x;screen.y=pos.y;
    const p=screen.matrixTransform(svg.getScreenCTM());
    editArea=document.createElement('textarea');editArea.className='esc-text-entry';editArea.value=t.textContent==='Click to type'?'':t.textContent;
@@ -1102,9 +1105,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
    textBounds(g);
  }
  function createTextAt(x,y){
-   const g=document.createElementNS(NS,'g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${x} ${y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';g.dataset.textColor=activeColor();g.dataset.textSize='16';
+   const g=document.createElementNS(NS,'g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${x} ${y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';g.dataset.textColor=activeColor();g.dataset.textSize='10';
    const hit=document.createElementNS(NS,'rect');hit.setAttribute('class','drawing-text-hit');hit.setAttribute('fill','transparent');hit.setAttribute('stroke','none');g.appendChild(hit);
-   const t=document.createElementNS(NS,'text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill',activeColor());t.setAttribute('font-size','16');t.setAttribute('font-family','Arial,sans-serif');t.textContent='';g.appendChild(t);layer.appendChild(g);enableText(g);selectText(g);beginEdit(g);return g;
+   const t=document.createElementNS(NS,'text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill',activeColor());t.setAttribute('font-size','10');t.setAttribute('font-family','Arial,sans-serif');t.textContent='';g.appendChild(t);layer.appendChild(g);enableText(g);selectText(g);beginEdit(g);return g;
  }
  window.createDrawingTextAt=createTextAt;
  layer.querySelectorAll('.drawing-text-object').forEach(enableText);
@@ -1122,7 +1125,15 @@ document.querySelectorAll(".top nav button").forEach(button => {
  });
  // Delete selected text with the toolbar or keyboard, without changing component delete behaviour.
  const deleteBtn=$('delete');
- deleteBtn?.addEventListener('click',e=>{const g=window.__escSelectedDrawingText;if(g?.isConnected){e.stopImmediatePropagation();finishEdit(true);g.remove();window.__escSelectedDrawingText=null;}},true);
+ const deleteSelectedDrawingText=e=>{
+   const g=window.__escSelectedDrawingText;
+   if(!g?.isConnected)return;
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   finishEdit(false);g.remove();window.__escSelectedDrawingText=null;
+ };
+ // Delete text on pointerdown before editor blur can race the toolbar action.
+ deleteBtn?.addEventListener('pointerdown',deleteSelectedDrawingText,true);
+ deleteBtn?.addEventListener('click',deleteSelectedDrawingText,true);
  document.addEventListener('keydown',e=>{
    if(e.key==='Delete'||e.key==='Backspace'){
      if(e.target?.matches('input,textarea,[contenteditable="true"]'))return;
@@ -1131,7 +1142,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  });
  const style=document.createElement('style');style.textContent=`
  .drawing-text-object{cursor:move;user-select:none}.drawing-text-object .drawing-text-hit{fill:transparent;stroke:transparent;pointer-events:all}
- .drawing-text-object.editing-text .drawing-text-hit{stroke:var(--esc-text-selection,#ffff00);stroke-width:1.5;stroke-dasharray:4 3;stroke-opacity:.2}
+ .drawing-text-object.editing-text .drawing-text-hit{stroke:transparent;stroke-width:0;stroke-dasharray:none}
  .drawing-text-object .drawing-text{pointer-events:none;font-family:Arial,sans-serif}
  .esc-text-entry{position:fixed;z-index:100000;width:300px;min-height:38px;resize:none;background:transparent;border:0;outline:none;caret-color:#ffff00;padding:2px 4px;line-height:1.25;white-space:pre-wrap;overflow:hidden;font-family:Arial,sans-serif}
  #escTextEditorTools{display:none;position:fixed;z-index:100001;align-items:center;gap:8px;padding:7px;background:#10243a;border:1px solid #168dff;border-radius:8px;color:#fff;font:12px Arial}
