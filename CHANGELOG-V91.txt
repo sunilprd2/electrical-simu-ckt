@@ -1,9 +1,0 @@
-ELECTRICAL SIMU CKT — V91
-
-- Added Proximity Sensor category to the HTML fallback library sidebar.
-- Registered the existing Inductive Proximity Sensor SVG in the fallback category.
-- Registered the sensor in symbol-library.json.
-- Bumped service-worker cache and script/style query versions to v91 to avoid stale cached library UI.
-- Preserved existing component categories and simulator files.
-
-Note: Bracket with NO was not added because no matching SVG was present in the supplied project archive.
