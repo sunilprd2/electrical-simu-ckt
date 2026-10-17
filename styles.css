@@ -2097,3 +2097,101 @@ body:not(.theme-light) #schematic .wire line,
 body:not(.theme-light) #wireLayer .connected-wire {
   stroke: #ffffff !important;
 }
+
+
+/* V114: completed wire endpoints stay visually quiet; glow only on hover or while wiring. */
+#dropLayer .dropped-symbol .mag-port.connected {
+  opacity: 0 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important;
+  filter: none !important;
+}
+#dropLayer .dropped-symbol .mag-port.port-selected:not(.port-active):not(:hover),
+#dropLayer .dropped-symbol .mag-port.selected:not(.port-active):not(:hover) {
+  opacity: 0 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important;
+  filter: none !important;
+}
+#dropLayer .dropped-symbol .mag-port:hover,
+#dropLayer .dropped-symbol .mag-port.connect-target,
+#dropLayer .dropped-symbol .mag-port.port-active {
+  opacity: 1 !important;
+  fill: rgba(0, 230, 172, 0.32) !important;
+  fill-opacity: 1 !important;
+  stroke: #00f5b8 !important;
+  stroke-width: 1.8px !important;
+  filter: drop-shadow(0 0 4px rgba(0, 245, 184, 0.75)) !important;
+}
+
+
+/* V115: library symbols stay white in every theme; show IEC terminal designations in workspace. */
+.component-results .symbol-btn img {
+  filter: brightness(0) invert(1) !important;
+}
+.dropped-symbol .port-name {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  stroke: none !important;
+  pointer-events: none !important;
+  paint-order: normal !important;
+}
+body.theme-light .dropped-symbol .port-name {
+  fill: #30363c !important;
+  color: #30363c !important;
+}
+
+
+/* V116 — Library artwork and workspace terminal designations stay white in every theme. */
+.layout > .library .symbol-btn .lib-icon,
+.layout > .library .symbol-btn .lib-icon *,
+.layout > .library .symbol-btn svg,
+.layout > .library .symbol-btn svg *,
+.layout > .library .component-results .symbol-btn img {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+.layout > .library .symbol-btn .lib-icon text,
+.layout > .library .symbol-btn svg text {
+  fill: #ffffff !important;
+}
+.layout > .library .component-results .symbol-btn img {
+  filter: grayscale(1) brightness(0) invert(1) !important;
+}
+body.theme-light .layout > .library .symbol-btn .lib-icon,
+body.theme-light .layout > .library .symbol-btn .lib-icon *,
+body.theme-light .layout > .library .symbol-btn svg,
+body.theme-light .layout > .library .symbol-btn svg *,
+body.theme-light .layout > .library .component-results .symbol-btn img {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+body.theme-light .layout > .library .symbol-btn .lib-icon text,
+body.theme-light .layout > .library .symbol-btn svg text {
+  fill: #ffffff !important;
+}
+#dropLayer .dropped-symbol .port-name,
+body.theme-light #dropLayer .dropped-symbol .port-name,
+body.theme-dark #dropLayer .dropped-symbol .port-name {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  stroke: none !important;
+  pointer-events: none !important;
+}
+
+/* V117: component reference tag left-center; terminal designations right of terminals. */
+.dropped-symbol .drop-tag{fill:#fff!important;font-size:12px!important;font-weight:700!important;text-anchor:end;}
+.dropped-symbol .port-name{fill:#fff!important;font-size:8px!important;font-weight:700!important;font-family:Arial,sans-serif;pointer-events:none;}

@@ -351,7 +351,10 @@ function portDefs(type) {
     }
     else if (type === 'psu') raw = [v(7, 7, 'L', 'top'), v(17, 7, 'N', 'top'), v(31, 7, 'HV', 'top'), v(41, 7, 'PE', 'top'), v(7, 25, '+1', 'bottom'), v(17, 25, '+2', 'bottom'), v(31, 25, '−1', 'bottom'), v(41, 25, '−2', 'bottom')];
     else if (['tr1', 'tr3', 'gen3'].includes(type)) raw = [v(12, 2, '1', 'top'), v(36, 2, '3', 'top'), v(12, 30, '2', 'bottom'), v(36, 30, '4', 'bottom')];
-    else if (['no', 'nc', 'change', 'changeover', 'auxno', 'auxnc', 'mainno', 'mainnc', 'relayno', 'relaync', 'start', 'stop', 'estop', 'limitno', 'limitnc', 'foot', 'pressure', 'temperature', 'float', 'hand', 'tdno', 'tdnc', 'offno', 'offnc', 'timernc', 'timerno'].includes(type)) raw = [v(5, 16, '13', 'left'), v(43, 16, '14', 'right')];
+    else if (['mainno', 'mainnc'].includes(type)) raw = [v(5, 16, '1/L1', 'left'), v(43, 16, '2/T1', 'right')];
+    else if (['nc', 'auxnc', 'relaync', 'limitnc', 'tdnc', 'offnc', 'timernc'].includes(type)) raw = [v(5, 16, '21', 'left'), v(43, 16, '22', 'right')];
+    else if (['no', 'auxno', 'relayno', 'start', 'stop', 'estop', 'limitno', 'foot', 'pressure', 'temperature', 'float', 'hand', 'tdno', 'offno', 'timerno'].includes(type)) raw = [v(5, 16, '13', 'left'), v(43, 16, '14', 'right')];
+    else if (['change', 'changeover'].includes(type)) raw = [v(5, 16, '11', 'left'), v(43, 16, '14', 'right')];
     else if (['coil', 'relaycoil', 'powerrelay', 'interpose', 'latchrelay', 'ssr', 'reed', 'safetyrelay', 'ton', 'tof', 'multitimer', 'stimer', 'flasher', 'cyclic', 'stair', 'analogtimer', 'digitaltimer', 'programmable', 'counter', '3pcont', '4pcont', 'contaux', 'reverse', 'contimer', 'stardelta', 'latchcont'].includes(type)) raw = [v(24, 2, 'A1', 'top'), v(24, 30, 'A2', 'bottom')];
     else if (['motor3', 'motor1', 'motorDC', 'twospeed', 'motorsd', 'brake', 'gear'].includes(type)) raw = [v(14, 2, 'U', 'top'), v(24, 2, 'V', 'top'), v(34, 2, 'W', 'top'), v(24, 30, 'PE', 'bottom')];
     else if (['lamp', 'led', 'tower', 'pilot', 'buzzer', 'siren', 'heater', 'resistive', 'inductive', 'capacitive', 'solenoid'].includes(type)) raw = [v(24, 2, 'X1', 'top'), v(24, 30, 'X2', 'bottom')];
@@ -436,11 +439,16 @@ function syncComponentPorts(g) {
 
     const t = document.createElementNS(NS, 'text');
     t.setAttribute('class', 'port-name');
-    t.setAttribute('x', String(p.lx));
-    t.setAttribute('y', String(p.side === 'top' ? p.ly - 8 : p.ly + 13));
-    t.setAttribute('text-anchor', 'middle');
-    t.textContent = '';
-    t.setAttribute('aria-label', p.label);
+    // Keep every terminal designation just to the right of its terminal point,
+    // independent of whether the terminal is at the top, bottom, left, or right.
+    t.setAttribute('x', String(p.lx + Math.max(8, p.w / 2 + 3)));
+    t.setAttribute('y', String(p.ly + 3));
+    t.setAttribute('text-anchor', 'start');
+    t.setAttribute('font-size', '8');
+    // Display polarity with standard + / - signs while preserving internal port IDs.
+    const displayLabel = p.label === 'POS' ? '+' : (p.label === 'NEG' ? '−' : (p.label || ''));
+    t.textContent = displayLabel;
+    t.setAttribute('aria-label', p.label || 'Terminal');
     portsGroup.appendChild(t);
   });
   // Ensure .component-ports is at the top of the component group so terminals always receive pointer events first
@@ -551,9 +559,13 @@ function makeDropped(d, x, y) {
 
   const tag = document.createElementNS(NS, 'text');
   tag.setAttribute('class', 'drop-tag');
-  tag.setAttribute('x', String(W / 2));
-  tag.setAttribute('y', '10');
-  tag.setAttribute('text-anchor', 'middle');
+  // Reference/tag name sits at the left side, vertically centered on the component.
+  tag.setAttribute('x', String(Math.round((ESC_COMP_CX - tightW / 2 - 8) * 100) / 100));
+  tag.setAttribute('y', String(ESC_COMP_CY + 4));
+  tag.setAttribute('text-anchor', 'end');
+  tag.setAttribute('font-size', '12');
+  tag.style.fill = '#ffffff';
+  tag.style.fontSize = '12px';
   tag.textContent = g.dataset.ref;
 
   const title = document.createElementNS(NS, 'title');
@@ -953,7 +965,9 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     if (activePort && activePort.el) {
       activePort.el.classList.remove('port-active', 'selected');
     }
-    selectTerminal(freshTo);
+    // A completed connection must not leave either endpoint glowing.
+    // Terminal glow is reserved for hover and the in-progress wire source.
+    selectTerminal(null);
     syncConnectedPortStates();
     const fromRef = freshFrom.g.dataset.ref || freshFrom.g.dataset.name || 'C1';
     const toRef = freshTo.g.dataset.ref || freshTo.g.dataset.name || 'C2';

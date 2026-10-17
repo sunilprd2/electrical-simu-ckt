@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v105-58-components';
+const CACHE='electrical-simu-ckt-v116-white-library-iec-labels';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=v104-blue-header-red-close',
-  './app.js?v=v102-branded-sheet-popup-theme-calendar',
+  './styles.css?v=v116-white-library-iec-terminal-labels',
+  './app.js?v=v116-iec-terminal-labels',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',
