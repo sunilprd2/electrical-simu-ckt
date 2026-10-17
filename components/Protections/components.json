@@ -1,0 +1,111 @@
+{
+  "category": "Protections",
+  "count": 15,
+  "components": [
+    {
+      "file": "components/Protections/protection_circuit_breaker_1p.svg",
+      "name": "Circuit Breaker 1P",
+      "category": "Protections",
+      "original_filename": "protection_circuit_breaker_1p.svg",
+      "type": "Circuit Breaker 1P"
+    },
+    {
+      "file": "components/Protections/protection_circuit_breaker_2p.svg",
+      "name": "Circuit Breaker 2P",
+      "category": "Protections",
+      "original_filename": "protection_circuit_breaker_2p.svg",
+      "type": "Circuit Breaker 2P"
+    },
+    {
+      "file": "components/Protections/protection_circuit_breaker_3p.svg",
+      "name": "Circuit Breaker 3P",
+      "category": "Protections",
+      "original_filename": "protection_circuit_breaker_3p.svg",
+      "type": "Circuit Breaker 3P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_ isolator_1p.svg",
+      "name": "Fuse Isolator 1P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_ isolator_1p.svg",
+      "type": "Fuse Isolator 1P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_ isolator_2p.svg",
+      "name": "Fuse Isolator 2P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_ isolator_2p.svg",
+      "type": "Fuse Isolator 2P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_ isolator_3p.svg",
+      "name": "Fuse Isolator 3P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_ isolator_3p.svg",
+      "type": "Fuse Isolator 3P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_ isolator_4p.svg",
+      "name": "Fuse Isolator 4P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_ isolator_4p.svg",
+      "type": "Fuse Isolator 4P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_1p.svg",
+      "name": "Fuse 1P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_1p.svg",
+      "type": "Fuse 1P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_2p.svg",
+      "name": "Fuse 2P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_2p.svg",
+      "type": "Fuse 2P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_3p.svg",
+      "name": "Fuse 3P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_3p.svg",
+      "type": "Fuse 3P"
+    },
+    {
+      "file": "components/Protections/protection_fuse_4p.svg",
+      "name": "Fuse 4P",
+      "category": "Protections",
+      "original_filename": "protection_fuse_4p.svg",
+      "type": "Fuse 4P"
+    },
+    {
+      "file": "components/Protections/protection_motor_circuit_breaker_2p.svg",
+      "name": "Motor Circuit Breaker 2P",
+      "category": "Protections",
+      "original_filename": "protection_motor_circuit_breaker_2p.svg",
+      "type": "Motor Circuit Breaker 2P"
+    },
+    {
+      "file": "components/Protections/protection_motor_circuit_breaker_3p.svg",
+      "name": "Motor Circuit Breaker 3P",
+      "category": "Protections",
+      "original_filename": "protection_motor_circuit_breaker_3p.svg",
+      "type": "Motor Circuit Breaker 3P"
+    },
+    {
+      "file": "components/Protections/protection_thermal_overload_relay_2p.svg",
+      "name": "Thermal Overload Relay 2P",
+      "category": "Protections",
+      "original_filename": "protection_thermal_overload_relay_2p.svg",
+      "type": "Thermal Overload Relay 2P"
+    },
+    {
+      "file": "components/Protections/protection_thermal_overload_relay_3p.svg",
+      "name": "Thermal Overload Relay 3P",
+      "category": "Protections",
+      "original_filename": "protection_thermal_overload_relay_3p.svg",
+      "type": "Thermal Overload Relay 3P"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.68" height="464.72" viewBox="-24.84 54.85 435.68 464.72">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Top terminal node (12-sided polygon) -->
+  <!-- Top vertical stem -->
+  <!-- Indicator Lamp Circle (Diameter = 96px, Radius = 48px, centered at 225, 240) -->
+  <!-- Internal 'X' Cross inside Circle -->
+  <!-- Bottom vertical stem -->
+  <!-- Bottom terminal node (12-sided polygon) -->
+  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.954545 -32 56.0096)" x1="225" x2="225" y1="75" y2="192"/>
+  <circle cx="225" cy="240" fill="none" id="svg_3" r="52" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="7.5" transform="matrix(1 0 0 0.954545 -32 56.0096)" x1="189" x2="260" y1="204" y2="274"/>
+  <line fill="none" id="svg_5" stroke="#666666" stroke-width="7.5" transform="matrix(1 0 0 0.954545 -32 56.0096)" x1="260" x2="190" y1="205" y2="275"/>
+  <line fill="none" id="svg_6" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.954545 -32 56.0096)" x1="225" x2="225" y1="288" y2="405"/>
+  <path d="m207.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
+ </g>
+</svg>

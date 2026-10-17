@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="501.61" height="471.93" viewBox="12.15 49.24 501.61 471.93">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <!-- Top Stems -->
+  <!-- Circuit Breaker 'X' Symbols -->
+  <!-- Bottom Stems -->
+  <!-- Switch Flappers (Normally Open) -->
+  <!-- Dashed Mechanical Link -->
+  <!-- Text Labels (Vector Paths) -->
+  <!-- "-Q3" Label Rotated -90deg -->
+  <path d="m73,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <path d="m73,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <path d="m252.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <path d="m252.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <path d="m432,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <path d="m432,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.974747 6 49.1164)"/>
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="90.5" x2="90.5" y1="75" y2="174"/>
+  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="270" x2="270" y1="75" y2="174"/>
+  <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="449.5" x2="449.5" y1="75" y2="174"/>
+  <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="79.2" x2="101.8" y1="162.7" y2="185.3"/>
+  <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="79.2" x2="101.8" y1="185.3" y2="162.7"/>
+  <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="258.7" x2="281.3" y1="162.7" y2="185.3"/>
+  <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="258.7" x2="281.3" y1="185.3" y2="162.7"/>
+  <line fill="none" id="svg_cb_x3_1" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="438.2" x2="460.8" y1="162.7" y2="185.3"/>
+  <line fill="none" id="svg_cb_x3_2" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="438.2" x2="460.8" y1="185.3" y2="162.7"/>
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="90.5" x2="90.5" y1="298.9" y2="405"/>
+  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="270" x2="270" y1="298.9" y2="405"/>
+  <line fill="none" id="svg_stem_bot3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="449.5" x2="449.5" y1="298.9" y2="405"/>
+  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="90.5" x2="48.9" y1="298.9" y2="178"/>
+  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="270" x2="228.4" y1="298.9" y2="178"/>
+  <line fill="none" id="svg_flapper3" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="449.5" x2="407.9" y1="298.9" y2="178"/>
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" transform="matrix(1 0 0 0.974747 6 49.1164)" x1="69.7" x2="428.7" y1="238.5" y2="238.5"/>
+ </g>
+</svg>

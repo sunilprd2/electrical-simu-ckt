@@ -1,8 +1,7 @@
-const CACHE='electrical-simu-ckt-v104-blue-header-red-close';
+const CACHE='electrical-simu-ckt-v105-58-components';
 const ASSETS=[
   './',
   './index.html',
-  './components/Proximity Sensor/Inductive_Proximity_Sensor.svg',
   './styles.css?v=v104-blue-header-red-close',
   './app.js?v=v102-branded-sheet-popup-theme-calendar',
   './manifest.webmanifest',

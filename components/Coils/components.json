@@ -1,26 +1,34 @@
 {
-  "group": "Coils",
-  "description": "Industrial coil and timer SVG components",
+  "category": "Coils",
+  "count": 4,
   "components": [
     {
-      "file": "Contactor_Coil.svg",
+      "file": "components/Coils/coil_contactor(1).svg",
       "name": "Contactor Coil",
-      "format": "svg"
+      "category": "Coils",
+      "original_filename": "coil_contactor(1).svg",
+      "type": "Contactor Coil"
     },
     {
-      "file": "TON_Timer_Coil.svg",
-      "name": "TON Timer Coil (On Delay)",
-      "format": "svg"
+      "file": "components/Coils/coil_tof_timer(1).svg",
+      "name": "TOF Timer Coil",
+      "category": "Coils",
+      "original_filename": "coil_tof_timer(1).svg",
+      "type": "TOF Timer Coil"
     },
     {
-      "file": "TOF_Timer_Coil.svg",
-      "name": "TOF Timer Coil (Off Delay)",
-      "format": "svg"
+      "file": "components/Coils/coil_ton_timer(1).svg",
+      "name": "TON Timer Coil",
+      "category": "Coils",
+      "original_filename": "coil_ton_timer(1).svg",
+      "type": "TON Timer Coil"
     },
     {
-      "file": "TON_TOF_Timer_Coil.svg",
-      "name": "TON/TOF Timer Coil (ON/OFF Delay)",
-      "format": "svg"
+      "file": "components/Coils/coil_ton_tof_timer(1).svg",
+      "name": "TON/TOF Timer Coil",
+      "category": "Coils",
+      "original_filename": "coil_ton_tof_timer(1).svg",
+      "type": "TON/TOF Timer Coil"
     }
   ]
 }

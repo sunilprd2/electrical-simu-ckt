@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="437.92" height="467.11" viewBox="-31.91 52.65 437.92 467.11">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <!-- Stems -->
+  <!-- Switch Flapper (Normally Open) -->
+  <!-- Contactor Mechanism (Parallel Lines) -->
+  <!-- Contactor C-Shape (Left-facing Half-circle) -->
+  <!-- Text Labels -->
+  <!-- "67" Terminal Label -->
+  <!-- "68" Terminal Label -->
+  <!-- "-KM1" Label Rotated -90deg -->
+  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.964646 18 52.563)"/>
+  <path d="m207.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6" transform="matrix(1 0 0 0.964646 18 52.563)"/>
+  <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.964646 18 52.563)" x1="225" x2="225" y1="75" y2="174.7"/>
+  <line fill="none" id="svg_stem_bot" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.964646 18 52.563)" x1="225" x2="225" y1="309.7" y2="405"/>
+  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.964646 18 52.563)" x1="225" x2="177.4" y1="309.7" y2="183.9"/>
+  <path d="m128.3,206.9a30.7,36.8 0 0 0 0,73.6" fill="none" id="svg_contactor_c" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.964646 18 52.563)"/>
+  <line fill="none" id="svg_contactor_l1" stroke="#666666" stroke-width="10" transform="matrix(1.32564 0 0 0.964646 -47.7802 52.563)" x1="128.3" x2="197" y1="237.6" y2="237.6"/>
+  <line fill="none" id="svg_contactor_l2" stroke="#666666" stroke-width="10" transform="matrix(1.32564 0 0 0.964646 -47.7802 52.563)" x1="128.3" x2="202" y1="249.9" y2="249.9"/>
+ </g>
+</svg>

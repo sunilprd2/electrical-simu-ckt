@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="434.55" height="463.52" viewBox="0.6 55.95 434.55 463.52">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Top terminal node (12-sided polygon at x=225, y=62.7) -->
+  <!-- Top vertical stem (from top terminal down to top of circle at y=168.5) -->
+  <!-- Indicator Lamp Circle (Centerline Radius = 71.5px, Centerline Diameter = 143px, matching image_e69089.png) -->
+  <!-- Internal 'X' Cross inside Circle -->
+  <!-- Flashing / Square-Wave Pulse Symbol on Right Side of Circle -->
+  <!-- Bottom vertical stem (from bottom of circle at y=311.5 down to bottom terminal) -->
+  <!-- Bottom terminal node (12-sided polygon at x=225, y=421.7) -->
+  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)" x1="225" x2="225" y1="75" y2="168.5"/>
+  <circle cx="225" cy="240" fill="none" id="svg_3" r="72" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)" x1="174.44" x2="275.56" y1="189.44" y2="290.56"/>
+  <line fill="none" id="svg_5" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)" x1="275.56" x2="174.44" y1="189.44" y2="290.56"/>
+  <path d="m304,251l10,0l0,-24l24,0l0,24l10,0" fill="none" id="svg_6" stroke="#666666" stroke-width="7.5" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)"/>
+  <line fill="none" id="svg_7" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)" x1="225" x2="225" y1="311.5" y2="405"/>
+  <path d="m207.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="8" transform="matrix(1.00508 0 0 0.95202 -33.7716 57.1212)"/>
+ </g>
+</svg>

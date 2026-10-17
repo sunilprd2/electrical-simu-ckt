@@ -1,0 +1,41 @@
+{
+  "category": "Loads",
+  "count": 5,
+  "components": [
+    {
+      "file": "components/Loads/load_beacon(1).svg",
+      "name": "Beacon",
+      "category": "Loads",
+      "original_filename": "load_beacon(1).svg",
+      "type": "Beacon"
+    },
+    {
+      "file": "components/Loads/load_bell(1).svg",
+      "name": "Bell",
+      "category": "Loads",
+      "original_filename": "load_bell(1).svg",
+      "type": "Bell"
+    },
+    {
+      "file": "components/Loads/load_blinking_pilot_lamp(1).svg",
+      "name": "Blinking Pilot Lamp",
+      "category": "Loads",
+      "original_filename": "load_blinking_pilot_lamp(1).svg",
+      "type": "Blinking Pilot Lamp"
+    },
+    {
+      "file": "components/Loads/load_buzzer(1).svg",
+      "name": "Buzzer",
+      "category": "Loads",
+      "original_filename": "load_buzzer(1).svg",
+      "type": "Buzzer"
+    },
+    {
+      "file": "components/Loads/load_light(1).svg",
+      "name": "Pilot Light",
+      "category": "Loads",
+      "original_filename": "load_light(1).svg",
+      "type": "Pilot Light"
+    }
+  ]
+}

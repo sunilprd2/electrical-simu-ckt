@@ -1334,10 +1334,10 @@ body.library-hidden #libraryToggle .toolbar-icon {transform:none!important;}
 #libraryGroups .component-category[data-category="Power"]{--category-accent:#00dba5!important}
 #libraryGroups .component-category[data-category="Others"]{--category-accent:#08b8f5!important}
 #libraryGroups .component-category[data-category="Coils"]{--category-accent:#b58aff!important}
-#libraryGroups .component-category[data-category="Auxiliaries"]{--category-accent:#e879f9!important}
+#libraryGroups .component-category[data-category="Auxiliaries"],#libraryGroups .component-category[data-category="Auxiliary Contacts"]{--category-accent:#e879f9!important}
 #libraryGroups .component-category[data-category="Switches"]{--category-accent:#ffd43b!important}
 #libraryGroups .component-category[data-category="Loads"]{--category-accent:#22d3ee!important}
-#libraryGroups .component-category[data-category="Contactors"]{--category-accent:#ff944d!important}
+#libraryGroups .component-category[data-category="Contactors"],#libraryGroups .component-category[data-category="Main Contacts"]{--category-accent:#ff944d!important}
 #libraryGroups .component-category[data-category="Protections"]{--category-accent:#34e5b5!important}
 #libraryGroups .component-category[data-category="Motors"]{--category-accent:#ff4d8d!important}
 .property-actions{display:flex;gap:8px;margin-top:18px}
@@ -2060,3 +2060,8 @@ body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]::-webki
 body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]::-webkit-calendar-picker-indicator{
   filter:none;opacity:1;
 }
+
+/* Ensure 2-digit category counts like Protections (15) never overlap category name */
+.layout > .library .component-category{gap:6px!important;padding:4px 7px!important}
+.layout > .library .component-category .category-count{flex:0 0 auto!important;white-space:nowrap!important}
+.layout > .library .component-category .category-chevron{flex:0 0 12px!important;width:12px!important;margin-left:2px!important}

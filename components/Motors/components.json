@@ -1,0 +1,41 @@
+{
+  "category": "Motors",
+  "count": 5,
+  "components": [
+    {
+      "file": "components/Motors/motor_dc_motor(1).svg",
+      "name": "DC Motor",
+      "category": "Motors",
+      "original_filename": "motor_dc_motor(1).svg",
+      "type": "DC Motor"
+    },
+    {
+      "file": "components/Motors/motor_single_phase(1).svg",
+      "name": "Single-Phase Motor",
+      "category": "Motors",
+      "original_filename": "motor_single_phase(1).svg",
+      "type": "Single-Phase Motor"
+    },
+    {
+      "file": "components/Motors/motor_three_phase(1).svg",
+      "name": "Three-Phase Motor",
+      "category": "Motors",
+      "original_filename": "motor_three_phase(1).svg",
+      "type": "Three-Phase Motor"
+    },
+    {
+      "file": "components/Motors/motor_three_phase1.svg",
+      "name": "Three-Phase Motor (6-Terminal)",
+      "category": "Motors",
+      "original_filename": "motor_three_phase1.svg",
+      "type": "Three-Phase Motor (6-Terminal)"
+    },
+    {
+      "file": "components/Motors/motor_three_phase_star_delta(1).svg",
+      "name": "Three-Phase Star-Delta Motor",
+      "category": "Motors",
+      "original_filename": "motor_three_phase_star_delta(1).svg",
+      "type": "Three-Phase Star-Delta Motor"
+    }
+  ]
+}

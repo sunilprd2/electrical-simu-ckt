@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="453.72" height="483.97" viewBox="-14.26 0.22 453.72 483.97">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6"/>
+  <path d="m122.8,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6"/>
+  <path d="m288.2,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="6"/>
+  <!-- Top Stem -->
+  <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" x1="225" x2="225" y1="75" y2="173.6"/>
+  <!-- Bottom Stems with Inward Jogs -->
+  <!-- Stem 12 -->
+  <path d="m140.3,405l0,-102.3l60.4,0" fill="none" id="svg_stem_12" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 1 0 0)"/>
+  <!-- Stem 14 -->
+  <path d="m305.7,405l0,-102.3l-45.3,0" fill="none" id="svg_stem_14" stroke="#666666" stroke-width="10"/>
+  <!-- Switch Flapper (SPDT / Changeover Contact) -->
+  <!-- Normally closed to terminal 12 -->
+  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="187.7" x2="225" y1="308.7" y2="173.6"/>
+  <!-- Dashed Mechanical Link -->
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" x1="109.4" x2="205.7" y1="242.2" y2="242.2"/>
+  <!-- Pushbutton Actuator Bracket "[" -->
+  <path d="m130.4,210.9l-26.4,1l0,64.6l27.4,0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
+  <!-- Text Labels (Vector Paths) -->
+  <!-- "11" Terminal Label -->
+  <!-- "12" Terminal Label -->
+  <!-- "14" Terminal Label -->
+  <!-- "-S8" Label Rotated -90deg -->
+ </g>
+</svg>

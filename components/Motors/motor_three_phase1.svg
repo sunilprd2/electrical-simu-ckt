@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="454.86" height="485.18" viewBox="-2.43 -2.59 454.86 485.18">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <title>sunil</title>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 6 Polygon Terminal Nodes (U1, V1, W1 at top; W2, U2, V2 at bottom) -->
+  <path d="m87.5,55.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6"/>
+  <path d="m207.5,55.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6"/>
+  <path d="m327.5,55.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="6"/>
+  <path d="m87.5,415.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="6"/>
+  <path d="m207.5,415.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="6"/>
+  <path d="m327.5,415.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="6"/>
+  <!-- Top Stems (U1, V1, W1) -->
+  <line fill="none" id="svg_u1" stroke="#666666" stroke-width="10" x1="105" x2="105" y1="60" y2="166.7"/>
+  <line fill="none" id="svg_v1" stroke="#666666" stroke-width="10" x1="225" x2="225" y1="60" y2="99.4"/>
+  <line fill="none" id="svg_w1" stroke="#666666" stroke-width="10" x1="345" x2="345" y1="60" y2="166.7"/>
+  <!-- Bottom Stems (W2, U2, V2) -->
+  <line fill="none" id="svg_w2" stroke="#666666" stroke-width="10" x1="105" x2="105" y1="313.3" y2="420"/>
+  <line fill="none" id="svg_u2" stroke="#666666" stroke-width="10" x1="225" x2="225" y1="380.6" y2="420"/>
+  <line fill="none" id="svg_v2" stroke="#666666" stroke-width="10" x1="345" x2="345" y1="313.3" y2="420"/>
+  <!-- Motor Main Circle (Center = 225,240, Radius = 140.6px, Diameter = 281.2px) -->
+  <circle cx="225" cy="240" fill="none" id="svg_motor_circle" r="140.6" stroke="#666666" stroke-width="10"/>
+  <!-- Inner Motor Markings: M3 ~ and Star/Delta -->
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="bold" id="svg_m3" stroke="#666666" text-anchor="middle" x="185" y="238">M3</text>
+  <path d="m245,218c10,-20 20,-20 30,0c10,20 20,20 30,0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="8"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" id="svg_stardelta" stroke="#666666" text-anchor="middle" x="225" y="282">Star/Delta</text>
+  <!-- Terminal Green Labels -->
+  <!-- Device Label Rotated (-M1) -->
+ </g>
+</svg>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="517.6" height="473.13" viewBox="55.85 50.15 517.6 473.13">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <!-- Top Stem -->
+  <!-- Bottom Stems -->
+  <!-- Stem 2 (Normally Closed) -->
+  <!-- Stem 3 (Normally Open Position 2) -->
+  <!-- Stem 4 (Normally Open Position 3) -->
+  <!-- Switch Flapper (Multi-Position Limit Switch) -->
+  <!-- Rests in Position 1 (Normally closed to terminal 2) -->
+  <!-- Dashed Mechanical Link -->
+  <!-- Limit Switch Actuator Bracket -->
+  <!-- Text Labels -->
+  <!-- "1" Terminal Label -->
+  <!-- "2" Terminal Label -->
+  <!-- "3" Terminal Label -->
+  <!-- "4" Terminal Label -->
+  <!-- "-S13" Label Rotated -90deg -->
+  <g id="svg_6" transform="matrix(1 0 0 0.977271 71 50.0052)">
+   <path d="m252.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6"/>
+   <path d="m74.8,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6"/>
+   <path d="m252.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="6"/>
+   <path d="m426.6,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="6"/>
+   <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" x1="270" x2="270" y1="75" y2="165"/>
+   <path d="m92.3,405l0,-112.5l53.9,0" fill="none" id="svg_stem_2" stroke="#666666" stroke-width="10"/>
+   <line fill="none" id="svg_stem_3" stroke="#666666" stroke-width="10" x1="270" x2="270" y1="405" y2="292.5"/>
+   <line fill="none" id="svg_stem_3_t" stroke="#666666" stroke-width="10" x1="243.1" x2="289.7" y1="292.5" y2="292.5"/>
+   <path d="m444.1,405l0,-112.5l-53.8,0" fill="none" id="svg_stem_4" stroke="#666666" stroke-width="10"/>
+   <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="124.6" x2="270" y1="297.8" y2="165"/>
+   <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" x1="60" x2="189.2" y1="240.4" y2="240.4"/>
+   <path d="m104.7,214.5l-42.9,-1l0,57.4l-34.1,0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
+  </g>
+ </g>
+</svg>

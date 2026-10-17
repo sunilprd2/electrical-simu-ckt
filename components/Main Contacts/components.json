@@ -1,0 +1,34 @@
+{
+  "category": "Main Contacts",
+  "count": 4,
+  "components": [
+    {
+      "file": "components/Main Contacts/main_contacts_1p_no.svg",
+      "name": "Main Contacts 1P NO",
+      "category": "Main Contacts",
+      "original_filename": "main_contacts_1p_no.svg",
+      "type": "Main Contacts 1P NO"
+    },
+    {
+      "file": "components/Main Contacts/main_contacts_2p_no.svg",
+      "name": "Main Contacts 2P NO",
+      "category": "Main Contacts",
+      "original_filename": "main_contacts_2p_no.svg",
+      "type": "Main Contacts 2P NO"
+    },
+    {
+      "file": "components/Main Contacts/main_contacts_3p_no.svg",
+      "name": "Main Contacts 3P NO",
+      "category": "Main Contacts",
+      "original_filename": "main_contacts_3p_no.svg",
+      "type": "Main Contacts 3P NO"
+    },
+    {
+      "file": "components/Main Contacts/main_contacts_4p_no.svg",
+      "name": "Main Contacts 4P NO",
+      "category": "Main Contacts",
+      "original_filename": "main_contacts_4p_no.svg",
+      "type": "Main Contacts 4P NO"
+    }
+  ]
+}

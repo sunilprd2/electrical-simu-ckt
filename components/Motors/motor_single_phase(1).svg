@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="661.24" height="705.32" viewBox="-6.78 -57.05 661.24 705.32">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <title>sunil</title>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 3 Polygon Terminal Nodes (1, 2, PE) -->
+  <!-- Top Stems (1, 2) -->
+  <!-- PE Stem, Horizontal Lead, and Concentric Curved Arc -->
+  <!-- Motor Main Circle (Center = 195,260, Radius = 133.04px, Diameter = 266.08px) -->
+  <!-- Inner Motor Marking: M1 ~ -->
+  <path d="m117.5,80.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="6" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <path d="m237.5,80.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="6" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <path d="m357.5,80.31l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="6" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="7" transform="matrix(1.36011 0 0 1.50131 0.264266 -90.6159)" x1="135" x2="135" y1="85" y2="141.26"/>
+  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="5" transform="matrix(2.04017 0 0 1.50052 -147.448 -90.526)" x1="255" x2="255" y1="85" y2="141.26"/>
+  <path d="m375,85l0,175l-18.26,0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <path d="m349.77,213.04a161.74,161.74 0 0 1 0,93.92" fill="none" id="svg_pe_arc" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <circle cx="195" cy="260" fill="none" id="svg_motor_circle" r="139.2" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="normal" id="svg_m1" stroke-width="5" text-anchor="middle" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)" x="158.5" y="284">M1</text>
+  <path d="m229,265c8,-14 16,-14 23.5,0c7.5,14 15.5,14 23.5,0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="6.5" transform="matrix(1.5868 0 0 1.73333 -30.8383 -109.865)"/>
+ </g>
+</svg>
