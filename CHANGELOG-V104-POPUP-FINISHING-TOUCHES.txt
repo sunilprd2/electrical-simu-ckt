@@ -1,6 +1,0 @@
-V104 finishing touches
-
-- Engineering Sheet Details popup header is blue.
-- Close (X) button is red.
-- Removed the helper text from the header and footer to remove the two outlined text areas.
-- Calendar icon is white in dark mode and dark in light mode.
