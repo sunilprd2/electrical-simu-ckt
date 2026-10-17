@@ -144,14 +144,86 @@ document.getElementById('play').onclick=()=>{
    g.classList.add('device-on');
   }
  });
+ // Phase 1 simulation colouring: colour each wire from the source terminal it touches.
+ // RYB is intentionally fixed to L1=red, L2=yellow, L3=blue.
+ const wireColourClasses=['wire-dc-positive','wire-dc-negative','wire-l1','wire-l2','wire-l3','wire-neutral'];
+ const endpointInfo=(w,side)=>{
+  const uid=w.dataset[side+'G'];
+  const g=document.querySelector(`#dropLayer .dropped-symbol[data-uid="${uid}"]`);
+  const label=String(w.dataset[side]||'').trim().toUpperCase();
+  const componentText=((g?.dataset?.name||'')+' '+(g?.dataset?.type||'')).toUpperCase();
+  return {label,componentText};
+ };
+ const classifyWire=w=>{
+  const a=endpointInfo(w,'from'), b=endpointInfo(w,'to');
+  const endpoints=[a,b];
+  // Terminal names are authoritative; only colour by source terminals, not ordinary contact numbers.
+  for(const e of endpoints){ if(/^L1$/.test(e.label)) return 'wire-l1'; }
+  for(const e of endpoints){ if(/^L2$/.test(e.label)) return 'wire-l2'; }
+  for(const e of endpoints){ if(/^L3$/.test(e.label)) return 'wire-l3'; }
+  for(const e of endpoints){ if(/^(\+|POS|POSITIVE|DC\+|V\+)$/.test(e.label)) return 'wire-dc-positive'; }
+  for(const e of endpoints){ if(/^(\-|−|NEG|NEGATIVE|DC-|V-)$/.test(e.label)) return 'wire-dc-negative'; }
+  // Fallback for source components whose terminal labels are not explicit.
+  for(const e of endpoints){
+   if(/DC.*(POSITIVE|PLUS)|POSITIVE.*SUPPLY/.test(e.componentText)) return 'wire-dc-positive';
+   if(/DC.*(NEGATIVE|MINUS)|NEGATIVE.*SUPPLY/.test(e.componentText)) return 'wire-dc-negative';
+  }
+  return '';
+ };
  wires.forEach(w=>{
   w.classList.add('wire-live');
+  w.classList.remove(...wireColourClasses);
+  const colourClass=classifyWire(w);
+  if(colourClass) w.classList.add(colourClass);
+  // Keep legacy neutral styling only for neutral wires that aren't identified as DC negative.
   const ends=((w.dataset.from||'')+' '+(w.dataset.to||'')).toUpperCase();
-  w.classList.toggle('wire-neutral',/\bN\b|NEUTRAL|NEG|−|-/.test(ends));
+  if(!colourClass && /(^|\s)N($|\s)|NEUTRAL/.test(ends)) w.classList.add('wire-neutral');
+ });
+ // Three-phase motor direction: phase sequence at U/V/W determines rotation.
+ // L1(R)->U, L2(Y)->V, L3(B)->W is the reference clockwise sequence.
+ const motorResults=[];
+ const phaseForWire=w=>{
+  if(w.classList.contains('wire-l1')) return 'R';
+  if(w.classList.contains('wire-l2')) return 'Y';
+  if(w.classList.contains('wire-l3')) return 'B';
+  return '';
+ };
+ const terminalForMotorWire=(w,motor)=>{
+  if(w.dataset.fromG===motor.dataset.uid) return String(w.dataset.from||'').trim().toUpperCase();
+  if(w.dataset.toG===motor.dataset.uid) return String(w.dataset.to||'').trim().toUpperCase();
+  return '';
+ };
+ comps.forEach(motor=>{
+  const label=((motor.dataset.name||'')+' '+(motor.dataset.type||'')+' '+(motor.dataset.symbolFile||'')).toLowerCase();
+  if(!/motor/.test(label)) return;
+  motor.classList.remove('motor-rotating-cw','motor-rotating-ccw','motor-direction-unknown');
+  const phaseAt={};
+  wires.forEach(w=>{
+   const term=terminalForMotorWire(w,motor);
+   if(['U','V','W'].includes(term)){
+    const phase=phaseForWire(w);
+    if(phase) phaseAt[term]=phase;
+   }
+  });
+  const sequence=[phaseAt.U,phaseAt.V,phaseAt.W];
+  if(sequence.every(Boolean)){
+   const signature=sequence.join('');
+   // Cyclic phase permutations preserve direction; swapping any two phases reverses it.
+   const cw=(signature==='RYB'||signature==='YBR'||signature==='BRY');
+   const ccw=(signature==='RBY'||signature==='BYR'||signature==='YRB');
+   if(cw) motor.classList.add('motor-rotating-cw');
+   else if(ccw) motor.classList.add('motor-rotating-ccw');
+   else motor.classList.add('motor-direction-unknown');
+   motorResults.push(`${motor.dataset.ref||motor.dataset.name||'Motor'}: ${cw?'CLOCKWISE':ccw?'ANTICLOCKWISE':'PHASE SEQUENCE INVALID'}`);
+  }else{
+   motor.classList.add('motor-direction-unknown');
+   motorResults.push(`${motor.dataset.ref||motor.dataset.name||'Motor'}: CHECK U/V/W PHASE CONNECTIONS`);
+  }
  });
  render();
+ if(motorResults.length && motorState) motorState.textContent='Motor: '+motorResults.join(' • ');
 };
-document.getElementById('stop').onclick=()=>{running=false;document.querySelectorAll('#dropLayer .device-on').forEach(g=>g.classList.remove('device-on'));document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>w.classList.remove('wire-live'));render()};
+document.getElementById('stop').onclick=()=>{running=false;document.querySelectorAll('#dropLayer .device-on').forEach(g=>g.classList.remove('device-on'));document.querySelectorAll('#dropLayer .motor-rotating-cw, #dropLayer .motor-rotating-ccw, #dropLayer .motor-direction-unknown').forEach(g=>g.classList.remove('motor-rotating-cw','motor-rotating-ccw','motor-direction-unknown')); document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{w.classList.remove('wire-live','wire-dc-positive','wire-dc-negative','wire-l1','wire-l2','wire-l3','wire-neutral')});render()};
 const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
 document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 

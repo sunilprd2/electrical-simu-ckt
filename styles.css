@@ -2195,3 +2195,29 @@ body.theme-dark #dropLayer .dropped-symbol .port-name {
 /* V117: component reference tag left-center; terminal designations right of terminals. */
 .dropped-symbol .drop-tag{fill:#fff!important;font-size:12px!important;font-weight:700!important;text-anchor:end;}
 .dropped-symbol .port-name{fill:#fff!important;font-size:8px!important;font-weight:700!important;font-family:Arial,sans-serif;pointer-events:none;}
+
+/* SimElectro simulation source-wire colours (independent of light/dark theme). */
+#wireLayer .connected-wire.wire-live.wire-dc-positive{stroke:#ff3030!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #ff303066)!important}
+#wireLayer .connected-wire.wire-live.wire-dc-negative{stroke:#168bff!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #168bff66)!important}
+#wireLayer .connected-wire.wire-live.wire-l1{stroke:#ff3030!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #ff303066)!important}
+#wireLayer .connected-wire.wire-live.wire-l2{stroke:#ffd21f!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #ffd21f66)!important}
+#wireLayer .connected-wire.wire-live.wire-l3{stroke:#168bff!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #168bff66)!important}
+
+/* SimElectro 3-phase motor direction indicator (simulation only). */
+#dropLayer .dropped-symbol.motor-rotating-cw #svg_m3,
+#dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-duration: 1.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+#dropLayer .dropped-symbol.motor-rotating-cw #svg_m3 { animation-name: escMotorClockwise; }
+#dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 { animation-name: escMotorAnticlockwise; }
+@keyframes escMotorClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes escMotorAnticlockwise { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+#dropLayer .dropped-symbol.motor-direction-unknown #svg_m3 { opacity: .55; }
+@media (prefers-reduced-motion: reduce) {
+  #dropLayer .dropped-symbol.motor-rotating-cw #svg_m3,
+  #dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 { animation-duration: 4s; }
+}
