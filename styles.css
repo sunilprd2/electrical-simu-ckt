@@ -2065,3 +2065,35 @@ body.theme-light .sheet-titleblock-editor .sheet-cell input[type="date"]::-webki
 .layout > .library .component-category{gap:6px!important;padding:4px 7px!important}
 .layout > .library .component-category .category-count{flex:0 0 auto!important;white-space:nowrap!important}
 .layout > .library .component-category .category-chevron{flex:0 0 12px!important;width:12px!important;margin-left:2px!important}
+
+
+/* V112 — Library component symbols follow the workspace theme:
+   white symbols on dark library cards, black symbols on light library cards. */
+.layout > .library .component-results .symbol-btn img {
+  filter: grayscale(1) brightness(0) invert(1) !important;
+}
+body.theme-light .layout > .library .component-results .symbol-btn img {
+  filter: grayscale(1) brightness(0) !important;
+}
+
+/* V113 — Requested colour rules:
+   1) Library component artwork is white in BOTH dark and light modes.
+   2) Workspace wires are white in dark mode; existing dark/black wire colour in light mode is preserved. */
+.layout > .library .symbol-btn .lib-icon,
+.layout > .library .symbol-btn svg,
+.layout > .library .component-results .symbol-btn img {
+  color: #ffffff !important;
+}
+.layout > .library .symbol-btn .lib-icon * {
+  stroke: #ffffff !important;
+}
+.layout > .library .symbol-btn .lib-icon text {
+  fill: #ffffff !important;
+}
+.layout > .library .component-results .symbol-btn img {
+  filter: grayscale(1) brightness(0) invert(1) !important;
+}
+body:not(.theme-light) #schematic .wire line,
+body:not(.theme-light) #wireLayer .connected-wire {
+  stroke: #ffffff !important;
+}
