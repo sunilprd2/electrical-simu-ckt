@@ -1,3 +1,0 @@
-Engineering sheet logo update
-
-Changed only the engineering-sheet logo image source to assets/esc-brand-banner.png so the title-block logo displays the full Electrical Simu CKT name and “Design. Simulate. Innovate.” tagline. Preserved the existing logo area size and all other project files/features.
