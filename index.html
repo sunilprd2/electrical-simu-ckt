@@ -1003,6 +1003,11 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const activeColor=()=>{if(defaultToggle?.checked){const saved=localStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
  const tint=(g,color)=>{
    if(!g||!color)return;
+   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
+   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
+   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
+   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
+   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
    g.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{
      if(el.closest('.terminal,.port,.select-box,.drawing-text-hit'))return;
      const st=el.getAttribute('stroke'),fi=el.getAttribute('fill');
@@ -1014,7 +1019,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const applyColours=()=>{
    const c=activeColor();
    layer.querySelectorAll('.dropped-symbol').forEach(g=>tint(g,c));
-   document.querySelectorAll('#wireLayer path,#wireLayer line,#wireLayer polyline,#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{w.style.stroke=c;w.setAttribute('stroke',c);});
+   document.querySelectorAll('#wireLayer path,#wireLayer line,#wireLayer polyline,#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')&&w.classList.contains('wire-live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
  };
  if(colorInput){
    const saved=localStorage.getItem('esc-default-component-colour-v1');

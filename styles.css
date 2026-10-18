@@ -2203,21 +2203,118 @@ body.theme-dark #dropLayer .dropped-symbol .port-name {
 #wireLayer .connected-wire.wire-live.wire-l2{stroke:#ffd21f!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #ffd21f66)!important}
 #wireLayer .connected-wire.wire-live.wire-l3{stroke:#168bff!important;stroke-width:2.8!important;filter:drop-shadow(0 0 2px #168bff66)!important}
 
-/* SimElectro 3-phase motor direction indicator (simulation only). */
+
+
+/* ESC V120: Simulation Visual Styles */
+.load-color-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px 6px;
+  margin: 2px 4px 4px;
+  background: rgba(12, 32, 56, 0.85);
+  border: 1px solid #24557a;
+  border-radius: 8px;
+}
+.load-color-bar-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #cfe6ff;
+  margin-right: 2px;
+}
+.load-color-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  box-sizing: border-box;
+}
+.load-color-dot:hover {
+  transform: scale(1.18);
+  border-color: #ffffff;
+}
+.load-color-dot.active {
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 0 2px #07172f, 0 0 7px currentColor !important;
+  transform: scale(1.12);
+}
+.card-load-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 3px;
+  pointer-events: all !important;
+}
+.card-load-dots .load-color-dot.card-dot {
+  width: 11px;
+  height: 11px;
+  min-width: 11px;
+  pointer-events: all !important;
+}
+
+/* Energized Coils, Loads, and Running Motors in RUN mode */
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) path,
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) line,
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) rect,
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) circle:not(#svg_motor_circle):not(.sim-rotor-ring),
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) ellipse,
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) polyline,
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) polygon {
+  stroke: var(--sim-active-color, #ff3b30) !important;
+  filter: drop-shadow(0 0 5px var(--sim-active-color, #ff3b30)) !important;
+}
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) circle:not(#svg_motor_circle):not(.sim-rotor-ring),
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) rect#svg_3 {
+  fill: color-mix(in srgb, var(--sim-active-color, #ff3b30) 28%, transparent) !important;
+}
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) [fill="#666666"],
+body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) text {
+  fill: var(--sim-active-color, #ff3b30) !important;
+}
+@keyframes escBlinkLamp {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.25; }
+}
+body.live #dropLayer .dropped-symbol.sim-energized.sim-blinking > svg:not(.select-box) {
+  animation: escBlinkLamp 0.7s infinite;
+}
+
+/* Operated switch highlight in RUN mode */
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper1,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper2,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper3,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper4 {
+  stroke: #22c55e !important;
+}
+
+/* Rotor spinning animation inside running Motors in workspace */
+@keyframes escRotorSpinCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes escRotorSpinCCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+#dropLayer .dropped-symbol .sim-rotor-spin-cw {
+  animation: escRotorSpinCW 1s linear infinite;
+}
+#dropLayer .dropped-symbol .sim-rotor-spin-ccw {
+  animation: escRotorSpinCCW 1s linear infinite;
+}
+
 #dropLayer .dropped-symbol.motor-rotating-cw #svg_m3,
 #dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation-duration: 1.2s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation: none !important;
 }
-#dropLayer .dropped-symbol.motor-rotating-cw #svg_m3 { animation-name: escMotorClockwise; }
-#dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 { animation-name: escMotorAnticlockwise; }
-@keyframes escMotorClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes escMotorAnticlockwise { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-#dropLayer .dropped-symbol.motor-direction-unknown #svg_m3 { opacity: .55; }
-@media (prefers-reduced-motion: reduce) {
-  #dropLayer .dropped-symbol.motor-rotating-cw #svg_m3,
-  #dropLayer .dropped-symbol.motor-rotating-ccw #svg_m3 { animation-duration: 4s; }
+
+#wireLayer .connected-wire.wire-live.wire-neutral {
+  stroke: #38bdf8 !important;
+  stroke-width: 2.8 !important;
 }
