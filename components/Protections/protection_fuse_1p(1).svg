@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="431.11" height="459.85" viewBox="7.44 55.28 431.11 459.85">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="5.5 53.22 435.0 464.0">
  <g class="layer" display="inline">
   <title>Layer 1</title>
   <!-- Terminal Nodes -->
@@ -10,8 +10,8 @@
   <!-- "1" Terminal Label -->
   <!-- "2" Terminal Label -->
   <!-- "-F1" Label Rotated -90deg -->
-  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.964646 -2 51.5631)"/>
-  <path d="m207.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.964646 -2 51.5631)"/>
+  <path d="m216.25,69.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.964646 -2 51.5631)"/>
+  <path d="m216.25,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.964646 -2 51.5631)"/>
   <line fill="none" id="svg_stem" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.964646 -2 51.5631)" x1="225" x2="225" y1="75" y2="405"/>
   <rect fill="none" height="95.8" id="svg_fuse_box" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.964646 -2 51.5631)" width="53.8" x="198.1" y="194.3"/>
  </g>

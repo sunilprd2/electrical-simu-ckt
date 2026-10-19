@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="418.58" height="408.95" viewBox="208.03 123.28 418.58 408.95">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="200.31 95.75 435.0 464.0">
  <g class="layer" display="inline">
   <title>Layer 1</title>
   <!-- Terminal Nodes -->
@@ -16,12 +16,12 @@
   <!-- Dashed Mechanical Linkages -->
   <!-- Text Labels (Vector Paths) -->
   <!-- "-Q5" Label Rotated -90deg -->
-  <path d="m325.37,170.03l4,-6.86l6.92,-3.96l7.99,0l6.92,3.96l4,6.86l0,7.93l-4,6.86l-6.92,3.96l-7.99,0l-6.92,-3.96l-4,-6.86l0,-7.93z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
-  <path d="m324.37,477l3.99,-6.86l6.92,-3.97l7.99,0l6.92,3.97l3.99,6.86l0,7.93l-3.99,6.86l-6.92,3.97l-7.99,0l-6.92,-3.97l-3.99,-6.86l0,-7.93z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="m425.28,171.58l4,-6.86l6.92,-3.96l7.99,0l6.92,3.96l4,6.86l0,7.93l-4,6.86l-6.92,3.96l-7.99,0l-6.92,-3.96l-4,-6.86l0,-7.93z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
-  <path d="m424.28,478l3.99,-6.86l6.92,-3.97l7.99,0l6.92,3.97l3.99,6.86l0,7.93l-3.99,6.86l-6.92,3.97l-7.99,0l-6.92,-3.97l-3.99,-6.86l0,-7.93z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
-  <path d="m524.19,169.58l4,-6.86l6.92,-3.96l7.99,0l6.92,3.96l4,6.86l0,7.93l-4,6.86l-6.92,3.96l-7.99,0l-6.92,-3.96l-4,-6.86l0,-7.93z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
-  <path d="m524.19,476l3.99,-6.86l6.92,-3.97l7.99,0l6.92,3.97l3.99,6.86l0,7.93l-3.99,6.86l-6.92,3.97l-7.99,0l-6.92,-3.97l-3.99,-6.86l0,-7.93z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="0"/>
+  <path d="m332.83,179.41l2.0,-3.43l3.46,-1.98l4.0,0.0l3.46,1.98l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.98l-4.0,0.0l-3.46,-1.98l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="m331.82,471.58l2.0,-3.43l3.46,-1.99l4.0,0.0l3.46,1.99l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.99l-4.0,0.0l-3.46,-1.99l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="m432.74,180.96l2.0,-3.43l3.46,-1.98l4.0,0.0l3.46,1.98l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.98l-4.0,0.0l-3.46,-1.98l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <path d="m431.73,472.58l2.0,-3.43l3.46,-1.99l4.0,0.0l3.46,1.99l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.99l-4.0,0.0l-3.46,-1.99l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
+  <path d="m531.65,178.96l2.0,-3.43l3.46,-1.98l4.0,0.0l3.46,1.98l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.98l-4.0,0.0l-3.46,-1.98l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
+  <path d="m531.64,470.58l2.0,-3.43l3.46,-1.99l4.0,0.0l3.46,1.99l2.0,3.43l0.0,3.96l-2.0,3.43l-3.46,1.99l-4.0,0.0l-3.46,-1.99l-2.0,-3.43l0.0,-3.96z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="0"/>
   <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="340.28" x2="340.28" y1="178.4" y2="235.03"/>
   <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="440.19" x2="440.19" y1="180.94" y2="237.57"/>
   <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" x1="539.1" x2="539.1" y1="176.95" y2="233.58"/>
@@ -55,12 +55,12 @@
   <line fill="none" id="svg_dash_mid" stroke="#666666" stroke-dasharray="10,10" stroke-width="8" x1="277.26" x2="298.98" y1="356.97" y2="356.97"/>
   <line fill="none" id="svg_dash_bot" stroke="#666666" stroke-dasharray="10,10" stroke-width="8" x1="277.26" x2="298.98" y1="402.19" y2="402.19"/>
   <g id="svg_8" transform="matrix(1 0 0 1 -110.182 -8.45455)">
-   <path d="m429.35,401.77l0,16.37m-2.92,-16.37l5.84,0m-5.84,16.37l5.84,0" fill="#000000" id="svg_9" stroke="#666666" stroke-width="4"/>
-   <path d="m444.22,402.9l10.43,7.61l-10.43,7.61" fill="#000000" id="svg_10" stroke="#666666" stroke-width="4"/>
-   <path d="m539.7,402.88l0,16.93m-3.48,-16.93l6.95,0m-6.95,16.93l6.95,0" fill="#000000" id="svg_11" stroke="#666666" stroke-width="4"/>
-   <path d="m269.11,320l15,9l-15,9" fill="#000000" id="svg_12" stroke="#666666" stroke-width="4" transform="matrix(0.695244 0 0 0.845193 365.252 132.996)"/>
-   <path d="m391.26,314.65l0,22m-5,-22l10,0m-10,22l10,0" fill="#000000" id="svg_13" stroke="#666666" stroke-width="4" transform="matrix(0.695244 0 0 0.803833 365.252 145.966)"/>
-   <path d="m648.26,401.79l10.43,7.61l-10.43,7.61" fill="#000000" id="svg_14" stroke="#666666" stroke-width="4"/>
+   <path d="m429.35,401.77l0,16.37m-2.92,-16.37l5.84,0m-5.84,16.37l5.84,0" fill="none" id="svg_9" stroke="#666666" stroke-width="4"/>
+   <path d="m444.22,402.9l10.43,7.61l-10.43,7.61" fill="none" id="svg_10" stroke="#666666" stroke-width="4"/>
+   <path d="m539.7,402.88l0,16.93m-3.48,-16.93l6.95,0m-6.95,16.93l6.95,0" fill="none" id="svg_11" stroke="#666666" stroke-width="4"/>
+   <path d="m269.11,320l15,9l-15,9" fill="none" id="svg_12" stroke="#666666" stroke-width="4" transform="matrix(0.695244 0 0 0.845193 365.252 132.996)"/>
+   <path d="m391.26,314.65l0,22m-5,-22l10,0m-10,22l10,0" fill="none" id="svg_13" stroke="#666666" stroke-width="4" transform="matrix(0.695244 0 0 0.803833 365.252 145.966)"/>
+   <path d="m648.26,401.79l10.43,7.61l-10.43,7.61" fill="none" id="svg_14" stroke="#666666" stroke-width="4"/>
   </g>
  </g>
 </svg>

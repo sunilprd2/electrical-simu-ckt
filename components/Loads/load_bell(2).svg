@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="363.09" height="387.3" viewBox="168.71 36.56 363.09 387.3">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="134.66 -1.79 435.0 464.0">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
@@ -8,10 +8,10 @@
   <!-- Acoustic Horn / Buzzer D-shape Symbol (to the right of the stem, flat back at x=260 from y=176 to y=304, dome extending right to x=331) -->
   <!-- Bottom horizontal lead (from flat back at x=260, y=276 LEFT to x=225) and vertical stem down to bottom terminal -->
   <!-- Bottom terminal node (12-sided polygon at x=225, y=421.7) -->
-  <path d="m317.62,26.51l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.00797 0 0 0.812426 -34.6454 59.0334)"/>
+  <path d="m326.37,37.6l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.00797 0 0 0.812426 -34.6454 59.0334)"/>
   <path d="m335.12,43.49l0,129l35,0" fill="none" id="svg_2" stroke="#666666" stroke-width="10" transform="matrix(1.00797 0 0 0.812426 -34.6454 59.0334)"/>
   <path d="m370.12,144.49l0,128a71,64 0 0 0 0,-128z" fill="none" id="svg_3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.853371 0 10.2878) matrix(1.00797 0 0 0.95202 -34.6454 57.1212)"/>
   <path d="m370.12,244.49l-35,0l0,129" fill="none" id="svg_4" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.853371 0 10.2878) matrix(1.00797 0 0 0.95202 -34.6454 57.1212)"/>
-  <path d="m317.62,385.51l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.853371 0 10.2878) matrix(1.00797 0 0 0.95202 -34.6454 57.1212)"/>
+  <path d="m326.37,379.11l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.853371 0 10.2878) matrix(1.00797 0 0 0.95202 -34.6454 57.1212)"/>
  </g>
 </svg>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="427.73" height="456.25" viewBox="-54.37 57.58 427.73 456.25">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="-58.0 53.71 435.0 464.0">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
@@ -13,8 +13,8 @@
   <!-- "11" Terminal Label -->
   <!-- "12" Terminal Label -->
   <!-- "-S7" Label Rotated -90deg -->
-  <path d="m207.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
-  <path d="m207.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+  <path d="m216.25,69.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+  <path d="m216.25,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
   <path d="m225,75l0,106l63,-1.03" fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
   <line fill="none" id="svg_stem_bot" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)" x1="225" x2="225" y1="308" y2="405"/>
   <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)" x1="225" x2="273" y1="308" y2="168"/>

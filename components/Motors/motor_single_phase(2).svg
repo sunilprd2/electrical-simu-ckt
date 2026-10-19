@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="882.64" height="941.48" viewBox="381.13 -17.2 882.64 941.48">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="928.53" height="990.43" viewBox="353.75 -29.02 928.53 990.43">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <title>sunil</title>
  <g class="layer" display="inline">
@@ -10,9 +10,9 @@
   <!-- Motor Main Circle (Center = 195,260, Radius = 133.04px, Diameter = 266.08px) -->
   <!-- Inner Motor Marking: M1 ~ -->
   <circle cx="195" cy="260" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <path d="m118.55,18.77l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <path d="m238.55,18.77l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <path d="m420.52,24.54l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
+  <path d="m127.3,29.86l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
+  <path d="m247.3,29.86l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
+  <path d="m429.27,35.63l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
   <line fill="none" id="svg_t1" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)" x1="136.05" x2="136.05" y1="23.46" y2="79.72"/>
   <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)" x1="256.05" x2="256.05" y1="23.46" y2="79.72"/>
   <path d="m438.02,76.35l0,175l-18.26,0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 2.06211 461.162 -29.7342)"/>

@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="784.9" height="443.13" viewBox="6.55 68.82 784.9 443.13">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="778.24" height="464.0" viewBox="9.88 52.41 778.24 464.0">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
   <ellipse cx="100" cy="126.9" fill="none" id="svg_11" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969571 -1 39.6432)"/>
   <line fill="none" id="svg_10" stroke="#666666" stroke-width="10" x1="99" x2="99" y1="211.56" y2="439.17"/>
-  <path d="m82,450.82l4.69,-7.87l8.12,-4.55l9.38,0l8.12,4.55l4.69,7.87l0,9.09l-4.69,7.87l-8.12,4.55l-9.38,0l-8.12,-4.55l-4.69,-7.87l0,-9.09z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0"/>
+  <path d="m90.75,444.61l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0"/>
   <ellipse cx="302" cy="129.13" fill="none" id="svg_33" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969571 -1 39.6432)"/>
   <line fill="none" id="svg_32" stroke="#666666" stroke-width="10" x1="301" x2="301" y1="212.71" y2="444.32"/>
-  <path d="m282.99,452l4.69,-7.87l8.12,-4.55l9.38,0l8.12,4.55l4.69,7.87l0,9.09l-4.69,7.87l-8.12,4.55l-9.38,0l-8.12,-4.55l-4.69,-7.87l0,-9.09z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0"/>
+  <path d="m291.74,445.79l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0"/>
   <ellipse cx="501" cy="126.94" fill="none" id="svg_4" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969571 -1 39.6432)"/>
   <line fill="none" id="svg_3" stroke="#666666" stroke-width="10" x1="500" x2="500" y1="211.59" y2="444.2"/>
-  <path d="m481.99,449.88l4.69,-7.87l8.12,-4.55l9.38,0l8.12,4.55l4.69,7.87l0,9.09l-4.69,7.87l-8.12,4.55l-9.38,0l-8.12,-4.55l-4.69,-7.87l0,-9.09z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="m490.74,443.67l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
   <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_5" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(3.23577 0 0 2.95159 -47.524 -620.718)" x="45.44" xml:space="preserve" y="273.99">L1</text>
   <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_6" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1 0 0 0.969571 -1 39.6432) matrix(3.23577 0 0 3.04422 249.476 -687.086)" x="16.08" xml:space="preserve" y="276.36">L2</text>
   <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_7" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(3.23577 0 0 2.95159 555.476 -622.657)" x="-16.06" xml:space="preserve" y="274.32">L3</text>
   <ellipse cx="700" cy="127.97" fill="none" id="svg_12" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969571 -1 39.6432)"/>
   <line fill="none" id="svg_9" stroke="#666666" stroke-width="10" x1="700" x2="700" y1="212.32" y2="441.47"/>
-  <path d="m681.99,447.88l4.69,-7.87l8.12,-4.55l9.38,0l8.12,4.55l4.69,7.87l0,9.09l-4.69,7.87l-8.12,4.55l-9.38,0l-8.12,-4.55l-4.69,-7.87l0,-9.09z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="0"/>
+  <path d="m690.74,441.67l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="0"/>
   <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_2" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(3.96865 0 0 2.95159 807.099 -622.657)" x="-26.86" xml:space="preserve" y="274.66">N</text>
  </g>
 </svg>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="367.51" height="392.01" viewBox="508.25 271.21 367.51 392.01">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="474.5 235.2 435.0 464.0">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
@@ -12,10 +12,10 @@
   <!-- "X" Cross inside Second Section (x=151 to x=196, y=204 to y=276) -->
   <!-- Bottom vertical stem -->
   <!-- Bottom terminal node (12-sided polygon) -->
-  <path d="m671.5,310.82l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.959391 0 19.2979)"/>
+  <path d="m680.25,321.91l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.959391 0 19.2979)"/>
   <line fill="none" id="svg_2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.716328 0 97.6525)" x1="689" x2="689" y1="327.8" y2="456.8"/>
   <line fill="none" id="svg_9" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.73153 0 156.663)" x1="689" x2="689" y1="472.52" y2="601.52"/>
-  <path d="m671.5,607.92l4.69,-7.79l8.12,-4.5l9.38,0l8.12,4.5l4.69,7.79l0,9l-4.69,7.79l-8.12,4.5l-9.38,0l-8.12,-4.5l-4.69,-7.79l0,-9z" fill="#666666" id="svg_10" stroke="#666666" stroke-width="0"/>
+  <path d="m680.25,601.77l2.35,-3.9l4.06,-2.25l4.69,0.0l4.06,2.25l2.35,3.9l0.0,4.5l-2.35,3.9l-4.06,2.25l-4.69,0.0l-4.06,-2.25l-2.35,-3.9l0.0,-4.5z" fill="#666666" id="svg_10" stroke="#666666" stroke-width="0"/>
   <g id="svg_11" transform="translate(574 507.401) scale(1 1) translate(-574 -507.401) matrix(1 0 0 1.23952 3 -146.367)">
    <rect fill="none" height="72" id="svg_3" stroke="#666666" stroke-width="8" transform="matrix(1 0 0 0.959391 0 19.2979)" width="234" x="572" y="456.8"/>
    <rect fill="#666666" height="72" id="svg_4" transform="matrix(1 0 0 0.959391 0 19.2979)" width="43" x="572" y="456.8"/>

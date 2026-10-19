@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="364.07" height="388.34" viewBox="112.27 42.06 364.07 388.34">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="74.93 4.24 435.0 464.0">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
@@ -13,8 +13,8 @@
   <!-- "2" Terminal Label -->
   <!-- "-KM1" Label Rotated -90deg -->
   <g id="svg_3" transform="matrix(1 0 0 0.840085 -204 30.231)">
-   <path d="m368.5,12.65l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 127 54.3397)"/>
-   <path d="m368.5,371.65l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 127 54.3397)"/>
+   <path d="m377.25,23.74l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 127 54.3397)"/>
+   <path d="m377.25,365.25l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 127 54.3397)"/>
    <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 127 54.3397)" x1="386" x2="386" y1="29.63" y2="143.03"/>
    <path d="m386,107.03a18,18 0 0 0 0,36" fill="#666666" id="svg_semi_circle" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="matrix(1 0 0 0.969697 127 54.3397)"/>
    <line fill="none" id="svg_stem_bot" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 127 54.3397)" x1="386" x2="386" y1="268.63" y2="359.63"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="455.51" height="460.98" viewBox="340.43 51.22 455.51 460.98">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="447.99" height="464.0" viewBox="344.19 49.71 447.99 464.0">
  <g class="layer" display="inline">
   <title>Layer 1</title>
   <!-- Terminal Nodes -->
@@ -7,10 +7,10 @@
   <!-- Continuous Thermal Overload Stems (Pole 1 & Pole 2) -->
   <!-- Text Labels (Vector Paths) -->
   <!-- "-F5" Label Rotated -90deg -->
-  <path d="m421,103.6l5.73,-7.85l9.92,-4.54l11.46,0l9.92,4.54l5.73,7.85l0,9.07l-5.73,7.85l-9.92,4.54l-11.46,0l-9.92,-4.54l-5.73,-7.85l0,-9.07z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="m423.75,450.75l4.69,-7.85l8.12,-4.54l9.38,0l8.12,4.54l4.69,7.85l0,9.07l-4.69,7.85l-8.12,4.54l-9.38,0l-8.12,-4.54l-4.69,-7.85l0,-9.07z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
-  <path d="m640.25,103.6l5.73,-7.85l9.92,-4.54l11.46,0l9.92,4.54l5.73,7.85l0,9.07l-5.73,7.85l-9.92,4.54l-11.46,0l-9.92,-4.54l-5.73,-7.85l0,-9.07z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="m603.25,450.75l4.69,-7.85l8.12,-4.54l9.38,0l8.12,4.54l4.69,7.85l0,9.07l-4.69,7.85l-8.12,4.54l-9.38,0l-8.12,-4.54l-4.69,-7.85l0,-9.07z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
+  <path d="m431.69,114.33l2.87,-3.92l4.96,-2.27l5.73,0.0l4.96,2.27l2.87,3.92l0.0,4.54l-2.87,3.92l-4.96,2.27l-5.73,0.0l-4.96,-2.27l-2.87,-3.92l0.0,-4.54z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="m432.5,444.55l2.35,-3.92l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.92l0.0,4.54l-2.35,3.92l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.92l0.0,-4.54z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
+  <path d="m650.94,114.33l2.87,-3.92l4.96,-2.27l5.73,0.0l4.96,2.27l2.87,3.92l0.0,4.54l-2.87,3.92l-4.96,2.27l-5.73,0.0l-4.96,-2.27l-2.87,-3.92l0.0,-4.54z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="m612.0,444.55l2.35,-3.92l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.92l0.0,4.54l-2.35,3.92l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.92l0.0,-4.54z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
   <rect fill="none" height="100" id="svg_prot_box" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 0.967005 -96.5665 15.7785)" width="306" x="391.25" y="222.8"/>
   <path d="m441.25,120.02l0,135.38l30,0l0,48.35l-30,0l0,135.38" fill="none" id="svg_stem1" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
   <path d="m620.75,120.02l0,135.38l30,0l0,48.35l-30,0l0,135.38" fill="none" id="svg_stem2" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>

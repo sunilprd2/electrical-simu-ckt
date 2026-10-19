@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v115-white-library-iec-terminal-labels">
+<link rel="stylesheet" href="styles.css?v=v126-small-terminals">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -19,6 +19,18 @@
 body.library-hidden .layout > .library { display:none !important; width:0 !important; min-width:0 !important; max-width:0 !important; flex:0 0 0 !important; padding:0 !important; border:0 !important; overflow:hidden !important; }
 body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; min-width:0 !important; }
 </style>
+<script>
+try {
+  if ('caches' in window) {
+    caches.keys().then(keys => keys.forEach(k => {
+      if (k !== 'electrical-simu-ckt-v126-small-terminals-56-components') caches.delete(k);
+    }));
+  }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.update()));
+  }
+} catch (_) {}
+</script>
 </head>
 <body class="library-hidden">
 <header class="top">
@@ -162,7 +174,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v115-iec-terminal-labels"></script>
+<script src="app.js?v=v126-small-terminals"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){

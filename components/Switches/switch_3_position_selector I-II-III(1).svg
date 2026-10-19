@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="546.63" height="467.08" viewBox="107.33 53.67 546.63 467.08">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="533.22" height="469.12" viewBox="112.17 52.65 533.22 469.12">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer" display="inline">
   <title>Layer 1</title>
@@ -19,9 +19,9 @@
   <!-- "3" Terminal Label -->
   <!-- "4" Terminal Label -->
   <!-- "-S13" Label Rotated -90deg -->
-  <path d="m252.5,58.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
-  <path d="m252.5,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
-  <path d="m453.6,418.04l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
+  <path d="m261.25,69.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
+  <path d="m261.25,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
+  <path d="m462.35,411.63l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
   <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.977271 128 50.0052)" x1="270" x2="270" y1="75" y2="165"/>
   <line fill="none" id="svg_stem_3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 1 57 0) matrix(1 0 0 0.977271 71 50.0052)" x1="270" x2="270" y1="405" y2="292.5"/>
   <line fill="none" id="svg_stem_3_t" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 1 57 0) matrix(1 0 0 0.977271 71 50.0052)" x1="249.1" x2="295.7" y1="292.5" y2="292.5"/>
@@ -29,7 +29,7 @@
   <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.977271 128 50.0052)" x1="124.6" x2="270" y1="297.8" y2="165"/>
   <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" transform="matrix(1 0 0 1 57 0) matrix(1 0 0 0.977271 71 50.0052)" x1="60" x2="189.2" y1="240.4" y2="240.4"/>
   <path d="m98.7,211.43l-42.9,-1l0,57.4l-34.1,0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10" transform="matrix(1 0 0 0.977271 128 50.0052)"/>
-  <path d="m74.8,417.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 107 50.0052)"/>
+  <path d="m83.55,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.977271 107 50.0052)"/>
   <path d="m92.3,405l0,-112.5l76.9,1" fill="none" id="svg_stem_2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.977271 107 50.0052)"/>
  </g>
 </svg>
