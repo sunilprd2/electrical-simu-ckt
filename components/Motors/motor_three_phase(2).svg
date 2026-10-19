@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="992.91" height="915.68" viewBox="263.06 277.35 992.91 915.68">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <title>sunil</title>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 3 Polygon Terminal Nodes (U, V, W) -->
+  <!-- Top Stems (U, V, W) -->
+  <!-- Motor Main Circle (Center = 225,255, Radius = 139.5px, Diameter = 279px) -->
+  <!-- Inner Motor Marking: M3 ~ -->
+  <circle cx="427.51" cy="613.74" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.71574 0 0 1.68628 -62.7552 -250.102)"/>
+  <path d="m453.17,378.4l8.05,-13.7l13.93,-7.91l16.1,0l13.93,7.91l8.05,13.7l0,15.81l-8.05,13.7l-13.93,7.91l-16.1,0l-13.93,-7.91l-8.05,-13.7l0,-15.81z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="m640.73,380.07l8.05,-13.7l13.93,-7.91l16.1,0l13.93,7.91l8.05,13.7l0,15.81l-8.05,13.7l-13.93,7.91l-16.1,0l-13.93,-7.91l-8.05,-13.7l0,-15.81z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="m833.28,381.73l8.05,-13.7l13.93,-7.91l16.1,0l13.93,7.91l8.05,13.7l0,15.81l-8.05,13.7l-13.93,7.91l-16.1,0l-13.93,-7.91l-8.05,-13.7l0,-15.81z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_u" stroke="#666666" stroke-width="10" x1="483.19" x2="483.19" y1="386.31" y2="516.54"/>
+  <line fill="none" id="svg_v" stroke="#666666" stroke-width="10" x1="670.76" x2="670.76" y1="387.98" y2="456.27"/>
+  <line fill="none" id="svg_w" stroke="#666666" stroke-width="10" x1="863.31" x2="863.31" y1="389.64" y2="516.54"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="bold" id="svg_m3" text-anchor="middle" transform="matrix(1.71574 0 0 1.68628 -62.7552 -250.102)" x="421.54" y="652.53">M3</text>
+  <path d="m763.45,814.84c17.16,-38.78 34.32,-38.78 51.48,0c17.16,38.78 34.32,38.78 51.48,0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-width="7.5"/>
+  <path d="m1122.67,384.44l8.05,-13.69l13.93,-7.9l16.09,0l13.93,7.9l8.05,13.69l0,15.82l-8.05,13.69l-13.93,7.9l-16.09,0l-13.93,-7.9l-8.05,-13.69l0,-15.82z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
+  <path d="m801.27,453.2l0,199.76l-84.31,0" fill="none" id="svg_5" stroke="#666666" stroke-width="10" transform="matrix(1.24576 0 0 1.99092 157.042 -485.637)"/>
+  <path d="m709.37,586.6a184.4,231.6 0 0 1 0,131.62" fill="none" id="svg_4" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1.53247 0 0 1.51946 -47.2686 -174.046)"/>
+ </g>
+</svg>

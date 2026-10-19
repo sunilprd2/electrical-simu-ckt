@@ -2318,3 +2318,30 @@ body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper4 {
   stroke: #38bdf8 !important;
   stroke-width: 2.8 !important;
 }
+
+
+/* Simulation Run UI: only Stop remains visible in the upper ribbon. */
+body.simulation-run-ui .cad-ribbon > :not(#stop) { display: none !important; }
+body.simulation-run-ui .layout > .library { display: none !important; }
+
+/* Running motor: preserve original outline/terminal colour; yellow inside, red designation. */
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) #svg_motor_circle,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) #svg_motor_circle {
+  fill: #ffd21f !important; stroke: #666666 !important; filter: none !important;
+}
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) text,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) text { fill: #ff3030 !important; }
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) path,
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) line,
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) rect,
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) circle:not(.sim-rotor-ring),
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) polygon,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) path,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) line,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) rect,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) circle:not(.sim-rotor-ring),
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) polygon { stroke: #666666 !important; filter: none !important; }
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) circle:not(.sim-rotor-ring),
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) circle:not(.sim-rotor-ring) { fill: #666666; }
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) #svg_motor_circle,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) #svg_motor_circle { fill: #ffd21f !important; }

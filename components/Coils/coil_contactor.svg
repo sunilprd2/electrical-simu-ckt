@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="367.6" height="392.11" viewBox="124.19 37.16 367.6 392.11">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Top terminal node (12-sided polygon) -->
+  <!-- Top vertical stem -->
+  <!-- Standard Contactor/Relay Coil Main Rectangle (exact 144x72 centerline proportion matching image_c9e202.png) -->
+  <!-- Bottom vertical stem -->
+  <!-- Bottom terminal node (12-sided polygon) -->
+  <path d="m322.26,29.88l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.0137 0 0 0.959596 -36.0822 54.7863)"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="10" transform="matrix(1.0137 0 0 0.722709 -36.0822 63.774)" x1="339.76" x2="339.76" y1="48.1" y2="177.1"/>
+  <rect fill="none" height="72" id="svg_3" stroke="#666666" stroke-width="10" transform="matrix(1.24562 0 0 1.18621 -155.61 -0.887342)" width="144" x="300.19" y="160.26"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="10" x1="309" x2="309" y1="270.95" y2="361.77"/>
+  <path d="m322.92,332.61l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0" transform="matrix(1.0137 0 0 0.959596 -36.0822 54.7863)"/>
+ </g>
+</svg>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="361.93" height="386.06" viewBox="399.53 117.68 361.93 386.06">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Top terminal node (12-sided polygon at x=225, y=62.7) -->
+  <!-- Top vertical stem (along x=225 from top terminal down to y=204) and horizontal lead RIGHT to bell dome at x=263 -->
+  <!-- Bell Symbol (Reversed D-shape: flat vertical back at x=321.5 from y=176 to y=304, curved dome facing left to x=250) -->
+  <!-- Bottom horizontal lead (from bell dome at x=263, y=276 LEFT to x=225) and vertical stem down to bottom terminal -->
+  <!-- Bottom terminal node (12-sided polygon at x=225, y=421.7) -->
+  <g id="svg_7" transform="matrix(1 0 0 1.01916 0 -2.89709)">
+   <path d="m551.54,114.29l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.828079 0 25.9893) matrix(1.0086 0 0 0.959594 -35.776 53.7867)"/>
+   <path d="m569.04,131.27l0,129l38,0" fill="none" id="svg_2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.828079 0 25.9893) matrix(1.0086 0 0 0.959594 -35.776 53.7867)"/>
+   <path d="m665.54,232.27l0,128a71.5,64 0 0 1 0,-128z" fill="none" id="svg_3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.828079 0 25.9893) matrix(1.0086 0 0 0.959594 -35.776 53.7867)"/>
+   <path d="m607.04,332.27l-38,0l0,129" fill="none" id="svg_4" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.828079 0 25.9893) matrix(1.0086 0 0 0.959594 -35.776 53.7867)"/>
+   <path d="m551.54,473.29l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.828079 0 25.9893) matrix(1.0086 0 0 0.959594 -35.776 53.7867)"/>
+  </g>
+ </g>
+</svg>

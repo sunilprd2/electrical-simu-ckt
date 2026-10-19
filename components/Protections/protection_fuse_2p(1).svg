@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="446.92" height="476.71" viewBox="-22.46 1.85 446.92 476.71">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <path d="m84.8,56.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="m84.8,415.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="m282.2,56.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="m282.2,415.02l4.69,-8.12l8.12,-4.69l9.38,0l8.12,4.69l4.69,8.12l0,9.38l-4.69,8.12l-8.12,4.69l-9.38,0l-8.12,-4.69l-4.69,-8.12l0,-9.38z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <!-- Continuous Vertical Stems -->
+  <line fill="none" id="svg_stem1" stroke="#666666" stroke-width="10" x1="102.3" x2="102.3" y1="73" y2="403"/>
+  <line fill="none" id="svg_stem2" stroke="#666666" stroke-width="10" x1="299.7" x2="299.7" y1="73" y2="403"/>
+  <!-- Fuse Box Bodies -->
+  <!-- Center Y: 242.2. Height: 92.7. Width: 50.9 -->
+  <rect fill="none" height="92.7" id="svg_fuse_box1" stroke="#666666" stroke-width="10" width="50.9" x="76.85" y="193.85"/>
+  <rect fill="none" height="92.7" id="svg_fuse_box2" stroke="#666666" stroke-width="10" width="50.9" x="274.25" y="193.85"/>
+  <!-- Text Labels (Vector Paths) -->
+  <!-- "1" Terminal Label -->
+  <!-- "2" Terminal Label -->
+  <!-- "3" Terminal Label -->
+  <!-- "4" Terminal Label -->
+  <!-- "-F2" Label Rotated -90deg -->
+ </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="890.63" height="950.01" viewBox="322.35 50.02 890.63 950.01">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <title>sunil</title>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 2 Vertical Polygon Terminal Nodes (1, 2) -->
+  <!-- Vertical Stems (1, 2) -->
+  <!-- DC Motor Main Circle (Center = 225,285, Radius = 133.04px, Diameter = 266.08px) -->
+  <!-- Inner Motor Marking: M and DC Symbol (solid line + 3 dashes) -->
+  <path d="m454.89,212.33l5.32,-8.62l9.22,-4.98l10.65,0l9.22,4.98l5.32,8.62l0,9.95l-5.32,8.62l-9.22,4.98l-10.65,0l-9.22,-4.98l-5.32,-8.62l0,-9.95z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)"/>
+  <path d="m837.2,155.22l7.97,-13.69l13.8,-7.9l15.95,0l13.8,7.9l7.97,13.69l0,15.81l-7.97,13.69l-13.8,7.9l-15.95,0l-13.8,-7.9l-7.97,-13.69l0,-15.81z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <circle cx="486.93" cy="485.15" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.70008 0 0 1.68572 -60.1506 -228.868)"/>
+  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="6" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="474.25" x2="474.25" y1="204.12" y2="288.8"/>
+  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="603.96" x2="603.96" y1="207.83" y2="290.57"/>
+  <path d="m500.44,437.45l0,-61.12l12.91,0l18.27,52.93l18.09,-52.93l12.91,0l0,61.12l-8.61,0l0,-51.08l-18.1,51.08l-8.76,0l-18.1,-51.08l0,51.08l-8.61,0z" fill="#666666" id="svg_m" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)"/>
+  <line fill="none" id="svg_dc_solid" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="483.79" x2="579.25" y1="480.07" y2="480.07"/>
+  <line fill="none" id="svg_dc_dash1" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="483.79" x2="505.17" y1="514.7" y2="514.7"/>
+  <line fill="none" id="svg_dc_dash2" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="520.84" x2="542.2" y1="514.7" y2="514.7"/>
+  <line fill="none" id="svg_dc_dash3" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="557.87" x2="579.25" y1="514.7" y2="514.7"/>
+ </g>
+</svg>
