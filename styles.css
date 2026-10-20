@@ -2345,3 +2345,108 @@ body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) ci
 body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) circle:not(.sim-rotor-ring) { fill: #666666; }
 body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) #svg_motor_circle,
 body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) #svg_motor_circle { fill: #ffd21f !important; }
+
+
+/* ESC V127: Professional Industrial Simulation Engine Styles */
+/* 1. Visible hollow hexagonal/polygon terminal markers when unconnected; hidden cleanly when wire connected */
+#dropLayer .dropped-symbol .svg-terminal-node {
+  fill: #07172f !important;
+  stroke: #ffffff !important;
+  stroke-width: 7px !important;
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+body.theme-light #dropLayer .dropped-symbol .svg-terminal-node {
+  fill: #ffffff !important;
+  stroke: #111827 !important;
+}
+#dropLayer .dropped-symbol .svg-terminal-node.terminal-connected-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* 2. IEC 60445 Conductor Identification: R/L1=Red, Y/L2=Yellow, B/L3=Blue, N=Black, PE=Green-and-Yellow */
+body #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
+  stroke: #1e293b !important;
+  stroke-width: 2.8 !important;
+  filter: drop-shadow(0 0 1.5px #94a3b8) !important;
+}
+body.theme-light body #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
+  stroke: #111827 !important;
+  filter: none !important;
+}
+body #schematic #wireLayer .connected-wire.wire-pe,
+body #schematic #wireLayer .connected-wire.wire-live.wire-pe {
+  stroke: #22c55e !important;
+  stroke-width: 2.8 !important;
+  stroke-dasharray: 8 6 !important;
+  filter: drop-shadow(0 0 2px #ffd21f) !important;
+}
+body #schematic #wireLayer .connected-wire.wire-deenergized {
+  opacity: 0.55 !important;
+  filter: none !important;
+  stroke-width: 2 !important;
+}
+
+/* 3. Fault & Timer State Badges and Protective Trip / Blown Fuse Visuals */
+body.live #dropLayer .dropped-symbol.sim-fuse-blown > svg:not(.select-box) path,
+body.live #dropLayer .dropped-symbol.sim-fuse-blown > svg:not(.select-box) line,
+body.live #dropLayer .dropped-symbol.sim-fuse-blown > svg:not(.select-box) rect,
+body.live #dropLayer .dropped-symbol.sim-fault-tripped > svg:not(.select-box) path,
+body.live #dropLayer .dropped-symbol.sim-fault-tripped > svg:not(.select-box) line,
+body.live #dropLayer .dropped-symbol.sim-fault-tripped > svg:not(.select-box) rect {
+  stroke: #ef4444 !important;
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.85)) !important;
+}
+#dropLayer .dropped-symbol .sim-state-badge {
+  fill: #e2e8f0 !important;
+  font-family: Arial, sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  pointer-events: none;
+}
+#dropLayer .dropped-symbol .sim-state-badge.badge-fault {
+  fill: #ff4545 !important;
+}
+#dropLayer .dropped-symbol .sim-state-badge.badge-ok {
+  fill: #22c55e !important;
+}
+#dropLayer .dropped-symbol .sim-state-badge.badge-warn {
+  fill: #ffd21f !important;
+}
+
+/* 4. Motor Red Rotation-Direction Arrow */
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) path.sim-motor-dir-arrow,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) path.sim-motor-dir-arrow {
+  stroke: #ff3030 !important;
+  fill: none !important;
+}
+body.live #dropLayer .dropped-symbol.motor-rotating-cw > svg:not(.select-box) polygon.sim-motor-dir-head,
+body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) polygon.sim-motor-dir-head {
+  fill: #ff3030 !important;
+  stroke: none !important;
+}
+
+/* 5. Dynamic Industrial Properties in #propertyPanel */
+.esc-sim-props-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+.esc-sim-props-container label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #cfe6ff;
+}
+.esc-sim-props-container select,
+.esc-sim-props-container input {
+  background: #0b1e36;
+  color: #ffffff;
+  border: 1px solid #28547a;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+}

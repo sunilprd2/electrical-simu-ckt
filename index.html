@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v126-small-terminals">
+<link rel="stylesheet" href="styles.css?v=v127-master-sim">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -23,7 +23,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
-      if (k !== 'electrical-simu-ckt-v126-small-terminals-56-components') caches.delete(k);
+      if (k !== 'electrical-simu-ckt-v127-master-sim-56-components') caches.delete(k);
     }));
   }
   if ('serviceWorker' in navigator) {
@@ -174,7 +174,7 @@ try {
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v126-small-terminals"></script>
+<script src="app.js?v=v127-master-sim"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -529,7 +529,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
          });
        }
      }
-     drop.querySelectorAll('.dropped-symbol').forEach(g=>{if(typeof syncComponentPorts==='function')syncComponentPorts(g);});
+     drop.querySelectorAll('.dropped-symbol').forEach(g=>{if(typeof upgradeComponentToInlineSvg==='function')upgradeComponentToInlineSvg(g);if(typeof syncComponentPorts==='function')syncComponentPorts(g);});
      if(typeof refreshAllWires==='function')refreshAllWires();
      if(typeof syncConnectedPortStates==='function')syncConnectedPortStates();
      currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
@@ -944,7 +944,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
   let moved = false;
   let start = null;
   document.addEventListener('pointerdown', function(e){
-    if (e.button !== 0) return;
+    if (e.button !== 0 || document.body.classList.contains('live')) return;
     const g = e.target && e.target.closest ? e.target.closest('#dropLayer .dropped-symbol') : null;
     if (!g || e.target.closest('.mag-port') || e.target.closest('.connected-wire')) { previous = null; start = null; moved = false; return; }
     const now = Date.now();
@@ -1001,13 +1001,13 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const activeColor=()=>{if(defaultToggle?.checked){const saved=localStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
  const tint=(g,color)=>{
    if(!g||!color)return;
-   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
-   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
-   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
-   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
-   if(document.body.classList.contains('live')&&g.classList.contains('sim-energized'))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
    g.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{
-     if(el.closest('.terminal,.port,.select-box,.drawing-text-hit'))return;
+     if(el.closest('.terminal,.port,.select-box,.drawing-text-hit,.sim-motor-rotor-group')||el.classList.contains('svg-terminal-node'))return;
      const st=el.getAttribute('stroke'),fi=el.getAttribute('fill');
      if(st&&st!=='none'&&st!=='transparent')el.setAttribute('stroke',color);
      if(fi&&fi!=='none'&&fi!=='transparent')el.setAttribute('fill',color);
@@ -1017,7 +1017,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const applyColours=()=>{
    const c=activeColor();
    layer.querySelectorAll('.dropped-symbol').forEach(g=>tint(g,c));
-   document.querySelectorAll('#wireLayer path,#wireLayer line,#wireLayer polyline,#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')&&w.classList.contains('wire-live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
+   document.querySelectorAll('#wireLayer path,#wireLayer line,#wireLayer polyline,#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
  };
  if(colorInput){
    const saved=localStorage.getItem('esc-default-component-colour-v1');

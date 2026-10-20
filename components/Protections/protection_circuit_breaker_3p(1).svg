@@ -1,36 +1,36 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="527.77" height="467.95" viewBox="21.47 50.73 527.77 467.95">
+<svg xmlns="http://www.w3.org/2000/svg" width="517.6121" height="471.2006" viewBox="41.8739 49.1097 517.6121 471.2006">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Terminal Nodes -->
-  <!-- Top Stems -->
-  <!-- Circuit Breaker 'X' Symbols -->
-  <!-- Bottom Stems -->
-  <!-- Switch Flappers (Normally Open) -->
-  <!-- Dashed Mechanical Link -->
-  <!-- Text Labels (Vector Paths) -->
-  <!-- "-Q3" Label Rotated -90deg -->
-  <path d="m91.75,116.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="m91.75,449.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
-  <path d="m292.25,115.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="m292.25,448.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
-  <path d="m491.75,116.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
-  <path d="m491.75,449.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
-  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="100.5" x2="100.5" y1="122.22" y2="218.72"/>
-  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="301" x2="301" y1="121.22" y2="217.72"/>
-  <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" x1="500.5" x2="500.5" y1="122.22" y2="218.72"/>
-  <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="89.2" x2="111.8" y1="207.71" y2="229.74"/>
-  <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="89.2" x2="111.8" y1="229.74" y2="207.71"/>
-  <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="289.7" x2="312.3" y1="206.71" y2="228.74"/>
-  <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="289.7" x2="312.3" y1="228.74" y2="206.71"/>
-  <line fill="none" id="svg_cb_x3_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="489.2" x2="511.8" y1="207.71" y2="229.74"/>
-  <line fill="none" id="svg_cb_x3_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="489.2" x2="511.8" y1="229.74" y2="207.71"/>
-  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="100.5" x2="100.5" y1="340.47" y2="443.89"/>
-  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" x1="301" x2="301" y1="339.47" y2="442.89"/>
-  <line fill="none" id="svg_stem_bot3" stroke="#666666" stroke-width="10" x1="500.5" x2="500.5" y1="340.47" y2="443.89"/>
-  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="100.5" x2="58.9" y1="340.47" y2="222.62"/>
-  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="301" x2="259.4" y1="339.47" y2="221.62"/>
-  <line fill="none" id="svg_flapper3" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="500.5" x2="458.9" y1="340.47" y2="222.62"/>
-  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" x1="76.7" x2="478.7" y1="280.59" y2="280.59"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  <path d="m112.42,116.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" />
+  <path d="m112.42,449.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" />
+  <path d="m291.92,115.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" />
+  <path d="m291.92,448.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" />
+  <path d="m471.42,116.48l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0" />
+  <path d="m471.42,449.37l2.35,-3.96l4.06,-2.29l4.69,0.0l4.06,2.29l2.35,3.96l0.0,4.57l-2.35,3.96l-4.06,2.29l-4.69,0.0l-4.06,-2.29l-2.35,-3.96l0.0,-4.57z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0" />
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="121.16666666666669" x2="121.16666666666669" y1="122.22" y2="218.72" />
+  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="300.6666666666667" x2="300.6666666666667" y1="121.22" y2="217.72" />
+  <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" x1="480.1666666666667" x2="480.1666666666667" y1="122.22" y2="218.72" />
+  <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="109.86666666666669" x2="132.4666666666667" y1="207.71" y2="229.74" />
+  <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="109.86666666666669" x2="132.4666666666667" y1="229.74" y2="207.71" />
+  <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="289.3666666666667" x2="311.9666666666667" y1="206.71" y2="228.74" />
+  <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="289.3666666666667" x2="311.9666666666667" y1="228.74" y2="206.71" />
+  <line fill="none" id="svg_cb_x3_1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="468.8666666666667" x2="491.4666666666667" y1="207.71" y2="229.74" />
+  <line fill="none" id="svg_cb_x3_2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="468.8666666666667" x2="491.4666666666667" y1="229.74" y2="207.71" />
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="121.16666666666669" x2="121.16666666666669" y1="340.47" y2="443.89" />
+  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" x1="300.6666666666667" x2="300.6666666666667" y1="339.47" y2="442.89" />
+  <line fill="none" id="svg_stem_bot3" stroke="#666666" stroke-width="10" x1="480.1666666666667" x2="480.1666666666667" y1="340.47" y2="443.89" />
+  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="121.16666666666669" x2="79.56666666666669" y1="340.47" y2="222.62" />
+  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="300.6666666666667" x2="259.06666666666666" y1="339.47" y2="221.62" />
+  <line fill="none" id="svg_flapper3" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="480.1666666666667" x2="438.56666666666666" y1="340.47" y2="222.62" />
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" x1="97.36666666666669" x2="458.3666666666667" y1="280.59" y2="280.59" />
  </g>
 </svg>

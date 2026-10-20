@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="448.76" height="478.68" viewBox="-23.38 0.88 448.76 478.68">
+<svg xmlns="http://www.w3.org/2000/svg" width="441.7628" height="471.2137" viewBox="-19.8764 4.6081 441.7628 471.2137">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Terminal Nodes -->
-  <path d="m93.55,67.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="m93.55,408.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
-  <path d="m290.95,67.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="m290.95,408.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
-  <!-- Continuous Vertical Stems -->
-  <line fill="none" id="svg_stem1" stroke="#666666" stroke-width="10" x1="102.3" x2="102.3" y1="73" y2="403"/>
-  <line fill="none" id="svg_stem2" stroke="#666666" stroke-width="10" x1="299.7" x2="299.7" y1="73" y2="403"/>
-  <!-- Fuse Box Bodies -->
-  <!-- Center Y: 242.2. Height: 92.7. Width: 50.9 -->
-  <rect fill="none" height="92.7" id="svg_fuse_box1" stroke="#666666" stroke-width="10" width="50.9" x="76.85" y="193.85"/>
-  <rect fill="none" height="92.7" id="svg_fuse_box2" stroke="#666666" stroke-width="10" width="50.9" x="274.25" y="193.85"/>
-  <!-- Text Labels (Vector Paths) -->
-  <!-- "1" Terminal Label -->
-  <!-- "2" Terminal Label -->
-  <!-- "3" Terminal Label -->
-  <!-- "4" Terminal Label -->
-  <!-- "-F2" Label Rotated -90deg -->
+  
+  <path d="m102.5,67.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" />
+  <path d="m102.5,408.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" />
+  <path d="m282.0,67.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0" />
+  <path d="m282.0,408.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" />
+  
+  <line fill="none" id="svg_stem1" stroke="#666666" stroke-width="10" x1="111.25" x2="111.25" y1="73" y2="403" />
+  <line fill="none" id="svg_stem2" stroke="#666666" stroke-width="10" x1="290.75" x2="290.75" y1="73" y2="403" />
+  
+  
+  <rect fill="none" height="92.7" id="svg_fuse_box1" stroke="#666666" stroke-width="10" width="50.9" x="85.8" y="193.85" />
+  <rect fill="none" height="92.7" id="svg_fuse_box2" stroke="#666666" stroke-width="10" width="50.9" x="265.3" y="193.85" />
+  
+  
+  
+  
+  
+  
  </g>
 </svg>

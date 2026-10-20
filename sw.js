@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v126-small-terminals-56-components';
+const CACHE='electrical-simu-ckt-v127-master-sim-56-components';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=v126-small-terminals',
-  './app.js?v=v126-small-terminals',
+  './styles.css?v=v127-master-sim',
+  './app.js?v=v127-master-sim',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',
