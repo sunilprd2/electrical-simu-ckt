@@ -1500,23 +1500,13 @@ renderLibrary();
   function paint(){
    const q = (document.getElementById('search')?.value || '').trim().toLowerCase();
    const filtered = normalized.filter(it => (activeCategory===null || it.category===activeCategory) && (!q || (it.name+' '+it.category+' '+it.type).toLowerCase().includes(q)));
-   const loadPaletteBar = activeCategory === 'Loads' ? (
-     '<div class="load-color-bar" aria-label="Load indicator colour options">' +
-     '<span class="load-color-bar-label">Colour:</span>' +
-     (window.ESC_LOAD_COLOR_OPTIONS || [{name:'Red',hex:'#ff3b30'},{name:'Green',hex:'#22c55e'},{name:'Yellow',hex:'#ffd21f'},{name:'Blue',hex:'#3b82f6'},{name:'Orange',hex:'#ff9500'},{name:'Cyan',hex:'#00e5ff'}]).map(c =>
-       `<span role="button" tabindex="0" class="load-color-dot ${window.getEscLoadSimColor && window.getEscLoadSimColor()===c.hex?'active':''}" data-color="${c.hex}" title="${c.name} indicator colour" aria-label="${c.name}" style="background:${c.hex}"></span>`
-     ).join('') + '</div>'
-   ) : '';
+   // Load colour selection belongs to a placed Pilot Light's properties, not the library.
+   const loadPaletteBar = '';
    const resultMarkup = '<div class="component-results-head"><b>'+(activeCategory===null?'SELECT A CATEGORY':activeCategory.toUpperCase())+'</b><span>'+filtered.length+' symbols</span></div>' +
     loadPaletteBar +
     (filtered.length ? '<div class="component-results">'+filtered.map(it=>{
       const cardColor = (window.getEscLoadSimColor ? window.getEscLoadSimColor(it.file) : '#ff3b30');
-      const cardDots = it.category === 'Loads' ? (
-        '<span class="card-load-dots" role="group" aria-label="Load colour">' +
-        (window.ESC_LOAD_COLOR_OPTIONS || [{name:'Red',hex:'#ff3b30'},{name:'Green',hex:'#22c55e'},{name:'Yellow',hex:'#ffd21f'},{name:'Blue',hex:'#3b82f6'}]).slice(0,4).map(c =>
-          `<i class="load-color-dot card-dot ${cardColor===c.hex?'active':''}" data-color="${c.hex}" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" title="${c.name}" style="background:${c.hex}"></i>`
-        ).join('') + '</span>'
-      ) : '';
+      const cardDots = '';
       return `<button type="button" class="symbol-btn" draggable="true" title="Drag ${it.name} into the schematic" data-symbol="${String(it.type).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-name="${String(it.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" data-ref="" data-accent="#e9f1ed" data-sim-color="${cardColor}" data-file="${it.file.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${it.file}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${it.name}</span>${cardDots}</button>`;
     }).join('')+'</div>' : '<div class="component-results"><div class="library-empty">No symbols match this category or search.</div></div>');
    host.innerHTML = '<div class="component-category-list" role="list" aria-label="Component categories">' +
@@ -3151,6 +3141,14 @@ syncConnectedPortStates();
     content.insertBefore(dynBox, actions);
   }
 
+  dynBox.addEventListener('click', function(e) {
+    const dot = e.target && e.target.closest ? e.target.closest('.prop-sim-color-dot') : null;
+    if (!dot) return;
+    const select = dynBox.querySelector('#propSimColor');
+    if (select) select.value = dot.dataset.color;
+    dynBox.querySelectorAll('.prop-sim-color-dot').forEach(item => item.classList.toggle('active', item === dot));
+  });
+
   function populateDynamicProperties(g) {
     if (!g || !dynBox) return;
     const kind = classifySimComponent(g);
@@ -3158,10 +3156,31 @@ syncConnectedPortStates();
     const sub = classifyProtectionSubkind(g);
     let html = '';
 
-    if (kind === 'load' || kind === 'coil') {
+    const lightIdentity = ((g.dataset.name || '') + ' ' + asset + ' ' + (g.dataset.type || '')).toLowerCase();
+    const isSignalLight = /pilot.?light|blinking.*lamp|beacon|signal.*lamp|indicator.*lamp/.test(lightIdentity);
+    if (isSignalLight) {
       const curColor = g.dataset.simColor || window.getEscLoadSimColor(g.dataset.symbolFile || '');
       const opts = ESC_LOAD_COLOR_OPTIONS.map(o => `<option value="${o.hex}" ${o.hex.toLowerCase() === curColor.toLowerCase() ? 'selected' : ''}>${o.name} (${o.hex})</option>`).join('');
-      html += `<label>Indicator / Glow Colour<select id="propSimColor">${opts}</select></label>`;
+      const swatches = ESC_LOAD_COLOR_OPTIONS.map(o => `<button type="button" class="prop-sim-color-dot ${o.hex.toLowerCase() === curColor.toLowerCase() ? 'active' : ''}" data-color="${o.hex}" title="${o.name}" aria-label="${o.name}" style="background:${o.hex}"></button>`).join('');
+      html += `<div class="pilot-light-colour"><label>Colour</label><div class="prop-sim-color-palette" role="group" aria-label="Signal light colour">${swatches}</div><select id="propSimColor" aria-hidden="true" tabindex="-1">${opts}</select></div>`;
+    } 
+    // Common IEC tag and two-part number controls are available for every component.
+    // Keep the second dropdown's first/default value at zero when no decimal suffix exists.
+    {
+      const baseTag = content.querySelector('label:has(#propTag)');
+      if (baseTag) baseTag.style.display = 'none';
+      const fullTag = String(g.dataset.ref || 'Q0.0');
+      const tagMatch = fullTag.match(/^([A-Za-z_-]+)(.*)$/);
+      const tagPrefix = tagMatch ? tagMatch[1] : 'Q';
+      const tagNumber = tagMatch ? tagMatch[2] : fullTag.replace(/^[A-Za-z_-]+/, '');
+      const numberParts = String(tagNumber || '0.0').split('.');
+      const number1 = /^\d+$/.test(numberParts[0] || '') ? numberParts[0] : '0';
+      const number2 = /^\d+$/.test(numberParts[1] || '') ? numberParts[1] : '0';
+      const commonTags = ['Q','F','K','KM','KA','KT','S','SB','SA','H','HL','HA','M','G','T','X','P','B','Y','W','R','L','Other'];
+      const tagList = [...new Set([tagPrefix, ...commonTags])];
+      const tagOptions = tagList.map(t => `<option value="${t}" ${t.toLowerCase() === tagPrefix.toLowerCase() ? 'selected' : ''}>${t === 'Other' ? 'Other / custom' : t}</option>`).join('');
+      const numberOptions = (current) => { const vals = Array.from({length:100}, (_, i) => String(i)); if (!vals.includes(String(current))) vals.push(String(current)); return vals.sort((a,b)=>Number(a)-Number(b)).map(v => `<option value="${v}" ${String(current) === v ? 'selected' : ''}>${v}</option>`).join(''); };
+      html += `<div class="signal-tag-number signal-tag-number-common"><label for="propTagType">Tag</label><select id="propTagType" required>${tagOptions}</select><label for="propTagNumber1">Number</label><div class="signal-number-inline"><select id="propTagNumber1" aria-label="Number before decimal" required>${numberOptions(number1)}</select><span class="signal-number-dot">.</span><select id="propTagNumber2" aria-label="Number after decimal" required>${numberOptions(number2)}</select></div></div>`;
     }
     if (kind === 'coil' && /timer/.test(asset)) {
       const ton = g.dataset.tonDelay || '3';
@@ -3248,7 +3267,17 @@ syncConnectedPortStates();
   document.getElementById('propertyOk')?.addEventListener('click', function() {
     if (!selected || !selected.isConnected) return;
     const g = selected;
-    const rawTag = document.getElementById('propTag')?.value.trim();
+    const tagTypeEl = document.getElementById('propTagType');
+    const tagNumber1El = document.getElementById('propTagNumber1');
+    const tagNumber2El = document.getElementById('propTagNumber2');
+    let rawTag = document.getElementById('propTag')?.value.trim();
+    if (tagTypeEl && tagNumber1El && tagNumber2El) {
+      const numberValue = `${tagNumber1El.value}.${tagNumber2El.value}`;
+      const prefix = tagTypeEl.value === 'Other' ? (g.dataset.ref.match(/^[A-Za-z_-]+/)?.[0] || 'Q') : tagTypeEl.value;
+      rawTag = prefix + numberValue;
+      const tagInput = document.getElementById('propTag');
+      if (tagInput) tagInput.value = rawTag;
+    }
     if (rawTag) {
       const validTag = ensureUniqueOrValidTag(g, rawTag);
       g.dataset.ref = validTag;

@@ -2450,3 +2450,109 @@ body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) p
   padding: 6px 8px;
   font-size: 12px;
 }
+
+
+/* JOB 1/2 narrowly scoped fixes: keep dark-mode terminal endpoints visible under the pointer,
+   use a plain white light-mode drawing sheet, and keep library symbol artwork white. */
+body.theme-dark #dropLayer .dropped-symbol .mag-port,
+body.theme-dark #dropLayer .dropped-symbol .mag-port:hover,
+body.theme-dark #dropLayer .dropped-symbol .mag-port.connect-target {
+  filter: none !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important;
+  opacity: 0 !important;
+}
+body.theme-light #sheet,
+body.theme-light #schematic {
+  background-color: #ffffff !important;
+}
+body.theme-light #sheet {
+  background-image: linear-gradient(#eeeeee 1px, transparent 1px),
+                    linear-gradient(90deg, #eeeeee 1px, transparent 1px) !important;
+}
+body.theme-light .work { background: #ffffff !important; }
+body.theme-light .library .component-results .symbol-btn img,
+body.theme-light .library .symbol-btn img {
+  filter: brightness(0) invert(1) !important;
+}
+body.theme-light .library .symbol-btn svg,
+body.theme-light .library .symbol-btn svg * {
+  stroke: #ffffff !important;
+}
+body.theme-light .library .symbol-btn svg text {
+  fill: #ffffff !important;
+}
+
+
+/* Pilot Light colour picker uses the same visual swatches as the former library palette. */
+.pilot-light-colour { display:flex; flex-direction:column; gap:9px; }
+.pilot-light-colour > label { display:block; }
+.prop-sim-color-palette { display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+.prop-sim-color-dot { width:20px; height:20px; min-width:20px; padding:0; border:2px solid #d6e1ec; border-radius:50%; cursor:pointer; box-shadow:0 0 0 1px #526b7c55; }
+.prop-sim-color-dot.active { outline:2px solid #087cff; outline-offset:3px; }
+#propSimColor[aria-hidden="true"] { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+
+
+/* USER-APPROVED FIX: identical white component artwork in the dark library in both themes.
+   These rules intentionally affect library previews only, never placed workspace components. */
+#libraryGroups .symbol-btn .lib-icon,
+#libraryGroups .symbol-btn .lib-icon *,
+#libraryGroups .symbol-btn svg,
+#libraryGroups .symbol-btn svg *,
+.library .symbol-btn .lib-icon,
+.library .symbol-btn .lib-icon *,
+.library .symbol-btn svg,
+.library .symbol-btn svg * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+#libraryGroups .symbol-btn .lib-icon text,
+#libraryGroups .symbol-btn svg text,
+.library .symbol-btn .lib-icon text,
+.library .symbol-btn svg text {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+#libraryGroups .symbol-btn img,
+.library .symbol-btn img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* USER-APPROVED FIX: plain, non-glossy light-mode drawing surface. */
+body.theme-light #sheet,
+body.theme-light #schematic,
+body.theme-light .work {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+
+/* User-requested selection behaviour: no rectangular/dotted selection boundary.
+   Highlight the actual component artwork only while selected. */
+.dropped-symbol .select-box,
+.dropped-symbol.selected .select-box,
+.dropped-symbol .component-hit-area,
+.dropped-symbol.selected .component-hit-area {
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: none !important;
+  stroke-opacity: 0 !important;
+  stroke-dasharray: none !important;
+}
+.dropped-symbol.selected { filter: none !important; }
+.dropped-symbol.selected > svg * {
+  stroke: #00e6ac !important;
+}
+.dropped-symbol.selected > svg text {
+  fill: #00e6ac !important;
+  stroke: none !important;
+}
+.signal-tag-number { display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:8px; margin:8px 0; }
+.signal-tag-number label { display:block; }
+.signal-tag-number select { width:100%; min-width:0; height:34px; border:1px solid #35629b; border-radius:7px; background:#07172f; color:#eaf4ff; padding:5px 8px; box-sizing:border-box; }
+.signal-tag-number .signal-number-inline { grid-column:2; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:6px; min-width:0; }
+.signal-tag-number .signal-number-dot { color:inherit; font-weight:700; text-align:center; }
+body.theme-light .signal-tag-number select { background:#fff; color:#17212a; border-color:#aab8c2; }
