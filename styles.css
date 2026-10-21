@@ -2289,7 +2289,8 @@ body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper1,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper2,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper3,
-body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper4 {
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper4,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_12 {
   stroke: #22c55e !important;
 }
 
@@ -2454,15 +2455,26 @@ body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) p
 
 /* JOB 1/2 narrowly scoped fixes: keep dark-mode terminal endpoints visible under the pointer,
    use a plain white light-mode drawing sheet, and keep library symbol artwork white. */
-body.theme-dark #dropLayer .dropped-symbol .mag-port,
-body.theme-dark #dropLayer .dropped-symbol .mag-port:hover,
-body.theme-dark #dropLayer .dropped-symbol .mag-port.connect-target {
+body.theme-dark #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active) {
   filter: none !important;
   fill: transparent !important;
   fill-opacity: 0 !important;
   stroke: transparent !important;
   stroke-width: 0 !important;
   opacity: 0 !important;
+}
+body.theme-dark #dropLayer .dropped-symbol .mag-port:hover,
+body.theme-dark #dropLayer .dropped-symbol .mag-port.connect-target,
+body.theme-dark #dropLayer .dropped-symbol .mag-port.port-active,
+body.theme-light #dropLayer .dropped-symbol .mag-port:hover,
+body.theme-light #dropLayer .dropped-symbol .mag-port.connect-target,
+body.theme-light #dropLayer .dropped-symbol .mag-port.port-active {
+  opacity: 1 !important;
+  fill: rgba(0, 230, 172, 0.32) !important;
+  fill-opacity: 1 !important;
+  stroke: #00f5b8 !important;
+  stroke-width: 1.8px !important;
+  filter: drop-shadow(0 0 4px rgba(0, 245, 184, 0.75)) !important;
 }
 body.theme-light #sheet,
 body.theme-light #schematic {
@@ -2543,7 +2555,7 @@ body.theme-light .work {
   stroke-dasharray: none !important;
 }
 .dropped-symbol.selected { filter: none !important; }
-.dropped-symbol.selected > svg * {
+.dropped-symbol.selected > svg *:not(text):not(tspan):not([stroke="none"]):not([stroke-width="0"]) {
   stroke: #00e6ac !important;
 }
 .dropped-symbol.selected > svg text {
@@ -2577,7 +2589,19 @@ body.theme-light .signal-tag-number select { background:#fff; color:#17212a; bor
   vector-effect: non-scaling-stroke !important;
   pointer-events: none !important;
 }
-#dropLayer .dropped-symbol.selected > .component-hit-area,
+#dropLayer .dropped-symbol > .component-hit-area,
+#dropLayer .dropped-symbol.selected > .component-hit-area {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  stroke-dasharray: none !important;
+  pointer-events: all !important;
+}
+#dropLayer .dropped-symbol > .component-selection-outline,
 #dropLayer .dropped-symbol.selected > .component-selection-outline {
   display: none !important;
   visibility: hidden !important;

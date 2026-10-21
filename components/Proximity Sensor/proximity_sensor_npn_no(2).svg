@@ -19,18 +19,16 @@
    <line id="svg_6" stroke-width="5" x1="135.17" x2="135.17" y1="167.53" y2="206.69"/>
   </g>
   <g fill="none" id="svg_switch" stroke="#666666" stroke-width="5" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <line id="svg_7" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="170" x2="190" y1="255" y2="255"/>
-  <line id="svg_8" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="190" x2="235" y1="255" y2="230"/>
-  <line id="svg_9" stroke-dasharray="6,6" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="235" x2="250" y1="255" y2="255"/>
-  <line fill="none" id="svg_wire_bn" stroke="#666666" stroke-width="10" x1="291.34" x2="546.67" y1="96.38" y2="96.38"/>
+
+
+<line fill="none" id="svg_wire_bn" stroke="#666666" stroke-width="10" x1="291.34" x2="546.67" y1="96.38" y2="96.38"/>
   <line fill="none" id="svg_wire_bk" stroke="#666666" stroke-width="10" transform="matrix(1.62255 0 0 0.986778 -176.241 -47.4155)" x1="284.45" x2="446.95" y1="245.94" y2="245.94"/>
   <line fill="none" id="svg_wire_bu" stroke="#666666" stroke-width="10" x1="286.4" x2="544.11" y1="302.91" y2="302.91"/>
-  <path fill="#666666" id="svg_txt_bn" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <path fill="#666666" id="svg_txt_bk" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <path fill="#666666" id="svg_txt_bu" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <path fill="#666666" id="svg_txt_npn" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <path fill="#666666" id="svg_txt_no" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)"/>
-  <line fill="none" id="svg_10" stroke="#666666" stroke-width="5" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="144.35" x2="188.7" y1="270.87" y2="270"/>
+
+
+
+
+<line fill="none" id="svg_10" stroke="#666666" stroke-width="5" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="144.35" x2="188.7" y1="270.87" y2="270"/>
   <line fill="none" id="svg_11" stroke="#666666" stroke-width="5" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="220.87" x2="270" y1="268.26" y2="268.26"/>
   <line fill="none" id="svg_12" stroke="#666666" stroke-width="5" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046)" x1="187.83" x2="229.57" y1="269.57" y2="244.78"/>
   <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_13" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1.54927 0 0 2.00239 -155.634 -292.046) matrix(1 0 0 1 48.6957 1.73913)" x="142.61" xml:space="preserve" y="379.57">NPN NO</text>

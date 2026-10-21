@@ -291,7 +291,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  document.getElementById('sheetReset')?.addEventListener('click',()=>{sheetEnabled.checked=false;if(settingsSheetToggle)settingsSheetToggle.checked=false;if(settingsSheetState)settingsSheetState.textContent='Off';sheetSize.value='A4';sheetOrientation.value='landscape';Object.keys(titleFields).forEach(id=>{const el=document.getElementById(id);if(el)el.value=id==='sheetNumber'?'1/1':'';});applySheetOptions();sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')});
  document.addEventListener('click',e=>{if(sheetPanel?.classList.contains('open')&&!sheetPanel.contains(e.target)&&!sheetBtn?.contains(e.target)){if(sheetEnabled)sheetEnabled.checked=false;if(settingsSheetToggle)settingsSheetToggle.checked=false;if(settingsSheetState)settingsSheetState.textContent='Off';applySheetOptions();sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')}});
 
- gridBtn.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
+ gridBtn?.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
 })();
 </script>
 
@@ -585,6 +585,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  host.addEventListener('dblclick',e=>{
    const btn=e.target.closest('.symbol-btn');if(!btn)return;
    e.preventDefault();e.stopPropagation();
+   if(window.__escLastLibInsertTime && (Date.now() - window.__escLastLibInsertTime) < 600) return;
    if(typeof makeDropped!=='function'){if(status)status.textContent='COMPONENT INSERTION IS NOT AVAILABLE YET';return;}
    const d={type:btn.dataset.symbol||btn.dataset.name,name:btn.dataset.name||btn.dataset.symbol,ref:btn.dataset.ref||'',accent:btn.dataset.accent||'#b7b9bc',symbolFile:btn.dataset.file||''};
    const scale=1;
@@ -608,6 +609,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
   if(!svg||!layer||svg.dataset.finalDragInstalled==='1')return;
   svg.dataset.finalDragInstalled='1';
   let active=null;
+  let lastDown={g:null, time:0};
   function point(e){
     const m=svg.getScreenCTM();
     if(m){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(m.inverse());return{x:p.x,y:p.y};}
@@ -615,14 +617,27 @@ document.querySelectorAll(".top nav button").forEach(button => {
     return{x:v.x+(e.clientX-r.left)*v.width/r.width,y:v.y+(e.clientY-r.top)*v.height/r.height};
   }
   svg.addEventListener('pointerdown',function(e){
-    if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+    if(e.button!==0||document.body.classList.contains('live')||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
     if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11))return;
     const g=e.target.closest?.('#dropLayer .dropped-symbol');
     if(!g)return;
+    const now=Date.now();
+    const isDouble=(e.detail>=2)||(lastDown.g===g && (now-lastDown.time)<=450);
+    lastDown=isDouble?{g:null,time:0}:{g,time:now};
+    if(isDouble){
+      active=null;
+      if(typeof select==='function') select(g, true);
+      const panel=document.getElementById('propertyPanel');
+      if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}
+      const status=document.getElementById('state');
+      if(status) status.textContent='COMPONENT DETAILS • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      return;
+    }
     const p=point(e),x=Number(g.dataset.x)||0,y=Number(g.dataset.y)||0;
     active={g,id:e.pointerId,dx:p.x-x,dy:p.y-y,startX:p.x,startY:p.y,moved:false};
-    // Select before stopping propagation so the inspector always follows the clicked component.
-    if(typeof select==='function') select(g);
+    const keepOpen=document.getElementById('propertyPanel')?.classList.contains('open') && (typeof selected!=='undefined' && selected===g);
+    if(typeof select==='function') select(g, Boolean(keepOpen));
     const status=document.getElementById('state'); if(status) status.textContent='SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT');
     g.classList.add('moving');g.style.cursor='grabbing';
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
@@ -675,11 +690,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
  }
  // Capture-phase selection makes the clicked placed component authoritative.
  layer?.addEventListener('pointerdown',e=>{
-   if(e.button!==0||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
+   if(e.button!==0||document.body.classList.contains('live')||e.target.closest?.('.mag-port')||e.target.closest?.('.connected-wire'))return;
    if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11))return;
    const g=e.target.closest?.('.dropped-symbol'); if(!g)return;
-   if(typeof select==='function')select(g);
-   setStatus('SELECTED • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
+   const isDbl = e.detail >= 2 || (document.getElementById('propertyPanel')?.classList.contains('open') && typeof selected!=='undefined' && selected===g);
+   if(typeof select==='function')select(g, Boolean(isDbl));
+   setStatus((isDbl?'COMPONENT DETAILS • ':'SELECTED • ')+(g.dataset.ref||g.dataset.name||'COMPONENT'));
  },true);
  // Delegated handler also covers components restored from a saved drawing.
  // Their per-node listeners are not retained when SVG markup is reloaded.
@@ -689,6 +705,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
    e.preventDefault();
    e.stopPropagation();
    if(typeof select==='function')select(g,true);
+   const panel=document.getElementById('propertyPanel');
+   if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}
    setStatus('COMPONENT DETAILS • '+(g.dataset.ref||g.dataset.name||'COMPONENT'));
  },true);
  $('delete')?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();removeSelected();},true);
@@ -705,7 +723,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
    note.textContent=comment;note.style.display=comment?'':'none';
    const title=g.querySelector('title');if(title)title.textContent=(g.dataset.ref||'')+' — '+(g.dataset.name||'Component')+(comment?' • '+comment:'');
    setStatus('COMPONENT PROPERTIES SAVED');
-   $('saveBtn')?.click();
  });
  document.addEventListener('keydown',e=>{if(e.key==='Delete'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)&&(selected||window.selectedWire)){e.preventDefault();removeSelected();}},true);
 })();
@@ -816,8 +833,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
         // Tint the actual symbol artwork, not the external reference tag (X1, KM1, etc.).
         // Force the chosen stroke colour over theme defaults, while preserving unfilled outlines.
         nsSvg.querySelectorAll('path,line,circle,rect,polyline,polygon,ellipse').forEach(el=>{
-          if(!image){
-            el.style.setProperty('stroke',componentColor,'important');
+          if(!image && !el.closest('.sim-motor-rotor-group') && !el.classList.contains('svg-terminal-node')){
+            const origStroke=(el.getAttribute('stroke')||'').trim().toLowerCase();
+            const origSw=(el.getAttribute('stroke-width')||'').trim();
+            if(origStroke && origStroke!=='none' && origStroke!=='transparent' && origSw!=='0'){
+              el.style.setProperty('stroke',componentColor,'important');
+            }
             const originalFill=(el.getAttribute('fill')||'').trim().toLowerCase();
             if(originalFill && originalFill!=='none' && originalFill!=='transparent'){
               el.style.setProperty('fill',componentColor,'important');
@@ -1001,23 +1022,25 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const activeColor=()=>{if(defaultToggle?.checked){const saved=localStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
  const tint=(g,color)=>{
    if(!g||!color)return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')))return;
-   g.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{
-     if(el.closest('.terminal,.port,.select-box,.drawing-text-hit,.sim-motor-rotor-group')||el.classList.contains('svg-terminal-node'))return;
-     const st=el.getAttribute('stroke'),fi=el.getAttribute('fill');
-     if(st&&st!=='none'&&st!=='transparent')el.setAttribute('stroke',color);
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')||g.classList.contains('motor-rotating-cw')||g.classList.contains('motor-rotating-ccw')))return;
+   const artSvg = g.querySelector(':scope > svg:not(.select-box)');
+   if(!artSvg) return;
+   artSvg.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{
+     if(el.closest('.sim-motor-rotor-group')||el.classList.contains('svg-terminal-node'))return;
+     const st=el.getAttribute('stroke'),fi=el.getAttribute('fill'),sw=el.getAttribute('stroke-width');
+     if(st&&st!=='none'&&st!=='transparent'&&sw!=='0')el.setAttribute('stroke',color);
      if(fi&&fi!=='none'&&fi!=='transparent')el.setAttribute('fill',color);
+   });
+   artSvg.querySelectorAll('text,tspan').forEach(el=>{
+     if(el.closest('.sim-motor-rotor-group'))return;
+     el.setAttribute('fill',color);
    });
    g.dataset.workspaceColor=color;
  };
  const applyColours=()=>{
    const c=activeColor();
    layer.querySelectorAll('.dropped-symbol').forEach(g=>tint(g,c));
-   document.querySelectorAll('#wireLayer path,#wireLayer line,#wireLayer polyline,#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
+   document.querySelectorAll('#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
  };
  if(colorInput){
    const saved=localStorage.getItem('esc-default-component-colour-v1');
@@ -1290,8 +1313,15 @@ document.querySelectorAll(".top nav button").forEach(button => {
         if(!target) target=makeTarget(sensor);
         if(target){
           target.style.display='';
-          const detected=inDetectionZone(sensor,target);
+          let detected=inDetectionZone(sensor,target);
+          const propState = (sensor.dataset.targetDetected === '1' || sensor.dataset.simState === '1') ? '1' : '0';
+          if(!drag && target.dataset.lastSyncedState !== undefined && propState !== target.dataset.lastSyncedState){
+            const dest = propState === '1' ? localToWorld(sensor, -10, 45) : localToWorld(sensor, -145, 45);
+            setTargetXY(target, dest.x, dest.y);
+            detected = propState === '1';
+          }
           const next=detected?'1':'0';
+          target.dataset.lastSyncedState = next;
           if(sensor.dataset.targetDetected!==next || sensor.dataset.simState!==next){
             sensor.dataset.targetDetected=next;
             sensor.dataset.simState=next;
@@ -1334,6 +1364,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
     const sensor=[...document.querySelectorAll(sensorSelector)].find(g=>isProximity(g)&&(g.dataset.uid||'')===drag.target.dataset.sensorUid);
     if(sensor){
       const detected=inDetectionZone(sensor,drag.target),next=detected?'1':'0';
+      drag.target.dataset.lastSyncedState=next;
       if(sensor.dataset.targetDetected!==next || sensor.dataset.simState!==next){
         sensor.dataset.targetDetected=next;sensor.dataset.simState=next;
         if(window.__escProxOriginalEvaluate) window.__escProxOriginalEvaluate();
