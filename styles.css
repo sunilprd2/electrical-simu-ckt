@@ -2556,3 +2556,33 @@ body.theme-light .work {
 .signal-tag-number .signal-number-inline { grid-column:2; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:6px; min-width:0; }
 .signal-tag-number .signal-number-dot { color:inherit; font-weight:700; text-align:center; }
 body.theme-light .signal-tag-number select { background:#fff; color:#17212a; border-color:#aab8c2; }
+
+/* User correction: keep a dotted selection rectangle, but show only the
+   existing per-component tight select-box sized dynamically by app.js.
+   Never use the larger hit area or a workspace-wide overlay as the frame. */
+#dropLayer .dropped-symbol > .select-box {
+  display: none !important;
+  pointer-events: none !important;
+}
+#dropLayer .dropped-symbol.selected > .select-box {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: #19baff !important;
+  stroke-opacity: 1 !important;
+  stroke-width: 1.6 !important;
+  stroke-dasharray: 4 3 !important;
+  vector-effect: non-scaling-stroke !important;
+  pointer-events: none !important;
+}
+#dropLayer .dropped-symbol.selected > .component-hit-area,
+#dropLayer .dropped-symbol.selected > .component-selection-outline {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  stroke: none !important;
+  stroke-dasharray: none !important;
+  pointer-events: none !important;
+}

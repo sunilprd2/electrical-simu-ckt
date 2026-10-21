@@ -1155,5 +1155,239 @@ document.querySelectorAll(".top nav button").forEach(button => {
 })();
 </script>
 
+
+<script id="esc-proximity-radar-patch">
+(function(){
+  'use strict';
+  const NS='http://www.w3.org/2000/svg';
+  const sensorSelector='#dropLayer .dropped-symbol';
+  const isProximity=(g)=>{
+    if(!g) return false;
+    const a=String(g.dataset.symbolFile||g.dataset.porttype||g.dataset.type||'').toLowerCase();
+    const n=String(g.dataset.name||'').toLowerCase();
+    return /proximity_sensor_(npn|pnp)_n[oc]/.test(a) || /proximity sensor/.test(n) || (String(g.dataset.type||'').toLowerCase().includes('proximity sensor'));
+  };
+  const svgRoot=()=>document.getElementById('schematic');
+  const dropLayer=()=>document.getElementById('dropLayer');
+  const num=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?n:d;};
+  const getAngle=(g)=>num(g.dataset.rotation,0)*Math.PI/180;
+  const localToWorld=(g,lx,ly)=>{
+    const cx=num(g.dataset.x), cy=num(g.dataset.y), a=getAngle(g);
+    const dx=lx-60, dy=ly-45;
+    return {x:cx+dx*Math.cos(a)-dy*Math.sin(a), y:cy+dx*Math.sin(a)+dy*Math.cos(a)};
+  };
+  const worldToLocalDelta=(g,x,y)=>{
+    const a=getAngle(g), dx=x-num(g.dataset.x), dy=y-num(g.dataset.y);
+    return {x:dx*Math.cos(a)+dy*Math.sin(a), y:-dx*Math.sin(a)+dy*Math.cos(a)};
+  };
+  function getTargetXY(target){
+    const m=(target.getAttribute('transform')||'').match(/translate\(\s*(-?[\d.]+)[ ,]+(-?[\d.]+)/);
+    return m?{x:Number(m[1]),y:Number(m[2])}:{x:0,y:0};
+  }
+  function setTargetXY(target,x,y){target.setAttribute('transform',`translate(${x} ${y})`);target.dataset.targetX=String(x);target.dataset.targetY=String(y);}
+  function addRadar(g){
+    if(g.querySelector(':scope > .esc-prox-radar')) return;
+    const radar=document.createElementNS(NS,'g');
+    radar.setAttribute('class','esc-prox-radar');
+    radar.setAttribute('aria-hidden','true');
+    radar.style.display='none';
+    // Local left side faces the diamond and the B1 tag. Keep the zone behind the sensor artwork.
+    const cone=document.createElementNS(NS,'path');
+    cone.setAttribute('class','esc-prox-cone');
+    cone.setAttribute('d','M -50 20 H 30 V 70 H -50 Z');
+    radar.appendChild(cone);
+    const art=g.querySelector(':scope > svg:not(.select-box)');
+    if(art) g.insertBefore(radar,art); else g.insertBefore(radar,g.firstChild);
+  }
+  function hideDuplicateTerminalLabels(g){
+    // The SVG artwork already contains BN/BK/BU; hide only the generated duplicate terminal labels.
+    g.querySelectorAll(':scope > .component-ports .port-name').forEach(t=>{t.style.display='none';t.style.visibility='hidden';});
+  }
+  function makeTarget(sensor){
+    const layer=dropLayer(); if(!layer) return null;
+    let target=[...layer.querySelectorAll(':scope > .esc-prox-metal-target')].find(t=>t.dataset.sensorUid===sensor.dataset.uid);
+    if(target) return target;
+    target=document.createElementNS(NS,'g');
+    target.setAttribute('class','esc-prox-metal-target');
+    target.setAttribute('role','img');
+    target.setAttribute('aria-label','Movable metal target for proximity sensor');
+    target.dataset.sensorUid=sensor.dataset.uid||'';
+    target.style.cursor='grab';
+    target.style.touchAction='none';
+    const shadow=document.createElementNS(NS,'path');
+    shadow.setAttribute('d','M -12 -17 L 4 -17 L 12 -9 L 12 17 L -12 17 Z');
+    shadow.setAttribute('fill','#233d55');
+    shadow.setAttribute('stroke','#9eb9d0');
+    shadow.setAttribute('stroke-width','1');
+    const face=document.createElementNS(NS,'path');
+    face.setAttribute('d','M -12 -17 L 4 -17 L 12 -9 L -4 -9 Z');
+    face.setAttribute('fill','#b8cbdc');
+    face.setAttribute('stroke','#e5f2ff');
+    face.setAttribute('stroke-width','.8');
+    const side=document.createElementNS(NS,'path');
+    side.setAttribute('d','M 4 -17 L 12 -9 L 12 17 L 4 9 Z');
+    side.setAttribute('fill','#718da7');
+    side.setAttribute('stroke','#a7c0d6');
+    side.setAttribute('stroke-width','.8');
+    const front=document.createElementNS(NS,'path');
+    front.setAttribute('d','M -12 -17 L 4 -17 L 4 9 L -12 17 Z');
+    front.setAttribute('fill','#8ea8c0');
+    front.setAttribute('stroke','#d8e8f5');
+    front.setAttribute('stroke-width','.8');
+    [shadow,side,front,face].forEach(el=>target.appendChild(el));
+    const title=document.createElementNS(NS,'title');title.textContent='Drag the metal target into the green detection zone';target.appendChild(title);
+    layer.appendChild(target);
+    const p=localToWorld(sensor,-145,45);
+    setTargetXY(target,p.x,p.y);
+    target.dataset.manual='0';
+    return target;
+  }
+  function getSensorPowered(g){
+    return document.body.classList.contains('simulation-run-ui') && g.classList.contains('device-on');
+  }
+  function inDetectionZone(sensor,target){
+    // Use the actual rendered SVG geometry so detection matches the visible green radar
+    // exactly, independent of component scale, transform origin, zoom, or rotation.
+    try{
+      const svg=svgRoot();
+      const radar=sensor.querySelector(':scope > .esc-prox-radar .esc-prox-cone');
+      if(svg && radar && typeof radar.getBBox==='function' && typeof target.getBBox==='function'){
+        const rootScreen=svg.getScreenCTM();
+        const radarScreen=radar.getScreenCTM();
+        const targetScreen=target.getScreenCTM();
+        if(rootScreen && radarScreen && targetScreen){
+          const toRoot=rootScreen.inverse();
+          const rb=radar.getBBox(), tb=target.getBBox();
+          const rmat=toRoot.multiply(radarScreen), tmat=toRoot.multiply(targetScreen);
+          function box(b,m){
+            const pts=[new DOMPoint(b.x,b.y),new DOMPoint(b.x+b.width,b.y),new DOMPoint(b.x,b.y+b.height),new DOMPoint(b.x+b.width,b.y+b.height)].map(p=>p.matrixTransform(m));
+            return {left:Math.min(...pts.map(p=>p.x)),right:Math.max(...pts.map(p=>p.x)),top:Math.min(...pts.map(p=>p.y)),bottom:Math.max(...pts.map(p=>p.y))};
+          }
+          const r=box(rb,rmat), t=box(tb,tmat);
+          return t.right>=r.left && t.left<=r.right && t.bottom>=r.top && t.top<=r.bottom;
+        }
+      }
+    }catch(_){}
+    // Fallback: conservative local-space overlap with the radar rectangle.
+    const p=getTargetXY(target), d=worldToLocalDelta(sensor,p.x,p.y);
+    const halfW=12, halfH=17;
+    return (d.x+halfW)>=-50 && (d.x-halfW)<=30 && (d.y+halfH)>=20 && (d.y-halfH)<=70;
+  }
+  function updateSensors(){
+    const sensors=[...document.querySelectorAll(sensorSelector)].filter(isProximity);
+    const liveUids=new Set(sensors.map(g=>g.dataset.uid||''));
+    const layer=dropLayer();
+    let changed=false;
+    layer?.querySelectorAll(':scope > .esc-prox-metal-target').forEach(t=>{if(!liveUids.has(t.dataset.sensorUid))t.remove();});
+    sensors.forEach(sensor=>{
+      addRadar(sensor);
+      hideDuplicateTerminalLabels(sensor);
+      const radar=sensor.querySelector(':scope > .esc-prox-radar');
+      const powered=getSensorPowered(sensor);
+      if(radar) radar.style.display=powered?'':'none';
+      let target=[...((layer&&layer.querySelectorAll(':scope > .esc-prox-metal-target'))||[])].find(t=>t.dataset.sensorUid===(sensor.dataset.uid||''));
+      if(powered){
+        if(!target) target=makeTarget(sensor);
+        if(target){
+          target.style.display='';
+          const detected=inDetectionZone(sensor,target);
+          const next=detected?'1':'0';
+          if(sensor.dataset.targetDetected!==next || sensor.dataset.simState!==next){
+            sensor.dataset.targetDetected=next;
+            sensor.dataset.simState=next;
+            changed=true;
+          }
+          if(radar) radar.classList.toggle('target-detected',detected); sensor.classList.toggle('esc-prox-detected',detected);
+        }
+      } else {
+        if(target) target.remove();
+        if(sensor.dataset.targetDetected==='1' || sensor.dataset.simState==='1'){
+          sensor.dataset.targetDetected='0';sensor.dataset.simState='0';changed=true;
+        }
+        if(radar) radar.classList.remove('target-detected'); sensor.classList.remove('esc-prox-detected');
+      }
+    });
+    return changed;
+  }
+  function toSchematicPoint(e){
+    const svg=svgRoot(); if(!svg) return null;
+    const ctm=svg.getScreenCTM(); if(!ctm) return null;
+    const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+    const p=pt.matrixTransform(ctm.inverse());return {x:p.x,y:p.y};
+  }
+  let drag=null;
+  document.addEventListener('pointerdown',e=>{
+    const target=e.target?.closest?.('.esc-prox-metal-target');
+    if(!target || !document.body.classList.contains('simulation-run-ui')) return;
+    e.preventDefault();e.stopPropagation();
+    const p=toSchematicPoint(e);if(!p)return;
+    const cur=getTargetXY(target);
+    drag={target,pointerId:e.pointerId,dx:cur.x-p.x,dy:cur.y-p.y};
+    target.style.cursor='grabbing';
+    try{target.setPointerCapture(e.pointerId);}catch(_){}
+  },true);
+  document.addEventListener('pointermove',e=>{
+    if(!drag || e.pointerId!==drag.pointerId)return;
+    const p=toSchematicPoint(e);if(!p)return;
+    setTargetXY(drag.target,p.x+drag.dx,p.y+drag.dy);
+    drag.target.dataset.manual='1';
+    const sensor=[...document.querySelectorAll(sensorSelector)].find(g=>isProximity(g)&&(g.dataset.uid||'')===drag.target.dataset.sensorUid);
+    if(sensor){
+      const detected=inDetectionZone(sensor,drag.target),next=detected?'1':'0';
+      if(sensor.dataset.targetDetected!==next || sensor.dataset.simState!==next){
+        sensor.dataset.targetDetected=next;sensor.dataset.simState=next;
+        if(window.__escProxOriginalEvaluate) window.__escProxOriginalEvaluate();
+      }
+      const radar=sensor.querySelector(':scope > .esc-prox-radar');
+      if(radar)radar.classList.toggle('target-detected',detected); sensor.classList.toggle('esc-prox-detected',detected);
+    }
+  },true);
+  function endDrag(e){if(!drag || (e.pointerId!=null&&e.pointerId!==drag.pointerId))return;drag.target.style.cursor='grab';drag=null;}
+  document.addEventListener('pointerup',endDrag,true);
+  document.addEventListener('pointercancel',endDrag,true);
+
+  // Radar and targets follow simulation power state, while target detection feeds the existing circuit engine.
+  if(typeof window.evaluateCircuitSimulation==='function'&&!window.__escProxEvalWrapped){
+    window.__escProxOriginalEvaluate=window.evaluateCircuitSimulation;
+    window.evaluateCircuitSimulation=function(){
+      const result=window.__escProxOriginalEvaluate.apply(this,arguments);
+      if(!window.__escProxUpdating){
+        window.__escProxUpdating=true;
+        try{if(updateSensors()) window.__escProxOriginalEvaluate();}
+        finally{window.__escProxUpdating=false;}
+      }
+      // A second pass updates the radar appearance after the contact-state calculation.
+      updateSensors();
+      return result;
+    };
+    window.__escProxEvalWrapped=true;
+  }
+  // In run mode the proximity sensor is controlled by the draggable target, not by clicking the sensor.
+  if(typeof window.toggleComponentInRunMode==='function'&&!window.__escProxToggleWrapped){
+    const oldToggle=window.toggleComponentInRunMode;
+    window.toggleComponentInRunMode=function(g,...args){if(isProximity(g))return false;return oldToggle.call(this,g,...args);};
+    window.__escProxToggleWrapped=true;
+  }
+  const style=document.createElement('style');
+  style.textContent=`
+    #dropLayer .dropped-symbol .component-ports .port-name.esc-hidden-prox-label{display:none!important;visibility:hidden!important}
+    #dropLayer .dropped-symbol .esc-prox-radar{pointer-events:none;overflow:visible}
+    #dropLayer .dropped-symbol .esc-prox-cone{fill:#00e66a;fill-opacity:.16;stroke:none}
+    #dropLayer .dropped-symbol .esc-prox-radar.target-detected .esc-prox-cone{fill-opacity:.28}
+    #dropLayer .dropped-symbol.esc-prox-detected svg #svg_optics polygon{animation:escProxDiamondBlink .65s steps(2,end) infinite;fill:#ffd400!important;stroke:#ffe45c!important}
+    @keyframes escProxDiamondBlink{0%,100%{opacity:1;filter:drop-shadow(0 0 4px #ffd400)}50%{opacity:.25;filter:none}}
+    #dropLayer > .esc-prox-metal-target{pointer-events:all;touch-action:none;filter:drop-shadow(0 2px 3px #0008)}
+    #dropLayer > .esc-prox-metal-target:hover{filter:drop-shadow(0 0 5px #38bdf8)}
+  `;
+  document.head.appendChild(style);
+  const observer=new MutationObserver(()=>{
+    document.querySelectorAll(sensorSelector).forEach(g=>{if(isProximity(g))hideDuplicateTerminalLabels(g);});
+  });
+  const layer=dropLayer();
+  if(layer)observer.observe(layer,{childList:true,subtree:true});
+  document.querySelectorAll(sensorSelector).forEach(g=>{if(isProximity(g)){addRadar(g);hideDuplicateTerminalLabels(g);}});
+})();
+</script>
+
 </body>
 </html>
