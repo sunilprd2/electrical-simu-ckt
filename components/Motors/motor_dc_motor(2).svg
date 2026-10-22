@@ -1,21 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="780.2974" height="787.4212" viewBox="378.2563 133.0944 780.2974 787.4212">
- 
+<?xml version="1.0"?>
+<svg width="1600" height="1200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
  <title>sunil</title>
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  
-  
-  
-  
-  <path d="m429.55,224.11l2.66,-4.31l4.61,-2.49l5.33,0.0l4.61,2.49l2.66,4.31l0.0,4.97l-2.66,4.31l-4.61,2.49l-5.33,0.0l-4.61,-2.49l-2.66,-4.31l0.0,-4.97z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" />
-  <path d="m903.52,173.92l3.98,-6.84l6.9,-3.95l7.97,0.0l6.9,3.95l3.98,6.84l0.0,7.91l-3.98,6.84l-6.9,3.95l-7.97,0.0l-6.9,-3.95l-3.98,-6.84l0.0,-7.91z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" />
-  <circle cx="486.93" cy="485.15" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.70008 0 0 1.68572 -60.1506 -228.868)" />
-  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="6" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="438.98" x2="438.98" y1="204.12" y2="302.00" />
-  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="638.32" x2="638.32" y1="207.83" y2="302.00" />
-  <path d="m500.44,437.45l0,-61.12l12.91,0l18.27,52.93l18.09,-52.93l12.91,0l0,61.12l-8.61,0l0,-51.08l-18.1,51.08l-8.76,0l-18.1,-51.08l0,51.08l-8.61,0z" fill="#666666" id="svg_m" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" />
-  <line fill="none" id="svg_dc_solid" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="483.79" x2="579.25" y1="480.07" y2="480.07" />
-  <line fill="none" id="svg_dc_dash1" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="483.79" x2="505.17" y1="514.7" y2="514.7" />
-  <line fill="none" id="svg_dc_dash2" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="520.84" x2="542.2" y1="514.7" y2="514.7" />
-  <line fill="none" id="svg_dc_dash3" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="557.87" x2="579.25" y1="514.7" y2="514.7" />
+  <path d="m603.54,124l3.98,-6.85l6.9,-3.96l7.98,0l6.9,3.96l3.98,6.85l0,7.89l-3.98,6.85l-6.9,3.96l-7.98,0l-6.9,-3.96l-3.98,-6.85l0,-7.89z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="2"/>
+  <path d="m901.02,125.17l3.98,-6.84l6.9,-3.95l7.97,0l6.9,3.95l3.98,6.84l0,7.91l-3.98,6.84l-6.9,3.95l-7.97,0l-6.9,-3.95l-3.98,-6.84l0,-7.91z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="2"/>
+  <circle cx="486.93" cy="485.15" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.70008 0 0 1.68572 -60.1506 -228.868)"/>
+  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="6" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="438.98" x2="438.98" y1="204.12" y2="302"/>
+  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="6" transform="matrix(1.49747 0 0 1.67691 -39.6956 -210.291)" x1="638.32" x2="638.32" y1="207.83" y2="302"/>
+  <path d="m500.44,437.45l0,-61.12l12.91,0l18.27,52.93l18.09,-52.93l12.91,0l0,61.12l-8.61,0l0,-51.08l-18.1,51.08l-8.76,0l-18.1,-51.08l0,51.08l-8.61,0z" fill="#666666" id="svg_m" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)"/>
+  <line fill="none" id="svg_dc_solid" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="483.79" x2="579.25" y1="480.07" y2="480.07"/>
+  <line fill="none" id="svg_dc_dash1" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="483.79" x2="505.17" y1="514.7" y2="514.7"/>
+  <line fill="none" id="svg_dc_dash2" stroke="#666666" stroke-width="10" transform="matrix(1.49747 0 0 1.58844 -39.6956 -183.238)" x1="520.84" x2="542.2" y1="514.7" y2="514.7"/>
+  <line fill="none" id="svg_dc_dash3" stroke="#666666" stroke-width="10" transform="matrix(1.26272 0 0 1.33304 -23.6819 -100.36) matrix(1.18591 0 0 1.19159 -12.6819 -62.1724)" x1="557.87" x2="579.25" y1="514.7" y2="514.7"/>
  </g>
 </svg>
