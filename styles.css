@@ -1801,7 +1801,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
   vector-effect: non-scaling-stroke !important;
   transition: opacity 0.1s ease, fill 0.1s ease, stroke 0.1s ease;
 }
-#dropLayer .dropped-symbol .mag-port.connected {
+#dropLayer .dropped-symbol .mag-port.connected:not(.port-active):not(.port-selected):not(.port-connected-glow):not(.connect-target):not(:hover) {
   opacity: 1 !important;
   fill: rgba(0, 230, 172, 0.22) !important;
   fill-opacity: 1 !important;
@@ -2100,7 +2100,7 @@ body:not(.theme-light) #wireLayer .connected-wire {
 
 
 /* V114: completed wire endpoints stay visually quiet; glow only on hover or while wiring. */
-#dropLayer .dropped-symbol .mag-port.connected {
+#dropLayer .dropped-symbol .mag-port.connected:not(.port-active):not(.port-selected):not(.port-connected-glow):not(.connect-target):not(:hover) {
   opacity: 0 !important;
   fill: transparent !important;
   fill-opacity: 0 !important;
@@ -2108,8 +2108,7 @@ body:not(.theme-light) #wireLayer .connected-wire {
   stroke-width: 0 !important;
   filter: none !important;
 }
-#dropLayer .dropped-symbol .mag-port.port-selected:not(.port-active):not(:hover),
-#dropLayer .dropped-symbol .mag-port.selected:not(.port-active):not(:hover) {
+#dropLayer .dropped-symbol .mag-port.selected:not(.port-active):not(.port-selected):not(.port-connected-glow):not(:hover) {
   opacity: 0 !important;
   fill: transparent !important;
   fill-opacity: 0 !important;
@@ -2464,7 +2463,7 @@ body.live #dropLayer .dropped-symbol.motor-rotating-ccw > svg:not(.select-box) p
 
 /* JOB 1/2 narrowly scoped fixes: keep dark-mode terminal endpoints visible under the pointer,
    use a plain white light-mode drawing sheet, and keep library symbol artwork white. */
-body.theme-dark #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active) {
+body.theme-dark #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow) {
   filter: none !important;
   fill: transparent !important;
   fill-opacity: 0 !important;
@@ -2700,4 +2699,97 @@ body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.sel
 body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_contactor_l1,
 body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_contactor_l2 {
   stroke: #22c55e !important;
+}
+
+
+/* ESC requested workspace zoom cluster: anchored at the lower-right, unobtrusive transparent controls */
+.work { position: relative !important; }
+.workspace-zoom-controls {
+  position: absolute; right: 0; bottom: 0; z-index: 1000; display: flex; align-items: center; gap: 2px !important;
+  padding: 5px 7px !important; background: transparent !important; border: 0 !important;
+  box-shadow: none !important; border-radius: 0 !important; color: var(--text, #263238);
+}
+.workspace-zoom-controls button {
+  width: 34px; height: 30px; display: grid; place-items: center; padding: 3px; margin: 0;
+  border: 1px solid transparent !important; border-radius: 3px; background: transparent !important;
+  box-shadow: none !important; color: inherit; cursor: pointer;
+}
+.workspace-zoom-controls button:hover { background: rgba(100,120,135,.14) !important; border-color: transparent !important; }
+.workspace-zoom-controls svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.top nav #undoBtn, .top nav #redoBtn { min-width: 62px; }
+.top nav #undoBtn .toolbar-icon, .top nav #redoBtn .toolbar-icon { color: #e4edf5; }
+@media (max-width: 700px) { .workspace-zoom-controls { padding: 3px !important; } .workspace-zoom-controls button { width: 30px; } }
+
+/* Drag Connect ribbon button styling */
+#dragConnectBtn {
+  background: linear-gradient(145deg, #00cfa0, #08745f) !important;
+  border-color: #6bffda !important;
+}
+#dragConnectBtn.active {
+  background: linear-gradient(145deg, #00f5b8, #059669) !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 2px #00f5b8aa, 0 0 16px #00f5b888, inset 0 1px #ffffff88 !important;
+}
+
+/* Terminal Rectangle Glow for Default Click-to-Connect & Drag-Connect:
+   - Idle terminals are clean and unobtrusive (or subtly outlined when Drag Connect mode is active).
+   - Hovering, clicking 1st terminal (.port-active / .port-selected), targeting 2nd terminal (.connect-target),
+     and completing the connection on 2nd terminal (.port-connected-glow) all glow as a crisp emerald-cyan rectangle! */
+body:not(.live):not(.drag-connect-mode) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow),
+body.theme-dark:not(.live):not(.drag-connect-mode) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow),
+body.theme-light:not(.live):not(.drag-connect-mode) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow) {
+  opacity: 0 !important;
+  fill: transparent !important;
+  fill-opacity: 0 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important;
+  filter: none !important;
+  pointer-events: all !important;
+  cursor: crosshair !important;
+}
+
+body.drag-connect-mode:not(.live) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow),
+body.theme-dark.drag-connect-mode:not(.live) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow),
+body.theme-light.drag-connect-mode:not(.live) #dropLayer .dropped-symbol .mag-port:not(:hover):not(.connect-target):not(.port-active):not(.port-selected):not(.port-connected-glow) {
+  opacity: 0.78 !important;
+  fill: rgba(0, 230, 172, 0.12) !important;
+  fill-opacity: 1 !important;
+  stroke: #00dca5 !important;
+  stroke-width: 1.3px !important;
+  filter: none !important;
+  pointer-events: all !important;
+  cursor: crosshair !important;
+}
+
+body:not(.live) #dropLayer .dropped-symbol .mag-port:hover,
+body:not(.live) #dropLayer .dropped-symbol .mag-port.connect-target,
+body:not(.live) #dropLayer .dropped-symbol .mag-port.port-active,
+body:not(.live) #dropLayer .dropped-symbol .mag-port.port-selected,
+body:not(.live) #dropLayer .dropped-symbol .mag-port.port-connected-glow,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol .mag-port:hover,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol .mag-port.connect-target,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol .mag-port.port-active,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol .mag-port.port-selected,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol .mag-port.port-connected-glow,
+body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port:hover,
+body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.connect-target,
+body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.port-active,
+body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.port-selected,
+body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.port-connected-glow,
+#schematic #dropLayer .dropped-symbol .mag-port:hover,
+#schematic #dropLayer .dropped-symbol .mag-port.connect-target,
+#schematic #dropLayer .dropped-symbol .mag-port.port-active,
+#schematic #dropLayer .dropped-symbol .mag-port.port-selected,
+#schematic #dropLayer .dropped-symbol .mag-port.port-connected-glow {
+  transition: none !important;
+  opacity: 1 !important;
+  fill: rgba(0, 245, 184, 0.36) !important;
+  fill-opacity: 1 !important;
+  stroke: #00f5b8 !important;
+  stroke-width: 2px !important;
+  rx: 1.5px !important;
+  ry: 1.5px !important;
+  filter: drop-shadow(0 0 6px rgba(0, 245, 184, 0.95)) !important;
+  pointer-events: all !important;
+  cursor: crosshair !important;
 }

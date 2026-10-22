@@ -48,10 +48,10 @@ try {
     <span class="ribbon-separator"></span>
     <button id="delete" class="tool-btn tool-red" type="button" title="Delete selected component"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/></svg></span><em>Delete</em></button>
     <button id="insertTextBtn" class="tool-btn tool-slate" type="button" title="Insert text"><span class="toolbar-icon">T</span><em>Text</em></button>
+    <button id="dragConnectBtn" class="tool-btn tool-teal" type="button" title="Enable drag-to-connect wiring; click-to-connect remains available by default" aria-pressed="false"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 7.5 16.5 16M12 7h5v5"/></svg></span><em>Drag Connect</em></button>
 
-    <button id="zoomInBtn" class="tool-btn tool-slate" type="button" title="Zoom in"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span><em>Zoom In</em></button>
-    <button id="zoomOutBtn" class="tool-btn tool-slate" type="button" title="Zoom out"><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M7.5 10.5h6"/></svg></span><em>Zoom Out</em></button>
-    <button id="fitBtn" class="tool-btn tool-slate" type="button" title="Fit drawing to view"><span class="toolbar-icon">⛶</span><em>Fit</em></button>
+    <button id="undoBtn" class="tool-btn tool-slate" type="button" title="Undo (up to 100 steps; Ctrl+Z)" disabled><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-2"/></svg></span><em>Undo</em></button>
+    <button id="redoBtn" class="tool-btn tool-slate" type="button" title="Redo (up to 100 steps; Ctrl+Y)" disabled><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h2"/></svg></span><em>Redo</em></button>
     <button id="gridToggle" class="tool-btn tool-slate" type="button" title="Toggle schematic grid"><span class="toolbar-icon">▦</span><em>Grid</em></button>
     <button id="settingsBtn" class="tool-btn tool-slate" type="button" title="Settings"><span class="toolbar-icon">⚙</span><em>Settings</em></button>
     <input id="openFileInput" type="file" accept=".json,.esc,application/json" hidden>
@@ -112,6 +112,11 @@ try {
       <g id="dropLayer"></g>
     </svg>
     <div class="drop-overlay" id="dropOverlay">DROP IEC SYMBOL HERE</div>
+  </div>
+  <div id="workspaceZoomControls" class="workspace-zoom-controls" role="group" aria-label="Workspace zoom controls">
+    <button id="zoomOutBtn" type="button" title="Zoom out" aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M7.5 10.5h6"/></svg></button>
+    <button id="fitBtn" type="button" title="Zoom to fit" aria-label="Zoom to fit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/><path d="M8 8h8v8H8z"/></svg></button>
+    <button id="zoomInBtn" type="button" title="Zoom in" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></button>
   </div>
 </main>
 </div>
@@ -223,9 +228,33 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  }
 
  const connectBtn=document.getElementById('connectToggle');
- let connectMode=false; localStorage.setItem('esim-connect-mode','off');
- function renderConnect(){body.classList.toggle('connect-mode',connectMode);if(connectBtn){connectBtn.classList.toggle('active',connectMode);connectBtn.innerHTML=connectMode?'⌁<em>CONNECT ON</em>':'⌁<em>CONNECT</em>';connectBtn.setAttribute('aria-pressed',String(connectMode));}}
+ let connectMode=true; localStorage.setItem('esim-connect-mode','on');
+ const dragConnectBtn=document.getElementById('dragConnectBtn');
+ let dragConnectMode=false;
+ window.__escDragConnectMode=false;
+ function renderConnect(){
+   body.classList.toggle('connect-mode',connectMode);
+   body.classList.toggle('drag-connect-mode',dragConnectMode);
+   window.__escDragConnectMode=dragConnectMode;
+   if(connectBtn){
+     connectBtn.classList.toggle('active',connectMode);
+     connectBtn.setAttribute('aria-pressed',String(connectMode));
+   }
+   if(dragConnectBtn){
+     dragConnectBtn.classList.toggle('active',dragConnectMode);
+     dragConnectBtn.setAttribute('aria-pressed',String(dragConnectMode));
+     dragConnectBtn.title=dragConnectMode?'Drag-to-connect enabled (drag wire from one terminal to another)':'Enable drag-to-connect wiring; click-to-connect is active by default';
+   }
+ }
+ window.setDragConnectMode=function(on){
+   dragConnectMode=Boolean(on);
+   if(typeof window.cancelActiveWiring==='function') window.cancelActiveWiring('');
+   renderConnect();
+   const st=document.getElementById('state');
+   if(st) st.textContent=dragConnectMode?'DRAG CONNECT ENABLED • DRAG WIRE FROM ONE TERMINAL TO ANOTHER':'CLICK CONNECT DEFAULT • CLICK TWO TERMINALS TO CONNECT';
+ };
  if(connectBtn){connectBtn.addEventListener('click',()=>{connectMode=!connectMode;localStorage.setItem('esim-connect-mode',connectMode?'on':'off');renderConnect();});}
+ if(dragConnectBtn){dragConnectBtn.addEventListener('click',()=>{window.setDragConnectMode(!dragConnectMode);});}
  renderConnect();
 
  // Engineering sheet is optional: keep it hidden by default until the user enables it.
@@ -968,7 +997,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
   document.addEventListener('pointerdown', function(e){
     if (e.button !== 0 || document.body.classList.contains('live')) return;
     const g = e.target && e.target.closest ? e.target.closest('#dropLayer .dropped-symbol') : null;
-    if (!g || e.target.closest('.mag-port') || e.target.closest('.connected-wire')) { previous = null; start = null; moved = false; return; }
+    if (!g || e.target.closest('.mag-port') || e.target.closest('.connected-wire') || (typeof window.resolvePortFromEvent === 'function' && window.resolvePortFromEvent(e, 11))) { previous = null; start = null; moved = false; return; }
     const now = Date.now();
     const sameDouble = previous && previous.g === g && now - previous.time <= 500 && !previous.moved;
     previous = {g, time:now, moved:false};

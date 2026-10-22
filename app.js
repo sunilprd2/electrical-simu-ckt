@@ -1004,9 +1004,23 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   window.selectedWire = null;
   window.__escWiringActive = false;
 
+  function isDragConnectMode() {
+    return Boolean(
+      window.__escDragConnectMode ||
+      document.body.classList.contains('drag-connect-mode') ||
+      document.getElementById('dragConnectBtn')?.classList.contains('active')
+    );
+  }
+  window.isDragConnectMode = isDragConnectMode;
+
   function clearConnectTargets() {
     document.querySelectorAll('#dropLayer .mag-port.connect-target').forEach(el => el.classList.remove('connect-target'));
   }
+
+  function clearEndpointGlow() {
+    document.querySelectorAll('#dropLayer .mag-port.port-connected-glow').forEach(el => el.classList.remove('port-connected-glow'));
+  }
+  window.clearEndpointGlow = clearEndpointGlow;
 
   function hideWireGuides() {
     guideX.style.display = 'none';
@@ -1026,8 +1040,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   }
   window.selectWire = selectWire;
 
-  function selectTerminal(portInfo) {
-    document.querySelectorAll('#dropLayer .mag-port.port-selected').forEach(el => el.classList.remove('port-selected'));
+  function selectTerminal(portInfo, keepExisting = false) {
+    if (!keepExisting) {
+      document.querySelectorAll('#dropLayer .mag-port.port-selected').forEach(el => el.classList.remove('port-selected'));
+    }
     selectedPort = portInfo || null;
     if (portInfo && portInfo.el) {
       portInfo.el.classList.add('port-selected');
@@ -1081,9 +1097,19 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     if (activePort && activePort.el) {
       activePort.el.classList.remove('port-active', 'selected');
     }
-    // A completed connection must not leave either endpoint glowing.
-    // Terminal glow is reserved for hover and the in-progress wire source.
+    // Keep both connected terminal rectangles glowing (.port-connected-glow & .port-selected)
+    // so when the user clicks Terminal 1 (glows) and clicks/drags to Terminal 2, Terminal 2
+    // also glows as a rectangle and both are visibly connected by the wire!
+    clearEndpointGlow();
     selectTerminal(null);
+    if (freshFrom && freshFrom.el) {
+      freshFrom.el.classList.add('port-connected-glow', 'port-selected');
+    }
+    if (freshTo && freshTo.el) {
+      freshTo.el.classList.add('port-connected-glow', 'port-selected');
+    }
+    selectedPort = freshTo;
+
     syncConnectedPortStates();
     const fromRef = freshFrom.g.dataset.ref || freshFrom.g.dataset.name || 'C1';
     const toRef = freshTo.g.dataset.ref || freshTo.g.dataset.name || 'C2';
@@ -1091,13 +1117,17 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     activePort = null;
     window.__escWiringActive = false;
     hideWireGuides();
+    if (running && typeof evaluateCircuitSimulation === 'function') {
+      evaluateCircuitSimulation();
+    }
     return line;
   }
   window.createWireConnection = createWireConnection;
 
   function startWiringFromPort(portInfo, pointerId = null) {
     selectWire(null);
-    selectTerminal(portInfo);
+    clearEndpointGlow();
+    selectTerminal(portInfo, false);
     activePort = {
       ...portInfo,
       waypoints: [],
@@ -1111,12 +1141,21 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     preview.setAttribute('points', `${portInfo.x},${portInfo.y} ${portInfo.x},${portInfo.y}`);
     preview.style.display = 'block';
     const ref = portInfo.g.dataset.ref || portInfo.g.dataset.name || 'COMPONENT';
-    state.textContent = `WIRE START • ${ref}:${portInfo.label} • CLICK DESTINATION TERMINAL`;
+    if (isDragConnectMode()) {
+      state.textContent = `DRAG CONNECT • ${ref}:${portInfo.label} • DRAG WIRE TO ANOTHER TERMINAL`;
+    } else {
+      state.textContent = `WIRE START • ${ref}:${portInfo.label} • CLICK ANOTHER TERMINAL TO CONNECT`;
+    }
   }
 
-  // Capture-phase pointerdown on svg handles terminal selection & wire initiation/completion before component drag
+  // Default Click-to-Connect AND Drag-Connect support:
+  // - By default (Click-to-Connect): 1st click on a terminal makes that terminal rectangle glow
+  //   and starts the wire; 2nd click on another component terminal makes that terminal rectangle
+  //   also glow and connects both terminals with a wire.
+  // - When Drag Connect (#dragConnectBtn) is active: pressing on Terminal 1 and dragging the wire
+  //   directly to Terminal 2 connects them on release (pointerup).
   svgEl.addEventListener('pointerdown', e => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || running || document.body.classList.contains('live')) return;
     const hitPort = resolvePortFromEvent(e, 11);
     if (hitPort) {
       e.preventDefault();
@@ -1132,12 +1171,13 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       // activePort is already set: check if clicking the exact same terminal or a target terminal
       if (activePort.g === hitPort.g && activePort.index === hitPort.index) {
         justCompletedOnDown = true;
+        clearEndpointGlow();
         selectTerminal(null);
         cancelActiveWiring('WIRING CANCELLED');
         return;
       }
 
-      // Clicked a different terminal: complete the wire connection!
+      // Clicked a different terminal: complete the wire connection and glow both terminal rectangles!
       justCompletedOnDown = true;
       createWireConnection(activePort, hitPort, activePort.waypoints || []);
       return;
@@ -1149,11 +1189,14 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       if (wireEl) {
         e.preventDefault();
         e.stopPropagation();
+        clearEndpointGlow();
+        selectTerminal(null);
         selectWire(wireEl);
         return;
       }
       if (!e.target.closest('.dropped-symbol')) {
         selectWire(null);
+        clearEndpointGlow();
         selectTerminal(null);
       }
     }
@@ -1161,9 +1204,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
 
   // Live wire preview and magnetic target snapping during pointermove
   svgEl.addEventListener('pointermove', e => {
+    if (running || document.body.classList.contains('live')) return;
     const p = getPoint(e);
     if (!activePort) {
-      // Highlight nearest terminal on hover
+      // Highlight nearest terminal rectangle on hover
       clearConnectTargets();
       const hoverPort = resolvePortFromEvent(e, 10);
       if (hoverPort && hoverPort.el) hoverPort.el.classList.add('connect-target');
@@ -1174,7 +1218,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     activePort.y = freshStart.y;
     activePort.side = freshStart.side;
 
-    if (Math.hypot(p.x - activePort.x, p.y - activePort.y) > 8) {
+    if (Math.hypot(p.x - activePort.x, p.y - activePort.y) > 6) {
       activePort.dragged = true;
     }
 
@@ -1199,18 +1243,29 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     preview.style.display = 'block';
   });
 
-  // Support drag-and-release from Terminal 1 directly onto Terminal 2
+  // Drag-and-release from Terminal 1 directly onto Terminal 2 when Drag Connect tab (#dragConnectBtn) is active
   window.addEventListener('pointerup', e => {
     if (justCompletedOnDown) {
       justCompletedOnDown = false;
       return;
     }
     if (!activePort) return;
+    // Only finish or cancel on pointerup when Drag Connect mode (#dragConnectBtn) is enabled!
+    // In Default Click-to-Connect mode, releasing after clicking Terminal 1 keeps Terminal 1 glowing
+    // so the user can move the pointer and click Terminal 2.
+    if (!isDragConnectMode()) return;
+
     const targetPort = resolvePortFromEvent(e, 16) || (e.clientX != null ? findNearestTargetPort(getPoint(e), activePort, 16) : null);
     if (targetPort && (targetPort.g !== activePort.g || targetPort.index !== activePort.index)) {
       e.preventDefault();
       e.stopPropagation();
       createWireConnection(activePort, targetPort, activePort.waypoints || []);
+      return;
+    }
+    if (activePort.dragged) {
+      clearEndpointGlow();
+      selectTerminal(null);
+      cancelActiveWiring('DRAG CONNECT • RELEASE ON ANOTHER COMPONENT TERMINAL TO CONNECT');
     }
   }, true);
 
@@ -1236,15 +1291,18 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   svgEl.addEventListener('contextmenu', e => {
     if (!activePort) return;
     e.preventDefault();
+    clearEndpointGlow();
     selectTerminal(null);
     cancelActiveWiring('WIRING CANCELLED');
   });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       if (activePort) {
+        clearEndpointGlow();
         selectTerminal(null);
         cancelActiveWiring('WIRING CANCELLED');
       } else {
+        clearEndpointGlow();
         selectTerminal(null);
         selectWire(null);
       }
@@ -1252,7 +1310,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   });
 
   const hint = document.querySelector('.hint');
-  if (hint) hint.textContent = 'Click or drag between component terminals to connect wires. Press Escape to cancel.';
+  if (hint) hint.textContent = 'Click two terminals to connect by default, or click Drag Connect to drag wires between terminals.';
 })();
 
 /* V13: component selection/move/delete keeps magnetic wiring attached. */
@@ -3348,6 +3406,9 @@ window.toggleComponentInRunMode = toggleComponentInRunMode;
 function setSimulationRunUI(active) {
   document.body.classList.toggle('simulation-run-ui', !!active);
   if (active) {
+    if (typeof window.cancelActiveWiring === 'function') window.cancelActiveWiring('');
+    if (typeof window.clearEndpointGlow === 'function') window.clearEndpointGlow();
+    if (typeof window.selectTerminal === 'function') window.selectTerminal(null);
     if (typeof select === 'function') select(null, false);
     const panel = document.getElementById('propertyPanel');
     if (panel) { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
