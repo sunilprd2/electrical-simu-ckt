@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
-<svg width="494.3921" height="471.2006" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="540.0" height="472.5" viewBox="0 0 540.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <path d="m81.75,69.12l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 1 -10.67 31)"/>
-  <path d="m81.75,410.62l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 1 -10.67 31)"/>
-  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="8" transform="translate(1.33 0) matrix(1 0 0 1 -12 31)" x1="90.5" x2="90.5" y1="75" y2="160"/>
-  <path d="m90.5,130a15,15 0 0 0 0,30" fill="#666666" id="svg_contactor_arc1" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(1.33 0) matrix(1 0 0 1 -12 31)"/>
-  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="8" transform="translate(1.33 0) matrix(1 0 0 1 -12 31)" x1="90.5" x2="90.5" y1="315.5" y2="405"/>
-  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(1.33 0) matrix(1 0 0 1 -12 31)" x1="90.5" x2="60.5" y1="315.5" y2="165"/>
-  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="8" transform="matrix(0.850949 0 0 1 -1.49187 31)" x1="75.5" x2="498" y1="240.25" y2="240.25"/>
-  <path d="m229.25,67.12l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 1 21.33 30)"/>
-  <path d="m223.25,437.62l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="3" transform="translate(27.33 0)"/>
-  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="8" transform="translate(27.33 0) matrix(1 0 0 1 6 -1) matrix(1 0 0 1 -12 31)" x1="238" x2="238" y1="73" y2="158"/>
-  <path d="m238,128a15,15 0 0 0 0,30" fill="#666666" id="svg_contactor_arc2" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(27.33 0) matrix(1 0 0 1 -6 30)"/>
-  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="8" transform="translate(27.33 0) matrix(1 0 0 1 6 -1) matrix(1 0 0 1 -12 31)" x1="238" x2="238" y1="313.5" y2="403"/>
-  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(27.33 0) matrix(1 0 0 1 6 -1) matrix(1 0 0 1 -12 31)" x1="238" x2="208" y1="313.5" y2="163"/>
-  <path d="m440.75,69.12l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 1 -10.67 27)"/>
-  <path d="m440.75,410.62l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 1 -10.67 27)"/>
-  <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="8" transform="translate(54.33 0) matrix(1 0 0 1 -53 -4) matrix(1 0 0 1 -12 31)" x1="449.5" x2="449.5" y1="75" y2="160"/>
-  <path d="m449.5,130a15,15 0 0 0 0,30" fill="#666666" id="svg_contactor_arc3" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(54.33 0) matrix(1 0 0 1 -65 27)"/>
-  <line fill="none" id="svg_stem_bot3" stroke="#666666" stroke-width="8" transform="translate(54.33 0) matrix(1 0 0 1 -53 -4) matrix(1 0 0 1 -12 31)" x1="449.5" x2="449.5" y1="315.5" y2="405"/>
-  <line fill="none" id="svg_flapper3" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="translate(54.33 0) matrix(1 0 0 1 -53 -4) matrix(1 0 0 1 -12 31)" x1="449.5" x2="419.5" y1="315.5" y2="165"/>
+  <path d="M 87.41,58.34 L 92.59,58.34 L 97.07,60.93 L 99.66,65.41 L 99.66,70.59 L 97.07,75.07 L 92.59,77.66 L 87.41,77.66 L 82.93,75.07 L 80.34,70.59 L 80.34,65.41 L 82.93,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 87.41,394.84 L 92.59,394.84 L 97.07,397.43 L 99.66,401.91 L 99.66,407.09 L 97.07,411.57 L 92.59,414.16 L 87.41,414.16 L 82.93,411.57 L 80.34,407.09 L 80.34,401.91 L 82.93,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="90.0" x2="90.0" y1="76.0" y2="172.0"/>
+  <path d="M 90.0,144.0 A 14,14 0 0 0 90.0,172.0" fill="none" id="svg_contactor_arc1" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="90.0" x2="90.0" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="90.0" x2="52.0" y1="300.0" y2="170.0"/>
+  <path d="M 267.41,58.34 L 272.59,58.34 L 277.07,60.93 L 279.66,65.41 L 279.66,70.59 L 277.07,75.07 L 272.59,77.66 L 267.41,77.66 L 262.93,75.07 L 260.34,70.59 L 260.34,65.41 L 262.93,60.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="M 267.41,394.84 L 272.59,394.84 L 277.07,397.43 L 279.66,401.91 L 279.66,407.09 L 277.07,411.57 L 272.59,414.16 L 267.41,414.16 L 262.93,411.57 L 260.34,407.09 L 260.34,401.91 L 262.93,397.43 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="270.0" x2="270.0" y1="76.0" y2="172.0"/>
+  <path d="M 270.0,144.0 A 14,14 0 0 0 270.0,172.0" fill="none" id="svg_contactor_arc2" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" x1="270.0" x2="270.0" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="270.0" x2="232.0" y1="300.0" y2="170.0"/>
+  <path d="M 447.41,58.34 L 452.59,58.34 L 457.07,60.93 L 459.66,65.41 L 459.66,70.59 L 457.07,75.07 L 452.59,77.66 L 447.41,77.66 L 442.93,75.07 L 440.34,70.59 L 440.34,65.41 L 442.93,60.93 Z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
+  <path d="M 447.41,394.84 L 452.59,394.84 L 457.07,397.43 L 459.66,401.91 L 459.66,407.09 L 457.07,411.57 L 452.59,414.16 L 447.41,414.16 L 442.93,411.57 L 440.34,407.09 L 440.34,401.91 L 442.93,397.43 Z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" x1="450.0" x2="450.0" y1="76.0" y2="172.0"/>
+  <path d="M 450.0,144.0 A 14,14 0 0 0 450.0,172.0" fill="none" id="svg_contactor_arc3" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <line fill="none" id="svg_stem_bot3" stroke="#666666" stroke-width="10" x1="450.0" x2="450.0" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper3" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="450.0" x2="412.0" y1="300.0" y2="170.0"/>
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="9" x1="71.0" x2="431.0" y1="236" y2="236"/>
  </g>
 </svg>

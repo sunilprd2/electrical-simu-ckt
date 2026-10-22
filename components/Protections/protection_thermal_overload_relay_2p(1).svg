@@ -1,18 +1,13 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="539.5605" height="575.5312" viewBox="282.2247 -6.0556 539.5605 575.5312">
+<svg xmlns="http://www.w3.org/2000/svg" width="450.0" height="472.5" viewBox="0 0 450.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Terminal Nodes -->
-  <!-- Main Enclosure Box -->
-  <!-- Continuous Thermal Overload Stems (Pole 1 & Pole 2) -->
-  <!-- Text Labels (Vector Paths) -->
-  <!-- "-F5" Label Rotated -90deg -->
-  <path d="m431.69,114.33l2.87,-3.92l4.96,-2.27l5.73,0.0l4.96,2.27l2.87,3.92l0.0,4.54l-2.87,3.92l-4.96,2.27l-5.73,0.0l-4.96,-2.27l-2.87,-3.92l0.0,-4.54z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="m432.5,444.55l2.35,-3.92l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.92l0.0,4.54l-2.35,3.92l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.92l0.0,-4.54z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
-  <path d="m650.94,114.33l2.87,-3.92l4.96,-2.27l5.73,0.0l4.96,2.27l2.87,3.92l0.0,4.54l-2.87,3.92l-4.96,2.27l-5.73,0.0l-4.96,-2.27l-2.87,-3.92l0.0,-4.54z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="m612.0,444.55l2.35,-3.92l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.92l0.0,4.54l-2.35,3.92l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.92l0.0,-4.54z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
-  <rect fill="none" height="100" id="svg_prot_box" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 0.967005 -96.5665 15.7785)" width="306" x="391.25" y="222.8"/>
-  <path d="m441.25,120.02l0,135.38l30,0l0,48.35l-30,0l0,135.38" fill="none" id="svg_stem1" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
-  <path d="m620.75,120.02l0,135.38l30,0l0,48.35l-30,0l0,135.38" fill="none" id="svg_stem2" stroke="#666666" stroke-width="8" transform="matrix(1.22141 0 0 1 -96.5665 0)"/>
+  <rect fill="none" height="100.0" id="svg_prot_box" stroke="#666666" stroke-width="10" width="300.0" x="80.0" y="186.0"/>
+  <path d="M 132.41,58.34 L 137.59,58.34 L 142.07,60.93 L 144.66,65.41 L 144.66,70.59 L 142.07,75.07 L 137.59,77.66 L 132.41,77.66 L 127.93,75.07 L 125.34,70.59 L 125.34,65.41 L 127.93,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 132.41,394.84 L 137.59,394.84 L 142.07,397.43 L 144.66,401.91 L 144.66,407.09 L 142.07,411.57 L 137.59,414.16 L 132.41,414.16 L 127.93,411.57 L 125.34,407.09 L 125.34,401.91 L 127.93,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 135.0,76.0 L 135.0,212 L 163.0,212 L 163.0,260 L 135.0,260 L 135.0,396.5" fill="none" id="svg_stem1" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
+  <path d="M 312.41,58.34 L 317.59,58.34 L 322.07,60.93 L 324.66,65.41 L 324.66,70.59 L 322.07,75.07 L 317.59,77.66 L 312.41,77.66 L 307.93,75.07 L 305.34,70.59 L 305.34,65.41 L 307.93,60.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="M 312.41,394.84 L 317.59,394.84 L 322.07,397.43 L 324.66,401.91 L 324.66,407.09 L 322.07,411.57 L 317.59,414.16 L 312.41,414.16 L 307.93,411.57 L 305.34,407.09 L 305.34,401.91 L 307.93,397.43 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <path d="M 315.0,76.0 L 315.0,212 L 343.0,212 L 343.0,260 L 315.0,260 L 315.0,396.5" fill="none" id="svg_stem2" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
  </g>
 </svg>

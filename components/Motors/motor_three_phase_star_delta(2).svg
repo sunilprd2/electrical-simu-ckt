@@ -1,26 +1,27 @@
 <?xml version="1.0"?>
-<svg width="1600" height="1200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <title>sunil</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="760.0" height="640.0" viewBox="0 0 760.0 640.0">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <line fill="none" id="svg_w1" stroke="#666666" stroke-width="8" transform="matrix(1.35026 0 0 1.54125 24.0323 -39.3649)" x1="665.02" x2="665.02" y1="153.18" y2="290"/>
-  <line fill="none" id="svg_v1" stroke="#666666" stroke-width="8" transform="matrix(1.35026 0 0 1.69762 24.0323 -34.0862)" x1="480.61" x2="480.61" y1="134.99" y2="158.8"/>
-  <line fill="none" id="svg_u1" stroke="#666666" stroke-width="10" x1="421.97" x2="421.97" y1="203.03" y2="406.74"/>
-  <line fill="none" id="svg_v2" stroke="#666666" stroke-width="10" transform="matrix(1.35026 0 0 1.50189 24.0323 -18.0859)" x1="665.02" x2="665.02" y1="455" y2="600.1"/>
-  <circle cx="494.95" cy="346.15" fill="none" id="svg_motor_circle" r="205" stroke="#666666" stroke-width="10" transform="matrix(1.35026 0 0 1.44836 2.42816 38.393)"/>
-  <path d="m409.14,190.28l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="2"/>
-  <path d="m662.17,184.32l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="2"/>
-  <path d="m911.17,186.57l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="2"/>
-  <path d="m1178.17,188.82l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="2"/>
-  <path d="m410.14,886.21l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="2"/>
-  <path d="m660.17,890.63l3.17,-5.88l5.48,-3.4l6.33,0l5.48,3.4l3.17,5.88l0,6.79l-3.17,5.88l-5.48,3.4l-6.33,0l-5.48,-3.4l-3.17,-5.88l0,-6.79z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="2"/>
-  <path d="m910.17,889.38l3.3,-5.88l5.71,-3.4l6.6,0l5.71,3.4l3.3,5.88l0,6.79l-3.3,5.88l-5.71,3.4l-6.6,0l-5.71,-3.4l-3.3,-5.88l0,-6.79z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="2"/>
-  <line fill="none" id="svg_w2" stroke="#666666" stroke-width="10" x1="421.98" x2="421.98" y1="665" y2="889.46"/>
-  <line fill="none" id="svg_u2" stroke="#666666" stroke-width="10" transform="matrix(1.35026 0 0 1.55268 24.0323 -57.6893)" x1="479.87" x2="479.87" y1="580.07" y2="605.36"/>
-  <path d="m1188.98,200.88l0,342.54l-203.86,0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-width="10"/>
-  <path d="m971,455.5a222.39,313.33 0 0 1 0,178.07" fill="none" id="svg_pe_arc" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
-  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="bold" id="svg_m3" stroke-width="5" text-anchor="middle" transform="matrix(1.35026 0 0 1.44836 386.064 181.12)" x="189.07" y="261.48">M3</text>
-  <path d="m736.44,524.99c10.8,-23.17 21.6,-23.17 32.41,0c10.8,23.17 21.6,23.17 32.41,0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="8"/>
-  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="bold" id="svg_stardelta" stroke-width="5" text-anchor="middle" transform="matrix(1.53983 0 0 1.86864 -104.466 -149.305)" x="506.63" y="415.75">Star/Delta</text>
+  <circle cx="290.0" cy="320.0" fill="none" id="svg_motor_circle" r="205.0" stroke="#666666" stroke-width="10"/>
+  <path d="M 107.41,42.34 L 112.59,42.34 L 117.07,44.93 L 119.66,49.41 L 119.66,54.59 L 117.07,59.07 L 112.59,61.66 L 107.41,61.66 L 102.93,59.07 L 100.34,54.59 L 100.34,49.41 L 102.93,44.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 287.41,42.34 L 292.59,42.34 L 297.07,44.93 L 299.66,49.41 L 299.66,54.59 L 297.07,59.07 L 292.59,61.66 L 287.41,61.66 L 282.93,59.07 L 280.34,54.59 L 280.34,49.41 L 282.93,44.93 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 467.41,42.34 L 472.59,42.34 L 477.07,44.93 L 479.66,49.41 L 479.66,54.59 L 477.07,59.07 L 472.59,61.66 L 467.41,61.66 L 462.93,59.07 L 460.34,54.59 L 460.34,49.41 L 462.93,44.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="M 647.41,42.34 L 652.59,42.34 L 657.07,44.93 L 659.66,49.41 L 659.66,54.59 L 657.07,59.07 L 652.59,61.66 L 647.41,61.66 L 642.93,59.07 L 640.34,54.59 L 640.34,49.41 L 642.93,44.93 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <path d="M 107.41,578.34 L 112.59,578.34 L 117.07,580.93 L 119.66,585.41 L 119.66,590.59 L 117.07,595.07 L 112.59,597.66 L 107.41,597.66 L 102.93,595.07 L 100.34,590.59 L 100.34,585.41 L 102.93,580.93 Z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
+  <path d="M 287.41,578.34 L 292.59,578.34 L 297.07,580.93 L 299.66,585.41 L 299.66,590.59 L 297.07,595.07 L 292.59,597.66 L 287.41,597.66 L 282.93,595.07 L 280.34,590.59 L 280.34,585.41 L 282.93,580.93 Z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
+  <path d="M 467.41,578.34 L 472.59,578.34 L 477.07,580.93 L 479.66,585.41 L 479.66,590.59 L 477.07,595.07 L 472.59,597.66 L 467.41,597.66 L 462.93,595.07 L 460.34,590.59 L 460.34,585.41 L 462.93,580.93 Z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_u1" stroke="#666666" stroke-width="10" x1="110.0" x2="110.0" y1="60.0" y2="221.89"/>
+  <line fill="none" id="svg_v1" stroke="#666666" stroke-width="10" x1="290.0" x2="290.0" y1="60.0" y2="115.0"/>
+  <line fill="none" id="svg_w1" stroke="#666666" stroke-width="10" x1="470.0" x2="470.0" y1="60.0" y2="221.89"/>
+  <line fill="none" id="svg_w2" stroke="#666666" stroke-width="10" x1="110.0" x2="110.0" y1="418.11" y2="580.0"/>
+  <line fill="none" id="svg_u2" stroke="#666666" stroke-width="10" x1="290.0" x2="290.0" y1="525.0" y2="580.0"/>
+  <line fill="none" id="svg_v2" stroke="#666666" stroke-width="10" x1="470.0" x2="470.0" y1="418.11" y2="580.0"/>
+  <path d="M 650.0,60.0 L 650.0,320.0 L 521.0,320.0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-linejoin="round" stroke-width="10"/>
+  <path d="M 501.03,226.04 A 231.0,231.0 0 0 1 501.03,413.96" fill="none" id="svg_pe_arc" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="bold" id="svg_m3" text-anchor="middle" x="290.0" y="284.0">M 3</text>
+  <path d="M 250.0,324.0 C 264.0,300.0 277.0,300.0 290.0,324.0 C 303.0,348.0 316.0,348.0 330.0,324.0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="8"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="bold" id="svg_star_sym" text-anchor="middle" x="248.0" y="394.0">Y</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="bold" id="svg_sd_slash" text-anchor="middle" x="290.0" y="392.0">/</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="bold" id="svg_delta_sym" text-anchor="middle" x="332.0" y="394.0">Δ</text>
  </g>
 </svg>

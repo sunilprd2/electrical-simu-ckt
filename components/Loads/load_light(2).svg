@@ -1,20 +1,13 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="166.51 155.71 435.0 464.0">
- <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+<svg xmlns="http://www.w3.org/2000/svg" width="435.0" height="472.5" viewBox="0 0 435.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Top terminal node (12-sided polygon) -->
-  <!-- Top vertical stem -->
-  <!-- Indicator Lamp Circle (Diameter = 96px, Radius = 48px, centered at 225, 240) -->
-  <!-- Internal 'X' Cross inside Circle -->
-  <!-- Bottom vertical stem -->
-  <!-- Bottom terminal node (12-sided polygon) -->
-  <path d="m407.25,206.35l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
-  <line fill="none" id="svg_2" stroke="#666666" stroke-width="9" transform="matrix(1 0 0 0.507435 -32 130.949)" x1="416" x2="416" y1="245.96" y2="362.96"/>
-  <circle cx="416" cy="344.76" fill="none" id="svg_3" r="71.04" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
-  <line fill="none" id="svg_4" stroke="#666666" stroke-width="8" x1="338.32" x2="430.68" y1="339.85" y2="431.9"/>
-  <line fill="none" id="svg_5" stroke="#666666" stroke-width="7" x1="433.44" x2="335.8" y1="341.56" y2="429.39"/>
-  <line fill="none" id="svg_6" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.509932 -32 261.01)" x1="416" x2="416" y1="382.25" y2="499.25"/>
-  <path d="m407.25,483.95l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.954545 -32 56.0096)"/>
+  <path d="M 214.91,58.34 L 220.09,58.34 L 224.57,60.93 L 227.16,65.41 L 227.16,70.59 L 224.57,75.07 L 220.09,77.66 L 214.91,77.66 L 210.43,75.07 L 207.84,70.59 L 207.84,65.41 L 210.43,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="76.0" y2="168.25"/>
+  <circle cx="217.5" cy="236.25" fill="none" id="svg_3" r="68.0" stroke="#666666" stroke-width="10"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="9" x1="169.42000000000002" x2="265.58" y1="188.17000000000002" y2="284.33"/>
+  <line fill="none" id="svg_5" stroke="#666666" stroke-width="9" x1="265.58" x2="169.42000000000002" y1="188.17000000000002" y2="284.33"/>
+  <line fill="none" id="svg_6" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="304.25" y2="396.5"/>
+  <path d="M 214.91,394.84 L 220.09,394.84 L 224.57,397.43 L 227.16,401.91 L 227.16,407.09 L 224.57,411.57 L 220.09,414.16 L 214.91,414.16 L 210.43,411.57 L 207.84,407.09 L 207.84,401.91 L 210.43,397.43 Z" fill="#666666" id="svg_7" stroke="#666666" stroke-width="0"/>
  </g>
 </svg>

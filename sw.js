@@ -1,4 +1,4 @@
-const CACHE='electrical-simu-ckt-v132-actual-radar-overlap';
+const CACHE='electrical-simu-ckt-v130-clean-svg';
 const ASSETS=[
   './',
   './index.html',

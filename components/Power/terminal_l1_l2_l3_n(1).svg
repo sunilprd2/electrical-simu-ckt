@@ -1,23 +1,22 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="896.4079" height="471.1744" viewBox="-137.964 48.8178 896.4079 471.1744">
- <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+<svg xmlns="http://www.w3.org/2000/svg" width="720.0" height="472.5" viewBox="0 0 720.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <ellipse cx="100" cy="126.9" fill="none" id="svg_11" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="translate(31.25 0) matrix(1 0 0 0.969571 -1 39.6432)"/>
-  <line fill="none" id="svg_10" stroke="#666666" stroke-width="10" x1="99" x2="99" y1="211.56" y2="439.17" transform="translate(31.25 0)"/>
-  <path d="m90.75,444.61l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0" transform="translate(31.25 0)"/>
-  <ellipse cx="302" cy="129.13" fill="none" id="svg_33" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="translate(9.75 0) matrix(1 0 0 0.969571 -1 39.6432)"/>
-  <line fill="none" id="svg_32" stroke="#666666" stroke-width="10" x1="301" x2="301" y1="212.71" y2="444.32" transform="translate(9.75 0)"/>
-  <path d="m291.74,445.79l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0" transform="translate(9.75 0)"/>
-  <ellipse cx="501" cy="126.94" fill="none" id="svg_4" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="translate(-9.75 0) matrix(1 0 0 0.969571 -1 39.6432)"/>
-  <line fill="none" id="svg_3" stroke="#666666" stroke-width="10" x1="500" x2="500" y1="211.59" y2="444.2" transform="translate(-9.75 0)"/>
-  <path d="m490.74,443.67l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="translate(-9.75 0)"/>
-  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_5" stroke="#666666" stroke-width="0" text-anchor="middle" transform="translate(31.25 0) matrix(3.23577 0 0 2.95159 -47.524 -620.718)" x="45.44" xml:space="preserve" y="273.99">L1</text>
-  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_6" stroke="#666666" stroke-width="0" text-anchor="middle" transform="translate(9.75 0) matrix(1 0 0 0.969571 -1 39.6432) matrix(3.23577 0 0 3.04422 249.476 -687.086)" x="16.08" xml:space="preserve" y="276.36">L2</text>
-  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_7" stroke="#666666" stroke-width="0" text-anchor="middle" transform="translate(-9.75 0) matrix(3.23577 0 0 2.95159 555.476 -622.657)" x="-16.06" xml:space="preserve" y="274.32">L3</text>
-  <ellipse cx="700" cy="127.97" fill="none" id="svg_12" rx="52" ry="52" stroke="#666666" stroke-width="10" transform="translate(-30.25 0) matrix(1 0 0 0.969571 -1 39.6432)"/>
-  <line fill="none" id="svg_9" stroke="#666666" stroke-width="10" x1="700" x2="700" y1="212.32" y2="441.47" transform="translate(-30.25 0)"/>
-  <path d="m690.74,441.67l2.35,-3.94l4.06,-2.27l4.69,0.0l4.06,2.27l2.35,3.94l0.0,4.54l-2.35,3.94l-4.06,2.27l-4.69,0.0l-4.06,-2.27l-2.35,-3.94l0.0,-4.54z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="0" transform="translate(-30.25 0)"/>
-  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_2" stroke="#666666" stroke-width="0" text-anchor="middle" transform="translate(-30.25 0) matrix(3.96865 0 0 2.95159 807.099 -622.657)" x="-26.86" xml:space="preserve" y="274.66">N</text>
+  <circle cx="90.0" cy="110.0" fill="none" id="svg_c1" r="36.0" stroke="#666666" stroke-width="9"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t1" text-anchor="middle" x="90.0" y="122.0">L1</text>
+  <line fill="none" id="svg_s1" stroke="#666666" stroke-width="10" x1="90.0" x2="90.0" y1="146.0" y2="396.5"/>
+  <path d="M 87.41,394.84 L 92.59,394.84 L 97.07,397.43 L 99.66,401.91 L 99.66,407.09 L 97.07,411.57 L 92.59,414.16 L 87.41,414.16 L 82.93,411.57 L 80.34,407.09 L 80.34,401.91 L 82.93,397.43 Z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0"/>
+  <circle cx="270.0" cy="110.0" fill="none" id="svg_c2" r="36.0" stroke="#666666" stroke-width="9"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t2" text-anchor="middle" x="270.0" y="122.0">L2</text>
+  <line fill="none" id="svg_s2" stroke="#666666" stroke-width="10" x1="270.0" x2="270.0" y1="146.0" y2="396.5"/>
+  <path d="M 267.41,394.84 L 272.59,394.84 L 277.07,397.43 L 279.66,401.91 L 279.66,407.09 L 277.07,411.57 L 272.59,414.16 L 267.41,414.16 L 262.93,411.57 L 260.34,407.09 L 260.34,401.91 L 262.93,397.43 Z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0"/>
+  <circle cx="450.0" cy="110.0" fill="none" id="svg_c3" r="36.0" stroke="#666666" stroke-width="9"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t3" text-anchor="middle" x="450.0" y="122.0">L3</text>
+  <line fill="none" id="svg_s3" stroke="#666666" stroke-width="10" x1="450.0" x2="450.0" y1="146.0" y2="396.5"/>
+  <path d="M 447.41,394.84 L 452.59,394.84 L 457.07,397.43 L 459.66,401.91 L 459.66,407.09 L 457.07,411.57 L 452.59,414.16 L 447.41,414.16 L 442.93,411.57 L 440.34,407.09 L 440.34,401.91 L 442.93,397.43 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <circle cx="630.0" cy="110.0" fill="none" id="svg_c4" r="36.0" stroke="#666666" stroke-width="9"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t4" text-anchor="middle" x="630.0" y="122.0">N</text>
+  <line fill="none" id="svg_s4" stroke="#666666" stroke-width="10" x1="630.0" x2="630.0" y1="146.0" y2="396.5"/>
+  <path d="M 627.41,394.84 L 632.59,394.84 L 637.07,397.43 L 639.66,401.91 L 639.66,407.09 L 637.07,411.57 L 632.59,414.16 L 627.41,414.16 L 622.93,411.57 L 620.34,407.09 L 620.34,401.91 L 622.93,397.43 Z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="0"/>
  </g>
 </svg>

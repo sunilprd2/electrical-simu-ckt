@@ -1,17 +1,16 @@
 <?xml version="1.0"?>
-<svg width="1600" height="1200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <title>sunil</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="680.0" height="580.0" viewBox="0 0 680.0 580.0">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <circle cx="195" cy="260" fill="none" id="svg_motor_circle" r="192" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <path d="m62.18,16.16l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="2" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <path d="m854.83,80.89l3.73,-7.04l6.44,-4.07l7.44,0l6.44,4.07l3.73,7.04l0,8.13l-3.73,7.04l-6.44,4.07l-7.44,0l-6.44,-4.07l-3.73,-7.04l0,-8.13z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="2"/>
-  <path d="m433.18,35.63l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="2" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
-  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.77333 461.162 53.3408)" x1="70.14" x2="70.14" y1="23.46" y2="110"/>
-  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)" x1="256.05" x2="256.05" y1="23.46" y2="79.72"/>
-  <path d="m441.93,76.35l0,175l-22.17,0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-width="10" transform="matrix(1.5868 0 0 2.06211 461.162 -29.7342)"/>
-  <path d="m412.79,204.39a161.74,161.74 0 0 1 0,93.92" fill="none" id="svg_pe_arc" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1.5868 0 0 1.89735 461.162 4.57533)"/>
-  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="normal" id="svg_m1" stroke-width="10" text-anchor="middle" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)" x="196.31" y="285.92">M1</text>
-  <path d="m257.36,259.23c8,-14 16,-14 23.5,0c7.5,14 15.5,14 23.5,0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="6.5" transform="matrix(1.5868 0 0 1.73333 461.162 54.135)"/>
+  <circle cx="280.0" cy="326.0" fill="none" id="svg_motor_circle" r="205.0" stroke="#666666" stroke-width="10"/>
+  <path d="M 187.41,46.34 L 192.59,46.34 L 197.07,48.93 L 199.66,53.41 L 199.66,58.59 L 197.07,63.07 L 192.59,65.66 L 187.41,65.66 L 182.93,63.07 L 180.34,58.59 L 180.34,53.41 L 182.93,48.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 367.41,46.34 L 372.59,46.34 L 377.07,48.93 L 379.66,53.41 L 379.66,58.59 L 377.07,63.07 L 372.59,65.66 L 367.41,65.66 L 362.93,63.07 L 360.34,58.59 L 360.34,53.41 L 362.93,48.93 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 547.41,46.34 L 552.59,46.34 L 557.07,48.93 L 559.66,53.41 L 559.66,58.59 L 557.07,63.07 L 552.59,65.66 L 547.41,65.66 L 542.93,63.07 L 540.34,58.59 L 540.34,53.41 L 542.93,48.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_t1" stroke="#666666" stroke-width="10" x1="190.0" x2="190.0" y1="64.0" y2="141.81"/>
+  <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" x1="370.0" x2="370.0" y1="64.0" y2="141.81"/>
+  <path d="M 550.0,64.0 L 550.0,326.0 L 511.0,326.0" fill="none" id="svg_pe_stem" stroke="#666666" stroke-linejoin="round" stroke-width="10"/>
+  <path d="M 491.03,232.04 A 231.0,231.0 0 0 1 491.03,419.96" fill="none" id="svg_pe_arc" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="bold" id="svg_m1" text-anchor="middle" x="280.0" y="326.0">M 1</text>
+  <path d="M 234.0,374.0 C 250.0,346.0 265.0,346.0 280.0,374.0 C 295.0,402.0 310.0,402.0 326.0,374.0" fill="none" id="svg_ac_tilde" stroke="#666666" stroke-linecap="round" stroke-width="9"/>
  </g>
 </svg>

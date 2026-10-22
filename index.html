@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v127-master-sim">
+<link rel="stylesheet" href="styles.css?v=v130-clean-svg">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -23,7 +23,7 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
-      if (k !== 'electrical-simu-ckt-v127-master-sim-56-components') caches.delete(k);
+      if (k !== 'electrical-simu-ckt-v130-clean-svg') caches.delete(k);
     }));
   }
   if ('serviceWorker' in navigator) {
@@ -174,7 +174,7 @@ try {
   <p>ESC • Design · Simulate · Control · Visualize</p>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v127-master-sim"></script>
+<script src="app.js?v=v130-clean-svg"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -782,10 +782,11 @@ document.querySelectorAll(".top nav button").forEach(button => {
     const box=g.querySelector(':scope > .select-box');
     if(!box) return;
     const fallback={w:78,h:82};
-    const set=(ar)=>{
-      // Height-locked scaling: every component has height 63 centered at (60, 44.5),
-      // and width scales proportionally with aspect ratio so multi-pole sources match 1-pole height.
-      let h=63, w=63*ar;
+    const set=(ar, vhOpt=472.5)=>{
+      // Universal 2/15 px/unit scale: standard components (vh <= 500) have height 63,
+      // while larger motor symbols (vh > 500) scale proportionally around (60, 44.5).
+      let h = (vhOpt > 500) ? (vhOpt * 63 / 472.5) : 63;
+      let w = h * ar;
       if(!Number.isFinite(w)||!Number.isFinite(h)||w<18||h<18){w=52;h=56;}
       const pad=4;
       box.setAttribute('x',String(60-(w/2)-pad));
@@ -802,7 +803,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
         const vb=catEntry.vb;
         const vw=vb.length===4?vb[2]:vb[0], vh=vb.length===4?vb[3]:vb[1];
         if(vw>0&&vh>0){
-          set(vw/vh);
+          set(vw/vh, vh);
           g.dataset.escBoxReady='1';
           return;
         }
@@ -826,7 +827,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
       selected.style.setProperty('--esc-selection-border',borderColor);
       selected.style.setProperty('--esc-selected-component',componentColor);
       const nsSvg=selected.querySelector(':scope > svg');
-      if(nsSvg){
+      if(nsSvg && !document.body.classList.contains('live')){
         nsSvg.style.color=componentColor;
         const image=nsSvg.querySelector('image');
         if(image) image.setAttribute('filter','url(#escSelectedComponentTint)');
@@ -1022,7 +1023,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const activeColor=()=>{if(defaultToggle?.checked){const saved=localStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
  const tint=(g,color)=>{
    if(!g||!color)return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')||g.classList.contains('motor-rotating-cw')||g.classList.contains('motor-rotating-ccw')))return;
+   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')||g.classList.contains('motor-rotating-cw')||g.classList.contains('motor-rotating-ccw')||g.classList.contains('motor-secondary-open-warn')||g.classList.contains('motor-mode-star')||g.classList.contains('motor-mode-delta')))return;
    const artSvg = g.querySelector(':scope > svg:not(.select-box)');
    if(!artSvg) return;
    artSvg.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{

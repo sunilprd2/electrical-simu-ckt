@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
-<svg width="441.7628" height="471.2137" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="450.0" height="472.5" viewBox="0 0 450.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <path d="m102,116.43l2.35,-3.94l4.06,-2.28l4.69,0l4.06,2.28l2.35,3.94l0,4.56l-2.35,3.94l-4.06,2.28l-4.69,0l-4.06,-2.28l-2.35,-3.94l0,-4.56z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="3"/>
-  <path d="m102,448.44l2.35,-3.94l4.06,-2.28l4.69,0l4.06,2.28l2.35,3.94l0,4.56l-2.35,3.94l-4.06,2.28l-4.69,0l-4.06,-2.28l-2.35,-3.94l0,-4.56z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="3"/>
-  <path d="m281.5,116.43l2.35,-3.94l4.06,-2.28l4.69,0l4.06,2.28l2.35,3.94l0,4.56l-2.35,3.94l-4.06,2.28l-4.69,0l-4.06,-2.28l-2.35,-3.94l0,-4.56z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="3"/>
-  <path d="m281.5,448.44l2.35,-3.94l4.06,-2.28l4.69,0l4.06,2.28l2.35,3.94l0,4.56l-2.35,3.94l-4.06,2.28l-4.69,0l-4.06,-2.28l-2.35,-3.94l0,-4.56z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="3"/>
-  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="8" x1="110.75" x2="110.75" y1="122.14" y2="218.39"/>
-  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="8" x1="290.25" x2="290.25" y1="122.14" y2="218.39"/>
-  <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="99.45" x2="122.05" y1="207.41" y2="229.38"/>
-  <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="99.45" x2="122.05" y1="229.38" y2="207.41"/>
-  <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="278.95" x2="301.55" y1="207.41" y2="229.38"/>
-  <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="278.95" x2="301.55" y1="229.38" y2="207.41"/>
-  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="8" x1="110.75" x2="110.75" y1="339.83" y2="442.98"/>
-  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="8" x1="290.25" x2="290.25" y1="339.83" y2="442.98"/>
-  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="110.75" x2="69.15" y1="339.83" y2="222.28"/>
-  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="290.25" x2="248.65" y1="339.83" y2="222.28"/>
-  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="8" x1="89.95" x2="271.45" y1="281.1" y2="281.1"/>
+  <path d="M 132.41,58.34 L 137.59,58.34 L 142.07,60.93 L 144.66,65.41 L 144.66,70.59 L 142.07,75.07 L 137.59,77.66 L 132.41,77.66 L 127.93,75.07 L 125.34,70.59 L 125.34,65.41 L 127.93,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 132.41,394.84 L 137.59,394.84 L 142.07,397.43 L 144.66,401.91 L 144.66,407.09 L 142.07,411.57 L 137.59,414.16 L 132.41,414.16 L 127.93,411.57 L 125.34,407.09 L 125.34,401.91 L 127.93,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="135.0" x2="135.0" y1="76.0" y2="172.0"/>
+  <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="9" x1="124.0" x2="146.0" y1="161.0" y2="183.0"/>
+  <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="9" x1="124.0" x2="146.0" y1="183.0" y2="161.0"/>
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="135.0" x2="135.0" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="135.0" x2="95.0" y1="300.0" y2="174.0"/>
+  <path d="M 312.41,58.34 L 317.59,58.34 L 322.07,60.93 L 324.66,65.41 L 324.66,70.59 L 322.07,75.07 L 317.59,77.66 L 312.41,77.66 L 307.93,75.07 L 305.34,70.59 L 305.34,65.41 L 307.93,60.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="M 312.41,394.84 L 317.59,394.84 L 322.07,397.43 L 324.66,401.91 L 324.66,407.09 L 322.07,411.57 L 317.59,414.16 L 312.41,414.16 L 307.93,411.57 L 305.34,407.09 L 305.34,401.91 L 307.93,397.43 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="315.0" x2="315.0" y1="76.0" y2="172.0"/>
+  <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="9" x1="304.0" x2="326.0" y1="161.0" y2="183.0"/>
+  <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="9" x1="304.0" x2="326.0" y1="183.0" y2="161.0"/>
+  <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" x1="315.0" x2="315.0" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper2" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="315.0" x2="275.0" y1="300.0" y2="174.0"/>
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="9" x1="115.0" x2="295.0" y1="236" y2="236"/>
  </g>
 </svg>

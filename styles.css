@@ -2284,13 +2284,22 @@ body.live #dropLayer .dropped-symbol.sim-energized.sim-blinking > svg:not(.selec
   animation: escBlinkLamp 0.7s infinite;
 }
 
-/* Operated switch highlight in RUN mode */
+/* Operated switch & contact highlight in RUN mode (blade + mechanical handle/link) */
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper1,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper2,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper3,
 body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_flapper4,
-body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_12 {
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_13,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_10,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_30,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_12,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_actuator,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_dash,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_dash_top,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_contactor_c,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_contactor_l1,
+body.live #dropLayer .dropped-symbol.sim-switch-operated #svg_contactor_l2 {
   stroke: #22c55e !important;
 }
 
@@ -2609,4 +2618,86 @@ body.theme-light .signal-tag-number select { background:#fff; color:#17212a; bor
   stroke: none !important;
   stroke-dasharray: none !important;
   pointer-events: none !important;
+}
+
+/* Hide duplicate external port-name labels on proximity sensors since BN/BK/BU are inside the SVG artwork */
+#dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name,
+body.theme-light #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name,
+body.theme-dark #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+
+/* Star-Delta Motor internal Y / Δ mode highlight & Secondary-Not-Connected Warning */
+body.live #dropLayer .dropped-symbol.motor-mode-star > svg:not(.select-box) #svg_sd_active_pill,
+body.live #dropLayer .dropped-symbol.motor-mode-delta > svg:not(.select-box) #svg_sd_active_pill {
+  fill: #06281e !important;
+  stroke: #00e676 !important;
+  stroke-width: 5 !important;
+}
+body.live #dropLayer .dropped-symbol.motor-mode-star > svg:not(.select-box) #svg_star_sym {
+  fill: #00ff66 !important;
+  font-weight: 900 !important;
+  filter: drop-shadow(0 0 4px #00ff66) !important;
+}
+body.live #dropLayer .dropped-symbol.motor-mode-star > svg:not(.select-box) #svg_delta_sym,
+body.live #dropLayer .dropped-symbol.motor-mode-star > svg:not(.select-box) #svg_sd_slash {
+  fill: #64748b !important;
+  opacity: 0.42 !important;
+}
+body.live #dropLayer .dropped-symbol.motor-mode-delta > svg:not(.select-box) #svg_delta_sym {
+  fill: #00ff66 !important;
+  font-weight: 900 !important;
+  filter: drop-shadow(0 0 4px #00ff66) !important;
+}
+body.live #dropLayer .dropped-symbol.motor-mode-delta > svg:not(.select-box) #svg_star_sym,
+body.live #dropLayer .dropped-symbol.motor-mode-delta > svg:not(.select-box) #svg_sd_slash {
+  fill: #64748b !important;
+  opacity: 0.42 !important;
+}
+body.live #dropLayer .dropped-symbol.motor-secondary-open-warn > svg:not(.select-box) #svg_motor_circle {
+  stroke: #f59e0b !important;
+  fill: rgba(245, 158, 11, 0.16) !important;
+}
+body.live #dropLayer .dropped-symbol.motor-secondary-open-warn > svg:not(.select-box) #svg_star_sym,
+body.live #dropLayer .dropped-symbol.motor-secondary-open-warn > svg:not(.select-box) #svg_sd_slash,
+body.live #dropLayer .dropped-symbol.motor-secondary-open-warn > svg:not(.select-box) #svg_delta_sym {
+  fill: #f59e0b !important;
+}
+
+
+/* Ensure operated switch blades and mechanical handles/links always render bright green (#22c55e) in RUN mode, even when selected */
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper1,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper2,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper3,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper4,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_13,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_10,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_30,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_12,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_actuator,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_dash,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_dash_top,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_c,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_l1,
+body.live #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_l2,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_flapper,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_flapper1,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_flapper2,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_flapper3,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_flapper4,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_13,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_10,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_30,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_12,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_actuator,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_dash,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_dash_top,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_contactor_c,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_contactor_l1,
+body.live #dropLayer .dropped-symbol.selected.sim-switch-operated > svg:not(.select-box) #svg_contactor_l2 {
+  stroke: #22c55e !important;
 }

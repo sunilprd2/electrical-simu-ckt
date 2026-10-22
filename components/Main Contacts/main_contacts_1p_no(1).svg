@@ -1,22 +1,12 @@
 <?xml version="1.0"?>
-<svg width="435" height="464" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+<svg xmlns="http://www.w3.org/2000/svg" width="435.0" height="472.5" viewBox="0 0 435.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Terminal Nodes -->
-  <!-- Top Stem -->
-  <!-- Semi-Circle (Power Contact Half-moon) -->
-  <!-- Bottom Stem -->
-  <!-- Switch Flapper (Normally Open Power Contact) -->
-  <!-- Text Labels (Vector Paths) -->
-  <!-- "1" Terminal Label -->
-  <!-- "2" Terminal Label -->
-  <!-- "-KM1" Label Rotated -90deg -->
-  <path d="m377.25,23.74l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 0.814628 -77 75.881)"/>
-  <path d="m377.25,365.25l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 0.814628 -77 75.881)"/>
-  <line fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.840085 -204 30.231) matrix(1 0 0 0.969697 127 54.3397)" x1="386" x2="386" y1="29.63" y2="143.03"/>
-  <path d="m386,107.03a18,18 0 0 0 0,36" fill="#666666" id="svg_semi_circle" stroke="#666666" stroke-linecap="round" stroke-width="8" transform="matrix(1 0 0 0.840085 -204 30.231) matrix(1 0 0 0.969697 127 54.3397)"/>
-  <line fill="none" id="svg_stem_bot" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.840085 -204 30.231) matrix(1 0 0 0.969697 127 54.3397)" x1="386" x2="386" y1="268.63" y2="359.63"/>
-  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.840085 -204 30.231)" x1="513" x2="471.1" y1="314.82" y2="177.03"/>
+  <path d="M 214.91,58.34 L 220.09,58.34 L 224.57,60.93 L 227.16,65.41 L 227.16,70.59 L 224.57,75.07 L 220.09,77.66 L 214.91,77.66 L 210.43,75.07 L 207.84,70.59 L 207.84,65.41 L 210.43,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 214.91,394.84 L 220.09,394.84 L 224.57,397.43 L 227.16,401.91 L 227.16,407.09 L 224.57,411.57 L 220.09,414.16 L 214.91,414.16 L 210.43,411.57 L 207.84,407.09 L 207.84,401.91 L 210.43,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="76.0" y2="172.0"/>
+  <path d="M 217.5,144.0 A 14,14 0 0 0 217.5,172.0" fill="none" id="svg_contactor_arc1" stroke="#666666" stroke-linecap="round" stroke-width="10"/>
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="300.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="217.5" x2="179.5" y1="300.0" y2="170.0"/>
  </g>
 </svg>

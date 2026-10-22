@@ -1,21 +1,13 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.85" height="464.9067" viewBox="235.435 151.1866 435.85 464.9067">
+<svg xmlns="http://www.w3.org/2000/svg" width="435.0" height="472.5" viewBox="0 0 435.0 472.5">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <!-- Terminal Nodes -->
-  <!-- Top Stems & Disconnector Bars -->
-  <!-- Bottom Stems -->
-  <!-- Switch Flappers (Normally Open) -->
-  <!-- Rectangular Fuse Boxes on Flappers -->
-  <!-- Dashed Mechanical Link -->
-  <!-- Text Labels (Vector Paths) -->
-  <!-- "-F6" Label Rotated -90deg -->
-  <path d="m444.61,190.54l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.971202 0 30.4719)"/>
-  <path d="m444.61,532.05l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.971202 0 30.4719)"/>
-  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.971202 0 30.4719)" x1="453.36" x2="453.36" y1="196.43" y2="281.43"/>
-  <line fill="none" id="svg_disc_bar1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.971202 0 30.4719)" x1="423.36" x2="483.36" y1="281.43" y2="281.43"/>
-  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.971202 0 30.4719)" x1="453.36" x2="453.36" y1="436.93" y2="526.43"/>
-  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.971202 0 30.4719)" x1="453.17" x2="406.4" y1="436.19" y2="290.03"/>
-  <rect fill="none" height="88" id="svg_fuse_box1" stroke="#666666" stroke-width="10" transform="matrix(0.963841 -0.258804 0.266477 0.936085 -89.0617 158.002)" width="45" x="415.86" y="317.43"/>
+  <path d="M 214.91,58.34 L 220.09,58.34 L 224.57,60.93 L 227.16,65.41 L 227.16,70.59 L 224.57,75.07 L 220.09,77.66 L 214.91,77.66 L 210.43,75.07 L 207.84,70.59 L 207.84,65.41 L 210.43,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 214.91,394.84 L 220.09,394.84 L 224.57,397.43 L 227.16,401.91 L 227.16,407.09 L 224.57,411.57 L 220.09,414.16 L 214.91,414.16 L 210.43,411.57 L 207.84,407.09 L 207.84,401.91 L 210.43,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="76.0" y2="162.0"/>
+  <line fill="none" id="svg_disc_bar1" stroke="#666666" stroke-width="10" x1="195.5" x2="239.5" y1="162.0" y2="162.0"/>
+  <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="217.5" x2="217.5" y1="312.0" y2="396.5"/>
+  <line fill="none" id="svg_flapper1" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="217.5" x2="175.5" y1="312.0" y2="170"/>
+  <rect fill="none" height="76.0" id="svg_fuse_box1" stroke="#666666" stroke-width="9" transform="rotate(-16.5 196.5 241.0)" width="38.0" x="177.5" y="203.0"/>
  </g>
 </svg>
