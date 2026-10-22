@@ -675,12 +675,19 @@ document.querySelectorAll(".top nav button").forEach(button => {
   window.addEventListener('pointermove',function(e){
     if(!active||e.pointerId!==active.id)return;
     const g=active.g;if(!g?.isConnected){active=null;return;}
-    const p=point(e),x=p.x-active.dx,y=p.y-active.dy;
+    const p=point(e);
+    let x=p.x-active.dx, y=p.y-active.dy;
     if(Math.hypot(p.x-active.startX,p.y-active.startY)>2)active.moved=true;
+    if(typeof window.snapComponentToTerminalAxes==='function'){
+      const snapped=window.snapComponentToTerminalAxes(g, x, y, 6);
+      x=snapped.x;
+      y=snapped.y;
+    }
     g.dataset.x=String(x);g.dataset.y=String(y);
     if(typeof applyComponentTransform==='function')applyComponentTransform(g,x,y);
     else g.setAttribute('transform',`translate(${x-60},${y-45})`);
     if(typeof refreshWiresForComponent==='function')refreshWiresForComponent(g);
+    if(typeof window.updateSelectedTerminalAxes==='function')window.updateSelectedTerminalAxes(g);
     if(active.moved)e.preventDefault();
   },{capture:true,passive:false});
   function finish(e){
@@ -794,18 +801,56 @@ document.querySelectorAll(".top nav button").forEach(button => {
   axes.setAttribute('id','escSelectedComponentAxes');
   axes.setAttribute('display','none');
   axes.setAttribute('pointer-events','none');
-  const horizontal=document.createElementNS(NS,'line');
-  const vertical=document.createElementNS(NS,'line');
-  [horizontal,vertical].forEach(line=>{
-    line.setAttribute('stroke','#8793a3');
-    line.setAttribute('stroke-width','2.4');
-    line.setAttribute('stroke-opacity','.42');
-    line.setAttribute('vector-effect','non-scaling-stroke');
-  });
-  horizontal.setAttribute('x1','0');horizontal.setAttribute('x2','1200');
-  vertical.setAttribute('y1','0');vertical.setAttribute('y2','760');
-  axes.append(horizontal,vertical);
-  layer.insertBefore(axes,layer.firstChild);
+  svg.insertBefore(axes,layer);
+
+  function renderTerminalAlignmentAxes(targetComp){
+    if(axes.parentNode!==svg){
+      svg.insertBefore(axes,layer);
+    }
+    axes.replaceChildren();
+    if(!targetComp || !targetComp.isConnected || document.body.classList.contains('live')){
+      axes.setAttribute('display','none');
+      axes.removeAttribute('data-active');
+      return;
+    }
+    const ports=(typeof window.absolutePorts==='function') ? window.absolutePorts(targetComp) : [];
+    const bandWidth=String(window.ESC_TERMINAL_SIZE || 3.8);
+    const uniqueX=[];
+    const uniqueY=[];
+    if(ports.length){
+      ports.forEach(p=>{
+        if(Number.isFinite(p.x) && !uniqueX.some(x=>Math.abs(x-p.x)<0.25)) uniqueX.push(p.x);
+        if(Number.isFinite(p.y) && !uniqueY.some(y=>Math.abs(y-p.y)<0.25)) uniqueY.push(p.y);
+      });
+    } else {
+      const cx=Number(targetComp.dataset.x)||0, cy=Number(targetComp.dataset.y)||0;
+      uniqueX.push(cx);
+      uniqueY.push(cy);
+    }
+    uniqueX.forEach(x=>{
+      const vLine=document.createElementNS(NS,'line');
+      vLine.setAttribute('class','esc-terminal-align-line esc-align-vertical');
+      vLine.setAttribute('x1',String(x));
+      vLine.setAttribute('x2',String(x));
+      vLine.setAttribute('y1','-10000');
+      vLine.setAttribute('y2','10000');
+      vLine.setAttribute('stroke-width',bandWidth);
+      axes.appendChild(vLine);
+    });
+    uniqueY.forEach(y=>{
+      const hLine=document.createElementNS(NS,'line');
+      hLine.setAttribute('class','esc-terminal-align-line esc-align-horizontal');
+      hLine.setAttribute('x1','-10000');
+      hLine.setAttribute('x2','10000');
+      hLine.setAttribute('y1',String(y));
+      hLine.setAttribute('y2',String(y));
+      hLine.setAttribute('stroke-width',bandWidth);
+      axes.appendChild(hLine);
+    });
+    axes.setAttribute('display','');
+    axes.setAttribute('data-active','1');
+  }
+  window.updateSelectedTerminalAxes=renderTerminalAlignmentAxes;
 
   function applyBox(g){
     const box=g.querySelector(':scope > .select-box');
@@ -846,13 +891,14 @@ document.querySelectorAll(".top nav button").forEach(button => {
       else set(1);
     }).catch(()=>set(1));
   }
+  let isUpdatingV54 = false;
   function update(){
+    if(isUpdatingV54) return;
+    isUpdatingV54 = true;
+    try {
     const selected=layer.querySelector('.dropped-symbol.selected');
-    axes.setAttribute('display',selected?'':'none');
+    renderTerminalAlignmentAxes(selected);
     if(selected){
-      const x=Number(selected.dataset.x)||0, y=Number(selected.dataset.y)||0;
-      horizontal.setAttribute('y1',String(y));horizontal.setAttribute('y2',String(y));
-      vertical.setAttribute('x1',String(x));vertical.setAttribute('x2',String(x));
       selected.style.setProperty('--esc-selection-border',borderColor);
       selected.style.setProperty('--esc-selected-component',componentColor);
       const nsSvg=selected.querySelector(':scope > svg');
@@ -895,8 +941,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
       applyBox(g);
     });
     if(flood)flood.setAttribute('flood-color',componentColor);
-    horizontal.setAttribute('stroke','#8793a3');
-    vertical.setAttribute('stroke','#8793a3');
+    } finally {
+      isUpdatingV54 = false;
+    }
   }
   function setColors(){
     componentColor=componentPicker?.value||componentColor;
@@ -910,10 +957,10 @@ document.querySelectorAll(".top nav button").forEach(button => {
   // Recompute the overlay when selection, component position, rotation, or drawing contents change.
   const observer=new MutationObserver(()=>update());
   observer.observe(layer,{subtree:true,childList:true,attributes:true,attributeFilter:['class','transform','data-x','data-y','data-rotation']});
-  // Update the axis center during a component drag without intercepting pointer or wire handling.
+  // Update the terminal alignment lines during a component drag without intercepting pointer or wire handling.
   layer.addEventListener('pointermove',()=>{
     const selected=layer.querySelector('.dropped-symbol.selected');
-    if(selected){const x=Number(selected.dataset.x)||0,y=Number(selected.dataset.y)||0;horizontal.setAttribute('y1',y);horizontal.setAttribute('y2',y);vertical.setAttribute('x1',x);vertical.setAttribute('x2',x);}
+    if(selected) renderTerminalAlignmentAxes(selected);
   },true);
   // Do not create any hover tint: the selection frame is transparent except for its border.
   update();

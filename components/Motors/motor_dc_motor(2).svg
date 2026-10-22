@@ -3,8 +3,8 @@
  <g class="layer" display="inline">
   <title>Layer 1</title>
   <circle cx="280.0" cy="326.0" fill="none" id="svg_motor_circle" r="205.0" stroke="#666666" stroke-width="10"/>
-  <path d="M 187.41,46.34 L 192.59,46.34 L 197.07,48.93 L 199.66,53.41 L 199.66,58.59 L 197.07,63.07 L 192.59,65.66 L 187.41,65.66 L 182.93,63.07 L 180.34,58.59 L 180.34,53.41 L 182.93,48.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="M 367.41,46.34 L 372.59,46.34 L 377.07,48.93 L 379.66,53.41 L 379.66,58.59 L 377.07,63.07 L 372.59,65.66 L 367.41,65.66 L 362.93,63.07 L 360.34,58.59 L 360.34,53.41 L 362.93,48.93 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 186.18,41.75 L 193.82,41.75 L 200.43,45.57 L 204.25,52.18 L 204.25,59.82 L 200.43,66.43 L 193.82,70.25 L 186.18,70.25 L 179.57,66.43 L 175.75,59.82 L 175.75,52.18 L 179.57,45.57 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 366.18,41.75 L 373.82,41.75 L 380.43,45.57 L 384.25,52.18 L 384.25,59.82 L 380.43,66.43 L 373.82,70.25 L 366.18,70.25 L 359.57,66.43 L 355.75,59.82 L 355.75,52.18 L 359.57,45.57 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
   <line fill="none" id="svg_t1" stroke="#666666" stroke-width="10" x1="190.0" x2="190.0" y1="64.0" y2="141.81"/>
   <line fill="none" id="svg_t2" stroke="#666666" stroke-width="10" x1="370.0" x2="370.0" y1="64.0" y2="141.81"/>
   <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="bold" id="svg_m" text-anchor="middle" x="280.0" y="316.0">M</text>

@@ -13,8 +13,8 @@
   <line fill="none" id="svg_dash_vert" stroke="#666666" stroke-dasharray="8,8" stroke-width="7" x1="72.0" x2="72.0" y1="198.0" y2="314.0"/>
   <line fill="none" id="svg_dash_mid" stroke="#666666" stroke-dasharray="8,8" stroke-width="7" x1="72.0" x2="132.0" y1="266.0" y2="266.0"/>
   <line fill="none" id="svg_dash_bot" stroke="#666666" stroke-dasharray="8,8" stroke-width="7" x1="72.0" x2="132.0" y1="314.0" y2="314.0"/>
-  <path d="M 177.41,58.34 L 182.59,58.34 L 187.07,60.93 L 189.66,65.41 L 189.66,70.59 L 187.07,75.07 L 182.59,77.66 L 177.41,77.66 L 172.93,75.07 L 170.34,70.59 L 170.34,65.41 L 172.93,60.93 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
-  <path d="M 177.41,394.84 L 182.59,394.84 L 187.07,397.43 L 189.66,401.91 L 189.66,407.09 L 187.07,411.57 L 182.59,414.16 L 177.41,414.16 L 172.93,411.57 L 170.34,407.09 L 170.34,401.91 L 172.93,397.43 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 176.18,53.75 L 183.82,53.75 L 190.43,57.57 L 194.25,64.18 L 194.25,71.82 L 190.43,78.43 L 183.82,82.25 L 176.18,82.25 L 169.57,78.43 L 165.75,71.82 L 165.75,64.18 L 169.57,57.57 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 176.18,390.25 L 183.82,390.25 L 190.43,394.07 L 194.25,400.68 L 194.25,408.32 L 190.43,414.93 L 183.82,418.75 L 176.18,418.75 L 169.57,414.93 L 165.75,408.32 L 165.75,400.68 L 169.57,394.07 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
   <line fill="none" id="svg_stem_top1" stroke="#666666" stroke-width="10" x1="180.0" x2="180.0" y1="76.0" y2="138.0"/>
   <line fill="none" id="svg_cb_x1_1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="170.0" x2="190.0" y1="128.0" y2="148.0"/>
   <line fill="none" id="svg_cb_x1_2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="170.0" x2="190.0" y1="148.0" y2="128.0"/>
@@ -24,8 +24,8 @@
   <path d="M 166.0,304.0 L 166.0,324.0 M 161.0,304.0 L 171.0,304.0 M 161.0,324.0 L 171.0,324.0" fill="none" id="svg_mag_i1" stroke="#666666" stroke-linecap="round" stroke-width="5"/>
   <path d="M 182.0,306.0 L 196.0,314.0 L 182.0,322.0" fill="none" id="svg_mag_gt1" stroke="#666666" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
   <line fill="none" id="svg_stem_bot1" stroke="#666666" stroke-width="10" x1="180.0" x2="180.0" y1="338.0" y2="396.5"/>
-  <path d="M 357.41,58.34 L 362.59,58.34 L 367.07,60.93 L 369.66,65.41 L 369.66,70.59 L 367.07,75.07 L 362.59,77.66 L 357.41,77.66 L 352.93,75.07 L 350.34,70.59 L 350.34,65.41 L 352.93,60.93 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
-  <path d="M 357.41,394.84 L 362.59,394.84 L 367.07,397.43 L 369.66,401.91 L 369.66,407.09 L 367.07,411.57 L 362.59,414.16 L 357.41,414.16 L 352.93,411.57 L 350.34,407.09 L 350.34,401.91 L 352.93,397.43 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
+  <path d="M 356.18,53.75 L 363.82,53.75 L 370.43,57.57 L 374.25,64.18 L 374.25,71.82 L 370.43,78.43 L 363.82,82.25 L 356.18,82.25 L 349.57,78.43 L 345.75,71.82 L 345.75,64.18 L 349.57,57.57 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <path d="M 356.18,390.25 L 363.82,390.25 L 370.43,394.07 L 374.25,400.68 L 374.25,408.32 L 370.43,414.93 L 363.82,418.75 L 356.18,418.75 L 349.57,414.93 L 345.75,408.32 L 345.75,400.68 L 349.57,394.07 Z" fill="#666666" id="svg_4" stroke="#666666" stroke-width="0"/>
   <line fill="none" id="svg_stem_top2" stroke="#666666" stroke-width="10" x1="360.0" x2="360.0" y1="76.0" y2="138.0"/>
   <line fill="none" id="svg_cb_x2_1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="350.0" x2="370.0" y1="128.0" y2="148.0"/>
   <line fill="none" id="svg_cb_x2_2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="350.0" x2="370.0" y1="148.0" y2="128.0"/>
@@ -35,8 +35,8 @@
   <path d="M 346.0,304.0 L 346.0,324.0 M 341.0,304.0 L 351.0,304.0 M 341.0,324.0 L 351.0,324.0" fill="none" id="svg_mag_i2" stroke="#666666" stroke-linecap="round" stroke-width="5"/>
   <path d="M 362.0,306.0 L 376.0,314.0 L 362.0,322.0" fill="none" id="svg_mag_gt2" stroke="#666666" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
   <line fill="none" id="svg_stem_bot2" stroke="#666666" stroke-width="10" x1="360.0" x2="360.0" y1="338.0" y2="396.5"/>
-  <path d="M 537.41,58.34 L 542.59,58.34 L 547.07,60.93 L 549.66,65.41 L 549.66,70.59 L 547.07,75.07 L 542.59,77.66 L 537.41,77.66 L 532.93,75.07 L 530.34,70.59 L 530.34,65.41 L 532.93,60.93 Z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
-  <path d="M 537.41,394.84 L 542.59,394.84 L 547.07,397.43 L 549.66,401.91 L 549.66,407.09 L 547.07,411.57 L 542.59,414.16 L 537.41,414.16 L 532.93,411.57 L 530.34,407.09 L 530.34,401.91 L 532.93,397.43 Z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
+  <path d="M 536.18,53.75 L 543.82,53.75 L 550.43,57.57 L 554.25,64.18 L 554.25,71.82 L 550.43,78.43 L 543.82,82.25 L 536.18,82.25 L 529.57,78.43 L 525.75,71.82 L 525.75,64.18 L 529.57,57.57 Z" fill="#666666" id="svg_5" stroke="#666666" stroke-width="0"/>
+  <path d="M 536.18,390.25 L 543.82,390.25 L 550.43,394.07 L 554.25,400.68 L 554.25,408.32 L 550.43,414.93 L 543.82,418.75 L 536.18,418.75 L 529.57,414.93 L 525.75,408.32 L 525.75,400.68 L 529.57,394.07 Z" fill="#666666" id="svg_6" stroke="#666666" stroke-width="0"/>
   <line fill="none" id="svg_stem_top3" stroke="#666666" stroke-width="10" x1="540.0" x2="540.0" y1="76.0" y2="138.0"/>
   <line fill="none" id="svg_cb_x3_1" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="530.0" x2="550.0" y1="128.0" y2="148.0"/>
   <line fill="none" id="svg_cb_x3_2" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="530.0" x2="550.0" y1="148.0" y2="128.0"/>

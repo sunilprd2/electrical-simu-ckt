@@ -5,14 +5,14 @@
   <circle cx="90.0" cy="110.0" fill="none" id="svg_c1" r="36.0" stroke="#666666" stroke-width="9"/>
   <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t1" text-anchor="middle" x="90.0" y="122.0">L1</text>
   <line fill="none" id="svg_s1" stroke="#666666" stroke-width="10" x1="90.0" x2="90.0" y1="146.0" y2="396.5"/>
-  <path d="M 87.41,394.84 L 92.59,394.84 L 97.07,397.43 L 99.66,401.91 L 99.66,407.09 L 97.07,411.57 L 92.59,414.16 L 87.41,414.16 L 82.93,411.57 L 80.34,407.09 L 80.34,401.91 L 82.93,397.43 Z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0"/>
+  <path d="M 86.18,390.25 L 93.82,390.25 L 100.43,394.07 L 104.25,400.68 L 104.25,408.32 L 100.43,414.93 L 93.82,418.75 L 86.18,418.75 L 79.57,414.93 L 75.75,408.32 L 75.75,400.68 L 79.57,394.07 Z" fill="#666666" id="svg_25" stroke="#666666" stroke-width="0"/>
   <circle cx="270.0" cy="110.0" fill="none" id="svg_c2" r="36.0" stroke="#666666" stroke-width="9"/>
   <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t2" text-anchor="middle" x="270.0" y="122.0">L2</text>
   <line fill="none" id="svg_s2" stroke="#666666" stroke-width="10" x1="270.0" x2="270.0" y1="146.0" y2="396.5"/>
-  <path d="M 267.41,394.84 L 272.59,394.84 L 277.07,397.43 L 279.66,401.91 L 279.66,407.09 L 277.07,411.57 L 272.59,414.16 L 267.41,414.16 L 262.93,411.57 L 260.34,407.09 L 260.34,401.91 L 262.93,397.43 Z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0"/>
+  <path d="M 266.18,390.25 L 273.82,390.25 L 280.43,394.07 L 284.25,400.68 L 284.25,408.32 L 280.43,414.93 L 273.82,418.75 L 266.18,418.75 L 259.57,414.93 L 255.75,408.32 L 255.75,400.68 L 259.57,394.07 Z" fill="#666666" id="svg_30" stroke="#666666" stroke-width="0"/>
   <circle cx="450.0" cy="110.0" fill="none" id="svg_c3" r="36.0" stroke="#666666" stroke-width="9"/>
   <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_t3" text-anchor="middle" x="450.0" y="122.0">L3</text>
   <line fill="none" id="svg_s3" stroke="#666666" stroke-width="10" x1="450.0" x2="450.0" y1="146.0" y2="396.5"/>
-  <path d="M 447.41,394.84 L 452.59,394.84 L 457.07,397.43 L 459.66,401.91 L 459.66,407.09 L 457.07,411.57 L 452.59,414.16 L 447.41,414.16 L 442.93,411.57 L 440.34,407.09 L 440.34,401.91 L 442.93,397.43 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 446.18,390.25 L 453.82,390.25 L 460.43,394.07 L 464.25,400.68 L 464.25,408.32 L 460.43,414.93 L 453.82,418.75 L 446.18,418.75 L 439.57,414.93 L 435.75,408.32 L 435.75,400.68 L 439.57,394.07 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
  </g>
 </svg>

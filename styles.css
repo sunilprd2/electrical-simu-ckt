@@ -2793,3 +2793,102 @@ body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.port-connected-
   pointer-events: all !important;
   cursor: crosshair !important;
 }
+
+
+/* UI refinement requested 2026-10-22
+   1) Remove the extra cyan worksheet surround; keep the actual schematic/grid intact.
+   2) Library component-card borders inherit their category's accent colour.
+   3) The Others category is temporarily hidden, but its source data remains untouched. */
+.work {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.work #sheet {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.layout > .library .component-results .symbol-btn {
+  border-color: var(--sim-color, var(--category-accent, #28618a)) !important;
+}
+.layout > .library .library-category-wrap:has(.component-category[data-category="Others"]) {
+  display: none !important;
+}
+
+
+/* Per-Terminal Horizontal & Vertical Alignment Guide Bands (matching exact 3.8 terminal width, Image 1 & Image 2) */
+#schematic #escSelectedComponentAxes[data-active="1"] {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+#schematic #escSelectedComponentAxes:not([data-active="1"]),
+body.live #schematic #escSelectedComponentAxes {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+#schematic #escSelectedComponentAxes line.esc-terminal-align-line {
+  stroke: #94a3b8 !important;
+  stroke-opacity: 0.26 !important;
+  stroke-width: 3.8px !important;
+  vector-effect: none !important;
+  pointer-events: none !important;
+}
+body.theme-light #schematic #escSelectedComponentAxes line.esc-terminal-align-line {
+  stroke: #cbd5e1 !important;
+  stroke-opacity: 0.65 !important;
+  stroke-width: 3.8px !important;
+  vector-effect: none !important;
+}
+
+/* User's 12-sided Polygon Terminal (.svg-terminal-node) with true 28.5 SVG unit (3.8 workspace unit) polygon vertices */
+#dropLayer .dropped-symbol .svg-terminal-node {
+  display: inline !important;
+  visibility: visible !important;
+  fill: #ffffff !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  opacity: 1 !important;
+}
+body.theme-light #dropLayer .dropped-symbol .svg-terminal-node {
+  fill: #1e293b !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+}
+body:not(.live) #dropLayer .dropped-symbol.selected .svg-terminal-node {
+  fill: var(--esc-selected-component, #2584ff) !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+}
+#dropLayer .dropped-symbol .svg-terminal-node.terminal-connected-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Hide dotted select-box when selected so component selection looks clean with terminal alignment bands (like Image 1 & 2) */
+#dropLayer .dropped-symbol > .select-box,
+#dropLayer .dropped-symbol.selected > .select-box {
+  display: none !important;
+  stroke: none !important;
+}
+
+/* Selected component artwork, terminal labels, and tag highlight in selected component blue (#2584ff) */
+body:not(.live) #dropLayer .dropped-symbol.selected > svg *:not(text):not(tspan):not([stroke="none"]):not([stroke-width="0"]) {
+  stroke: var(--esc-selected-component, #2584ff) !important;
+}
+body:not(.live) #dropLayer .dropped-symbol.selected > svg text,
+body:not(.live) #dropLayer .dropped-symbol.selected > .drop-tag,
+body:not(.live) #dropLayer .dropped-symbol.selected .port-name {
+  fill: var(--esc-selected-component, #2584ff) !important;
+  color: var(--esc-selected-component, #2584ff) !important;
+}
+
+
+
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
+  fill: #15803d !important;
+  color: #15803d !important;
+}
