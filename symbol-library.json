@@ -1,6 +1,6 @@
 {
   "project": "ELECTRICAL SIMU CKT",
-  "count": 56,
+  "count": 61,
   "symbols": [
     {
       "file": "components/Power/earth_ground(1).svg",
@@ -64,6 +64,13 @@
       "category": "Sources",
       "original_filename": "terminal_phase_l(1).svg",
       "type": "Terminal Phase L"
+    },
+    {
+      "file": "components/Power/ac_to_dc_power_supply.svg",
+      "name": "AC to DC Power Supply",
+      "category": "Sources",
+      "original_filename": "ac_to_dc_power_supply.svg",
+      "type": "AC to DC Power Supply"
     },
     {
       "file": "components/Coils/coil_contactor.svg",
@@ -134,6 +141,20 @@
       "category": "Auxiliary Contacts",
       "original_filename": "aux_contacts_on_delay_no.svg",
       "type": "Aux Contacts On Delay NO"
+    },
+    {
+      "file": "components/Auxiliary Contacts/aux_contacts_thermal_nc.svg",
+      "name": "Thermal Relay NC",
+      "category": "Auxiliary Contacts",
+      "original_filename": "aux_contacts_thermal_nc.svg",
+      "type": "Thermal Relay NC"
+    },
+    {
+      "file": "components/Auxiliary Contacts/aux_contacts_thermal_no.svg",
+      "name": "Thermal Relay NO",
+      "category": "Auxiliary Contacts",
+      "original_filename": "aux_contacts_thermal_no.svg",
+      "type": "Thermal Relay NO"
     },
     {
       "file": "components/Switches/switch_3_position_selector I-0-II(1).svg",
@@ -393,6 +414,20 @@
       "category": "Proximity Sensor",
       "original_filename": "proximity_sensor_npn_no(2).svg",
       "type": "Proximity Sensor NPN NO"
+    },
+    {
+      "file": "components/Proximity Sensor/proximity_sensor_pnp_nc(2).svg",
+      "name": "Proximity Sensor PNP NC",
+      "category": "Proximity Sensor",
+      "original_filename": "proximity_sensor_pnp_nc(2).svg",
+      "type": "Proximity Sensor PNP NC"
+    },
+    {
+      "file": "components/Proximity Sensor/proximity_sensor_pnp_no(2).svg",
+      "name": "Proximity Sensor PNP NO",
+      "category": "Proximity Sensor",
+      "original_filename": "proximity_sensor_pnp_no(2).svg",
+      "type": "Proximity Sensor PNP NO"
     }
   ]
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="540.0" height="472.5" viewBox="0 0 540.0 472.5">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <path d="M 131.18,53.75 L 138.82,53.75 L 145.43,57.57 L 149.25,64.18 L 149.25,71.82 L 145.43,78.43 L 138.82,82.25 L 131.18,82.25 L 124.57,78.43 L 120.75,71.82 L 120.75,64.18 L 124.57,57.57 Z" fill="#666666" id="svg_term_l" stroke="#666666" stroke-width="0"/>
+  <path d="M 311.18,53.75 L 318.82,53.75 L 325.43,57.57 L 329.25,64.18 L 329.25,71.82 L 325.43,78.43 L 318.82,82.25 L 311.18,82.25 L 304.57,78.43 L 300.75,71.82 L 300.75,64.18 L 304.57,57.57 Z" fill="#666666" id="svg_term_n" stroke="#666666" stroke-width="0"/>
+  <path d="M 431.18,222.00 L 438.82,222.00 L 445.43,225.82 L 449.25,232.43 L 449.25,240.07 L 445.43,246.68 L 438.82,250.50 L 431.18,250.50 L 424.57,246.68 L 420.75,240.07 L 420.75,232.43 L 424.57,225.82 Z" fill="#666666" id="svg_term_pe" stroke="#666666" stroke-width="0"/>
+  <path d="M 131.18,390.25 L 138.82,390.25 L 145.43,394.07 L 149.25,400.68 L 149.25,408.32 L 145.43,414.93 L 138.82,418.75 L 131.18,418.75 L 124.57,414.93 L 120.75,408.32 L 120.75,400.68 L 124.57,394.07 Z" fill="#666666" id="svg_term_pos" stroke="#666666" stroke-width="0"/>
+  <path d="M 311.18,390.25 L 318.82,390.25 L 325.43,394.07 L 329.25,400.68 L 329.25,408.32 L 325.43,414.93 L 318.82,418.75 L 311.18,418.75 L 304.57,414.93 L 300.75,408.32 L 300.75,400.68 L 304.57,394.07 Z" fill="#666666" id="svg_term_neg" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_1" stroke="#666666" stroke-width="10" x1="135.0" x2="135.0" y1="76.0" y2="126.25"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="10" x1="315.0" x2="315.0" y1="76.0" y2="126.25"/>
+  <line fill="none" id="svg_3" stroke="#666666" stroke-width="10" x1="365.0" x2="425.0" y1="236.25" y2="236.25"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="10" x1="135.0" x2="135.0" y1="346.25" y2="396.5"/>
+  <line fill="none" id="svg_5" stroke="#666666" stroke-width="10" x1="315.0" x2="315.0" y1="346.25" y2="396.5"/>
+  <rect fill="none" height="220.0" id="svg_6" stroke="#666666" stroke-linejoin="round" stroke-width="10" width="280.0" x="85.0" y="126.25"/>
+  <line fill="none" id="svg_7" stroke="#666666" stroke-width="9" x1="85.0" x2="365.0" y1="346.25" y2="126.25"/>
+  <path d="M 110.0,220.0 Q 132.5,182.0 155.0,220.0 T 200.0,220.0" fill="none" id="svg_8" stroke="#666666" stroke-linecap="round" stroke-width="9"/>
+  <line fill="none" id="svg_9" stroke="#666666" stroke-linecap="round" stroke-width="8" x1="238.0" x2="312.0" y1="286.0" y2="286.0"/>
+  <line fill="none" id="svg_10" stroke="#666666" stroke-dasharray="14,10" stroke-linecap="round" stroke-width="8" x1="238.0" x2="312.0" y1="302.0" y2="302.0"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" id="svg_11" text-anchor="middle" x="135.0" y="160.0">L</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" id="svg_12" text-anchor="middle" x="315.0" y="160.0">N</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="bold" id="svg_13" text-anchor="middle" x="330.0" y="246.0">PE</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_14" text-anchor="middle" x="135.0" y="334.0">+</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="bold" id="svg_15" text-anchor="middle" x="315.0" y="334.0">-</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" id="svg_16" text-anchor="middle" x="275.0" y="272.0">24V DC</text>
+ </g>
+</svg>

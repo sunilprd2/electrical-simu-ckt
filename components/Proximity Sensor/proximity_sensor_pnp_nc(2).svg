@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="580.0" height="472.5" viewBox="0 0 580.0 472.5">
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <rect fill="none" height="360.0" id="svg_box" stroke="#666666" stroke-width="10" width="260.0" x="40.0" y="56.25"/>
+  <path d="M 506.18,102.00 L 513.82,102.00 L 520.43,105.82 L 524.25,112.43 L 524.25,120.07 L 520.43,126.68 L 513.82,130.50 L 506.18,130.50 L 499.57,126.68 L 495.75,120.07 L 495.75,112.43 L 499.57,105.82 Z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 506.18,222.00 L 513.82,222.00 L 520.43,225.82 L 524.25,232.43 L 524.25,240.07 L 520.43,246.68 L 513.82,250.50 L 506.18,250.50 L 499.57,246.68 L 495.75,240.07 L 495.75,232.43 L 499.57,225.82 Z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 506.18,342.00 L 513.82,342.00 L 520.43,345.82 L 524.25,352.43 L 524.25,360.07 L 520.43,366.68 L 513.82,370.50 L 506.18,370.50 L 499.57,366.68 L 495.75,360.07 L 495.75,352.43 L 499.57,345.82 Z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <g fill="none" id="svg_optics" stroke="#666666" stroke-width="8">
+   <polygon id="svg_4" points="170.0,84.0 214.0,128.0 170.0,172.0 126.0,128.0" stroke-width="8"/>
+   <line id="svg_5" stroke-width="7" x1="156.0" x2="156.0" y1="100.0" y2="156.0"/>
+   <line id="svg_6" stroke-width="7" x1="184.0" x2="184.0" y1="100.0" y2="156.0"/>
+  </g>
+  <line fill="none" id="svg_wire_bn" stroke="#666666" stroke-width="10" x1="300.0" x2="500.0" y1="116.25" y2="116.25"/>
+  <line fill="none" id="svg_wire_bk" stroke="#666666" stroke-width="10" x1="300.0" x2="500.0" y1="236.25" y2="236.25"/>
+  <line fill="none" id="svg_wire_bu" stroke="#666666" stroke-width="10" x1="300.0" x2="500.0" y1="356.25" y2="356.25"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_14" text-anchor="middle" x="400" y="100.25">BN</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_15" text-anchor="middle" x="400" y="220.25">BK</text>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" id="svg_16" text-anchor="middle" x="400" y="340.25">BU</text>
+  <line fill="none" id="svg_10" stroke="#666666" stroke-width="9" x1="75" x2="135" y1="250" y2="250"/>
+  <line fill="none" id="svg_11" stroke="#666666" stroke-width="9" x1="205" x2="265" y1="250" y2="250"/>
+  <line fill="none" id="svg_17" stroke="#666666" stroke-width="9" x1="205" x2="205" y1="250" y2="212"/>
+  <line fill="none" id="svg_12" stroke="#666666" stroke-linecap="round" stroke-width="9" x1="135" x2="214" y1="250" y2="216"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="bold" id="svg_13" text-anchor="middle" x="170" y="382">PNP NC</text>
+ </g>
+</svg>

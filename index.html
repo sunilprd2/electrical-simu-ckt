@@ -20,6 +20,15 @@ body.library-hidden .layout > .library { display:none !important; width:0 !impor
 body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !important; max-width:100% !important; min-width:0 !important; }
 </style>
 <script>
+window.__escSafeStorage = (function(){
+  const mem = {};
+  return {
+    getItem(k){ try { return window.localStorage.getItem(k); } catch(_) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; } },
+    setItem(k, v){ mem[k] = String(v); try { window.localStorage.setItem(k, v); } catch(_) {} }
+  };
+})();
+</script>
+<script>
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
@@ -32,7 +41,8 @@ try {
 } catch (_) {}
 </script>
 </head>
-<body class="library-hidden">
+<body class="library-hidden theme-dark">
+
 <header class="top">
   <div class="brand" aria-label="Electrical Simu CKT brand"><img class="brand-logo" src="./assets/esc-user-logo.png?v=85-logo-path-fix" alt="Electrical Simu CKT logo" onerror="this.onerror=null;this.src='./esc-user-logo.png?v=85-logo-path-fix'"><div class="brand-copy"><div class="brand-title">Electrical Simu<span>CKT</span></div><div class="brand-slogan">Design. Simulate. Innovate.</div></div></div>
   <nav class="cad-ribbon" aria-label="Main tools">
@@ -191,14 +201,14 @@ try {
   const renderedLibrary = host.querySelector('.component-category-list');
   if(renderedLibrary && renderedLibrary.querySelector('.category-count') && renderedLibrary.querySelector('.category-chevron')) return;
   host.innerHTML = '';
-  const symbols=[{"file":"components/Power/earth_ground(1).svg","name":"Earth Ground","category":"Sources","type":"Earth Ground"},{"file":"components/Power/earth_pe(1).svg","name":"Earth PE","category":"Sources","type":"Earth PE"},{"file":"components/Power/source_dc_negative(1).svg","name":"Source DC Negative","category":"Sources","type":"Source DC Negative"},{"file":"components/Power/source_dc_positive(1).svg","name":"Source DC Positive","category":"Sources","type":"Source DC Positive"},{"file":"components/Power/source_dc_supply_pair(1).svg","name":"Source DC Supply Pair","category":"Sources","type":"Source DC Supply Pair"},{"file":"components/Power/terminal_l1_l2_l3(1).svg","name":"Terminal L1 L2 L3","category":"Sources","type":"Terminal L1 L2 L3"},{"file":"components/Power/terminal_l1_l2_l3_n(1).svg","name":"Terminal L1 L2 L3 N","category":"Sources","type":"Terminal L1 L2 L3 N"},{"file":"components/Power/terminal_neutral_n(1).svg","name":"Terminal Neutral N","category":"Sources","type":"Terminal Neutral N"},{"file":"components/Power/terminal_phase_l(1).svg","name":"Terminal Phase L","category":"Sources","type":"Terminal Phase L"},{"file":"components/Coils/coil_contactor.svg","name":"Contactor Coil","category":"Coils","type":"Contactor Coil"},{"file":"components/Coils/coil_tof_timer.svg","name":"TOF Timer Coil","category":"Coils","type":"TOF Timer Coil"},{"file":"components/Coils/coil_ton_timer.svg","name":"TON Timer Coil","category":"Coils","type":"TON Timer Coil"},{"file":"components/Coils/coil_ton_tof_timer.svg","name":"TON/TOF Timer Coil","category":"Coils","type":"TON/TOF Timer Coil"},{"file":"components/Auxiliary Contacts/aux_contacts_nc.svg","name":"Aux Contacts NC","category":"Auxiliary Contacts","type":"Aux Contacts NC"},{"file":"components/Auxiliary Contacts/aux_contacts_no.svg","name":"Aux Contacts NO","category":"Auxiliary Contacts","type":"Aux Contacts NO"},{"file":"components/Auxiliary Contacts/aux_contacts_off_delay_nc.svg","name":"Aux Contacts Off Delay NC","category":"Auxiliary Contacts","type":"Aux Contacts Off Delay NC"},{"file":"components/Auxiliary Contacts/aux_contacts_off_delay_no.svg","name":"Aux Contacts Off Delay NO","category":"Auxiliary Contacts","type":"Aux Contacts Off Delay NO"},{"file":"components/Auxiliary Contacts/aux_contacts_on_delay_nc.svg","name":"Aux Contacts On Delay NC","category":"Auxiliary Contacts","type":"Aux Contacts On Delay NC"},{"file":"components/Auxiliary Contacts/aux_contacts_on_delay_no.svg","name":"Aux Contacts On Delay NO","category":"Auxiliary Contacts","type":"Aux Contacts On Delay NO"},{"file":"components/Switches/switch_3_position_selector I-0-II(1).svg","name":"3-Position Selector Switch I-0-II","category":"Switches","type":"3-Position Selector Switch I-0-II"},{"file":"components/Switches/switch_3_position_selector I-II-III(1).svg","name":"3-Position Selector Switch I-II-III","category":"Switches","type":"3-Position Selector Switch I-II-III"},{"file":"components/Switches/switch_con(1).svg","name":"Switch Changeover (CON)","category":"Switches","type":"Switch Changeover (CON)"},{"file":"components/Switches/switch_nc(1).svg","name":"Switch NC","category":"Switches","type":"Switch NC"},{"file":"components/Switches/switch_no(1).svg","name":"Switch NO","category":"Switches","type":"Switch NO"},{"file":"components/Switches/switch_pushbutton_con(1).svg","name":"Pushbutton Changeover (CON)","category":"Switches","type":"Pushbutton Changeover (CON)"},{"file":"components/Switches/switch_pushbutton_nc(1).svg","name":"Pushbutton NC","category":"Switches","type":"Pushbutton NC"},{"file":"components/Switches/switch_pushbutton_no(1).svg","name":"Pushbutton NO","category":"Switches","type":"Pushbutton NO"},{"file":"components/Loads/load_beacon(2).svg","name":"Beacon","category":"Loads","type":"Beacon"},{"file":"components/Loads/load_bell(2).svg","name":"Bell","category":"Loads","type":"Bell"},{"file":"components/Loads/load_blinking_pilot_lamp(2).svg","name":"Blinking Pilot Lamp","category":"Loads","type":"Blinking Pilot Lamp"},{"file":"components/Loads/load_buzzer(2).svg","name":"Buzzer","category":"Loads","type":"Buzzer"},{"file":"components/Loads/load_light(2).svg","name":"Pilot Light","category":"Loads","type":"Pilot Light"},{"file":"components/Main Contacts/main_contacts_1p_no(1).svg","name":"Main Contacts 1P NO","category":"Main Contacts","type":"Main Contacts 1P NO"},{"file":"components/Main Contacts/main_contacts_2p_no(1).svg","name":"Main Contacts 2P NO","category":"Main Contacts","type":"Main Contacts 2P NO"},{"file":"components/Main Contacts/main_contacts_3p_no(1).svg","name":"Main Contacts 3P NO","category":"Main Contacts","type":"Main Contacts 3P NO"},{"file":"components/Protections/protection_circuit_breaker_1p(1).svg","name":"Circuit Breaker 1P","category":"Protections","type":"Circuit Breaker 1P"},{"file":"components/Protections/protection_circuit_breaker_2p(1).svg","name":"Circuit Breaker 2P","category":"Protections","type":"Circuit Breaker 2P"},{"file":"components/Protections/protection_circuit_breaker_3p(1).svg","name":"Circuit Breaker 3P","category":"Protections","type":"Circuit Breaker 3P"},{"file":"components/Protections/protection_fuse_1p(1).svg","name":"Fuse 1P","category":"Protections","type":"Fuse 1P"},{"file":"components/Protections/protection_fuse_2p(1).svg","name":"Fuse 2P","category":"Protections","type":"Fuse 2P"},{"file":"components/Protections/protection_fuse_3p(1).svg","name":"Fuse 3P","category":"Protections","type":"Fuse 3P"},{"file":"components/Protections/protection_fuse_4p(1).svg","name":"Fuse 4P","category":"Protections","type":"Fuse 4P"},{"file":"components/Protections/protection_fuse_isolator_1p(1).svg","name":"Fuse Isolator 1P","category":"Protections","type":"Fuse Isolator 1P"},{"file":"components/Protections/protection_fuse_isolator_2p(1).svg","name":"Fuse Isolator 2P","category":"Protections","type":"Fuse Isolator 2P"},{"file":"components/Protections/protection_fuse_isolator_3p(1).svg","name":"Fuse Isolator 3P","category":"Protections","type":"Fuse Isolator 3P"},{"file":"components/Protections/protection_fuse_isolator_4p(1).svg","name":"Fuse Isolator 4P","category":"Protections","type":"Fuse Isolator 4P"},{"file":"components/Protections/protection_motor_circuit_breaker_2p(1).svg","name":"Motor Circuit Breaker 2P","category":"Protections","type":"Motor Circuit Breaker 2P"},{"file":"components/Protections/protection_motor_circuit_breaker_3p(1).svg","name":"Motor Circuit Breaker 3P","category":"Protections","type":"Motor Circuit Breaker 3P"},{"file":"components/Protections/protection_thermal_overload_relay_2p(1).svg","name":"Thermal Overload Relay 2P","category":"Protections","type":"Thermal Overload Relay 2P"},{"file":"components/Protections/protection_thermal_overload_relay_3p(1).svg","name":"Thermal Overload Relay 3P","category":"Protections","type":"Thermal Overload Relay 3P"},{"file":"components/Motors/motor_dc_motor(2).svg","name":"DC Motor","category":"Motors","type":"DC Motor"},{"file":"components/Motors/motor_single_phase(2).svg","name":"Single-Phase Motor","category":"Motors","type":"Single-Phase Motor"},{"file":"components/Motors/motor_three_phase(2).svg","name":"Three-Phase Motor","category":"Motors","type":"Three-Phase Motor"},{"file":"components/Motors/motor_three_phase_star_delta(2).svg","name":"Three-Phase Star-Delta Motor","category":"Motors","type":"Three-Phase Star-Delta Motor"},{"file":"components/Proximity Sensor/proximity_sensor_npn_nc(2).svg","name":"Proximity Sensor NPN NC","category":"Proximity Sensor","type":"Proximity Sensor NPN NC"},{"file":"components/Proximity Sensor/proximity_sensor_npn_no(2).svg","name":"Proximity Sensor NPN NO","category":"Proximity Sensor","type":"Proximity Sensor NPN NO"}];
+  const symbols=[{"file": "components/Power/earth_ground(1).svg", "name": "Earth Ground", "category": "Sources", "type": "Earth Ground"}, {"file": "components/Power/earth_pe(1).svg", "name": "Earth PE", "category": "Sources", "type": "Earth PE"}, {"file": "components/Power/source_dc_negative(1).svg", "name": "Source DC Negative", "category": "Sources", "type": "Source DC Negative"}, {"file": "components/Power/source_dc_positive(1).svg", "name": "Source DC Positive", "category": "Sources", "type": "Source DC Positive"}, {"file": "components/Power/source_dc_supply_pair(1).svg", "name": "Source DC Supply Pair", "category": "Sources", "type": "Source DC Supply Pair"}, {"file": "components/Power/terminal_l1_l2_l3(1).svg", "name": "Terminal L1 L2 L3", "category": "Sources", "type": "Terminal L1 L2 L3"}, {"file": "components/Power/terminal_l1_l2_l3_n(1).svg", "name": "Terminal L1 L2 L3 N", "category": "Sources", "type": "Terminal L1 L2 L3 N"}, {"file": "components/Power/terminal_neutral_n(1).svg", "name": "Terminal Neutral N", "category": "Sources", "type": "Terminal Neutral N"}, {"file": "components/Power/terminal_phase_l(1).svg", "name": "Terminal Phase L", "category": "Sources", "type": "Terminal Phase L"}, {"file": "components/Power/ac_to_dc_power_supply.svg", "name": "AC to DC Power Supply", "category": "Sources", "type": "AC to DC Power Supply"}, {"file": "components/Coils/coil_contactor.svg", "name": "Contactor Coil", "category": "Coils", "type": "Contactor Coil"}, {"file": "components/Coils/coil_tof_timer.svg", "name": "TOF Timer Coil", "category": "Coils", "type": "TOF Timer Coil"}, {"file": "components/Coils/coil_ton_timer.svg", "name": "TON Timer Coil", "category": "Coils", "type": "TON Timer Coil"}, {"file": "components/Coils/coil_ton_tof_timer.svg", "name": "TON/TOF Timer Coil", "category": "Coils", "type": "TON/TOF Timer Coil"}, {"file": "components/Auxiliary Contacts/aux_contacts_nc.svg", "name": "Aux Contacts NC", "category": "Auxiliary Contacts", "type": "Aux Contacts NC"}, {"file": "components/Auxiliary Contacts/aux_contacts_no.svg", "name": "Aux Contacts NO", "category": "Auxiliary Contacts", "type": "Aux Contacts NO"}, {"file": "components/Auxiliary Contacts/aux_contacts_off_delay_nc.svg", "name": "Aux Contacts Off Delay NC", "category": "Auxiliary Contacts", "type": "Aux Contacts Off Delay NC"}, {"file": "components/Auxiliary Contacts/aux_contacts_off_delay_no.svg", "name": "Aux Contacts Off Delay NO", "category": "Auxiliary Contacts", "type": "Aux Contacts Off Delay NO"}, {"file": "components/Auxiliary Contacts/aux_contacts_on_delay_nc.svg", "name": "Aux Contacts On Delay NC", "category": "Auxiliary Contacts", "type": "Aux Contacts On Delay NC"}, {"file": "components/Auxiliary Contacts/aux_contacts_on_delay_no.svg", "name": "Aux Contacts On Delay NO", "category": "Auxiliary Contacts", "type": "Aux Contacts On Delay NO"}, {"file": "components/Auxiliary Contacts/aux_contacts_thermal_nc.svg", "name": "Thermal Relay NC", "category": "Auxiliary Contacts", "type": "Thermal Relay NC"}, {"file": "components/Auxiliary Contacts/aux_contacts_thermal_no.svg", "name": "Thermal Relay NO", "category": "Auxiliary Contacts", "type": "Thermal Relay NO"}, {"file": "components/Switches/switch_3_position_selector I-0-II(1).svg", "name": "3-Position Selector Switch I-0-II", "category": "Switches", "type": "3-Position Selector Switch I-0-II"}, {"file": "components/Switches/switch_3_position_selector I-II-III(1).svg", "name": "3-Position Selector Switch I-II-III", "category": "Switches", "type": "3-Position Selector Switch I-II-III"}, {"file": "components/Switches/switch_con(1).svg", "name": "Switch Changeover (CON)", "category": "Switches", "type": "Switch Changeover (CON)"}, {"file": "components/Switches/switch_nc(1).svg", "name": "Switch NC", "category": "Switches", "type": "Switch NC"}, {"file": "components/Switches/switch_no(1).svg", "name": "Switch NO", "category": "Switches", "type": "Switch NO"}, {"file": "components/Switches/switch_pushbutton_con(1).svg", "name": "Pushbutton Changeover (CON)", "category": "Switches", "type": "Pushbutton Changeover (CON)"}, {"file": "components/Switches/switch_pushbutton_nc(1).svg", "name": "Pushbutton NC", "category": "Switches", "type": "Pushbutton NC"}, {"file": "components/Switches/switch_pushbutton_no(1).svg", "name": "Pushbutton NO", "category": "Switches", "type": "Pushbutton NO"}, {"file": "components/Loads/load_beacon(2).svg", "name": "Beacon", "category": "Loads", "type": "Beacon"}, {"file": "components/Loads/load_bell(2).svg", "name": "Bell", "category": "Loads", "type": "Bell"}, {"file": "components/Loads/load_blinking_pilot_lamp(2).svg", "name": "Blinking Pilot Lamp", "category": "Loads", "type": "Blinking Pilot Lamp"}, {"file": "components/Loads/load_buzzer(2).svg", "name": "Buzzer", "category": "Loads", "type": "Buzzer"}, {"file": "components/Loads/load_light(2).svg", "name": "Pilot Light", "category": "Loads", "type": "Pilot Light"}, {"file": "components/Main Contacts/main_contacts_1p_no(1).svg", "name": "Main Contacts 1P NO", "category": "Main Contacts", "type": "Main Contacts 1P NO"}, {"file": "components/Main Contacts/main_contacts_2p_no(1).svg", "name": "Main Contacts 2P NO", "category": "Main Contacts", "type": "Main Contacts 2P NO"}, {"file": "components/Main Contacts/main_contacts_3p_no(1).svg", "name": "Main Contacts 3P NO", "category": "Main Contacts", "type": "Main Contacts 3P NO"}, {"file": "components/Protections/protection_circuit_breaker_1p(1).svg", "name": "Circuit Breaker 1P", "category": "Protections", "type": "Circuit Breaker 1P"}, {"file": "components/Protections/protection_circuit_breaker_2p(1).svg", "name": "Circuit Breaker 2P", "category": "Protections", "type": "Circuit Breaker 2P"}, {"file": "components/Protections/protection_circuit_breaker_3p(1).svg", "name": "Circuit Breaker 3P", "category": "Protections", "type": "Circuit Breaker 3P"}, {"file": "components/Protections/protection_fuse_1p(1).svg", "name": "Fuse 1P", "category": "Protections", "type": "Fuse 1P"}, {"file": "components/Protections/protection_fuse_2p(1).svg", "name": "Fuse 2P", "category": "Protections", "type": "Fuse 2P"}, {"file": "components/Protections/protection_fuse_3p(1).svg", "name": "Fuse 3P", "category": "Protections", "type": "Fuse 3P"}, {"file": "components/Protections/protection_fuse_4p(1).svg", "name": "Fuse 4P", "category": "Protections", "type": "Fuse 4P"}, {"file": "components/Protections/protection_fuse_isolator_1p(1).svg", "name": "Fuse Isolator 1P", "category": "Protections", "type": "Fuse Isolator 1P"}, {"file": "components/Protections/protection_fuse_isolator_2p(1).svg", "name": "Fuse Isolator 2P", "category": "Protections", "type": "Fuse Isolator 2P"}, {"file": "components/Protections/protection_fuse_isolator_3p(1).svg", "name": "Fuse Isolator 3P", "category": "Protections", "type": "Fuse Isolator 3P"}, {"file": "components/Protections/protection_fuse_isolator_4p(1).svg", "name": "Fuse Isolator 4P", "category": "Protections", "type": "Fuse Isolator 4P"}, {"file": "components/Protections/protection_motor_circuit_breaker_2p(1).svg", "name": "Motor Circuit Breaker 2P", "category": "Protections", "type": "Motor Circuit Breaker 2P"}, {"file": "components/Protections/protection_motor_circuit_breaker_3p(1).svg", "name": "Motor Circuit Breaker 3P", "category": "Protections", "type": "Motor Circuit Breaker 3P"}, {"file": "components/Protections/protection_thermal_overload_relay_2p(1).svg", "name": "Thermal Overload Relay 2P", "category": "Protections", "type": "Thermal Overload Relay 2P"}, {"file": "components/Protections/protection_thermal_overload_relay_3p(1).svg", "name": "Thermal Overload Relay 3P", "category": "Protections", "type": "Thermal Overload Relay 3P"}, {"file": "components/Motors/motor_dc_motor(2).svg", "name": "DC Motor", "category": "Motors", "type": "DC Motor"}, {"file": "components/Motors/motor_single_phase(2).svg", "name": "Single-Phase Motor", "category": "Motors", "type": "Single-Phase Motor"}, {"file": "components/Motors/motor_three_phase(2).svg", "name": "Three-Phase Motor", "category": "Motors", "type": "Three-Phase Motor"}, {"file": "components/Motors/motor_three_phase_star_delta(2).svg", "name": "Three-Phase Star-Delta Motor", "category": "Motors", "type": "Three-Phase Star-Delta Motor"}, {"file": "components/Proximity Sensor/proximity_sensor_npn_nc(2).svg", "name": "Proximity Sensor NPN NC", "category": "Proximity Sensor", "type": "Proximity Sensor NPN NC"}, {"file": "components/Proximity Sensor/proximity_sensor_npn_no(2).svg", "name": "Proximity Sensor NPN NO", "category": "Proximity Sensor", "type": "Proximity Sensor NPN NO"}, {"file": "components/Proximity Sensor/proximity_sensor_pnp_nc(2).svg", "name": "Proximity Sensor PNP NC", "category": "Proximity Sensor", "type": "Proximity Sensor PNP NC"}, {"file": "components/Proximity Sensor/proximity_sensor_pnp_no(2).svg", "name": "Proximity Sensor PNP NO", "category": "Proximity Sensor", "type": "Proximity Sensor PNP NO"}];
   const icons={source:'<circle cx="12" cy="12" r="9"/><path d="M4 12c2-7 5-7 8 0s6 7 8 0"/>',others:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',coil:'<path d="M2 12h3c0-9 4-9 4 0s4 9 4 0 4-9 4 0 3 9 5 0"/>',aux:'<path d="M12 3v18M3 12h9l7-7M12 12l7 7"/>',switch:'<circle cx="5" cy="17" r="2"/><path d="M7 16 19 5M16 19h5"/>',load:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12M18 6 6 18"/>',contactor:'<path d="M5 3v18M19 3v18M2 8h6M16 16h6M8 8l8 8"/>',protection:'<path d="M7 3h10v18H7zM10 3V1h4v2M9 17l6-6"/>',motor:'<circle cx="12" cy="12" r="9"/><path d="M2 12h3M19 12h3"/><text x="12" y="16" text-anchor="middle" font-size="11" fill="currentColor" stroke="none">M</text>',proximity:'<rect x="3" y="7" width="9" height="18" rx="1"/><path d="M16 10 Q23 16 16 22 M20 7 Q29 16 20 25 M24 4 Q34 16 24 28"/>'};
   let expanded=null; // Start with every library category collapsed; users expand a category manually.
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function paint(){
     const q=(document.getElementById('search')?.value||'').trim().toLowerCase();
     const filtered=expanded ? symbols.filter(s=>s.category===expanded&&(!q||(s.name+' '+s.category).toLowerCase().includes(q))) : [];
-    const resultMarkup=expanded?('<div class="component-results-head"><b>'+expanded.toUpperCase()+'</b><span>'+filtered.length+' symbols</span></div>'+(filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>')):'';
+    const resultMarkup=expanded?((filtered.length?'<div class="component-results">'+filtered.map(s=>'<button type="button" class="symbol-btn" draggable="true" title="Drag '+esc(s.name)+' into the schematic" data-symbol="'+esc(s.type)+'" data-name="'+esc(s.name)+'" data-ref="" data-accent="#e9f1ed" data-file="'+esc(s.file)+'"><img src="'+esc(s.file)+'" alt="" loading="lazy"><span>'+esc(s.name)+'</span></button>').join('')+'</div>':'<div class="component-results"><div class="library-empty">No components in this category yet.</div></div>')):'';
     host.innerHTML='<div class="component-category-list" role="list" aria-label="Component categories">'+cats.map(([name,color,key])=>'<div class="library-category-wrap"><button type="button" class="component-category '+(expanded===name?'active':'')+'" data-category="'+name+'" style="--category-accent:'+color+'" aria-expanded="'+(expanded===name)+'" aria-pressed="'+(expanded===name)+'"><span class="category-icon" aria-hidden="true"><svg viewBox="0 0 36 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+icons[key]+'</svg></span><span class="category-mark" aria-hidden="true"></span><span class="category-name">'+name+'</span><span class="category-count">('+symbols.filter(s=>s.category===name).length+')</span><span class="category-chevron '+(expanded===name?'expanded':'')+'" aria-hidden="true">›</span></button>'+(expanded===name?resultMarkup:'')+'</div>').join('')+'</div>';
     host.querySelectorAll('.component-category').forEach(b=>b.addEventListener('click',()=>{expanded=expanded===b.dataset.category?null:b.dataset.category;paint()}));
     host.querySelectorAll('.symbol-btn').forEach(b=>{
@@ -215,20 +225,20 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
 (()=>{
  const body=document.body, sheet=document.getElementById('sheet');
  const themeBtn=document.getElementById('themeToggle'), gridBtn=document.getElementById('gridToggle');
- let theme=localStorage.getItem('esim-theme')||'dark';
- let grid=localStorage.getItem('esim-grid')!=='off';
+ let theme=window.__escSafeStorage.getItem('esim-theme')||'dark';
+ let grid=window.__escSafeStorage.getItem('esim-grid')!=='off';
  function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);if(themeBtn)themeBtn.setAttribute('aria-pressed',String(theme==='light'));if(gridBtn){gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}const tt=document.getElementById('settingsThemeToggle'),ts=document.getElementById('settingsThemeState'),gt=document.getElementById('settingsGridToggle'),gs=document.getElementById('settingsGridState');if(tt)tt.checked=theme==='light';if(ts)ts.textContent=theme==='light'?'Light':'Dark';if(gt)gt.checked=grid;if(gs)gs.textContent=grid?'On':'Off';}
- themeBtn?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('esim-theme',theme);render()});
+ themeBtn?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';window.__escSafeStorage.setItem('esim-theme',theme);render()});
  const settingsBtn=document.getElementById('settingsBtn'), settingsPanel=document.getElementById('escSettingsPopover');
  if(settingsBtn&&settingsPanel){
    settingsBtn.addEventListener('click',()=>{const open=!settingsPanel.classList.contains('open');settingsPanel.classList.toggle('open',open);settingsPanel.setAttribute('aria-hidden',String(!open));settingsBtn.classList.toggle('active',open);});
-   document.getElementById('settingsThemeToggle')?.addEventListener('change',e=>{theme=e.target.checked?'light':'dark';localStorage.setItem('esim-theme',theme);render();});
-   document.getElementById('settingsGridToggle')?.addEventListener('change',e=>{grid=e.target.checked;localStorage.setItem('esim-grid',grid?'on':'off');render();});
+   document.getElementById('settingsThemeToggle')?.addEventListener('change',e=>{theme=e.target.checked?'light':'dark';window.__escSafeStorage.setItem('esim-theme',theme);render();});
+   document.getElementById('settingsGridToggle')?.addEventListener('change',e=>{grid=e.target.checked;window.__escSafeStorage.setItem('esim-grid',grid?'on':'off');render();});
    document.addEventListener('click',e=>{if(settingsPanel.classList.contains('open')&&!settingsPanel.contains(e.target)&&!settingsBtn.contains(e.target)){settingsPanel.classList.remove('open');settingsPanel.setAttribute('aria-hidden','true');settingsBtn.classList.remove('active');}});
  }
 
  const connectBtn=document.getElementById('connectToggle');
- let connectMode=true; localStorage.setItem('esim-connect-mode','on');
+ let connectMode=true; window.__escSafeStorage.setItem('esim-connect-mode','on');
  const dragConnectBtn=document.getElementById('dragConnectBtn');
  let dragConnectMode=false;
  window.__escDragConnectMode=false;
@@ -253,7 +263,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    const st=document.getElementById('state');
    if(st) st.textContent=dragConnectMode?'DRAG CONNECT ENABLED • DRAG WIRE FROM ONE TERMINAL TO ANOTHER':'CLICK CONNECT DEFAULT • CLICK TWO TERMINALS TO CONNECT';
  };
- if(connectBtn){connectBtn.addEventListener('click',()=>{connectMode=!connectMode;localStorage.setItem('esim-connect-mode',connectMode?'on':'off');renderConnect();});}
+ if(connectBtn){connectBtn.addEventListener('click',()=>{connectMode=!connectMode;window.__escSafeStorage.setItem('esim-connect-mode',connectMode?'on':'off');renderConnect();});}
  if(dragConnectBtn){dragConnectBtn.addEventListener('click',()=>{window.setDragConnectMode(!dragConnectMode);});}
  renderConnect();
 
@@ -281,10 +291,10 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  document.getElementById('sheetSize')?.addEventListener('change',updateSheetPopupPreview);
 
  function loadTitleFields(){
-  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId);if(input)input.value=localStorage.getItem('esim-'+inputId)|| (inputId==='sheetNumber'?'1/1':'');});
+  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId);if(input)input.value=window.__escSafeStorage.getItem('esim-'+inputId)|| (inputId==='sheetNumber'?'1/1':'');});
  }
  function updateTitleBlock(){
-  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId),node=document.getElementById(textId);if(input&&node){let value=input.value.trim();if(inputId==='sheetDate'&&/^\d{4}-\d{2}-\d{2}$/.test(value)){const [y,m,d]=value.split('-');value=`${d}-${m}-${y}`;}node.textContent=value;localStorage.setItem('esim-'+inputId,input.value);}});
+  Object.entries(titleFields).forEach(([inputId,textId])=>{const input=document.getElementById(inputId),node=document.getElementById(textId);if(input&&node){let value=input.value.trim();if(inputId==='sheetDate'&&/^\d{4}-\d{2}-\d{2}$/.test(value)){const [y,m,d]=value.split('-');value=`${d}-${m}-${y}`;}node.textContent=value;window.__escSafeStorage.setItem('esim-'+inputId,input.value);}});
   const sizeNode=document.getElementById('drawingSizeValue');if(sizeNode)sizeNode.textContent=sheetSize?.value||'A4';
  }
  function applySheetOptions(){
@@ -296,15 +306,15 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
    if(sizeNode)sizeNode.textContent=sizeText;
    if(sheetOrientation)body.dataset.sheetOrientation=sheetOrientation.value;
    updateTitleBlock();
-   localStorage.setItem('esim-sheet-enabled',enabled?'on':'off');
-   localStorage.setItem('esim-sheet-size',sizeText);
-   localStorage.setItem('esim-sheet-orientation',sheetOrientation?.value||'landscape');
+   window.__escSafeStorage.setItem('esim-sheet-enabled',enabled?'on':'off');
+   window.__escSafeStorage.setItem('esim-sheet-size',sizeText);
+   window.__escSafeStorage.setItem('esim-sheet-orientation',sheetOrientation?.value||'landscape');
    if(state)state.textContent=enabled?'ENGINEERING SHEET • '+sizeText.toUpperCase():'READY • NO SHEET BORDER';
  }
  loadTitleFields();
- if(sheetEnabled){sheetEnabled.checked=false;localStorage.setItem('esim-sheet-enabled','off');}
- if(sheetSize)sheetSize.value=localStorage.getItem('esim-sheet-size')||'A4';
- if(sheetOrientation)sheetOrientation.value=localStorage.getItem('esim-sheet-orientation')||'landscape';
+ if(sheetEnabled){sheetEnabled.checked=false;window.__escSafeStorage.setItem('esim-sheet-enabled','off');}
+ if(sheetSize)sheetSize.value=window.__escSafeStorage.getItem('esim-sheet-size')||'A4';
+ if(sheetOrientation)sheetOrientation.value=window.__escSafeStorage.getItem('esim-sheet-orientation')||'landscape';
  applySheetOptions();
  const settingsSheetToggle=document.getElementById('settingsSheetToggle');
  const settingsSheetState=document.getElementById('settingsSheetState');
@@ -320,7 +330,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  document.getElementById('sheetReset')?.addEventListener('click',()=>{sheetEnabled.checked=false;if(settingsSheetToggle)settingsSheetToggle.checked=false;if(settingsSheetState)settingsSheetState.textContent='Off';sheetSize.value='A4';sheetOrientation.value='landscape';Object.keys(titleFields).forEach(id=>{const el=document.getElementById(id);if(el)el.value=id==='sheetNumber'?'1/1':'';});applySheetOptions();sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')});
  document.addEventListener('click',e=>{if(sheetPanel?.classList.contains('open')&&!sheetPanel.contains(e.target)&&!sheetBtn?.contains(e.target)){if(sheetEnabled)sheetEnabled.checked=false;if(settingsSheetToggle)settingsSheetToggle.checked=false;if(settingsSheetState)settingsSheetState.textContent='Off';applySheetOptions();sheetPanel.classList.remove('open');sheetPanel.setAttribute('aria-hidden','true');sheetBtn?.classList.remove('active')}});
 
- gridBtn?.addEventListener('click',()=>{grid=!grid;localStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
+ gridBtn?.addEventListener('click',()=>{grid=!grid;window.__escSafeStorage.setItem('esim-grid',grid?'on':'off');render()}); render();
 })();
 </script>
 
@@ -396,7 +406,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  if(!svg||!sheet)return;
  const vb=svg.viewBox.baseVal; let view={x:vb.x,y:vb.y,w:vb.width,h:vb.height}, pan=null, textMode=false;
  const zoomKey='esc-show-zoom-panel-v1';
- const zoomOn=localStorage.getItem(zoomKey)!=='off';
+ const zoomOn=window.__escSafeStorage.getItem(zoomKey)!=='off';
  if(zoomOn){const cx=view.x+view.w/2,cy=view.y+view.h/2;view.w=Math.max(240,view.w/2);view.h=view.h/2;view.x=cx-view.w/2;view.y=cy-view.h/2;svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);}
  // Grid is drawn inside the SVG using user-space patterns. The SVG viewBox zooms
  // grid, components, terminals and wires with one identical transform.
@@ -499,7 +509,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    wiresClone?.querySelectorAll('.wire-preview').forEach(n=>n.remove());
    const project={format:'ESC-DRAWING',version:1,name:currentName,savedAt:new Date().toISOString(),viewBox:svg?.getAttribute('viewBox')||'0 0 1200 760',elements:drop.innerHTML,wires:wiresClone?wiresClone.innerHTML:''};
    const serialized=JSON.stringify(project,null,2);
-   try{localStorage.setItem('esc-simu-ckt-saved-drawing',serialized);localStorage.setItem('esc-simu-ckt-saved-name',currentName);}catch(err){setStatus('BROWSER STORAGE FULL • USE SAVE AS');}
+   try{window.__escSafeStorage.setItem('esc-simu-ckt-saved-drawing',serialized);window.__escSafeStorage.setItem('esc-simu-ckt-saved-name',currentName);}catch(err){setStatus('BROWSER STORAGE FULL • USE SAVE AS');}
    if(forceName){
      const blob=new Blob([serialized],{type:'application/json'});
      const url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -604,12 +614,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const status=document.getElementById('state');
  if(!toggle||!host||!svg)return;
  const KEY='esc-show-zoom-panel-v1';
- let enabled=localStorage.getItem(KEY)!=='off';
+ let enabled=window.__escSafeStorage.getItem(KEY)!=='off';
  toggle.checked=enabled;
  const label=toggle.closest('.zoom-panel-setting')?.querySelector('.zoom-panel-state');
  const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';};
  const setWorkspaceZoom=on=>window.dispatchEvent(new CustomEvent('esc-zoom-mode-change',{detail:{enabled:on}}));
- toggle.addEventListener('change',()=>{enabled=toggle.checked;localStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON • DOUBLE-CLICK A LIBRARY COMPONENT':'ZOOM PANEL OFF • NORMAL COMPONENT SIZE';});
+ toggle.addEventListener('change',()=>{enabled=toggle.checked;window.__escSafeStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON • DOUBLE-CLICK A LIBRARY COMPONENT':'ZOOM PANEL OFF • NORMAL COMPONENT SIZE';});
  setLabel();
  host.addEventListener('dblclick',e=>{
    const btn=e.target.closest('.symbol-btn');if(!btn)return;
@@ -776,8 +786,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
   const get=(id)=>document.getElementById(id);
   const componentPicker=get('escComponentColor'), borderPicker=get('escBorderColor');
   const componentKey='esc-selected-component-color-v57', borderKey='esc-selection-border-color-v57';
-  let componentColor=localStorage.getItem(componentKey)||'#2584ff';
-  let borderColor=localStorage.getItem(borderKey)||'#168dff';
+  let componentColor=window.__escSafeStorage.getItem(componentKey)||'#2584ff';
+  let borderColor=window.__escSafeStorage.getItem(borderKey)||'#168dff';
   if(componentPicker) componentPicker.value=componentColor;
   if(borderPicker) borderPicker.value=borderColor;
 
@@ -948,8 +958,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
   function setColors(){
     componentColor=componentPicker?.value||componentColor;
     borderColor=borderPicker?.value||borderColor;
-    localStorage.setItem(componentKey,componentColor);
-    localStorage.setItem(borderKey,borderColor);
+    window.__escSafeStorage.setItem(componentKey,componentColor);
+    window.__escSafeStorage.setItem(borderKey,borderColor);
     update();
   }
   componentPicker?.addEventListener('input',setColors);
@@ -1095,8 +1105,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
    appearance?.insertAdjacentElement('afterend',row);
  }
  const defaultToggle=$('escDefaultColour');
- if(defaultToggle)defaultToggle.checked=localStorage.getItem('esc-use-default-colour-v1')==='true';
- const activeColor=()=>{if(defaultToggle?.checked){const saved=localStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
+ if(defaultToggle)defaultToggle.checked=window.__escSafeStorage.getItem('esc-use-default-colour-v1')==='true';
+ const activeColor=()=>{if(defaultToggle?.checked){const saved=window.__escSafeStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
  const tint=(g,color)=>{
    if(!g||!color)return;
    if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')||g.classList.contains('motor-rotating-cw')||g.classList.contains('motor-rotating-ccw')||g.classList.contains('motor-secondary-open-warn')||g.classList.contains('motor-mode-star')||g.classList.contains('motor-mode-delta')))return;
@@ -1120,16 +1130,16 @@ document.querySelectorAll(".top nav button").forEach(button => {
    document.querySelectorAll('#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
  };
  if(colorInput){
-   const saved=localStorage.getItem('esc-default-component-colour-v1');
+   const saved=window.__escSafeStorage.getItem('esc-default-component-colour-v1');
    colorInput.value=(defaultToggle?.checked&&saved)?saved:(isDark()?'#ffffff':'#000000');
    colorInput.addEventListener('input',()=>{
-     if(defaultToggle?.checked)localStorage.setItem('esc-default-component-colour-v1',colorInput.value);
+     if(defaultToggle?.checked)window.__escSafeStorage.setItem('esc-default-component-colour-v1',colorInput.value);
      applyColours();
    });
  }
  defaultToggle?.addEventListener('change',()=>{
-   localStorage.setItem('esc-use-default-colour-v1',String(defaultToggle.checked));
-   if(defaultToggle.checked&&colorInput)localStorage.setItem('esc-default-component-colour-v1',colorInput.value);
+   window.__escSafeStorage.setItem('esc-use-default-colour-v1',String(defaultToggle.checked));
+   if(defaultToggle.checked&&colorInput)window.__escSafeStorage.setItem('esc-default-component-colour-v1',colorInput.value);
    else if(colorInput)colorInput.value=isDark()?'#ffffff':'#000000';
    applyColours();
  });
@@ -1404,6 +1414,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
             sensor.dataset.simState=next;
             changed=true;
           }
+          const isPnp = String(sensor.dataset.sensorPolarity || sensor.dataset.symbolFile || '').toUpperCase().includes('PNP');
+          sensor.classList.toggle('esc-prox-pnp', isPnp);
           if(radar) radar.classList.toggle('target-detected',detected); sensor.classList.toggle('esc-prox-detected',detected);
         }
       } else {
@@ -1447,6 +1459,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
         if(window.__escProxOriginalEvaluate) window.__escProxOriginalEvaluate();
       }
       const radar=sensor.querySelector(':scope > .esc-prox-radar');
+      const isPnp = String(sensor.dataset.sensorPolarity || sensor.dataset.symbolFile || '').toUpperCase().includes('PNP');
+      sensor.classList.toggle('esc-prox-pnp', isPnp);
       if(radar)radar.classList.toggle('target-detected',detected); sensor.classList.toggle('esc-prox-detected',detected);
     }
   },true);
@@ -1482,8 +1496,10 @@ document.querySelectorAll(".top nav button").forEach(button => {
     #dropLayer .dropped-symbol .esc-prox-radar{pointer-events:none;overflow:visible}
     #dropLayer .dropped-symbol .esc-prox-cone{fill:#00e66a;fill-opacity:.16;stroke:none}
     #dropLayer .dropped-symbol .esc-prox-radar.target-detected .esc-prox-cone{fill-opacity:.28}
-    #dropLayer .dropped-symbol.esc-prox-detected svg #svg_optics polygon{animation:escProxDiamondBlink .65s steps(2,end) infinite;fill:#ffd400!important;stroke:#ffe45c!important}
+    #dropLayer .dropped-symbol.esc-prox-detected:not(.esc-prox-pnp) svg #svg_optics polygon{animation:escProxDiamondBlink .65s steps(2,end) infinite;fill:#ffd400!important;stroke:#ffe45c!important}
+    #dropLayer .dropped-symbol.esc-prox-detected.esc-prox-pnp svg #svg_optics polygon{animation:escProxDiamondBlinkBlue .65s steps(2,end) infinite;fill:#38bdf8!important;stroke:#7dd3fc!important}
     @keyframes escProxDiamondBlink{0%,100%{opacity:1;filter:drop-shadow(0 0 4px #ffd400)}50%{opacity:.25;filter:none}}
+    @keyframes escProxDiamondBlinkBlue{0%,100%{opacity:1;filter:drop-shadow(0 0 6px #38bdf8)}50%{opacity:.25;filter:none}}
     #dropLayer > .esc-prox-metal-target{pointer-events:all;touch-action:none;filter:drop-shadow(0 2px 3px #0008)}
     #dropLayer > .esc-prox-metal-target:hover{filter:drop-shadow(0 0 5px #38bdf8)}
   `;

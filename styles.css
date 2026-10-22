@@ -1526,13 +1526,9 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) rect,
 #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
 #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
-#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
-  stroke: revert !important;
-  filter: none !important;
-}
+#dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse,
 #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
 #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
-  fill: revert !important;
   filter: none !important;
 }
 #dropLayer .dropped-symbol.selected .component-selection-outline {
@@ -2619,10 +2615,13 @@ body.theme-light .signal-tag-number select { background:#fff; color:#17212a; bor
   pointer-events: none !important;
 }
 
-/* Hide duplicate external port-name labels on proximity sensors since BN/BK/BU are inside the SVG artwork */
+/* Hide duplicate external port-name labels on proximity sensors and AC/DC power supply since labels are inside the SVG artwork */
 #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name,
 body.theme-light #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name,
-body.theme-dark #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name {
+body.theme-dark #dropLayer .dropped-symbol[data-symbol-file*="proximity_sensor"] .port-name,
+#dropLayer .dropped-symbol[data-symbol-file*="ac_to_dc_power_supply"] .port-name,
+body.theme-light #dropLayer .dropped-symbol[data-symbol-file*="ac_to_dc_power_supply"] .port-name,
+body.theme-dark #dropLayer .dropped-symbol[data-symbol-file*="ac_to_dc_power_supply"] .port-name {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -2891,4 +2890,220 @@ body:not(.live) #dropLayer .dropped-symbol.selected .port-name {
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
   fill: #15803d !important;
   color: #15803d !important;
+}
+
+
+
+
+/* User Refinements 2026-10-22:
+   1) Remove extra sub-header ("SOURCES  10 symbols") inside expanded Library category
+   2) Match component card (.symbol-btn) border colour to its parent category folder border colour */
+.component-results-head {
+  display: none !important;
+}
+#libraryGroups .library-category-wrap[data-category="Sources"],
+#libraryGroups .component-category[data-category="Sources"] { --category-accent: #12d6a0 !important; }
+#libraryGroups .library-category-wrap[data-category="Coils"],
+#libraryGroups .component-category[data-category="Coils"] { --category-accent: #b58aff !important; }
+#libraryGroups .library-category-wrap[data-category="Auxiliary Contacts"],
+#libraryGroups .component-category[data-category="Auxiliary Contacts"] { --category-accent: #e879f9 !important; }
+#libraryGroups .library-category-wrap[data-category="Switches"],
+#libraryGroups .component-category[data-category="Switches"] { --category-accent: #ffd43b !important; }
+#libraryGroups .library-category-wrap[data-category="Loads"],
+#libraryGroups .component-category[data-category="Loads"] { --category-accent: #22d3ee !important; }
+#libraryGroups .library-category-wrap[data-category="Main Contacts"],
+#libraryGroups .component-category[data-category="Main Contacts"] { --category-accent: #ff944d !important; }
+#libraryGroups .library-category-wrap[data-category="Protections"],
+#libraryGroups .component-category[data-category="Protections"] { --category-accent: #34e5b5 !important; }
+#libraryGroups .library-category-wrap[data-category="Motors"],
+#libraryGroups .component-category[data-category="Motors"] { --category-accent: #ff4d8d !important; }
+#libraryGroups .library-category-wrap[data-category="Proximity Sensor"],
+#libraryGroups .component-category[data-category="Proximity Sensor"] { --category-accent: #f97316 !important; }
+
+.layout > .library .component-results .symbol-btn,
+body.theme-light .layout > .library .component-results .symbol-btn,
+body.theme-dark .layout > .library .component-results .symbol-btn {
+  border: 1.5px solid var(--category-accent, #12d6a0) !important;
+  border-color: var(--category-accent, #12d6a0) !important;
+  box-shadow: inset 0 0 10px color-mix(in srgb, var(--category-accent, #12d6a0) 8%, transparent) !important;
+}
+.layout > .library .component-results .symbol-btn:hover {
+  border-color: var(--category-accent, #12d6a0) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--category-accent, #12d6a0) 35%, transparent), inset 0 0 12px color-mix(in srgb, var(--category-accent, #12d6a0) 14%, transparent) !important;
+}
+
+
+/* V131 Refinements: Dark Mode Terminal Hover Fix, Wire Branch Joint Points, Selector Switch Bar */
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) path:not(.svg-terminal-node),
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) line,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) circle,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) rect,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
+  stroke: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
+  fill: #ffffff !important;
+  stroke: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover .svg-terminal-node:not(.terminal-connected-hidden) {
+  fill: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) path:not(.svg-terminal-node),
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) line,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) circle,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) rect,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
+  stroke: #000000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
+  fill: #000000 !important;
+  stroke: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Wire Branch Joint Points (Junction Dots) */
+#wireLayer #wireJointLayer {
+  pointer-events: none !important;
+}
+#wireLayer .wire-joint-point {
+  fill: #ffffff !important;
+  stroke: #07172f !important;
+  stroke-width: 1px !important;
+  pointer-events: none !important;
+}
+body.theme-light #wireLayer .wire-joint-point {
+  fill: #1e293b !important;
+  stroke: #ffffff !important;
+  stroke-width: 1px !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l1,
+body.live #wireLayer .wire-joint-point.wire-live.wire-dc-positive {
+  fill: #ff3030 !important;
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 0 3px #ff3030aa) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l2 {
+  fill: #ffd21f !important;
+  stroke: #07172f !important;
+  filter: drop-shadow(0 0 3px #ffd21faa) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l3,
+body.live #wireLayer .wire-joint-point.wire-live.wire-dc-negative {
+  fill: #168bff !important;
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 0 3px #168bffaa) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-neutral {
+  fill: #38bdf8 !important;
+  stroke: #ffffff !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-pe {
+  fill: #22c55e !important;
+  stroke: #ffd21f !important;
+}
+
+/* Lower-Left Bottom Selector Switch Option Control (I-II-III and I-0-II) */
+.esc-selector-switch-bar {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(7, 23, 47, 0.92);
+  border: 1.5px solid #ffd43b;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  color: #f8fafc;
+  font: 700 11px/1 Inter, "Segoe UI", Arial, sans-serif;
+  user-select: none;
+}
+.esc-selector-switch-bar.visible {
+  display: inline-flex !important;
+}
+body.theme-light .esc-selector-switch-bar {
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+  border-color: #eab308;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
+}
+.esc-selector-switch-bar .bar-title {
+  color: #ffd43b;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  margin-right: 2px;
+}
+body.theme-light .esc-selector-switch-bar .bar-title {
+  color: #b45309;
+}
+.esc-selector-switch-bar button.sel-mode-btn {
+  padding: 5px 9px;
+  border-radius: 5px;
+  border: 1px solid #3b5bdb;
+  background: #102544;
+  color: #e2e8f0;
+  font: 700 11px/1 Arial, sans-serif;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+body.theme-light .esc-selector-switch-bar button.sel-mode-btn {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+.esc-selector-switch-bar button.sel-mode-btn:hover {
+  border-color: #ffd43b;
+  transform: translateY(-1px);
+}
+.esc-selector-switch-bar button.sel-mode-btn.active {
+  background: linear-gradient(135deg, #ffd43b, #f59e0b);
+  color: #07172f !important;
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 212, 59, 0.55);
+}
+.esc-selector-switch-bar .bar-sep {
+  width: 1px;
+  height: 16px;
+  background: rgba(148, 163, 184, 0.35);
+  margin: 0 2px;
+}
+.esc-selector-switch-bar button.sel-pos-btn {
+  padding: 4px 7px;
+  border-radius: 4px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #cbd5e1;
+  font: 700 10px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+body.theme-light .esc-selector-switch-bar button.sel-pos-btn {
+  background: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+.esc-selector-switch-bar button.sel-pos-btn.active {
+  background: #22c55e;
+  color: #052e16 !important;
+  border-color: #86efac;
+}
+#dropLayer .dropped-symbol #svg_selector_mode_text {
+  cursor: pointer !important;
+  pointer-events: all !important;
 }

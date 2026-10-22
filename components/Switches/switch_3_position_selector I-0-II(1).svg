@@ -1,16 +1,16 @@
-<?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="450.0" height="472.5" viewBox="0 0 450.0 472.5">
+<svg width="540.0" height="472.5" viewBox="0 0 540.0 472.5" xmlns="http://www.w3.org/2000/svg">
  <g class="layer" display="inline">
   <title>Layer 1</title>
-  <path d="M 221.18,53.75 L 228.82,53.75 L 235.43,57.57 L 239.25,64.18 L 239.25,71.82 L 235.43,78.43 L 228.82,82.25 L 221.18,82.25 L 214.57,78.43 L 210.75,71.82 L 210.75,64.18 L 214.57,57.57 Z" fill="#666666" id="svg_term_1" stroke="#666666" stroke-width="0"/>
-  <path d="M 131.18,390.25 L 138.82,390.25 L 145.43,394.07 L 149.25,400.68 L 149.25,408.32 L 145.43,414.93 L 138.82,418.75 L 131.18,418.75 L 124.57,414.93 L 120.75,408.32 L 120.75,400.68 L 124.57,394.07 Z" fill="#666666" id="svg_term_2" stroke="#666666" stroke-width="0"/>
-  <path d="M 311.18,390.25 L 318.82,390.25 L 325.43,394.07 L 329.25,400.68 L 329.25,408.32 L 325.43,414.93 L 318.82,418.75 L 311.18,418.75 L 304.57,414.93 L 300.75,408.32 L 300.75,400.68 L 304.57,394.07 Z" fill="#666666" id="svg_term_3" stroke="#666666" stroke-width="0"/>
-  <line fill="none" id="svg_stem_1" stroke="#666666" stroke-width="10" x1="225.0" x2="225.0" y1="76.0" y2="168.0"/>
-  <path d="M 135.0,396.5 L 135.0,296 L 192,296" fill="none" id="svg_stem_2" stroke="#666666" stroke-width="10"/>
-  <path d="M 315.0,396.5 L 315.0,296 L 258,296" fill="none" id="svg_stem_3" stroke="#666666" stroke-width="10"/>
-  <line fill="none" id="svg_floating_pad_3" stroke="#666666" stroke-width="10" x1="212" x2="238" y1="296" y2="296"/>
-  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="185" x2="225.0" y1="304" y2="168.0"/>
-  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="9" x1="117.0" x2="205.0" y1="236.0" y2="236.0"/>
-  <path d="M 141.0,208.0 L 117.0,208.0 L 117.0,264.0 L 93.0,264.0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
+  <path d="M 266.18,53.75 L 273.82,53.75 L 280.43,57.57 L 284.25,64.18 L 284.25,71.82 L 280.43,78.43 L 273.82,82.25 L 266.18,82.25 L 259.57,78.43 L 255.75,71.82 L 255.75,64.18 L 259.57,57.57 Z" fill="#666666" id="svg_term_1" stroke="#666666" stroke-width="0"/>
+  <path d="M 86.18,390.25 L 93.82,390.25 L 100.43,394.07 L 104.25,400.68 L 104.25,408.32 L 100.43,414.93 L 93.82,418.75 L 86.18,418.75 L 79.57,414.93 L 75.75,408.32 L 75.75,400.68 L 79.57,394.07 Z" fill="#666666" id="svg_term_2" stroke="#666666" stroke-width="0"/>
+  <path d="M 446.18,390.25 L 453.82,390.25 L 460.43,394.07 L 464.25,400.68 L 464.25,408.32 L 460.43,414.93 L 453.82,418.75 L 446.18,418.75 L 439.57,414.93 L 435.75,408.32 L 435.75,400.68 L 439.57,394.07 Z" fill="#666666" id="svg_term_3" stroke="#666666" stroke-width="0"/>
+  <line fill="none" id="svg_stem_1" stroke="#666666" stroke-width="10" x1="270.0" x2="270.0" y1="76.0" y2="168.0"/>
+  <path d="M 90.0,396.5 L 90.0,296 L 200,296" fill="none" id="svg_stem_2" stroke="#666666" stroke-width="10"/>
+  <line fill="none" id="svg_floating_pad_3" stroke="#666666" stroke-width="10" x1="252" x2="288" y1="296" y2="296"/>
+  <path d="M 450.0,396.5 L 450.0,296 L 340,296" fill="none" id="svg_stem_3" stroke="#666666" stroke-width="10"/>
+  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" x1="190" x2="270.0" y1="304" y2="168.0"/>
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="9" x1="130.0" x2="230.0" y1="236.0" y2="236.0"/>
+  <path d="M 154.0,208.0 L 130.0,208.0 L 130.0,264.0 L 106.0,264.0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10"/>
+  <text fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" id="svg_selector_mode_text" text-anchor="middle" x="62.0" y="340.0">I-0-II</text>
  </g>
 </svg>
