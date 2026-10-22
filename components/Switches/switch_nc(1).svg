@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="435.0" height="464.0" viewBox="-26.49 53.715 435.0 464.0">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Terminal Nodes -->
+  <!-- Top Stem and Jog -->
+  <!-- Bottom Stem -->
+  <!-- Switch Flapper (Normally Closed) -->
+  <!-- Dashed Mechanical Link -->
+  <!-- Pushbutton Actuator Bracket "[" -->
+  <!-- Text Labels (Vector Paths) -->
+  <!-- "11" Terminal Label -->
+  <!-- "12" Terminal Label -->
+  <!-- "-S7" Label Rotated -90deg -->
+  <path d="m216.25,69.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+  <path d="m216.25,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+  <path d="m225,75l0,106l63,-1.03" fill="none" id="svg_stem_top" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+  <line fill="none" id="svg_stem_bot" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)" x1="225" x2="225" y1="308" y2="405"/>
+  <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)" x1="225" x2="273" y1="308" y2="168"/>
+  <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)" x1="132" x2="248" y1="242" y2="242"/>
+  <path d="m155,211l-27,0l0,60l-29,1" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10" transform="matrix(1 0 0 0.957071 -34 53.8979)"/>
+ </g>
+</svg>

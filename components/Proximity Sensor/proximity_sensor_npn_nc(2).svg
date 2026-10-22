@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="627.6216" height="626.76" viewBox="-43.7608 -70.145 627.6216 626.76">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 3 Polygon Terminal Nodes at wire ends -->
+  <!-- Main Sensor Block (Square Box) -->
+  <!-- Internal Sensor Optics Symbol (Diamond / Beam Indicator) -->
+  <!-- Internal Normally Open (NO) Switch Symbol -->
+  <!-- Output Wires (BN, BK, BU) -->
+  <!-- All Text Converted to Pure Vector Paths -->
+  <g fill="none" id="svg_switch" stroke="#666666" stroke-width="5" transform="matrix(1.0972 0 0 1 -0.619982 0)"/>
+  <path fill="#666666" id="svg_txt_bn"/>
+  <path fill="#666666" id="svg_txt_bk"/>
+  <path fill="#666666" id="svg_txt_bu"/>
+  <path fill="#666666" id="svg_txt_npn"/>
+  <path fill="#666666" id="svg_txt_no"/>
+  <rect fill="none" height="200" id="svg_box" stroke="#666666" stroke-width="9" transform="matrix(1.54986 0 0 1.937 -154.808 -284.291)" width="180" x="104" y="151"/>
+  <path d="m504.1,92.27l3.97,-7.12l6.87,-4.11l7.94,0.0l6.87,4.11l3.97,7.12l0.0,8.22l-3.97,7.12l-6.87,4.11l-7.94,0.0l-6.87,-4.11l-3.97,-7.12l0.0,-8.22z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="0"/>
+  <path d="m499.1,193.46l4.04,-6.54l6.99,-3.77l8.07,0.0l6.99,3.77l4.04,6.54l0.0,7.55l-4.04,6.54l-6.99,3.77l-8.07,0.0l-6.99,-3.77l-4.04,-6.54l0.0,-7.55z" fill="#666666" id="svg_2" stroke="#666666" stroke-width="0"/>
+  <path d="m502.1,296.09l3.97,-6.08l6.87,-3.5l7.94,0.0l6.87,3.5l3.97,6.08l0.0,7.02l-3.97,6.08l-6.87,3.5l-7.94,0.0l-6.87,-3.5l-3.97,-6.08l0.0,-7.02z" fill="#666666" id="svg_3" stroke="#666666" stroke-width="0"/>
+  <g fill="none" id="svg_optics" stroke="#666666" stroke-width="5" transform="matrix(1.54986 0 0 2.03924 -154.808 -299.454)">
+   <polygon id="svg_4" points="145.87499237060547,157.12498950958252 175.87500762939453,187.12498950958252 145.87499237060547,217.12498950958252 115.8749771118164,187.12498950958252" stroke-width="5"/>
+   <line id="svg_5" stroke-width="5" transform="rotate(90.5429 156.61 186.088)" x1="137.65" x2="175.57" y1="186.09" y2="186.09"/>
+   <line id="svg_6" stroke-width="5" x1="135.17" x2="135.17" y1="167.53" y2="206.69"/>
+  </g>
+  <line id="svg_7" x1="108.67" x2="139.67" y1="220.55" y2="220.55"/>
+  <line id="svg_8" x1="139.67" x2="209.41" y1="220.55" y2="169.57"/>
+  <line id="svg_9" stroke-dasharray="6,6" x1="209.41" x2="232.66" y1="220.55" y2="220.55"/>
+  <line fill="none" id="svg_wire_bn" stroke="#666666" stroke-width="10" x1="288.24" x2="510" y1="99.38" y2="99.38"/>
+  <line fill="none" id="svg_wire_bk" stroke="#666666" stroke-width="10" x1="287.24" x2="510" y1="196.74" y2="196.74"/>
+  <line fill="none" id="svg_wire_bu" stroke="#666666" stroke-width="10" x1="287.24" x2="510" y1="300.09" y2="300.09"/>
+  <line fill="none" id="svg_10" stroke="#666666" stroke-width="5" x1="68.91" x2="137.65" y1="252.91" y2="251.14"/>
+  <line fill="none" id="svg_11" stroke="#666666" stroke-width="5" x1="189.45" x2="265.59" y1="250.14" y2="250.14"/>
+  <line fill="none" id="svg_12" stroke="#666666" stroke-width="5" x1="133.15" x2="203.16" y1="252.05" y2="216.58"/>
+  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_13" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1.54986 0 0 2.03924 -79.3359 -295.908)" x="141.96" xml:space="preserve" y="374.67">NPN NO</text>
+  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_14" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1.54986 0 0 2.03924 -135.865 -269.998)" x="350.43" xml:space="preserve" y="178.05">BN</text>
+  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_15" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1.54986 0 0 2.03924 -144.475 -245.074)" x="357.61" xml:space="preserve" y="211.97">BK</text>
+  <text fill="#666666" font-family="Sans-serif" font-size="24" id="svg_16" stroke="#666666" stroke-width="0" text-anchor="middle" transform="matrix(1.54986 0 0 2.03924 -135.865 -276.796)" x="353.48" xml:space="preserve" y="278.36">BU</text>
+  <line fill="none" id="svg_17" stroke="#666666" stroke-width="5" x1="191.97" x2="191.97" y1="249.86" y2="213.27"/>
+ </g>
+</svg>

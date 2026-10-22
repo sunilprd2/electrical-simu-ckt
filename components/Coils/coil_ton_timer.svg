@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg width="435" height="464" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- Top terminal node (12-sided polygon) -->
+  <!-- Top vertical stem -->
+  <!-- On-Delay Timer Coil Main Rectangle (exact 144x72 centerline proportion matching Screenshot 2026-10-15 144829.png) -->
+  <!-- Vertical Divider on Right of X Section (x=198, leaving exact proportional gap to stem at x=225) -->
+  <!-- "X" Cross inside Left Section (x=153 to x=198, y=204 to y=276) -->
+  <!-- Bottom vertical stem -->
+  <!-- Bottom terminal node (12-sided polygon) -->
+  <path d="m327.25,358.25l2.35,-4.06l4.06,-2.35l4.69,0l4.06,2.35l2.35,4.06l0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0l-4.06,-2.35l-2.35,-4.06l0,-4.69z" fill="#666666" id="svg_1" stroke="#666666" stroke-width="3" transform="matrix(1 0 0 0.959596 -31 53.7863)"/>
+  <line fill="none" id="svg_2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.683311 -31 153.386)" x1="336" x2="336" y1="362.98" y2="491.98"/>
+  <line fill="none" id="svg_7" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.676921 -31 235.629)" x1="335.89" x2="335.89" y1="503.61" y2="632.61"/>
+  <path d="m296.14,667.47l2.35,-3.9l4.06,-2.26l4.69,0l4.06,2.26l2.35,3.9l0,4.5l-2.35,3.9l-4.06,2.26l-4.69,0l-4.06,-2.26l-2.35,-3.9l0,-4.5z" fill="#666666" id="svg_8" stroke="#666666" stroke-width="3"/>
+  <rect fill="none" height="72" id="svg_3" stroke="#666666" stroke-width="8" transform="matrix(1.25365 0 0 1.15191 -749.253 -92.9404)" width="144" x="764.1" y="507.02"/>
+  <line fill="none" id="svg_4" stroke="#666666" stroke-width="8" transform="matrix(1.12408 0 0 1.20041 -620.608 -157.506)" x1="782.14" x2="782.14" y1="540.32" y2="609.41"/>
+  <line fill="none" id="svg_5" stroke="#666666" stroke-width="8" transform="matrix(1.12408 0 0 1.20041 -620.608 -157.506)" x1="737.14" x2="782.14" y1="540.32" y2="609.41"/>
+  <line fill="none" id="svg_6" stroke="#666666" stroke-width="8" transform="matrix(1.12408 0 0 1.20041 -620.608 -157.506)" x1="782.14" x2="737.14" y1="540.32" y2="609.41"/>
+ </g>
+</svg>

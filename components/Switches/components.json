@@ -1,0 +1,62 @@
+{
+  "category": "Switches",
+  "count": 8,
+  "components": [
+    {
+      "file": "components/Switches/switch_3_position_selector I-0-II(1).svg",
+      "name": "3-Position Selector Switch I-0-II",
+      "category": "Switches",
+      "original_filename": "switch_3_position_selector I-0-II(1).svg",
+      "type": "3-Position Selector Switch I-0-II"
+    },
+    {
+      "file": "components/Switches/switch_3_position_selector I-II-III(1).svg",
+      "name": "3-Position Selector Switch I-II-III",
+      "category": "Switches",
+      "original_filename": "switch_3_position_selector I-II-III(1).svg",
+      "type": "3-Position Selector Switch I-II-III"
+    },
+    {
+      "file": "components/Switches/switch_con(1).svg",
+      "name": "Switch Changeover (CON)",
+      "category": "Switches",
+      "original_filename": "switch_con(1).svg",
+      "type": "Switch Changeover (CON)"
+    },
+    {
+      "file": "components/Switches/switch_nc(1).svg",
+      "name": "Switch NC",
+      "category": "Switches",
+      "original_filename": "switch_nc(1).svg",
+      "type": "Switch NC"
+    },
+    {
+      "file": "components/Switches/switch_no(1).svg",
+      "name": "Switch NO",
+      "category": "Switches",
+      "original_filename": "switch_no(1).svg",
+      "type": "Switch NO"
+    },
+    {
+      "file": "components/Switches/switch_pushbutton_con(1).svg",
+      "name": "Pushbutton Changeover (CON)",
+      "category": "Switches",
+      "original_filename": "switch_pushbutton_con(1).svg",
+      "type": "Pushbutton Changeover (CON)"
+    },
+    {
+      "file": "components/Switches/switch_pushbutton_nc(1).svg",
+      "name": "Pushbutton NC",
+      "category": "Switches",
+      "original_filename": "switch_pushbutton_nc(1).svg",
+      "type": "Pushbutton NC"
+    },
+    {
+      "file": "components/Switches/switch_pushbutton_no(1).svg",
+      "name": "Pushbutton NO",
+      "category": "Switches",
+      "original_filename": "switch_pushbutton_no(1).svg",
+      "type": "Pushbutton NO"
+    }
+  ]
+}

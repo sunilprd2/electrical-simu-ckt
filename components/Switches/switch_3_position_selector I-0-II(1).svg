@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="445.4297" height="475.125" viewBox="109.2951 51.6525 445.4297 475.125">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <!-- 12-Sided Polygon Terminal Nodes -->
+  <!-- Top Stem (Terminal 1) -->
+  <!-- Bottom Stems with Inward Jogs -->
+  <!-- Stem 2 (Normally Closed) -->
+  <!-- Stem 3 (Normally Open) -->
+  <!-- Floating Contact Pad for NO Side (Terminal 3) -->
+  <!-- Switch Flapper (SPDT / Changeover) -->
+  <!-- Dashed Mechanical Link -->
+  <!-- Limit Switch Actuator Bracket (Step shape) -->
+  <!-- Text Labels -->
+  <!-- "-S12" Label Rotated -90deg -->
+  <path d="m216.25,69.12l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_term_1" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  <path d="m125.75,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_term_2" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  <path d="m306.75,410.62l2.35,-4.06l4.06,-2.35l4.69,0.0l4.06,2.35l2.35,4.06l0.0,4.69l-2.35,4.06l-4.06,2.35l-4.69,0.0l-4.06,-2.35l-2.35,-4.06l0.0,-4.69z" fill="#666666" id="svg_term_3" stroke="#666666" stroke-width="0" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  <line fill="none" id="svg_stem_1" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)" x1="225" x2="225" y1="75" y2="169"/>
+  <path d="m134.5,405l0,-109.7l51.3,0" fill="none" id="svg_stem_2" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  <path d="m315.5,405l0,-109.7l-51.3,0" fill="none" id="svg_stem_3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  <line fill="none" id="svg_floating_pad_3" stroke="#666666" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)" x1="210" x2="240" y1="295.3" y2="295.3"/>
+  <g id="svg_1">
+   <line fill="none" id="svg_flapper" stroke="#666666" stroke-linecap="round" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)" x1="175" x2="225" y1="305" y2="169"/>
+   <line fill="none" id="svg_dash" stroke="#666666" stroke-dasharray="10,10" stroke-width="10" transform="matrix(1.30769 0 0 0.969697 43.9231 54.3397)" x1="132" x2="200" y1="237" y2="237"/>
+   <path d="m132,207l-27,0l0,60l-27,0" fill="none" id="svg_actuator" stroke="#666666" stroke-linecap="square" stroke-width="10" transform="matrix(1 0 0 0.969697 107 54.3397)"/>
+  </g>
+ </g>
+</svg>

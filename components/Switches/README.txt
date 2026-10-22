@@ -1,0 +1,1 @@
+Switches component library for ELECTRICAL SIMU CKT. The components.json manifest registers Contact_01.svg through Contact_20.svg explicitly under the Switches category. Verify each symbol function against IEC 60617 before assigning a more specific functional name.
