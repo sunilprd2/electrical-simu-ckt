@@ -21,10 +21,40 @@ body.library-hidden .layout > .work { flex:1 1 100% !important; width:100% !impo
 </style>
 <script>
 window.__escSafeStorage = (function(){
-  const mem = {};
+  let mem = {};
+  const PREFIX = '__ESC_SAFE_STORAGE__:';
+  try {
+    if (typeof window.name === 'string' && window.name.startsWith(PREFIX)) {
+      const parsed = JSON.parse(window.name.slice(PREFIX.length));
+      if (parsed && typeof parsed === 'object') mem = parsed;
+    }
+  } catch(_) {}
+  const syncName = () => {
+    try { window.name = PREFIX + JSON.stringify(mem); } catch(_) {}
+  };
   return {
-    getItem(k){ try { return window.localStorage.getItem(k); } catch(_) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; } },
-    setItem(k, v){ mem[k] = String(v); try { window.localStorage.setItem(k, v); } catch(_) {} }
+    getItem(k){
+      try {
+        const v = window.localStorage.getItem(k);
+        if (v !== null) return v;
+      } catch(_) {}
+      return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null;
+    },
+    setItem(k, v){
+      mem[k] = String(v);
+      syncName();
+      try { window.localStorage.setItem(k, String(v)); } catch(_) {}
+    },
+    removeItem(k){
+      delete mem[k];
+      syncName();
+      try { window.localStorage.removeItem(k); } catch(_) {}
+    },
+    clear(){
+      mem = {};
+      syncName();
+      try { window.localStorage.clear(); } catch(_) {}
+    }
   };
 })();
 </script>
@@ -182,7 +212,7 @@ try {
   <label class="zoom-panel-setting"><span>Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
   <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
   <div class="settings-section-label">Component / Wire Colour (IEC Standard)</div>
-  <label id="escDefaultColourRow" class="zoom-panel-setting"><span>Use selected colour as default</span><input id="escDefaultColour" type="checkbox" checked aria-label="Use selected colour as default"></label>
+  <label id="escDefaultColourRow" class="zoom-panel-setting"><span>Save as default for future sessions</span><input id="escDefaultColour" type="checkbox" checked aria-label="Save as default for future sessions"></label>
   <div class="esc-colour-grid" role="group" aria-label="IEC Conductor, Wire and Component Colours">
     <div class="esc-colour-item"><span>L1 (Phase R)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l1" title="Select L1 (Phase R) colour"><span class="swatch-fill" style="background:#ff0000"></span><span class="swatch-caret">▼</span></button></div>
     <div class="esc-colour-item"><span>L2 (Phase Y)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l2" title="Select L2 (Phase Y) colour"><span class="swatch-fill" style="background:#ffc000"></span><span class="swatch-caret">▼</span></button></div>
@@ -194,6 +224,35 @@ try {
     <div class="esc-colour-item"><span>-VE (DC-)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="neg" title="Select -VE (DC Negative) colour"><span class="swatch-fill" style="background:#0070c0"></span><span class="swatch-caret">▼</span></button></div>
     <div class="esc-colour-item"><span>Wire Colour</span><button type="button" class="esc-colour-swatch-btn" data-color-key="wire" title="Select Default Wire colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
     <div class="esc-colour-item"><span>Component</span><button type="button" class="esc-colour-swatch-btn" data-color-key="component" title="Select Default Component colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
+  </div>
+  <div class="settings-section-label">Wire &amp; Component Thickness</div>
+  <div class="esc-thickness-control" id="escWireWidthControl">
+    <div class="esc-thickness-header">
+      <label for="escWireWidth">Wire Width</label>
+      <span id="escWireWidthValue" class="esc-thickness-badge">2.2 px</span>
+    </div>
+    <div class="esc-thickness-row">
+      <input id="escWireWidth" type="range" min="1" max="6" step="0.1" value="2.2" aria-label="Wire Width">
+      <div class="esc-wire-preview-box" title="Live preview of wire thickness" aria-label="Live preview of wire thickness">
+        <svg viewBox="0 0 54 18" width="54" height="18" aria-hidden="true">
+          <line id="escWireWidthPreviewLine" x1="4" y1="9" x2="50" y2="9" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="esc-thickness-control" id="escComponentThicknessControl">
+    <div class="esc-thickness-header">
+      <label for="escComponentThickness">Component Outline Thickness</label>
+      <span id="escComponentThicknessValue" class="esc-thickness-badge">1.5 px</span>
+    </div>
+    <div class="esc-thickness-row">
+      <input id="escComponentThickness" type="range" min="0.5" max="4" step="0.1" value="1.5" aria-label="Component Outline Thickness">
+      <div class="esc-wire-preview-box" title="Live preview of component outline thickness" aria-label="Live preview of component outline thickness">
+        <svg viewBox="0 0 54 18" width="54" height="18" aria-hidden="true">
+          <line id="escCompThicknessPreviewLine" x1="4" y1="9" x2="50" y2="9" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
   </div>
   <button type="button" id="escResetColoursBtn">Reset IEC Standard Colours</button>
   <input id="escComponentColor" type="color" value="#2584ff" hidden aria-hidden="true">
@@ -523,7 +582,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const setStatus=s=>{if(state)state.textContent=s};
  function exportProject(forceName=false){
    if(!drop){setStatus('SAVE FAILED • DRAWING LAYER NOT FOUND');return}
-   if(forceName){const n=prompt('Save drawing as (name only):',currentName);if(n===null)return;currentName=(n.trim()||'Untitled ESC Drawing')}
+   if(forceName){currentName=(currentName||'Untitled ESC Drawing')}
    const wireLayerEl=document.getElementById('wireLayer');
    const wiresClone=wireLayerEl?wireLayerEl.cloneNode(true):null;
    wiresClone?.querySelectorAll('.wire-preview').forEach(n=>n.remove());
@@ -539,7 +598,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    }else setStatus('SAVED IN THIS BROWSER • '+currentName.toUpperCase());
  }
  $('newBtn')?.addEventListener('click',()=>{
-   if(drop&&drop.children.length&&!confirm('Start a new drawing? Download or save your current drawing first.'))return;
+   
    if(drop)drop.replaceChildren();
    document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>w.remove());
    if(typeof window.cancelActiveWiring==='function')window.cancelActiveWiring('');
@@ -594,7 +653,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
      currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
      if(svg&&data.viewBox)svg.setAttribute('viewBox',data.viewBox);
      setStatus('OPENED • '+currentName.toUpperCase());
-   }catch(err){alert('Could not open this drawing: '+err.message);setStatus('OPEN FAILED')}
+   }catch(err){setStatus('OPEN FAILED • '+(err&&err.message?err.message:'INVALID FILE'))}
    e.target.value='';
  });
  $('rotateBtn')?.addEventListener('click',()=>{
@@ -917,62 +976,26 @@ document.querySelectorAll(".top nav button").forEach(button => {
     }
     if(g.dataset.escBoxReady==='1')return;
     g.dataset.escBoxReady='1';
-    fetch(path).then(r=>r.ok?r.text():Promise.reject()).then(text=>{
-      const match=text.match(/viewBox\s*=\s*["']\s*([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)\s*["']/i);
-      if(match){const w=Number(match[3]),h=Number(match[4]);if(w>0&&h>0)set(w/h);else set(1);}
-      else set(1);
-    }).catch(()=>set(1));
+    set(1);
   }
   let isUpdatingV54 = false;
   function update(){
     if(isUpdatingV54) return;
     isUpdatingV54 = true;
     try {
-    const selected=layer.querySelector('.dropped-symbol.selected');
-    renderTerminalAlignmentAxes(selected);
-    if(selected){
-      selected.style.setProperty('--esc-selection-border',borderColor);
-      selected.style.setProperty('--esc-selected-component',componentColor);
-      const nsSvg=selected.querySelector(':scope > svg');
-      if(nsSvg && !document.body.classList.contains('live')){
-        nsSvg.style.color=componentColor;
-        const image=nsSvg.querySelector('image');
-        if(image) image.setAttribute('filter','url(#escSelectedComponentTint)');
-        // Tint the actual symbol artwork, not the external reference tag (X1, KM1, etc.).
-        // Force the chosen stroke colour over theme defaults, while preserving unfilled outlines.
-        nsSvg.querySelectorAll('path,line,circle,rect,polyline,polygon,ellipse').forEach(el=>{
-          if(!image && !el.closest('.sim-motor-rotor-group') && !el.classList.contains('svg-terminal-node')){
-            const origStroke=(el.getAttribute('stroke')||'').trim().toLowerCase();
-            const origSw=(el.getAttribute('stroke-width')||'').trim();
-            if(origStroke && origStroke!=='none' && origStroke!=='transparent' && origSw!=='0'){
-              el.style.setProperty('stroke',componentColor,'important');
-            }
-            const originalFill=(el.getAttribute('fill')||'').trim().toLowerCase();
-            if(originalFill && originalFill!=='none' && originalFill!=='transparent'){
-              el.style.setProperty('fill',componentColor,'important');
-            }
-          }
-        });
-        nsSvg.querySelectorAll('text,tspan').forEach(el=>{
-          if(!image) el.style.setProperty('fill',componentColor,'important');
-        });
+      const selected=layer.querySelector('.dropped-symbol.selected');
+      renderTerminalAlignmentAxes(selected);
+      if(selected){
+        selected.style.setProperty('--esc-selection-border',borderColor);
+        selected.style.setProperty('--esc-selected-component',componentColor);
+        applyBox(selected);
       }
-      applyBox(selected);
-    }
-    layer.querySelectorAll('.dropped-symbol:not(.selected)').forEach(g=>{
-      g.style.removeProperty('--esc-selection-border');g.style.removeProperty('--esc-selected-component');
-      const image=g.querySelector(':scope > svg image');if(image)image.removeAttribute('filter');
-      const nsSvg=g.querySelector(':scope > svg');
-      if(nsSvg){
-        nsSvg.style.removeProperty('color');
-        nsSvg.querySelectorAll('path,line,circle,rect,polyline,polygon,ellipse,text,tspan').forEach(el=>{
-          el.style.removeProperty('stroke');
-          el.style.removeProperty('fill');
-        });
-      }
-      applyBox(g);
-    });
-    if(flood)flood.setAttribute('flood-color',componentColor);
+      layer.querySelectorAll('.dropped-symbol:not(.selected)').forEach(g=>{
+        g.style.removeProperty('--esc-selection-border');
+        g.style.removeProperty('--esc-selected-component');
+        applyBox(g);
+      });
+      if(flood)flood.setAttribute('flood-color',componentColor);
     } finally {
       isUpdatingV54 = false;
     }
@@ -1128,93 +1151,136 @@ document.querySelectorAll(".top nav button").forEach(button => {
    '#00b050', '#00b0f0', '#0070c0', '#002060', '#7030a0'
  ];
 
- // Default IEC / RYB standard colour map
- const getIecDefaultColours = (dark = isDark()) => ({
+ const DEFAULT_WIRE_WIDTH = 2.2;
+ const DEFAULT_COMP_THICKNESS = 1.5;
+
+ // Central default settings model
+ const getIecDefaultSettings = (dark = isDark()) => ({
    l1: '#ff0000',        // IEC/RYB Phase L1 (Red)
    l2: '#ffc000',        // IEC/RYB Phase L2 (Yellow/Amber)
    l3: '#0070c0',        // IEC/RYB Phase L3 (Blue)
    l:  '#ff0000',        // Single Phase Line L (Red)
-   n:  '#00b0f0',        // IEC Neutral N (Blue / Light Blue)
+   n:  '#00b0f0',        // IEC Neutral N (Cyan / Light Blue)
    pe: '#00b050',        // IEC Protective Earth PE (Green)
    pos: '#ff0000',       // DC Positive +VE (Red)
    neg: '#0070c0',       // DC Negative -VE (Blue)
    wire: dark ? '#ffffff' : '#000000',
-   component: dark ? '#ffffff' : '#000000'
+   component: dark ? '#ffffff' : '#000000',
+   wireCustom: false,
+   componentCustom: false,
+   wireWidth: DEFAULT_WIRE_WIDTH,
+   componentThickness: DEFAULT_COMP_THICKNESS,
+   saveAsDefault: true
  });
 
- const STORAGE_KEY = 'esc-iec-multi-colours-v1';
- const USE_DEFAULT_KEY = 'esc-use-default-colour-v2';
- const defaultToggle = $('escDefaultColour');
- if (defaultToggle) {
-   const savedUse = window.__escSafeStorage.getItem(USE_DEFAULT_KEY);
-   defaultToggle.checked = savedUse === null ? true : (savedUse === 'true');
+ const isValidHexColor = (v) => typeof v === 'string' && /^#[0-9a-f]{3,8}$/i.test(v.trim());
+ const clampNum = (val, min, max, fallback) => {
+   const n = Number(val);
+   if (!Number.isFinite(n)) return fallback;
+   return Math.round(Math.min(max, Math.max(min, n)) * 100) / 100;
+ };
+
+ function validateSettings(raw, dark = isDark()) {
+   const defs = getIecDefaultSettings(dark);
+   if (!raw || typeof raw !== 'object') return { ...defs };
+   const out = { ...defs };
+   ['l1', 'l2', 'l3', 'l', 'n', 'pe', 'pos', 'neg', 'wire', 'component'].forEach(k => {
+     if (isValidHexColor(raw[k])) out[k] = raw[k].trim().toLowerCase();
+   });
+   out.wireCustom = Boolean(raw.wireCustom);
+   out.componentCustom = Boolean(raw.componentCustom);
+   if (!out.wireCustom) out.wire = dark ? '#ffffff' : '#000000';
+   if (!out.componentCustom) out.component = dark ? '#ffffff' : '#000000';
+   out.wireWidth = clampNum(raw.wireWidth, 1, 6, DEFAULT_WIRE_WIDTH);
+   out.componentThickness = clampNum(raw.componentThickness, 0.5, 4, DEFAULT_COMP_THICKNESS);
+   if (typeof raw.saveAsDefault === 'boolean') out.saveAsDefault = raw.saveAsDefault;
+   return out;
  }
 
- let userColours = getIecDefaultColours();
- try {
-   const raw = window.__escSafeStorage.getItem(STORAGE_KEY);
-   if (raw) {
-     const parsed = JSON.parse(raw);
-     if (parsed && typeof parsed === 'object') {
-       userColours = { ...userColours, ...parsed };
+ const STORAGE_KEY = 'esc-iec-multi-colours-v1';
+ const PREFS_KEY = 'esc-appearance-preferences-v1';
+ const USE_DEFAULT_KEY = 'esc-use-default-colour-v2';
+
+ const defaultToggle = $('escDefaultColour');
+ const wireWidthSlider = $('escWireWidth');
+ const wireWidthValEl = $('escWireWidthValue');
+ const wireWidthPreviewLine = $('escWireWidthPreviewLine');
+ const compThickSlider = $('escComponentThickness');
+ const compThickValEl = $('escComponentThicknessValue');
+ const compThickPreviewLine = $('escCompThicknessPreviewLine');
+
+ function loadStoredPreferences() {
+   const dark = isDark();
+   let merged = {};
+   try {
+     const rawLegacy = window.__escSafeStorage.getItem(STORAGE_KEY);
+     if (rawLegacy) {
+       const p = JSON.parse(rawLegacy);
+       if (p && typeof p === 'object') merged = { ...merged, ...p };
      }
-   }
- } catch (_) {}
+   } catch (_) {}
+   try {
+     const rawPrefs = window.__escSafeStorage.getItem(PREFS_KEY);
+     if (rawPrefs) {
+       const p = JSON.parse(rawPrefs);
+       if (p && typeof p === 'object') merged = { ...merged, ...p };
+     }
+   } catch (_) {}
+   const validated = validateSettings(merged, dark);
+   const savedUse = window.__escSafeStorage.getItem(USE_DEFAULT_KEY);
+   if (savedUse === 'false') validated.saveAsDefault = false;
+   else if (savedUse === 'true') validated.saveAsDefault = true;
+   return validated;
+ }
 
- const saveUserColours = () => {
-   try { window.__escSafeStorage.setItem(STORAGE_KEY, JSON.stringify(userColours)); } catch (_) {}
- };
+ // Active session settings (initialized from validated persistent preferences)
+ let sessionSettings = loadStoredPreferences();
+ if (defaultToggle) {
+   defaultToggle.checked = Boolean(sessionSettings.saveAsDefault);
+ }
 
- // Pole-specific SVG element selectors for all 10 Power/Source components
- const SOURCE_POLE_SELECTORS = {
-   'earth_ground.svg': { pe: ['#svg_25', '#svg_10', '#svg_g1', '#svg_g2', '#svg_g3'] },
-   'earth_pe.svg': { pe: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'source_dc_positive.svg': { pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'] },
-   'source_dc_negative.svg': { neg: ['#svg_11', '#svg_8', '#svg_10', '#svg_25'] },
-   'source_dc_supply_pair.svg': {
-     pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'],
-     neg: ['#svg_33', '#svg_31', '#svg_32', '#svg_30']
-   },
-   'terminal_l1_l2_l3.svg': {
-     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
-     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
-     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1']
-   },
-   'terminal_l1_l2_l3_n.svg': {
-     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
-     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
-     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1'],
-     n:  ['#svg_c4', '#svg_t4', '#svg_s4', '#svg_8']
-   },
-   'terminal_phase_l.svg': { l: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'terminal_neutral_n.svg': { n: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'ac_to_dc_power_supply.svg': {
-     l:   ['#svg_term_l', '#svg_1', '#svg_11'],
-     n:   ['#svg_term_n', '#svg_2', '#svg_12'],
-     pe:  ['#svg_term_pe', '#svg_3', '#svg_13'],
-     pos: ['#svg_term_pos', '#svg_4', '#svg_14'],
-     neg: ['#svg_term_neg', '#svg_5', '#svg_15']
-   }
- };
+ // Persist only when "Save as default for future sessions" is enabled (or on explicit reset)
+ function persistIfDefaultEnabled(forceWrite = false) {
+   const isEnabled = defaultToggle ? Boolean(defaultToggle.checked) : Boolean(sessionSettings.saveAsDefault);
+   sessionSettings.saveAsDefault = isEnabled;
+   try {
+     window.__escSafeStorage.setItem(USE_DEFAULT_KEY, String(isEnabled));
+     if (isEnabled || forceWrite) {
+       const toSave = {
+         l1: sessionSettings.l1,
+         l2: sessionSettings.l2,
+         l3: sessionSettings.l3,
+         l:  sessionSettings.l,
+         n:  sessionSettings.n,
+         pe: sessionSettings.pe,
+         pos: sessionSettings.pos,
+         neg: sessionSettings.neg,
+         wire: sessionSettings.wire,
+         component: sessionSettings.component,
+         wireCustom: Boolean(sessionSettings.wireCustom),
+         componentCustom: Boolean(sessionSettings.componentCustom),
+         wireWidth: sessionSettings.wireWidth,
+         componentThickness: sessionSettings.componentThickness,
+         saveAsDefault: isEnabled
+       };
+       const serialized = JSON.stringify(toSave);
+       window.__escSafeStorage.setItem(STORAGE_KEY, serialized);
+       window.__escSafeStorage.setItem(PREFS_KEY, serialized);
+     }
+   } catch (_) {}
+ }
 
  function getEffectiveColours() {
-   const themeFallback = isDark() ? '#ffffff' : '#000000';
-   if (defaultToggle && !defaultToggle.checked) {
-     return {
-       l1: themeFallback, l2: themeFallback, l3: themeFallback,
-       l: themeFallback, n: themeFallback, pe: themeFallback,
-       pos: themeFallback, neg: themeFallback,
-       wire: themeFallback, component: themeFallback
-     };
-   }
-   return { ...getIecDefaultColours(), ...userColours };
+   return { ...sessionSettings };
  }
  window.getEscEffectiveColours = getEffectiveColours;
+ window.getEscAppearanceSettings = getEffectiveColours;
 
- const activeColor = () => getEffectiveColours().component;
+ const activeColor = () => isDark() ? '#ffffff' : '#000000';
 
- function updateSwatchButtonsUI() {
+ function updateSettingsControlsUI() {
    const eff = getEffectiveColours();
+   const normalCompColor = isDark() ? '#ffffff' : '#000000';
    document.querySelectorAll('#escSettingsPopover .esc-colour-swatch-btn').forEach(btn => {
      const k = btn.dataset.colorKey;
      const fill = btn.querySelector('.swatch-fill');
@@ -1222,36 +1288,93 @@ document.querySelectorAll(".top nav button").forEach(button => {
        fill.style.background = eff[k];
      }
    });
+   if (wireWidthSlider) wireWidthSlider.value = String(eff.wireWidth);
+   if (wireWidthValEl) wireWidthValEl.textContent = `${Number(eff.wireWidth).toFixed(1).replace(/\.0$/, '')} px`;
+   if (wireWidthPreviewLine) {
+     wireWidthPreviewLine.setAttribute('stroke-width', String(eff.wireWidth));
+     wireWidthPreviewLine.setAttribute('stroke', eff.wire || normalCompColor);
+   }
+   if (compThickSlider) compThickSlider.value = String(eff.componentThickness);
+   if (compThickValEl) compThickValEl.textContent = `${Number(eff.componentThickness).toFixed(1).replace(/\.0$/, '')} px`;
+   if (compThickPreviewLine) {
+     compThickPreviewLine.setAttribute('stroke-width', String(eff.componentThickness));
+     compThickPreviewLine.setAttribute('stroke', normalCompColor);
+   }
  }
 
- function tintComponent(g, eff) {
-   if (!g || !eff) return;
-   const compColor = eff.component || (isDark() ? '#ffffff' : '#000000');
-   g.style.setProperty('--comp-stroke-color', compColor);
-   g.dataset.workspaceColor = compColor;
+ // ==========================================================================
+ // 1. Component Appearance System (Strictly Independent from Wire/Phase Colours)
+ // ==========================================================================
+ function applyComponentAppearance(g) {
+   if (!g) return;
+   const normalCompColor = isDark() ? '#ffffff' : '#000000';
+   const compThickness = clampNum(sessionSettings.componentThickness, 0.5, 4, DEFAULT_COMP_THICKNESS);
+   const strokeScale = compThickness / DEFAULT_COMP_THICKNESS;
+
+   // Components always retain their normal workspace appearance (never recoloured by L1/L2/L3 or colour selectors)
+   g.style.setProperty('--comp-stroke-color', normalCompColor);
+   g.style.setProperty('--esc-comp-stroke-scale', String(strokeScale));
+   g.style.setProperty('--esc-comp-outline-width', `${compThickness}px`);
+   g.dataset.workspaceColor = normalCompColor;
 
    const artSvg = g.querySelector(':scope > svg:not(.select-box)');
    if (!artSvg) return;
 
-   // First clear any previous pole overrides
+   // Remove any legacy pole-colour overrides so 3-phase and other sources never turn R-Y-B
    artSvg.querySelectorAll('[style*="--pole-color"]').forEach(el => el.style.removeProperty('--pole-color'));
 
-   // Apply pole-specific colours for Power/Source symbols (L1, L2, L3, L, N, PE, +VE, -VE)
-   const asset = (typeof getAssetBasename === 'function')
-     ? getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '')
-     : String(g.dataset.symbolFile || '').split('/').pop().toLowerCase().replace(/\s*\(\d+\)(?=\.svg$)/i, '');
-   const poleMap = SOURCE_POLE_SELECTORS[asset];
-   if (poleMap) {
-     Object.entries(poleMap).forEach(([poleKey, selectors]) => {
-       const pColor = eff[poleKey];
-       if (!pColor) return;
-       selectors.forEach(sel => {
-         const el = artSvg.querySelector(sel);
-         if (el) el.style.setProperty('--pole-color', pColor);
-       });
-     });
-   }
+   // Apply proportional Component Outline Thickness without shifting terminals, dimensions, or labels
+   artSvg.querySelectorAll('path, line, rect, circle, ellipse, polyline, polygon').forEach(el => {
+     if (el.classList.contains('svg-terminal-node') || el.classList.contains('select-box') || el.classList.contains('component-hit-area')) {
+       return;
+     }
+     if (el.dataset.escOrigStroke === undefined) {
+       el.dataset.escOrigStroke = (el.getAttribute('stroke') ?? '').trim();
+     }
+     if (el.dataset.escOrigStrokeWidth === undefined) {
+       el.dataset.escOrigStrokeWidth = (el.getAttribute('stroke-width') ?? '').trim();
+     }
+     if (el.dataset.escOrigFill === undefined) {
+       el.dataset.escOrigFill = (el.getAttribute('fill') ?? '').trim();
+     }
+     const origStroke = el.dataset.escOrigStroke.toLowerCase();
+     const origSwStr = el.dataset.escOrigStrokeWidth;
+     const origFill = el.dataset.escOrigFill.toLowerCase();
+
+     if (origStroke !== 'none' && origStroke !== 'transparent' && origSwStr !== '0') {
+       const baseSw = parseFloat(origSwStr);
+       const effectiveBase = (Number.isFinite(baseSw) && baseSw > 0) ? baseSw : 2.0;
+       const scaledSw = Math.round(effectiveBase * strokeScale * 100) / 100;
+       el.setAttribute('stroke-width', String(scaledSw));
+       el.style.strokeWidth = String(scaledSw);
+       el.style.setProperty('stroke', normalCompColor, 'important');
+     }
+     if (origFill && origFill !== 'none' && origFill !== 'transparent') {
+       el.style.setProperty('fill', normalCompColor, 'important');
+     }
+   });
+
+   artSvg.querySelectorAll('text, tspan').forEach(el => {
+     el.style.setProperty('fill', normalCompColor, 'important');
+     el.style.setProperty('stroke', 'none', 'important');
+   });
  }
+ window.applyEscComponentAppearance = applyComponentAppearance;
+
+ // ==========================================================================
+ // 2. Wire Appearance System (Width + Pre-Sim Default Colour + Sim Net Colour)
+ // ==========================================================================
+ function applyWireWidthToAllWires() {
+   const wWidth = clampNum(sessionSettings.wireWidth, 1, 6, DEFAULT_WIRE_WIDTH);
+   const root = document.documentElement;
+   root.style.setProperty('--esc-wire-width', `${wWidth}px`);
+   svg.style.setProperty('--esc-wire-width', `${wWidth}px`);
+   document.querySelectorAll('#wireLayer .connected-wire, #wireLayer .wire-preview').forEach(w => {
+     w.setAttribute('stroke-width', String(wWidth));
+     w.style.setProperty('stroke-width', `${wWidth}px`, 'important');
+   });
+ }
+ window.applyEscWireWidth = applyWireWidthToAllWires;
 
  let isApplyingColours = false;
  function applyColours() {
@@ -1259,6 +1382,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    isApplyingColours = true;
    try {
      const eff = getEffectiveColours();
+     const normalCompColor = isDark() ? '#ffffff' : '#000000';
      const root = document.documentElement;
      root.style.setProperty('--esc-color-l1', eff.l1);
      root.style.setProperty('--esc-color-l2', eff.l2);
@@ -1269,23 +1393,16 @@ document.querySelectorAll(".top nav button").forEach(button => {
      root.style.setProperty('--esc-color-pos', eff.pos);
      root.style.setProperty('--esc-color-neg', eff.neg);
      root.style.setProperty('--esc-wire-color', eff.wire);
-     root.style.setProperty('--esc-comp-color', eff.component);
+     root.style.setProperty('--esc-comp-color', normalCompColor);
+     root.style.setProperty('--esc-wire-width', `${eff.wireWidth}px`);
+     root.style.setProperty('--esc-comp-outline-width', `${eff.componentThickness}px`);
 
-     // Wire conductor colours in Edit mode follow L1/L2/L3/L/N/PE/+VE/-VE when default colours are enabled
-     root.style.setProperty('--esc-color-l1-wire', eff.l1);
-     root.style.setProperty('--esc-color-l2-wire', eff.l2);
-     root.style.setProperty('--esc-color-l3-wire', eff.l3);
-     root.style.setProperty('--esc-color-l-wire', eff.l);
-     root.style.setProperty('--esc-color-n-wire', eff.n);
-     root.style.setProperty('--esc-color-pe-wire', eff.pe);
-     root.style.setProperty('--esc-color-pos-wire', eff.pos);
-     root.style.setProperty('--esc-color-neg-wire', eff.neg);
-
-     layer.querySelectorAll('.dropped-symbol').forEach(g => tintComponent(g, eff));
+     layer.querySelectorAll('.dropped-symbol').forEach(g => applyComponentAppearance(g));
+     applyWireWidthToAllWires();
      if (typeof window.updateWireConductorIdentification === 'function') {
        window.updateWireConductorIdentification(window.__escLastNodePotentials);
      }
-     updateSwatchButtonsUI();
+     updateSettingsControlsUI();
    } finally {
      isApplyingColours = false;
    }
@@ -1368,39 +1485,59 @@ document.querySelectorAll(".top nav button").forEach(button => {
    const cell = e.target.closest('.esc-palette-cell');
    if (!cell || !activeSwatchKey) return;
    const chosen = cell.dataset.hex;
-   userColours[activeSwatchKey] = chosen;
+   sessionSettings[activeSwatchKey] = chosen;
    if (activeSwatchKey === 'wire' || activeSwatchKey === 'component') {
-     userColours[activeSwatchKey + 'Custom'] = true;
+     sessionSettings[activeSwatchKey + 'Custom'] = true;
    }
-   if (defaultToggle && !defaultToggle.checked) {
-     defaultToggle.checked = true;
-     window.__escSafeStorage.setItem(USE_DEFAULT_KEY, 'true');
-   }
-   saveUserColours();
+   persistIfDefaultEnabled(false);
    applyColours();
    const st = $('state');
    if (st) st.textContent = `COLOUR UPDATED • ${activeSwatchKey.toUpperCase()} → ${chosen.toUpperCase()}`;
    closePalettePopup();
  });
 
+ const onWireWidthInput = e => {
+   sessionSettings.wireWidth = clampNum(e.target.value, 1, 6, DEFAULT_WIRE_WIDTH);
+   persistIfDefaultEnabled(false);
+   applyColours();
+   const st = $('state');
+   if (st) st.textContent = `WIRE WIDTH UPDATED • ${sessionSettings.wireWidth} PX`;
+ };
+ wireWidthSlider?.addEventListener('input', onWireWidthInput);
+ wireWidthSlider?.addEventListener('change', onWireWidthInput);
+
+ const onCompThicknessInput = e => {
+   sessionSettings.componentThickness = clampNum(e.target.value, 0.5, 4, DEFAULT_COMP_THICKNESS);
+   persistIfDefaultEnabled(false);
+   applyColours();
+   const st = $('state');
+   if (st) st.textContent = `COMPONENT OUTLINE THICKNESS UPDATED • ${sessionSettings.componentThickness} PX`;
+ };
+ compThickSlider?.addEventListener('input', onCompThicknessInput);
+ compThickSlider?.addEventListener('change', onCompThicknessInput);
+
  $('escResetColoursBtn')?.addEventListener('click', e => {
    e.preventDefault();
    e.stopPropagation();
-   userColours = getIecDefaultColours(isDark());
-   if (defaultToggle) {
-     defaultToggle.checked = true;
-     window.__escSafeStorage.setItem(USE_DEFAULT_KEY, 'true');
-   }
-   saveUserColours();
+   const keepSaveState = defaultToggle ? Boolean(defaultToggle.checked) : true;
+   sessionSettings = { ...getIecDefaultSettings(isDark()), saveAsDefault: keepSaveState };
+   persistIfDefaultEnabled(true);
    applyColours();
    closePalettePopup();
    const st = $('state');
-   if (st) st.textContent = 'COLOURS RESET TO IEC STANDARD (RYB, N, PE, +VE, -VE)';
+   if (st) st.textContent = 'APPEARANCE SETTINGS RESET TO IEC STANDARD DEFAULTS';
  });
 
  defaultToggle?.addEventListener('change', () => {
-   window.__escSafeStorage.setItem(USE_DEFAULT_KEY, String(defaultToggle.checked));
+   sessionSettings.saveAsDefault = Boolean(defaultToggle.checked);
+   persistIfDefaultEnabled(false);
    applyColours();
+   const st = $('state');
+   if (st) {
+     st.textContent = defaultToggle.checked
+       ? 'PREFERENCES SAVED AS DEFAULT FOR FUTURE SESSIONS'
+       : 'TEMPORARY SESSION PREFERENCES ACTIVE (SAVED DEFAULTS PRESERVED)';
+   }
  });
 
  document.addEventListener('click', e => {
@@ -1416,8 +1553,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
 
  const themeObserver = new MutationObserver(() => {
    const dark = isDark();
-   if (!userColours.wireCustom) userColours.wire = dark ? '#ffffff' : '#000000';
-   if (!userColours.componentCustom) userColours.component = dark ? '#ffffff' : '#000000';
+   if (!sessionSettings.wireCustom) sessionSettings.wire = dark ? '#ffffff' : '#000000';
+   if (!sessionSettings.componentCustom) sessionSettings.component = dark ? '#ffffff' : '#000000';
    applyColours();
  });
  themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
