@@ -2765,7 +2765,7 @@ function updateWireConductorIdentification(livePotentialsMap = window.__escLastN
   const comps = [...document.querySelectorAll('#dropLayer .dropped-symbol')];
   const wires = [...document.querySelectorAll('#wireLayer .connected-wire')];
   const keyOf = (uid, idx) => `${uid}:${idx}`;
-  const wireColourClasses = ['wire-dc-positive', 'wire-dc-negative', 'wire-l1', 'wire-l2', 'wire-l3', 'wire-neutral', 'wire-pe', 'wire-deenergized'];
+  const wireColourClasses = ['wire-dc-positive', 'wire-dc-negative', 'wire-l1', 'wire-l2', 'wire-l3', 'wire-l', 'wire-neutral', 'wire-pe', 'wire-deenergized'];
 
   // Build passive conductor identity map from sources + closed paths
   const adj = new Map();
@@ -2843,18 +2843,17 @@ function updateWireConductorIdentification(livePotentialsMap = window.__escLastN
     else if (idPots.has('L1')) cClass = 'wire-l1';
     else if (idPots.has('L2')) cClass = 'wire-l2';
     else if (idPots.has('L3')) cClass = 'wire-l3';
-    else if (idPots.has('L')) cClass = 'wire-l1';
+    else if (idPots.has('L')) cClass = 'wire-l';
     else if (idPots.has('POS')) cClass = 'wire-dc-positive';
     else if (idPots.has('NEG')) cClass = 'wire-dc-negative';
     else if (idPots.has('N')) cClass = 'wire-neutral';
 
+    if (cClass) w.classList.add(cClass);
     if (running) {
       if (livePots.size > 0) {
         w.classList.add('wire-live');
-        if (cClass) w.classList.add(cClass);
       } else {
         w.classList.add('wire-deenergized');
-        if (cClass) w.classList.add(cClass);
       }
     }
   });

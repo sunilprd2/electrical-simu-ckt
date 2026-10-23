@@ -63,6 +63,7 @@ try {
     <button id="undoBtn" class="tool-btn tool-slate" type="button" title="Undo (up to 100 steps; Ctrl+Z)" disabled><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-2"/></svg></span><em>Undo</em></button>
     <button id="redoBtn" class="tool-btn tool-slate" type="button" title="Redo (up to 100 steps; Ctrl+Y)" disabled><span class="toolbar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h2"/></svg></span><em>Redo</em></button>
     <button id="gridToggle" class="tool-btn tool-slate" type="button" title="Toggle schematic grid"><span class="toolbar-icon">▦</span><em>Grid</em></button>
+    <button id="themeToggle" class="tool-btn tool-orange" type="button" title="Toggle Dark / Light Theme" aria-label="Toggle Dark / Light Theme" aria-pressed="false"><span class="toolbar-icon" id="themeToggleIcon">☀</span><em id="themeToggleText">Theme</em></button>
     <button id="settingsBtn" class="tool-btn tool-slate" type="button" title="Settings"><span class="toolbar-icon">⚙</span><em>Settings</em></button>
     <input id="openFileInput" type="file" accept=".json,.esc,application/json" hidden>
   </nav>
@@ -178,15 +179,34 @@ try {
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true">
   <h3>Workspace Settings</h3>
   <div class="settings-section-label">Workspace Display</div>
-  <label class="zoom-panel-setting"><span>Show Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
-  <label class="zoom-panel-setting"><span>Drawing Grid</span><span class="zoom-switch"><input id="settingsGridToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsGridState">On</span></label>
+  <label class="zoom-panel-setting"><span>Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
   <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
-  <div class="settings-section-label">Component Appearance</div>
-  <label class="esc-color-setting"><span>Selected component colour</span><input id="escComponentColor" type="color" value="#2584ff" aria-label="Selected component colour"></label>
-  <label class="esc-color-setting"><span>Selection border colour</span><input id="escBorderColor" type="color" value="#f59e0b" aria-label="Selection border colour"></label>
-  <div class="settings-section-label">Theme</div>
-  <label class="zoom-panel-setting"><span>Light / Dark Mode</span><span class="theme-switch-icons"><span>☼</span><span class="zoom-switch"><input id="settingsThemeToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span>☾</span></span><span class="zoom-panel-state" id="settingsThemeState">Dark</span></label>
+  <div class="settings-section-label">Component / Wire Colour (IEC Standard)</div>
+  <label id="escDefaultColourRow" class="zoom-panel-setting"><span>Use selected colour as default</span><input id="escDefaultColour" type="checkbox" checked aria-label="Use selected colour as default"></label>
+  <div class="esc-colour-grid" role="group" aria-label="IEC Conductor, Wire and Component Colours">
+    <div class="esc-colour-item"><span>L1 (Phase R)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l1" title="Select L1 (Phase R) colour"><span class="swatch-fill" style="background:#ff0000"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>L2 (Phase Y)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l2" title="Select L2 (Phase Y) colour"><span class="swatch-fill" style="background:#ffc000"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>L3 (Phase B)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l3" title="Select L3 (Phase B) colour"><span class="swatch-fill" style="background:#0070c0"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>L (Phase)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="l" title="Select L (Single Phase) colour"><span class="swatch-fill" style="background:#ff0000"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>N (Neutral)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="n" title="Select N (Neutral) colour"><span class="swatch-fill" style="background:#00b0f0"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>PE (Earth)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="pe" title="Select PE (Protective Earth) colour"><span class="swatch-fill" style="background:#00b050"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>+VE (DC+)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="pos" title="Select +VE (DC Positive) colour"><span class="swatch-fill" style="background:#ff0000"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>-VE (DC-)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="neg" title="Select -VE (DC Negative) colour"><span class="swatch-fill" style="background:#0070c0"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>Wire Colour</span><button type="button" class="esc-colour-swatch-btn" data-color-key="wire" title="Select Default Wire colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>Component</span><button type="button" class="esc-colour-swatch-btn" data-color-key="component" title="Select Default Component colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
+  </div>
+  <button type="button" id="escResetColoursBtn">Reset IEC Standard Colours</button>
+  <input id="escComponentColor" type="color" value="#2584ff" hidden aria-hidden="true">
+  <input id="escBorderColor" type="color" value="#f59e0b" hidden aria-hidden="true">
   <p>ESC • Design · Simulate · Control · Visualize</p>
+</div>
+<div id="escColorPalettePopup" class="esc-palette-popup" role="dialog" aria-label="Theme and Standard Colors" aria-hidden="true">
+  <div class="esc-palette-title">Theme Colors</div>
+  <div id="escPaletteThemeBase" class="esc-palette-row-base"></div>
+  <div id="escPaletteThemeShades" class="esc-palette-shades"></div>
+  <div class="esc-palette-divider"></div>
+  <div class="esc-palette-title">Standard Colors</div>
+  <div id="escPaletteStandard" class="esc-palette-row-standard"></div>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
 <script src="app.js?v=v130-clean-svg"></script>
@@ -227,7 +247,7 @@ document.getElementById("printDrawing")?.addEventListener("click",()=>window.pri
  const themeBtn=document.getElementById('themeToggle'), gridBtn=document.getElementById('gridToggle');
  let theme=window.__escSafeStorage.getItem('esim-theme')||'dark';
  let grid=window.__escSafeStorage.getItem('esim-grid')!=='off';
- function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);if(themeBtn)themeBtn.setAttribute('aria-pressed',String(theme==='light'));if(gridBtn){gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}const tt=document.getElementById('settingsThemeToggle'),ts=document.getElementById('settingsThemeState'),gt=document.getElementById('settingsGridToggle'),gs=document.getElementById('settingsGridState');if(tt)tt.checked=theme==='light';if(ts)ts.textContent=theme==='light'?'Light':'Dark';if(gt)gt.checked=grid;if(gs)gs.textContent=grid?'On':'Off';}
+ function render(){body.classList.toggle('theme-light',theme==='light');body.classList.toggle('theme-dark',theme==='dark');sheet.classList.toggle('grid-off',!grid);body.classList.toggle('grid-disabled',!grid);if(themeBtn){themeBtn.setAttribute('aria-pressed',String(theme==='light'));themeBtn.classList.toggle('active',theme==='light');const ti=document.getElementById('themeToggleIcon');if(ti)ti.textContent=theme==='light'?'☾':'☀';themeBtn.title=theme==='light'?'Theme: Light Mode (Click for Dark Mode)':'Theme: Dark Mode (Click for Light Mode)';}if(gridBtn){gridBtn.setAttribute('aria-pressed',String(grid));gridBtn.classList.toggle('active',grid);}}
  themeBtn?.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';window.__escSafeStorage.setItem('esim-theme',theme);render()});
  const settingsBtn=document.getElementById('settingsBtn'), settingsPanel=document.getElementById('escSettingsPopover');
  if(settingsBtn&&settingsPanel){
@@ -617,9 +637,11 @@ document.querySelectorAll(".top nav button").forEach(button => {
  let enabled=window.__escSafeStorage.getItem(KEY)!=='off';
  toggle.checked=enabled;
  const label=toggle.closest('.zoom-panel-setting')?.querySelector('.zoom-panel-state');
- const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';};
+ const zoomControlsEl=document.getElementById('workspaceZoomControls');
+ const syncZoomPanelVisibility=()=>{if(zoomControlsEl)zoomControlsEl.style.display=toggle.checked?'flex':'none';};
+ const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';syncZoomPanelVisibility();};
  const setWorkspaceZoom=on=>window.dispatchEvent(new CustomEvent('esc-zoom-mode-change',{detail:{enabled:on}}));
- toggle.addEventListener('change',()=>{enabled=toggle.checked;window.__escSafeStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON • DOUBLE-CLICK A LIBRARY COMPONENT':'ZOOM PANEL OFF • NORMAL COMPONENT SIZE';});
+ toggle.addEventListener('change',()=>{enabled=toggle.checked;window.__escSafeStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON':'ZOOM PANEL OFF';});
  setLabel();
  host.addEventListener('dblclick',e=>{
    const btn=e.target.closest('.symbol-btn');if(!btn)return;
@@ -1088,65 +1110,318 @@ document.querySelectorAll(".top nav button").forEach(button => {
  if(!svg||!layer)return;
  const $=id=>document.getElementById(id);
  const isDark=()=>document.body.classList.contains('theme-light')===false;
- const colorInput=$('escComponentColor'), settings=$('escSettingsPopover');
- const colourLabel=colorInput?.closest('.esc-color-setting')?.querySelector('span');if(colourLabel)colourLabel.textContent='Component / Wire colour';
- // One unified appearance section: one colour picker for components and wires.
- const sections=[...document.querySelectorAll('.settings-section-label')];
- const appearance=sections.find(x=>/Component Appearance/i.test(x.textContent));
- if(appearance){
-   appearance.textContent='Component / Wire Colour';
-   const next=appearance.nextElementSibling;
-   if(next?.id!=='escDefaultColourRow' && next?.classList.contains('esc-color-setting')) next.remove();
-   const border=$('escBorderColor')?.closest('.esc-color-setting'); if(border)border.remove();
+
+ // Exact Theme Colors & Standard Colors from Image 3 / Image 4
+ const THEME_BASE_COLORS = [
+   '#ffffff', '#000000', '#e7e6e6', '#1f3864', '#1f4e79',
+   '#ed7d31', '#275317', '#0099cc', '#993399', '#548235'
+ ];
+ const THEME_SHADE_ROWS = [
+   ['#f2f2f2', '#7f7f7f', '#d0cece', '#d9e1f2', '#bdd7ee', '#fce4d6', '#e2efda', '#d6f5ff', '#f2d9f2', '#e2efda'],
+   ['#d9d9d9', '#595959', '#aeaaaa', '#b4c6e7', '#9bc2e6', '#f8cbad', '#c6e0b4', '#99e6ff', '#e6b3e6', '#c5e0b4'],
+   ['#bfbfbf', '#3f3f3f', '#757171', '#8ea9db', '#2f75b5', '#f4b084', '#a9d08e', '#33ccff', '#cc66cc', '#a9d18e'],
+   ['#a6a6a6', '#262626', '#3a3838', '#2f5597', '#1e4e79', '#c65911', '#1e4112', '#007399', '#732673', '#385723'],
+   ['#7f7f7f', '#0c0c0c', '#171616', '#1f3864', '#13324d', '#833c0c', '#142b0c', '#004d66', '#4d194d', '#273c18']
+ ];
+ const STANDARD_COLORS = [
+   '#c00000', '#ff0000', '#ffc000', '#ffff00', '#92d050',
+   '#00b050', '#00b0f0', '#0070c0', '#002060', '#7030a0'
+ ];
+
+ // Default IEC / RYB standard colour map
+ const getIecDefaultColours = (dark = isDark()) => ({
+   l1: '#ff0000',        // IEC/RYB Phase L1 (Red)
+   l2: '#ffc000',        // IEC/RYB Phase L2 (Yellow/Amber)
+   l3: '#0070c0',        // IEC/RYB Phase L3 (Blue)
+   l:  '#ff0000',        // Single Phase Line L (Red)
+   n:  '#00b0f0',        // IEC Neutral N (Blue / Light Blue)
+   pe: '#00b050',        // IEC Protective Earth PE (Green)
+   pos: '#ff0000',       // DC Positive +VE (Red)
+   neg: '#0070c0',       // DC Negative -VE (Blue)
+   wire: dark ? '#ffffff' : '#000000',
+   component: dark ? '#ffffff' : '#000000'
+ });
+
+ const STORAGE_KEY = 'esc-iec-multi-colours-v1';
+ const USE_DEFAULT_KEY = 'esc-use-default-colour-v2';
+ const defaultToggle = $('escDefaultColour');
+ if (defaultToggle) {
+   const savedUse = window.__escSafeStorage.getItem(USE_DEFAULT_KEY);
+   defaultToggle.checked = savedUse === null ? true : (savedUse === 'true');
  }
- if(settings&&!$('escDefaultColourRow')){
-   const row=document.createElement('label');row.id='escDefaultColourRow';row.className='zoom-panel-setting';
-   row.innerHTML='<span>Use selected colour as default</span><input id="escDefaultColour" type="checkbox" aria-label="Use selected colour as default">';
-   appearance?.insertAdjacentElement('afterend',row);
+
+ let userColours = getIecDefaultColours();
+ try {
+   const raw = window.__escSafeStorage.getItem(STORAGE_KEY);
+   if (raw) {
+     const parsed = JSON.parse(raw);
+     if (parsed && typeof parsed === 'object') {
+       userColours = { ...userColours, ...parsed };
+     }
+   }
+ } catch (_) {}
+
+ const saveUserColours = () => {
+   try { window.__escSafeStorage.setItem(STORAGE_KEY, JSON.stringify(userColours)); } catch (_) {}
+ };
+
+ // Pole-specific SVG element selectors for all 10 Power/Source components
+ const SOURCE_POLE_SELECTORS = {
+   'earth_ground.svg': { pe: ['#svg_25', '#svg_10', '#svg_g1', '#svg_g2', '#svg_g3'] },
+   'earth_pe.svg': { pe: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
+   'source_dc_positive.svg': { pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'] },
+   'source_dc_negative.svg': { neg: ['#svg_11', '#svg_8', '#svg_10', '#svg_25'] },
+   'source_dc_supply_pair.svg': {
+     pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'],
+     neg: ['#svg_33', '#svg_31', '#svg_32', '#svg_30']
+   },
+   'terminal_l1_l2_l3.svg': {
+     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
+     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
+     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1']
+   },
+   'terminal_l1_l2_l3_n.svg': {
+     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
+     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
+     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1'],
+     n:  ['#svg_c4', '#svg_t4', '#svg_s4', '#svg_8']
+   },
+   'terminal_phase_l.svg': { l: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
+   'terminal_neutral_n.svg': { n: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
+   'ac_to_dc_power_supply.svg': {
+     l:   ['#svg_term_l', '#svg_1', '#svg_11'],
+     n:   ['#svg_term_n', '#svg_2', '#svg_12'],
+     pe:  ['#svg_term_pe', '#svg_3', '#svg_13'],
+     pos: ['#svg_term_pos', '#svg_4', '#svg_14'],
+     neg: ['#svg_term_neg', '#svg_5', '#svg_15']
+   }
+ };
+
+ function getEffectiveColours() {
+   const themeFallback = isDark() ? '#ffffff' : '#000000';
+   if (defaultToggle && !defaultToggle.checked) {
+     return {
+       l1: themeFallback, l2: themeFallback, l3: themeFallback,
+       l: themeFallback, n: themeFallback, pe: themeFallback,
+       pos: themeFallback, neg: themeFallback,
+       wire: themeFallback, component: themeFallback
+     };
+   }
+   return { ...getIecDefaultColours(), ...userColours };
  }
- const defaultToggle=$('escDefaultColour');
- if(defaultToggle)defaultToggle.checked=window.__escSafeStorage.getItem('esc-use-default-colour-v1')==='true';
- const activeColor=()=>{if(defaultToggle?.checked){const saved=window.__escSafeStorage.getItem('esc-default-component-colour-v1');if(saved)return saved;}return isDark()?'#ffffff':'#000000';};
- const tint=(g,color)=>{
-   if(!g||!color)return;
-   if(document.body.classList.contains('live')&&(g.classList.contains('sim-energized')||g.classList.contains('sim-fuse-blown')||g.classList.contains('sim-fault-tripped')||g.classList.contains('motor-rotating-cw')||g.classList.contains('motor-rotating-ccw')||g.classList.contains('motor-secondary-open-warn')||g.classList.contains('motor-mode-star')||g.classList.contains('motor-mode-delta')))return;
+ window.getEscEffectiveColours = getEffectiveColours;
+
+ const activeColor = () => getEffectiveColours().component;
+
+ function updateSwatchButtonsUI() {
+   const eff = getEffectiveColours();
+   document.querySelectorAll('#escSettingsPopover .esc-colour-swatch-btn').forEach(btn => {
+     const k = btn.dataset.colorKey;
+     const fill = btn.querySelector('.swatch-fill');
+     if (fill && k && eff[k]) {
+       fill.style.background = eff[k];
+     }
+   });
+ }
+
+ function tintComponent(g, eff) {
+   if (!g || !eff) return;
+   const compColor = eff.component || (isDark() ? '#ffffff' : '#000000');
+   g.style.setProperty('--comp-stroke-color', compColor);
+   g.dataset.workspaceColor = compColor;
+
    const artSvg = g.querySelector(':scope > svg:not(.select-box)');
-   if(!artSvg) return;
-   artSvg.querySelectorAll('path,line,polyline,polygon,rect,circle,ellipse').forEach(el=>{
-     if(el.closest('.sim-motor-rotor-group')||el.classList.contains('svg-terminal-node'))return;
-     const st=el.getAttribute('stroke'),fi=el.getAttribute('fill'),sw=el.getAttribute('stroke-width');
-     if(st&&st!=='none'&&st!=='transparent'&&sw!=='0')el.setAttribute('stroke',color);
-     if(fi&&fi!=='none'&&fi!=='transparent')el.setAttribute('fill',color);
-   });
-   artSvg.querySelectorAll('text,tspan').forEach(el=>{
-     if(el.closest('.sim-motor-rotor-group'))return;
-     el.setAttribute('fill',color);
-   });
-   g.dataset.workspaceColor=color;
- };
- const applyColours=()=>{
-   const c=activeColor();
-   layer.querySelectorAll('.dropped-symbol').forEach(g=>tint(g,c));
-   document.querySelectorAll('#wireLayer .connected-wire,#wireLayer .wire').forEach(w=>{if(document.body.classList.contains('live')){w.style.removeProperty('stroke');return;}w.style.stroke=c;w.setAttribute('stroke',c);});
- };
- if(colorInput){
-   const saved=window.__escSafeStorage.getItem('esc-default-component-colour-v1');
-   colorInput.value=(defaultToggle?.checked&&saved)?saved:(isDark()?'#ffffff':'#000000');
-   colorInput.addEventListener('input',()=>{
-     if(defaultToggle?.checked)window.__escSafeStorage.setItem('esc-default-component-colour-v1',colorInput.value);
-     applyColours();
-   });
+   if (!artSvg) return;
+
+   // First clear any previous pole overrides
+   artSvg.querySelectorAll('[style*="--pole-color"]').forEach(el => el.style.removeProperty('--pole-color'));
+
+   // Apply pole-specific colours for Power/Source symbols (L1, L2, L3, L, N, PE, +VE, -VE)
+   const asset = (typeof getAssetBasename === 'function')
+     ? getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '')
+     : String(g.dataset.symbolFile || '').split('/').pop().toLowerCase().replace(/\s*\(\d+\)(?=\.svg$)/i, '');
+   const poleMap = SOURCE_POLE_SELECTORS[asset];
+   if (poleMap) {
+     Object.entries(poleMap).forEach(([poleKey, selectors]) => {
+       const pColor = eff[poleKey];
+       if (!pColor) return;
+       selectors.forEach(sel => {
+         const el = artSvg.querySelector(sel);
+         if (el) el.style.setProperty('--pole-color', pColor);
+       });
+     });
+   }
  }
- defaultToggle?.addEventListener('change',()=>{
-   window.__escSafeStorage.setItem('esc-use-default-colour-v1',String(defaultToggle.checked));
-   if(defaultToggle.checked&&colorInput)window.__escSafeStorage.setItem('esc-default-component-colour-v1',colorInput.value);
-   else if(colorInput)colorInput.value=isDark()?'#ffffff':'#000000';
+
+ let isApplyingColours = false;
+ function applyColours() {
+   if (isApplyingColours) return;
+   isApplyingColours = true;
+   try {
+     const eff = getEffectiveColours();
+     const root = document.documentElement;
+     root.style.setProperty('--esc-color-l1', eff.l1);
+     root.style.setProperty('--esc-color-l2', eff.l2);
+     root.style.setProperty('--esc-color-l3', eff.l3);
+     root.style.setProperty('--esc-color-l', eff.l);
+     root.style.setProperty('--esc-color-n', eff.n);
+     root.style.setProperty('--esc-color-pe', eff.pe);
+     root.style.setProperty('--esc-color-pos', eff.pos);
+     root.style.setProperty('--esc-color-neg', eff.neg);
+     root.style.setProperty('--esc-wire-color', eff.wire);
+     root.style.setProperty('--esc-comp-color', eff.component);
+
+     // Wire conductor colours in Edit mode follow L1/L2/L3/L/N/PE/+VE/-VE when default colours are enabled
+     root.style.setProperty('--esc-color-l1-wire', eff.l1);
+     root.style.setProperty('--esc-color-l2-wire', eff.l2);
+     root.style.setProperty('--esc-color-l3-wire', eff.l3);
+     root.style.setProperty('--esc-color-l-wire', eff.l);
+     root.style.setProperty('--esc-color-n-wire', eff.n);
+     root.style.setProperty('--esc-color-pe-wire', eff.pe);
+     root.style.setProperty('--esc-color-pos-wire', eff.pos);
+     root.style.setProperty('--esc-color-neg-wire', eff.neg);
+
+     layer.querySelectorAll('.dropped-symbol').forEach(g => tintComponent(g, eff));
+     if (typeof window.updateWireConductorIdentification === 'function') {
+       window.updateWireConductorIdentification(window.__escLastNodePotentials);
+     }
+     updateSwatchButtonsUI();
+   } finally {
+     isApplyingColours = false;
+   }
+ }
+ window.applyEscWorkspaceColours = applyColours;
+
+ // Build the Image 3 / Image 4 Theme Colors & Standard Colors Palette Popup
+ const palettePopup = $('escColorPalettePopup');
+ const baseRowEl = $('escPaletteThemeBase');
+ const shadesGridEl = $('escPaletteThemeShades');
+ const stdRowEl = $('escPaletteStandard');
+ let activeSwatchKey = null;
+ let activeSwatchBtn = null;
+
+ function makeCell(hex) {
+   const btn = document.createElement('button');
+   btn.type = 'button';
+   btn.className = 'esc-palette-cell';
+   btn.dataset.hex = hex.toLowerCase();
+   btn.title = hex.toUpperCase();
+   btn.setAttribute('aria-label', 'Color ' + hex.toUpperCase());
+   btn.style.background = hex;
+   return btn;
+ }
+
+ if (baseRowEl && shadesGridEl && stdRowEl) {
+   baseRowEl.replaceChildren(...THEME_BASE_COLORS.map(makeCell));
+   const shadeCells = [];
+   THEME_SHADE_ROWS.forEach(row => row.forEach(hex => shadeCells.push(makeCell(hex))));
+   shadesGridEl.replaceChildren(...shadeCells);
+   stdRowEl.replaceChildren(...STANDARD_COLORS.map(makeCell));
+ }
+
+ function closePalettePopup() {
+   if (!palettePopup) return;
+   palettePopup.classList.remove('open');
+   palettePopup.setAttribute('aria-hidden', 'true');
+   activeSwatchKey = null;
+   activeSwatchBtn = null;
+ }
+
+ function openPaletteForSwatch(btn) {
+   if (!palettePopup || !btn) return;
+   const key = btn.dataset.colorKey;
+   if (palettePopup.classList.contains('open') && activeSwatchBtn === btn) {
+     closePalettePopup();
+     return;
+   }
+   activeSwatchKey = key;
+   activeSwatchBtn = btn;
+   const curHex = (getEffectiveColours()[key] || '').toLowerCase();
+   palettePopup.querySelectorAll('.esc-palette-cell').forEach(c => {
+     c.classList.toggle('active-color', c.dataset.hex === curHex);
+   });
+   palettePopup.classList.add('open');
+   palettePopup.setAttribute('aria-hidden', 'false');
+
+   const rect = btn.getBoundingClientRect();
+   const popW = 236, popH = 248;
+   let left = rect.left - popW + rect.width;
+   if (left < 10) left = Math.min(window.innerWidth - popW - 10, rect.left);
+   let top = rect.bottom + 6;
+   if (top + popH > window.innerHeight - 10) {
+     top = Math.max(10, rect.top - popH - 6);
+   }
+   palettePopup.style.left = Math.round(left) + 'px';
+   palettePopup.style.top = Math.round(top) + 'px';
+ }
+
+ document.querySelectorAll('#escSettingsPopover .esc-colour-swatch-btn').forEach(btn => {
+   btn.addEventListener('click', e => {
+     e.preventDefault();
+     e.stopPropagation();
+     openPaletteForSwatch(btn);
+   });
+ });
+
+ palettePopup?.addEventListener('click', e => {
+   e.stopPropagation();
+   const cell = e.target.closest('.esc-palette-cell');
+   if (!cell || !activeSwatchKey) return;
+   const chosen = cell.dataset.hex;
+   userColours[activeSwatchKey] = chosen;
+   if (activeSwatchKey === 'wire' || activeSwatchKey === 'component') {
+     userColours[activeSwatchKey + 'Custom'] = true;
+   }
+   if (defaultToggle && !defaultToggle.checked) {
+     defaultToggle.checked = true;
+     window.__escSafeStorage.setItem(USE_DEFAULT_KEY, 'true');
+   }
+   saveUserColours();
+   applyColours();
+   const st = $('state');
+   if (st) st.textContent = `COLOUR UPDATED • ${activeSwatchKey.toUpperCase()} → ${chosen.toUpperCase()}`;
+   closePalettePopup();
+ });
+
+ $('escResetColoursBtn')?.addEventListener('click', e => {
+   e.preventDefault();
+   e.stopPropagation();
+   userColours = getIecDefaultColours(isDark());
+   if (defaultToggle) {
+     defaultToggle.checked = true;
+     window.__escSafeStorage.setItem(USE_DEFAULT_KEY, 'true');
+   }
+   saveUserColours();
+   applyColours();
+   closePalettePopup();
+   const st = $('state');
+   if (st) st.textContent = 'COLOURS RESET TO IEC STANDARD (RYB, N, PE, +VE, -VE)';
+ });
+
+ defaultToggle?.addEventListener('change', () => {
+   window.__escSafeStorage.setItem(USE_DEFAULT_KEY, String(defaultToggle.checked));
    applyColours();
  });
- const colourObserver=new MutationObserver(()=>applyColours());
- colourObserver.observe(layer,{childList:true,subtree:true});
- const themeObserver=new MutationObserver(()=>{if(!defaultToggle?.checked&&colorInput)colorInput.value=isDark()?'#ffffff':'#000000';applyColours();});
- themeObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
+
+ document.addEventListener('click', e => {
+   if (palettePopup?.classList.contains('open') && !palettePopup.contains(e.target) && !e.target.closest('.esc-colour-swatch-btn')) {
+     closePalettePopup();
+   }
+ });
+
+ const colourObserver = new MutationObserver(() => applyColours());
+ colourObserver.observe(layer, { childList: true });
+ const wireLayerEl = document.getElementById('wireLayer');
+ if (wireLayerEl) colourObserver.observe(wireLayerEl, { childList: true });
+
+ const themeObserver = new MutationObserver(() => {
+   const dark = isDark();
+   if (!userColours.wireCustom) userColours.wire = dark ? '#ffffff' : '#000000';
+   if (!userColours.componentCustom) userColours.component = dark ? '#ffffff' : '#000000';
+   applyColours();
+ });
+ themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
  function selectText(g){layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));g.classList.add('selected-text');window.__escSelectedDrawingText=g;}
  function moveOf(g){const m=/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/.exec(g.getAttribute('transform')||'');return {x:m?+m[1]:0,y:m?+m[2]:0};}
  function textBounds(g){
@@ -1177,8 +1452,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
  function beginEdit(g){
    finishEdit(true);ensureEditorTools();editTarget=g;window.__escEditingText=g;g.classList.add('editing-text');
    const t=g.querySelector('text.drawing-text'), pos=moveOf(g);
-   // The textarea is the live typing surface. Hide the SVG copy while editing
-   // so each character is rendered only once; restore it on Done/blur.
    t.style.visibility='hidden';
    const screen=svg.createSVGPoint();screen.x=pos.x;screen.y=pos.y;
    const p=screen.matrixTransform(svg.getScreenCTM());
@@ -1224,7 +1497,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
  }
  window.createDrawingTextAt=createTextAt;
  layer.querySelectorAll('.drawing-text-object').forEach(enableText);
- // Single click on Text immediately places a transparent editing area at the viewport centre.
  $('insertTextBtn')?.addEventListener('click',e=>{
    e.preventDefault();e.stopImmediatePropagation();
    const vb=svg.viewBox.baseVal;createTextAt(vb.x+vb.width/2-150,vb.y+115);
@@ -1236,7 +1508,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
    const r=(+(g.dataset.rotation||0)+90)%360;g.dataset.rotation=String(r);
    const p=moveOf(g);g.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${r})`);textBounds(g);
  });
- // Delete selected text with the toolbar or keyboard, without changing component delete behaviour.
  const deleteBtn=$('delete');
  const deleteSelectedDrawingText=e=>{
    const g=window.__escSelectedDrawingText;
@@ -1244,7 +1515,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
    finishEdit(false);g.remove();window.__escSelectedDrawingText=null;
  };
- // Delete text on pointerdown before editor blur can race the toolbar action.
  deleteBtn?.addEventListener('pointerdown',deleteSelectedDrawingText,true);
  deleteBtn?.addEventListener('click',deleteSelectedDrawingText,true);
  document.addEventListener('keydown',e=>{
@@ -1260,8 +1530,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
  .esc-text-entry{position:fixed;z-index:100000;width:300px;min-height:38px;resize:none;background:transparent;border:0;outline:none;caret-color:#ffff00;padding:2px 4px;line-height:1.25;white-space:pre-wrap;overflow:hidden;font-family:Arial,sans-serif}
  #escTextEditorTools{display:none;position:fixed;z-index:100001;align-items:center;gap:8px;padding:7px;background:#10243a;border:1px solid #168dff;border-radius:8px;color:#fff;font:12px Arial}
  #escTextEditorTools label{display:flex;align-items:center;gap:4px}#escTextEditorTools input[type=number]{width:55px}#escTextEditorTools button{background:#00bfae;border:0;border-radius:5px;padding:6px 10px;color:#001}
- `;
- style.textContent+=' body.theme-light .drawing-text-object.editing-text .drawing-text-hit{stroke:#000000} body.theme-light .esc-text-entry{border-color:#000000;caret-color:#000000}';document.head.appendChild(style);applyColours();
+ body.theme-light .drawing-text-object.editing-text .drawing-text-hit{stroke:#000000} body.theme-light .esc-text-entry{border-color:#000000;caret-color:#000000}`;
+ document.head.appendChild(style);
+ applyColours();
 })();
 </script>
 
