@@ -3498,3 +3498,10 @@ body.theme-light.live #schematic #dropLayer .dropped-symbol .port-name {
   fill: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
   color: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
 }
+
+
+/* Ensure existing wire segments are easily selectable and draggable in Edit mode */
+body:not(.live) #schematic #wireLayer .connected-wire {
+  pointer-events: stroke !important;
+  cursor: move !important;
+}

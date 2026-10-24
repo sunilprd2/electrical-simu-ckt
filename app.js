@@ -979,6 +979,98 @@ function computeWirePoints(fromPort, toPort, waypoints = []) {
 }
 window.computeWirePoints = computeWirePoints;
 
+/* Click to Connect Mode Wire Router:
+   - If the two terminals are aligned horizontally (|ay - by| <= 2) or vertically (|ax - bx| <= 2),
+     no 3-route option or 90-degree bend is needed: returns a direct 1-segment straight line.
+   - If the two terminals are misaligned (|ax - bx| > 2 and |ay - by| > 2),
+     3-route option occurs: returns 3 orthogonal segments with two 90-degree bends (VHV or HVH).
+   - If a component is dragged into aligned position, automatically straightens with no 90-degree bend. */
+function computeClickToConnectRoute(fromPort, toPort, customMid = null, customOrient = null) {
+  if (!fromPort || !toPort) return { points: '', orient: 'VHV', mid: 0, aligned: false };
+  const ax = Math.round(fromPort.x * 100) / 100;
+  const ay = Math.round(fromPort.y * 100) / 100;
+  const bx = Math.round(toPort.x * 100) / 100;
+  const by = Math.round(toPort.y * 100) / 100;
+  const dx = Math.abs(bx - ax);
+  const dy = Math.abs(by - ay);
+
+  // Aligned horizontally or vertically -> straight 1-segment wire with no 90-degree bend
+  if ((dx <= 2 || dy <= 2) && (customMid === null || customMid === '')) {
+    return {
+      points: `${ax},${ay} ${bx},${by}`,
+      orient: dx <= 2 ? 'V' : 'H',
+      mid: dx <= 2 ? ax : ay,
+      aligned: true
+    };
+  }
+
+  const GRID = 10;
+  const snapG = v => Math.round(v / GRID) * GRID;
+  const fromSide = fromPort.side || '';
+  const toSide = toPort.side || '';
+  const fromVert = (fromSide === 'top' || fromSide === 'bottom');
+  const toVert = (toSide === 'top' || toSide === 'bottom');
+
+  let orient = customOrient;
+  if (orient !== 'HVH' && orient !== 'VHV') {
+    if (fromVert && toVert) {
+      orient = 'VHV';
+    } else if (!fromVert && !toVert && (fromSide === 'left' || fromSide === 'right' || toSide === 'left' || toSide === 'right')) {
+      orient = 'HVH';
+    } else {
+      orient = dy >= dx ? 'VHV' : 'HVH';
+    }
+  }
+
+  if (orient === 'HVH') {
+    let mx;
+    if (customMid !== null && customMid !== '' && Number.isFinite(Number(customMid))) {
+      mx = snapG(Number(customMid));
+    } else if (fromSide === 'right' && toSide === 'right') {
+      mx = snapG(Math.max(ax, bx) + 20);
+    } else if (fromSide === 'left' && toSide === 'left') {
+      mx = snapG(Math.min(ax, bx) - 20);
+    } else {
+      mx = snapG((ax + bx) / 2);
+      if (Math.abs(mx - ax) < 2 || Math.abs(mx - bx) < 2) {
+        mx = Math.round(((ax + bx) / 2) * 100) / 100;
+      }
+    }
+    return {
+      points: `${ax},${ay} ${mx},${ay} ${mx},${by} ${bx},${by}`,
+      orient: 'HVH',
+      mid: mx,
+      aligned: false
+    };
+  }
+
+  let my;
+  if (customMid !== null && customMid !== '' && Number.isFinite(Number(customMid))) {
+    my = snapG(Number(customMid));
+  } else if (fromSide === 'bottom' && toSide === 'bottom') {
+    my = snapG(Math.max(ay, by) + 20);
+  } else if (fromSide === 'top' && toSide === 'top') {
+    my = snapG(Math.min(ay, by) - 20);
+  } else {
+    my = snapG((ay + by) / 2);
+    if (Math.abs(my - ay) < 2 || Math.abs(my - by) < 2) {
+      my = Math.round(((ay + by) / 2) * 100) / 100;
+    }
+  }
+  return {
+    points: `${ax},${ay} ${ax},${my} ${bx},${my} ${bx},${by}`,
+    orient: 'VHV',
+    mid: my,
+    aligned: false
+  };
+}
+window.computeClickToConnectRoute = computeClickToConnectRoute;
+
+function computeClickToConnectPoints(fromPort, toPort, customMid = null, customOrient = null) {
+  return computeClickToConnectRoute(fromPort, toPort, customMid, customOrient).points;
+}
+window.computeClickToConnectPoints = computeClickToConnectPoints;
+
 function resolveComponentPort(g, portIndex, portLabel) {
   if (!g) return null;
   const ports = absolutePorts(g);
@@ -1007,11 +1099,38 @@ function refreshWiresForComponent(moved) {
     const a = resolveComponentPort(aG, wire.dataset.fromIndex, wire.dataset.from);
     const b = resolveComponentPort(bG, wire.dataset.toIndex, wire.dataset.to);
     if (!a || !b) continue;
+    const isAlignedNow = (Math.abs(a.x - b.x) <= 2 || Math.abs(a.y - b.y) <= 2);
+    if (targetUid || isAlignedNow) {
+      delete wire.dataset.waypoints;
+      delete wire.dataset.customPoints;
+      delete wire.dataset.orthoMid;
+      delete wire.dataset.orthoOrient;
+    }
+    if (wire.dataset.routingMode === 'click-to-connect') {
+      if (!targetUid && !isAlignedNow && wire.dataset.customPoints) {
+        wire.setAttribute('points', wire.dataset.customPoints);
+        continue;
+      }
+      const route = computeClickToConnectRoute(
+        a,
+        b,
+        (!targetUid && !isAlignedNow) ? wire.dataset.orthoMid : null,
+        (!targetUid && !isAlignedNow) ? wire.dataset.orthoOrient : null
+      );
+      wire.dataset.orthoOrient = route.orient;
+      wire.dataset.orthoMid = String(route.mid);
+      wire.setAttribute('points', route.points);
+      continue;
+    }
+    if (isAlignedNow && !wire.dataset.branchWireFixed) {
+      const ax = Math.round(a.x * 100) / 100, ay = Math.round(a.y * 100) / 100;
+      const bx = Math.round(b.x * 100) / 100, by = Math.round(b.y * 100) / 100;
+      wire.setAttribute('points', `${ax},${ay} ${bx},${by}`);
+      continue;
+    }
     let waypoints = [];
     if (!targetUid && wire.dataset.waypoints) {
       try { waypoints = JSON.parse(wire.dataset.waypoints) || []; } catch (_) {}
-    } else if (targetUid) {
-      delete wire.dataset.waypoints;
     }
     wire.setAttribute('points', computeWirePoints(a, b, waypoints));
   }
@@ -1115,14 +1234,18 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   window.selectedWire = null;
   window.__escWiringActive = false;
 
-  function isDragConnectMode() {
+  let lastPortDownTimestamp = 0;
+
+  function isClickToConnectMode() {
+    const toggleEl = document.getElementById('clickToConnectToggle');
+    if (toggleEl) return Boolean(toggleEl.checked);
     return Boolean(
-      window.__escDragConnectMode ||
-      document.body.classList.contains('drag-connect-mode') ||
-      document.getElementById('dragConnectBtn')?.classList.contains('active')
+      window.__escClickToConnectMode ||
+      document.body.classList.contains('click-to-connect-mode')
     );
   }
-  window.isDragConnectMode = isDragConnectMode;
+  window.isClickToConnectMode = isClickToConnectMode;
+  window.isDragConnectMode = isClickToConnectMode;
 
   function clearConnectTargets() {
     document.querySelectorAll('#dropLayer .mag-port.connect-target').forEach(el => el.classList.remove('connect-target'));
@@ -1136,6 +1259,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   function hideWireGuides() {
     guideX.style.display = 'none';
     guideY.style.display = 'none';
+    preview.setAttribute('points', '');
     preview.style.display = 'none';
     clearConnectTargets();
   }
@@ -1164,10 +1288,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
 
   function cancelActiveWiring(msg = 'WIRING CANCELLED') {
     if (activePort && activePort.el) {
-      activePort.el.classList.remove('port-active', 'selected');
+      activePort.el.classList.remove('port-active', 'port-selected', 'selected');
     }
-    document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.selected').forEach(el => {
-      el.classList.remove('port-active', 'selected');
+    document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.port-selected, #dropLayer .mag-port.selected').forEach(el => {
+      el.classList.remove('port-active', 'port-selected', 'selected');
     });
     activePort = null;
     window.__escWiringActive = false;
@@ -1176,8 +1300,19 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   }
   window.cancelActiveWiring = cancelActiveWiring;
 
-  function createWireConnection(fromPort, toPort, waypoints = []) {
+  function createWireConnection(fromPort, toPort, waypoints = [], modeOverride = null) {
     if (!fromPort || !toPort || !fromPort.g || !toPort.g) return null;
+    if (!fromPort.g.isConnected || !toPort.g.isConnected) return null;
+    if (fromPort.g === toPort.g && fromPort.index === toPort.index) return null;
+
+    const useClickToConnect = modeOverride
+      ? (modeOverride === 'click-to-connect')
+      : (fromPort.mode ? fromPort.mode === 'click-to-connect' : isClickToConnectMode());
+
+    if (useClickToConnect && fromPort.g === toPort.g) {
+      return null;
+    }
+
     if (!fromPort.g.dataset.uid) fromPort.g.dataset.uid = 'C' + Date.now().toString(36);
     if (!toPort.g.dataset.uid) toPort.g.dataset.uid = 'C' + Date.now().toString(36);
 
@@ -1186,7 +1321,28 @@ window.syncConnectedPortStates = syncConnectedPortStates;
 
     const line = document.createElementNS(NS, 'polyline');
     line.setAttribute('class', 'connected-wire');
-    line.setAttribute('points', computeWirePoints(freshFrom, freshTo, waypoints));
+
+    if (useClickToConnect) {
+      const route = computeClickToConnectRoute(freshFrom, freshTo);
+      line.setAttribute('points', route.points);
+      line.dataset.routingMode = 'click-to-connect';
+      line.dataset.orthoOrient = route.orient;
+      line.dataset.orthoMid = String(route.mid);
+    } else {
+      const isAligned = (!waypoints || !waypoints.length) && (Math.abs(freshFrom.x - freshTo.x) <= 2 || Math.abs(freshFrom.y - freshTo.y) <= 2);
+      if (isAligned) {
+        const ax = Math.round(freshFrom.x * 100) / 100, ay = Math.round(freshFrom.y * 100) / 100;
+        const bx = Math.round(freshTo.x * 100) / 100, by = Math.round(freshTo.y * 100) / 100;
+        line.setAttribute('points', `${ax},${ay} ${bx},${by}`);
+      } else {
+        line.setAttribute('points', computeWirePoints(freshFrom, freshTo, waypoints));
+      }
+      line.dataset.routingMode = 'default';
+      if (waypoints && waypoints.length) {
+        line.dataset.waypoints = JSON.stringify(waypoints);
+      }
+    }
+
     line.dataset.from = freshFrom.label;
     line.dataset.to = freshTo.label;
     line.dataset.fromIndex = String(freshFrom.index);
@@ -1195,9 +1351,6 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     line.dataset.toType = freshTo.g.dataset.type || '';
     line.dataset.fromG = freshFrom.g.dataset.uid;
     line.dataset.toG = freshTo.g.dataset.uid;
-    if (waypoints && waypoints.length) {
-      line.dataset.waypoints = JSON.stringify(waypoints);
-    }
 
     if (preview.parentNode === wireLayer) {
       wireLayer.insertBefore(line, preview);
@@ -1208,9 +1361,12 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     if (activePort && activePort.el) {
       activePort.el.classList.remove('port-active', 'selected');
     }
-    // Keep both connected terminal rectangles glowing (.port-connected-glow & .port-selected)
-    // so when the user clicks Terminal 1 (glows) and clicks/drags to Terminal 2, Terminal 2
-    // also glows as a rectangle and both are visibly connected by the wire!
+    document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.selected').forEach(el => {
+      el.classList.remove('port-active', 'selected');
+    });
+
+    // Keep both connected terminals glowing with the neon circle (.port-connected-glow & .port-selected)
+    // as in the early design!
     clearEndpointGlow();
     selectTerminal(null);
     if (freshFrom && freshFrom.el) {
@@ -1236,6 +1392,8 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   window.createWireConnection = createWireConnection;
 
   function startWiringFromPort(portInfo, pointerId = null) {
+    if (!portInfo || !portInfo.g || !portInfo.g.isConnected) return;
+    const clickConnect = isClickToConnectMode();
     selectWire(null);
     clearEndpointGlow();
     selectTerminal(portInfo, false);
@@ -1243,28 +1401,58 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       ...portInfo,
       waypoints: [],
       pointerId,
-      dragged: false
+      dragged: false,
+      mode: clickConnect ? 'click-to-connect' : 'default'
     };
     window.__escWiringActive = true;
     if (portInfo.el) {
       portInfo.el.classList.add('port-active', 'port-selected', 'selected');
     }
-    preview.setAttribute('points', `${portInfo.x},${portInfo.y} ${portInfo.x},${portInfo.y}`);
-    preview.style.display = 'block';
     const ref = portInfo.g.dataset.ref || portInfo.g.dataset.name || 'COMPONENT';
-    if (isDragConnectMode()) {
-      state.textContent = `DRAG CONNECT • ${ref}:${portInfo.label} • DRAG WIRE TO ANOTHER TERMINAL`;
+    if (clickConnect) {
+      // Click to Connect mode: terminal glows as starting point; user does not need to hold left mouse button.
+      preview.setAttribute('points', '');
+      preview.style.display = 'none';
+      guideX.style.display = 'none';
+      guideY.style.display = 'none';
+      state.textContent = `CLICK TO CONNECT • ${ref}:${portInfo.label} • CLICK ANOTHER COMPONENT TERMINAL TO CONNECT`;
     } else {
+      // Early wire connection system: live wire preview from starting terminal.
+      preview.setAttribute('points', `${portInfo.x},${portInfo.y} ${portInfo.x},${portInfo.y}`);
+      preview.style.display = 'block';
       state.textContent = `WIRE START • ${ref}:${portInfo.label} • CLICK ANOTHER TERMINAL TO CONNECT`;
     }
   }
 
-  // Default Click-to-Connect AND Drag-Connect support:
-  // - By default (Click-to-Connect): 1st click on a terminal makes that terminal rectangle glow
-  //   and starts the wire; 2nd click on another component terminal makes that terminal rectangle
-  //   also glow and connects both terminals with a wire.
-  // - When Drag Connect (#dragConnectBtn) is active: pressing on Terminal 1 and dragging the wire
-  //   directly to Terminal 2 connects them on release (pointerup).
+  function handlePortInteraction(hitPort, pointerId = null) {
+    if (!hitPort || !hitPort.g || !hitPort.g.isConnected) return false;
+    if (!activePort) {
+      justCompletedOnDown = false;
+      startWiringFromPort(hitPort, pointerId);
+      return true;
+    }
+
+    // Clicking the exact same starting terminal cancels active wiring
+    if (activePort.g === hitPort.g && activePort.index === hitPort.index) {
+      justCompletedOnDown = true;
+      clearEndpointGlow();
+      selectTerminal(null);
+      cancelActiveWiring('WIRING CANCELLED');
+      return true;
+    }
+
+    const clickConnect = (activePort.mode === 'click-to-connect') || isClickToConnectMode();
+    if (clickConnect && activePort.g === hitPort.g) {
+      justCompletedOnDown = true;
+      if (state) state.textContent = 'SELECT A TERMINAL ON ANOTHER COMPONENT';
+      return true;
+    }
+
+    justCompletedOnDown = true;
+    createWireConnection(activePort, hitPort, activePort.waypoints || [], clickConnect ? 'click-to-connect' : 'default');
+    return true;
+  }
+
   svgEl.addEventListener('pointerdown', e => {
     if (e.button !== 0 || running || document.body.classList.contains('live')) return;
     const hitPort = resolvePortFromEvent(e, 11);
@@ -1272,30 +1460,13 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       e.preventDefault();
       e.stopPropagation();
       if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-      if (!activePort) {
-        justCompletedOnDown = false;
-        startWiringFromPort(hitPort, e.pointerId);
-        return;
-      }
-
-      // activePort is already set: check if clicking the exact same terminal or a target terminal
-      if (activePort.g === hitPort.g && activePort.index === hitPort.index) {
-        justCompletedOnDown = true;
-        clearEndpointGlow();
-        selectTerminal(null);
-        cancelActiveWiring('WIRING CANCELLED');
-        return;
-      }
-
-      // Clicked a different terminal: complete the wire connection and glow both terminal rectangles!
-      justCompletedOnDown = true;
-      createWireConnection(activePort, hitPort, activePort.waypoints || []);
+      lastPortDownTimestamp = Date.now();
+      handlePortInteraction(hitPort, e.pointerId);
       return;
     }
 
-    // If actively wiring and user clicks on an existing wire segment, create a T-branch wire with a joint point!
-    if (activePort && typeof window.findNearestPointOnExistingWire === "function") {
+    // In Early Wire Connection mode: if actively wiring and user clicks on an existing wire segment, create a T-branch wire with a joint point!
+    if (activePort && activePort.mode !== 'click-to-connect' && !isClickToConnectMode() && typeof window.findNearestPointOnExistingWire === "function") {
       const wireHit = window.findNearestPointOnExistingWire(getPoint(e), 9);
       if (wireHit && wireHit.wire) {
         const targetG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${wireHit.wire.dataset.fromG}"]`);
@@ -1310,7 +1481,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
           const bSide = wireHit.isHorizontal
             ? (freshFrom.y <= wireHit.y ? "top" : "bottom")
             : (freshFrom.x <= wireHit.x ? "left" : "right");
-          const branchLine = createWireConnection(activePort, targetPort, wps);
+          const branchLine = createWireConnection(activePort, targetPort, wps, 'default');
           if (branchLine) {
             branchLine.dataset.branchWireFixed = "1";
             branchLine.dataset.branchX = String(wireHit.x);
@@ -1348,7 +1519,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     if (running || document.body.classList.contains('live')) return;
     const p = getPoint(e);
     if (!activePort) {
-      // Highlight nearest terminal rectangle on hover
+      // Highlight nearest terminal on hover
       clearConnectTargets();
       const hoverPort = resolvePortFromEvent(e, 10);
       if (hoverPort && hoverPort.el) hoverPort.el.classList.add('connect-target');
@@ -1358,16 +1529,29 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     activePort.x = freshStart.x;
     activePort.y = freshStart.y;
     activePort.side = freshStart.side;
+    if (freshStart.el) {
+      activePort.el = freshStart.el;
+      activePort.el.classList.add('port-active', 'port-selected', 'selected');
+    }
 
     if (Math.hypot(p.x - activePort.x, p.y - activePort.y) > 6) {
       activePort.dragged = true;
     }
 
     clearConnectTargets();
+    const clickConnect = (activePort.mode === 'click-to-connect') || isClickToConnectMode();
     const snapPort = findNearestTargetPort(p, activePort, 16);
-    if (snapPort && snapPort.el) {
+    if (snapPort && snapPort.el && (!clickConnect || snapPort.g !== activePort.g)) {
       snapPort.el.classList.add('connect-target');
     }
+
+    if (clickConnect) {
+      preview.style.display = 'none';
+      guideX.style.display = 'none';
+      guideY.style.display = 'none';
+      return;
+    }
+
     const target = snapPort || { x: p.x, y: p.y };
 
     const vb = svgEl.viewBox.baseVal;
@@ -1384,41 +1568,37 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     preview.style.display = 'block';
   });
 
-  // Drag-and-release from Terminal 1 directly onto Terminal 2 when Drag Connect tab (#dragConnectBtn) is active
+  // In Early Wire Connection mode: support drag-and-release from Terminal 1 directly onto Terminal 2
   window.addEventListener('pointerup', e => {
     if (justCompletedOnDown) {
       justCompletedOnDown = false;
       return;
     }
     if (!activePort) return;
-    // Only finish or cancel on pointerup when Drag Connect mode (#dragConnectBtn) is enabled!
-    // In Default Click-to-Connect mode, releasing after clicking Terminal 1 keeps Terminal 1 glowing
-    // so the user can move the pointer and click Terminal 2.
-    if (!isDragConnectMode()) return;
+    const clickConnect = (activePort.mode === 'click-to-connect') || isClickToConnectMode();
+    if (clickConnect) return;
 
     const targetPort = resolvePortFromEvent(e, 16) || (e.clientX != null ? findNearestTargetPort(getPoint(e), activePort, 16) : null);
     if (targetPort && (targetPort.g !== activePort.g || targetPort.index !== activePort.index)) {
       e.preventDefault();
       e.stopPropagation();
-      createWireConnection(activePort, targetPort, activePort.waypoints || []);
-      return;
-    }
-    if (activePort.dragged) {
-      clearEndpointGlow();
-      selectTerminal(null);
-      cancelActiveWiring('DRAG CONNECT • RELEASE ON ANOTHER COMPONENT TERMINAL TO CONNECT');
+      createWireConnection(activePort, targetPort, activePort.waypoints || [], 'default');
     }
   }, true);
 
-  // Left-click on empty canvas while wiring adds a user-defined cable bend (waypoint)
+  // Left-click on empty canvas while wiring in Early Wire Connection mode adds a user-defined cable bend (waypoint)
   svgEl.addEventListener('click', e => {
     const hitPort = resolvePortFromEvent(e, 12);
     if (hitPort) {
       e.preventDefault();
       e.stopPropagation();
+      if (Date.now() - lastPortDownTimestamp > 60) {
+        handlePortInteraction(hitPort, null);
+      }
       return;
     }
     if (!activePort) return;
+    if ((activePort.mode === 'click-to-connect') || isClickToConnectMode()) return;
     if (e.target.closest && (e.target.closest('.mag-port') || e.target.closest('.dropped-symbol'))) return;
     const p = getPoint(e);
     if (Math.hypot(p.x - activePort.x, p.y - activePort.y) < 10) return;
@@ -1793,7 +1973,7 @@ document.querySelectorAll('.top nav button').forEach(button=>{
   let lastPress={g:null, time:0};
   function point(e){ return getPoint(e); }
   layer.addEventListener('pointerdown', function(e){
-    if(e.button!==0 || running || document.body.classList.contains('live')) return;
+    if(e.button!==0 || running || document.body.classList.contains('live') || window.__escWiringActive) return;
     const target=e.target;
     if(target && target.closest && target.closest('.mag-port')) return;
     if(typeof window.resolvePortFromEvent==='function' && window.resolvePortFromEvent(e, 11)) return;
@@ -1831,21 +2011,58 @@ document.querySelectorAll('.top nav button').forEach(button=>{
     const g=drag.g;
     if(!g || !g.isConnected){drag=null;return;}
     const p=point(e);
-    let x = Math.round((p.x - drag.dx) / 12) * 12;
-    let y = Math.round((p.y - drag.dy) / 12) * 12;
+    const rawX = p.x - drag.dx;
+    const rawY = p.y - drag.dy;
+    let x = Math.round(rawX / 12) * 12;
+    let y = Math.round(rawY / 12) * 12;
     let bestDx = 19;
     document.querySelectorAll('#dropLayer .dropped-symbol').forEach(o => {
       if (o === g) return;
       const ox = Number(o.dataset.x || 0);
-      const d = Math.abs((p.x - drag.dx) - ox);
+      const d = Math.abs(rawX - ox);
       if (d < bestDx) { bestDx = d; x = ox; }
     });
+    // Also snap to exact terminal alignment (vertical or horizontal) with connected wire partner terminals
+    const gDefs = portsFor(g);
+    const uid = g.dataset.uid;
+    if (uid && gDefs.length) {
+      let bestTermDx = 14, bestTermDy = 14;
+      document.querySelectorAll('#wireLayer .connected-wire').forEach(w => {
+        let myIdx = null, otherUid = null, otherIdx = null, otherLbl = null;
+        if (w.dataset.fromG === uid) {
+          myIdx = Number(w.dataset.fromIndex);
+          otherUid = w.dataset.toG;
+          otherIdx = w.dataset.toIndex;
+          otherLbl = w.dataset.to;
+        } else if (w.dataset.toG === uid) {
+          myIdx = Number(w.dataset.toIndex);
+          otherUid = w.dataset.fromG;
+          otherIdx = w.dataset.fromIndex;
+          otherLbl = w.dataset.from;
+        }
+        if (myIdx === null || !otherUid) return;
+        const myDef = gDefs[myIdx] || gDefs[0];
+        const otherG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${otherUid}"]`);
+        const otherPort = otherG ? resolveComponentPort(otherG, otherIdx, otherLbl) : null;
+        if (!myDef || !otherPort) return;
+        const targetX = otherPort.x + 60 - myDef.lx;
+        const targetY = otherPort.y + 45 - myDef.ly;
+        const dtx = Math.abs(rawX - targetX);
+        const dty = Math.abs(rawY - targetY);
+        if (dtx < bestTermDx) { bestTermDx = dtx; x = Math.round(targetX * 100) / 100; }
+        if (dty < bestTermDy) { bestTermDy = dty; y = Math.round(targetY * 100) / 100; }
+      });
+    }
     if(Math.hypot(x-(+g.dataset.x||0),y-(+g.dataset.y||0))>0.5) {
       drag.moved=true;
       lastPress={g:null, time:0};
     }
     g.dataset.x=x; g.dataset.y=y;
-    applyComponentTransform(g,x,y);refreshWiresForComponent(g);
+    applyComponentTransform(g,x,y);
+    refreshWiresForComponent(g);
+    if (typeof window.updateSelectedTerminalAxes === 'function' && selected === g) {
+      window.updateSelectedTerminalAxes(g);
+    }
   }
   function finish(e){
     if(!drag || (e.pointerId!=null && e.pointerId!==drag.pointerId)) return;
@@ -3871,6 +4088,16 @@ syncConnectedPortStates();
     if (!a || !b) return;
     const snapX = Math.round(pt.x / 10) * 10;
     const snapY = Math.round(pt.y / 10) * 10;
+    if (w.dataset.routingMode === 'click-to-connect') {
+      const orient = w.dataset.orthoOrient === 'HVH' ? 'HVH' : 'VHV';
+      const midVal = orient === 'HVH' ? snapX : snapY;
+      const route = computeClickToConnectRoute(a, b, midVal, orient);
+      w.dataset.orthoOrient = route.orient;
+      w.dataset.orthoMid = String(route.mid);
+      w.dataset.customPoints = route.points;
+      w.setAttribute('points', route.points);
+      return;
+    }
     const waypoints = [{ x: snapX, y: snapY }];
     w.dataset.waypoints = JSON.stringify(waypoints);
     w.setAttribute('points', computeWirePoints(a, b, waypoints));
