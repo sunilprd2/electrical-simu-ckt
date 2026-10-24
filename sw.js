@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v145-settings-no-scroll';
+const CACHE='electrical-simu-ckt-v151-light-selected-blue';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=v145-settings-no-scroll',
-  './app.js?v=v145-settings-no-scroll',
+  './styles.css?v=v151-light-selected-blue',
+  './app.js?v=v151-light-selected-blue',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',

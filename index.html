@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v145-settings-no-scroll">
+<link rel="stylesheet" href="styles.css?v=v151-light-selected-blue">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -50,7 +50,7 @@ window.__escSafeStorage = (function(){
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
-      if (k !== 'electrical-simu-ckt-v145-settings-no-scroll') caches.delete(k);
+      if (k !== 'electrical-simu-ckt-v151-light-selected-blue') caches.delete(k);
     }));
   }
   if ('serviceWorker' in navigator) {
@@ -95,6 +95,10 @@ try {
   <div id="sheet">
     <svg id="schematic" viewBox="0 0 1200 760" aria-label="Electrical schematic">
       <defs>
+        <filter id="escLightSelectedComponentTint" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+          <feFlood flood-color="#006dff" result="selectedBlue"/>
+          <feComposite in="selectedBlue" in2="SourceAlpha" operator="in"/>
+        </filter>
         <pattern id="escMinorGrid" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" class="esc-grid-minor-line" fill="none" stroke-width="0.7"/>
         </pattern>
@@ -237,7 +241,7 @@ try {
   <div id="escPaletteStandard" class="esc-palette-row-standard"></div>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v145-settings-no-scroll"></script>
+<script src="app.js?v=v151-light-selected-blue"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){

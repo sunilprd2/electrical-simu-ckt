@@ -3780,3 +3780,101 @@ body.theme-light #escSettingsPopover .esc-text-setting-row { color:#e5eef8; }
     padding: 2px 6px !important;
   }
 }
+
+/* v146: Clear wire selection without glow; keep energized-wire colours separate. */
+#wireLayer .connected-wire.wire-selected,
+body.theme-dark #schematic #wireLayer .connected-wire.wire-selected,
+body.live #schematic #wireLayer .connected-wire.wire-selected.wire-live {
+  stroke: #00e5ff !important;
+  stroke-width: 3.2px !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+body.theme-light #schematic #wireLayer .connected-wire.wire-selected {
+  stroke: #006dff !important;
+  stroke-width: 3.2px !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+body.theme-light.live #schematic #wireLayer .connected-wire.wire-selected.wire-live {
+  stroke: #006dff !important;
+  stroke-width: 3.2px !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Keep light mode white and flat, with only a very subtle drafting grid. */
+body.theme-light #sheet,
+body.theme-light #schematic,
+body.theme-light .work {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+body.theme-light #sheet:not(.grid-off) {
+  background-color: #ffffff !important;
+  background-image:
+    linear-gradient(to right, #cbd2da 1px, transparent 1px),
+    linear-gradient(to bottom, #cbd2da 1px, transparent 1px),
+    linear-gradient(to right, #9eabb7 1px, transparent 1px),
+    linear-gradient(to bottom, #9eabb7 1px, transparent 1px) !important;
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px !important;
+}
+body.theme-light #sheet.grid-off,
+body.theme-light.grid-disabled #sheet {
+  background-image: none !important;
+}
+body.theme-light #sheet::before,
+body.theme-light #sheet::after {
+  display: none !important;
+  content: none !important;
+}
+body.theme-light #engineeringSheet .sheet-paper {
+  fill: #ffffff !important;
+  stroke: none !important;
+  filter: none !important;
+}
+body.theme-light #engineeringSheet .sheet-frame-lines {
+  display: none !important;
+}
+body.theme-light .esc-grid-minor-line {
+  stroke: #cbd2da !important;
+  stroke-width: 0.9px !important;
+}
+body.theme-light .esc-grid-major-line {
+  stroke: #9eabb7 !important;
+  stroke-width: 1.3px !important;
+}
+body.theme-light .top {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Light-mode selected components use blue so they remain visible on white. */
+body.theme-light #dropLayer .dropped-symbol.selected {
+  --esc-selected-component: #006dff !important;
+  --esc-selection-border: #006dff !important;
+}
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) path,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) line,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) circle,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) rect,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) polyline,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) polygon,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) ellipse {
+  stroke: #006dff !important;
+}
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) text,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) tspan,
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) [fill]:not([fill="none"]):not([fill="transparent"]) {
+  fill: #006dff !important;
+}
+body.theme-light #dropLayer .dropped-symbol.selected > svg:not(.select-box) image {
+  filter: url(#escLightSelectedComponentTint) !important;
+}
+body.theme-light #dropLayer .dropped-symbol.selected .svg-terminal-node {
+  fill: #006dff !important;
+}
