@@ -224,7 +224,7 @@ document.getElementById('play').onclick=()=>{
  if(motorResults.length && motorState) motorState.textContent='Motor: '+motorResults.join(' • ');
 };
 document.getElementById('stop').onclick=()=>{running=false;document.querySelectorAll('#dropLayer .device-on').forEach(g=>g.classList.remove('device-on'));document.querySelectorAll('#dropLayer .motor-rotating-cw, #dropLayer .motor-rotating-ccw, #dropLayer .motor-direction-unknown').forEach(g=>g.classList.remove('motor-rotating-cw','motor-rotating-ccw','motor-direction-unknown')); document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{w.classList.remove('wire-live','wire-dc-positive','wire-dc-negative','wire-l1','wire-l2','wire-l3','wire-neutral')});render()};
-const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>{if(state)state.textContent='2D SCHEMATIC WORKSPACE ACTIVE';};
+const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
 document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
@@ -749,23 +749,16 @@ function makeDropped(d, x, y) {
   ns.style.color = g.dataset.accent;
   ns.style.pointerEvents = 'none';
   if (d.symbolFile && /\.svg(?:$|\?)/i.test(d.symbolFile)) {
-    const inl = (typeof getSvgInlineEntry === 'function') ? getSvgInlineEntry(d.symbolFile) : null;
-    if (inl) {
-      ns.setAttribute('viewBox', inl.vb);
-      ns.classList.add('comp-inline-svg');
-      ns.innerHTML = inl.inner;
-    } else {
-      ns.setAttribute('viewBox', `0 0 ${vp.w} ${vp.h}`);
-      const im = document.createElementNS(NS, 'image');
-      im.setAttribute('href', d.symbolFile);
-      im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', d.symbolFile);
-      im.setAttribute('x', '0');
-      im.setAttribute('y', '0');
-      im.setAttribute('width', String(vp.w));
-      im.setAttribute('height', String(vp.h));
-      im.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      ns.appendChild(im);
-    }
+    ns.setAttribute('viewBox', `0 0 ${vp.w} ${vp.h}`);
+    const im = document.createElementNS(NS, 'image');
+    im.setAttribute('href', d.symbolFile);
+    im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', d.symbolFile);
+    im.setAttribute('x', '0');
+    im.setAttribute('y', '0');
+    im.setAttribute('width', String(vp.w));
+    im.setAttribute('height', String(vp.h));
+    im.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    ns.appendChild(im);
     g.classList.add('original-svg-component');
   } else {
     ns.setAttribute('viewBox', '0 0 48 32');
@@ -1184,10 +1177,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   window.cancelActiveWiring = cancelActiveWiring;
 
   function createWireConnection(fromPort, toPort, waypoints = []) {
-    if (!fromPort || !toPort) return null;
-    if (!fromPort.g && fromPort.el) fromPort = { ...fromPort, g: fromPort.el.closest('.dropped-symbol') };
-    if (!toPort.g && toPort.el) toPort = { ...toPort, g: toPort.el.closest('.dropped-symbol') };
-    if (!fromPort.g || !toPort.g) return null;
+    if (!fromPort || !toPort || !fromPort.g || !toPort.g) return null;
     if (!fromPort.g.dataset.uid) fromPort.g.dataset.uid = 'C' + Date.now().toString(36);
     if (!toPort.g.dataset.uid) toPort.g.dataset.uid = 'C' + Date.now().toString(36);
 
@@ -1197,13 +1187,6 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     const line = document.createElementNS(NS, 'polyline');
     line.setAttribute('class', 'connected-wire');
     line.setAttribute('points', computeWirePoints(freshFrom, freshTo, waypoints));
-    const effInit = (typeof window.getEscEffectiveColours === 'function') ? window.getEscEffectiveColours() : null;
-    const initWidth = (effInit && Number.isFinite(Number(effInit.wireWidth))) ? Number(effInit.wireWidth) : 2.2;
-    const initColor = (effInit && effInit.wire) ? effInit.wire : (document.body.classList.contains('theme-light') ? '#000000' : '#ffffff');
-    line.setAttribute('stroke-width', String(initWidth));
-    line.style.setProperty('stroke-width', `${initWidth}px`, 'important');
-    line.setAttribute('stroke', initColor);
-    line.style.setProperty('stroke', initColor, 'important');
     line.dataset.from = freshFrom.label;
     line.dataset.to = freshTo.label;
     line.dataset.fromIndex = String(freshFrom.index);
@@ -2166,9 +2149,6 @@ function upgradeComponentToInlineSvg(g) {
     const lblNode = ns.querySelector('#svg_13');
     if (lblNode) lblNode.textContent = `${pol} ${cType}`;
   }
-  if (typeof window.applyEscComponentAppearance === 'function') {
-    window.applyEscComponentAppearance(g);
-  }
 }
 window.upgradeComponentToInlineSvg = upgradeComponentToInlineSvg;
 
@@ -2429,16 +2409,65 @@ window.applyVisualSwitchPosition = applyVisualSwitchPosition;
 
 function updateStarDeltaInternalHighlight(motor, mode) {
   if (!motor) return;
+  upgradeComponentToInlineSvg(motor);
   const ns = motor.querySelector(':scope > svg:not(.select-box)');
-  const pill = ns ? ns.querySelector('#svg_sd_active_pill') : null;
-  if (pill) pill.remove();
+  if (!ns) return;
+  let pill = ns.querySelector('#svg_sd_active_pill');
+  const starEl = ns.querySelector('#svg_star_sym');
+  const slashEl = ns.querySelector('#svg_sd_slash');
+  const deltaEl = ns.querySelector('#svg_delta_sym');
+  if (!starEl || !deltaEl) {
+    if (pill) pill.remove();
+    return;
+  }
+  if (!mode || (mode !== 'STAR' && mode !== 'DELTA')) {
+    if (pill) pill.remove();
+    return;
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  if (!pill) {
+    pill = document.createElementNS(NS, 'rect');
+    pill.setAttribute('id', 'svg_sd_active_pill');
+    pill.setAttribute('width', '56');
+    pill.setAttribute('height', '52');
+    pill.setAttribute('rx', '12');
+    pill.setAttribute('fill', '#06281e');
+    pill.setAttribute('stroke', '#00e676');
+    pill.setAttribute('stroke-width', '4.5');
+    starEl.parentNode.insertBefore(pill, starEl);
+  }
+  const activeEl = mode === 'STAR' ? starEl : deltaEl;
+  const cx = parseFloat(activeEl.getAttribute('x') || (mode === 'STAR' ? '248' : '332'));
+  const cyBase = parseFloat(activeEl.getAttribute('y') || '394');
+  pill.setAttribute('x', String(Math.round(cx - 28)));
+  pill.setAttribute('y', String(Math.round(cyBase - 42)));
 }
 window.updateStarDeltaInternalHighlight = updateStarDeltaInternalHighlight;
 
 function ensureComponentSimBadge(g, text, badgeClass) {
-  if (!g) return;
-  const badge = g.querySelector(':scope > .sim-state-badge');
-  if (badge) badge.remove();
+  let badge = g.querySelector(':scope > .sim-state-badge');
+  if (!text) {
+    if (badge) badge.remove();
+    return;
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  const vp = getComponentViewport(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '');
+  const badgeY = (vp && vp.h > 70) ? Math.round(44.5 + vp.h / 2 + 14) : 84;
+  if (!badge) {
+    badge = document.createElementNS(NS, 'text');
+    badge.setAttribute('class', 'sim-state-badge');
+    badge.setAttribute('x', '60');
+    badge.setAttribute('y', String(badgeY));
+    badge.setAttribute('text-anchor', 'middle');
+    badge.setAttribute('font-size', '7.5');
+    badge.setAttribute('font-weight', '700');
+    badge.setAttribute('pointer-events', 'none');
+    g.appendChild(badge);
+  } else {
+    badge.setAttribute('y', String(badgeY));
+  }
+  badge.setAttribute('class', 'sim-state-badge ' + (badgeClass || ''));
+  badge.textContent = text;
 }
 
 function getInternalConductingPairs(g, effectiveState, sensorPowered = true) {
@@ -2540,43 +2569,21 @@ function getInternalConductingPairs(g, effectiveState, sensorPowered = true) {
 
 function getSourceTerminalPotentials(g, energizedConverters) {
   const asset = getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '');
-  if (asset === 'ac_to_dc_power_supply.svg' || asset === 'supply-acdc.svg') {
+  if (asset === 'ac_to_dc_power_supply.svg') {
     if (!energizedConverters || energizedConverters.has(g.dataset.uid)) {
       return { 3: ['POS'], 4: ['NEG'] };
     }
     return {};
   }
-  const mapByLabel = (lbl) => {
-    const u = String(lbl || '').trim().toUpperCase();
-    if (u === 'L1' || u === 'R') return 'L1';
-    if (u === 'L2' || u === 'Y') return 'L2';
-    if (u === 'L3' || u === 'B') return 'L3';
-    if (u === 'L' || u === 'LINE' || u === 'PHASE') return 'L';
-    if (u === 'N' || u === 'NEUTRAL') return 'N';
-    if (u === 'PE' || u === 'E' || u === 'GND' || u === 'EARTH') return 'PE';
-    if (u === '+' || u === '+VE' || u === 'POS' || u === 'DC+' || u === 'V+' || u === '+24V') return 'POS';
-    if (u === '-' || u === '−' || u === '-VE' || u === 'NEG' || u === 'DC-' || u === 'V-' || u === '0V') return 'NEG';
-    return '';
-  };
-  let baseMap = {};
-  if (asset === 'source_dc_positive.svg' || asset === 'dc_positive_pole.svg') baseMap = { 0: ['POS'] };
-  else if (asset === 'source_dc_negative.svg' || asset === 'dc_negative_pole.svg') baseMap = { 0: ['NEG'] };
-  else if (asset === 'source_dc_supply_pair.svg' || asset === 'dc_supply_pair.svg') baseMap = { 0: ['POS'], 1: ['NEG'] };
-  else if (asset === 'terminal_phase_l.svg' || asset === 'phase_l.svg') baseMap = { 0: ['L'] };
-  else if (asset === 'terminal_neutral_n.svg' || asset === 'neutral_n.svg') baseMap = { 0: ['N'] };
-  else if (asset === 'terminal_l1_l2_l3.svg' || asset === 'three_phase_l1_l2_l3.svg') baseMap = { 0: ['L1'], 1: ['L2'], 2: ['L3'] };
-  else if (asset === 'terminal_l1_l2_l3_n.svg' || asset === 'three_phase_with_neutral.svg') baseMap = { 0: ['L1'], 1: ['L2'], 2: ['L3'], 3: ['N'] };
-  else if (asset === 'earth_pe.svg' || asset === 'earth_ground.svg' || asset === 'protective_earth_pe.svg') baseMap = { 0: ['PE'] };
-
-  // Allow explicit terminal labels on source ports to refine mapping if customized
-  const ports = portsFor(g);
-  if (ports && ports.length) {
-    ports.forEach((p, idx) => {
-      const mapped = mapByLabel(p.label);
-      if (mapped) baseMap[idx] = [mapped];
-    });
-  }
-  return baseMap;
+  if (asset === 'source_dc_positive.svg') return { 0: ['POS'] };
+  if (asset === 'source_dc_negative.svg') return { 0: ['NEG'] };
+  if (asset === 'source_dc_supply_pair.svg') return { 0: ['POS'], 1: ['NEG'] };
+  if (asset === 'terminal_phase_l.svg') return { 0: ['L'] };
+  if (asset === 'terminal_neutral_n.svg') return { 0: ['N'] };
+  if (asset === 'terminal_l1_l2_l3.svg') return { 0: ['L1'], 1: ['L2'], 2: ['L3'] };
+  if (asset === 'terminal_l1_l2_l3_n.svg') return { 0: ['L1'], 1: ['L2'], 2: ['L3'], 3: ['N'] };
+  if (asset === 'earth_pe.svg' || asset === 'earth_ground.svg') return { 0: ['PE'] };
+  return {};
 }
 
 function hasEnergizingPotentialDiff(sA, sB) {
@@ -2608,10 +2615,48 @@ function hasShortCircuitConflict(potSet) {
 }
 
 function ensureMotorRotorOverlay(motor, runningDir) {
-  if (!motor) return;
+  upgradeComponentToInlineSvg(motor);
   const ns = motor.querySelector(':scope > svg:not(.select-box)');
-  const badge = ns ? ns.querySelector('.sim-motor-rotor-group') : null;
-  if (badge) badge.remove();
+  if (!ns) return;
+  let badge = ns.querySelector('.sim-motor-rotor-group');
+  if (!runningDir) {
+    if (badge) badge.remove();
+    return;
+  }
+  const vb = (ns.getAttribute('viewBox') || '0 0 450 480').trim().split(/[ ,]+/).map(Number);
+  let cx = (vb[0] || 0) + (vb[2] || 450) / 2;
+  let cy = (vb[1] || 0) + (vb[3] || 480) * 0.56;
+  let r = Math.min(vb[2] || 450, vb[3] || 480) * 0.24;
+  const mc = ns.querySelector('#svg_motor_circle');
+  if (mc) {
+    try {
+      const b = mc.getBBox();
+      const m = ns.getScreenCTM().inverse().multiply(mc.getScreenCTM());
+      const pCenter = new DOMPoint(b.x + b.width / 2, b.y + b.height / 2).matrixTransform(m);
+      const pEdge = new DOMPoint(b.x + b.width, b.y + b.height / 2).matrixTransform(m);
+      cx = Math.round(pCenter.x * 10) / 10;
+      cy = Math.round(pCenter.y * 10) / 10;
+      r = Math.round(Math.hypot(pEdge.x - pCenter.x, pEdge.y - pCenter.y) * 0.80 * 10) / 10;
+    } catch (_) {}
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  if (!badge) {
+    badge = document.createElementNS(NS, 'g');
+    badge.setAttribute('class', 'sim-motor-rotor-group');
+    ns.appendChild(badge);
+  }
+  badge.setAttribute('transform', `translate(${cx}, ${cy})`);
+  const spinClass = runningDir === 'CCW' ? 'sim-rotor-spin-ccw' : 'sim-rotor-spin-cw';
+  const ar = Math.round(r * 0.92);
+  // Red rotation-direction arrow along top arc indicating CW or CCW rotation
+  const dirArrowMarkup = runningDir === 'CCW'
+    ? `<path class="sim-motor-dir-arrow" d="M ${Math.round(ar * 0.55)} ${Math.round(-ar * 0.72)} A ${ar} ${ar} 0 0 0 ${Math.round(-ar * 0.55)} ${Math.round(-ar * 0.72)}" fill="none" stroke="#ff3030" stroke-width="12" stroke-linecap="round"/>
+       <polygon class="sim-motor-dir-head" points="${Math.round(-ar * 0.55)},${Math.round(-ar * 0.72)} ${Math.round(-ar * 0.22)},${Math.round(-ar * 0.96)} ${Math.round(-ar * 0.28)},${Math.round(-ar * 0.50)}" fill="#ff3030" stroke="none"/>`
+    : `<path class="sim-motor-dir-arrow" d="M ${Math.round(-ar * 0.55)} ${Math.round(-ar * 0.72)} A ${ar} ${ar} 0 0 1 ${Math.round(ar * 0.55)} ${Math.round(-ar * 0.72)}" fill="none" stroke="#ff3030" stroke-width="12" stroke-linecap="round"/>
+       <polygon class="sim-motor-dir-head" points="${Math.round(ar * 0.55)},${Math.round(-ar * 0.72)} ${Math.round(ar * 0.22)},${Math.round(-ar * 0.96)} ${Math.round(ar * 0.28)},${Math.round(-ar * 0.50)}" fill="#ff3030" stroke="none"/>`;
+  badge.innerHTML = `<g class="${spinClass}">
+    <circle class="sim-rotor-ring" cx="0" cy="0" r="${Math.round(r)}" fill="none" stroke="#22c55e" stroke-width="11" stroke-dasharray="${Math.round(r * 0.65)} ${Math.round(r * 0.48)}" stroke-linecap="round"/>
+  </g>${dirArrowMarkup}`;
 }
 
 // ============================================================================
@@ -2720,102 +2765,98 @@ function updateWireConductorIdentification(livePotentialsMap = window.__escLastN
   const comps = [...document.querySelectorAll('#dropLayer .dropped-symbol')];
   const wires = [...document.querySelectorAll('#wireLayer .connected-wire')];
   const keyOf = (uid, idx) => `${uid}:${idx}`;
-  const wireColourClasses = [
-    'wire-dc-positive', 'wire-dc-negative',
-    'wire-l1', 'wire-l2', 'wire-l3', 'wire-l',
-    'wire-neutral', 'wire-pe', 'wire-deenergized', 'wire-conflict'
-  ];
-  const eff = (typeof window.getEscEffectiveColours === 'function')
-    ? window.getEscEffectiveColours()
-    : {
-        l1: '#ff0000', l2: '#ffc000', l3: '#0070c0', l: '#ff0000',
-        n: '#00b0f0', pe: '#00b050', pos: '#ff0000', neg: '#0070c0',
-        wire: document.body.classList.contains('theme-light') ? '#000000' : '#ffffff',
-        wireWidth: 2.2
-      };
-  const wWidth = Number.isFinite(Number(eff.wireWidth)) ? Number(eff.wireWidth) : 2.2;
+  const wireColourClasses = ['wire-dc-positive', 'wire-dc-negative', 'wire-l1', 'wire-l2', 'wire-l3', 'wire-l', 'wire-neutral', 'wire-pe', 'wire-deenergized'];
 
-  // Before simulation starts (or after simulation stops):
-  // All wires strictly use the configured default wire colour (or per-wire userWireColor).
-  // Never apply L1/L2/L3 phase colours before simulation.
-  if (!running) {
-    wires.forEach(w => {
-      w.classList.remove('wire-live', ...wireColourClasses);
-      const baseColor = w.dataset.userWireColor || eff.wire;
-      w.setAttribute('stroke', baseColor);
-      w.style.setProperty('stroke', baseColor, 'important');
-      w.setAttribute('stroke-width', String(wWidth));
-      w.style.setProperty('stroke-width', `${wWidth}px`, 'important');
-    });
-    return;
-  }
-
-  // During simulation: trace each wire's electrical source from livePotentialsMap
-  let anyNetConflict = false;
+  // Build passive conductor identity map from sources + closed paths
+  const adj = new Map();
+  const addEdge = (a, b) => {
+    if (!adj.has(a)) adj.set(a, []);
+    if (!adj.has(b)) adj.set(b, []);
+    adj.get(a).push(b);
+    adj.get(b).push(a);
+  };
   wires.forEach(w => {
-    w.classList.remove('wire-live', ...wireColourClasses);
-    w.setAttribute('stroke-width', String(wWidth));
-    w.style.setProperty('stroke-width', `${wWidth}px`, 'important');
-
-    const fromG = w.dataset.fromG;
-    const toG = w.dataset.toG;
-    const aG = fromG ? document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`) : null;
-    const bG = toG ? document.querySelector(`#dropLayer .dropped-symbol[data-uid="${toG}"]`) : null;
-    const pA = aG ? resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from) : null;
-    const pB = bG ? resolveComponentPort(bG, w.dataset.toIndex, w.dataset.to) : null;
-
-    const netPots = new Set();
-    if (livePotentialsMap) {
-      if (fromG && pA) {
-        const sA = livePotentialsMap.get(keyOf(fromG, pA.index));
-        if (sA) sA.forEach(p => netPots.add(p));
-      }
-      if (toG && pB) {
-        const sB = livePotentialsMap.get(keyOf(toG, pB.index));
-        if (sB) sB.forEach(p => netPots.add(p));
-      }
-    }
-
-    // Check for conflicting sources on the same electrical net (e.g. L1+L2, Phase+N, POS+NEG, Phase+PE)
-    const isConflicting = hasShortCircuitConflict(netPots) || netPots.size > 1;
-    if (isConflicting) {
-      anyNetConflict = true;
-      w.classList.add('wire-conflict', 'wire-deenergized');
-      const safeColor = w.dataset.userWireColor || eff.wire;
-      w.setAttribute('stroke', safeColor);
-      w.style.setProperty('stroke', safeColor, 'important');
-      return;
-    }
-
-    if (netPots.size === 1) {
-      const pot = [...netPots][0];
-      let cClass = '';
-      let simColor = eff.wire;
-      if (pot === 'L1') { cClass = 'wire-l1'; simColor = eff.l1; }
-      else if (pot === 'L2') { cClass = 'wire-l2'; simColor = eff.l2; }
-      else if (pot === 'L3') { cClass = 'wire-l3'; simColor = eff.l3; }
-      else if (pot === 'L')  { cClass = 'wire-l';  simColor = eff.l; }
-      else if (pot === 'N')  { cClass = 'wire-neutral'; simColor = eff.n; }
-      else if (pot === 'PE') { cClass = 'wire-pe'; simColor = eff.pe; }
-      else if (pot === 'POS') { cClass = 'wire-dc-positive'; simColor = eff.pos; }
-      else if (pot === 'NEG') { cClass = 'wire-dc-negative'; simColor = eff.neg; }
-
-      if (cClass) w.classList.add(cClass);
-      w.classList.add('wire-live');
-      w.setAttribute('stroke', simColor);
-      w.style.setProperty('stroke', simColor, 'important');
-    } else {
-      // Unknown or unenergized net: safe default wire colour
-      w.classList.add('wire-deenergized');
-      const safeColor = w.dataset.userWireColor || eff.wire;
-      w.setAttribute('stroke', safeColor);
-      w.style.setProperty('stroke', safeColor, 'important');
-    }
+    const fromG = w.dataset.fromG, toG = w.dataset.toG;
+    if (!fromG || !toG) return;
+    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`);
+    const bG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${toG}"]`);
+    if (!aG || !bG) return;
+    const pA = resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from);
+    const pB = resolveComponentPort(bG, w.dataset.toIndex, w.dataset.to);
+    if (!pA || !pB) return;
+    addEdge(keyOf(fromG, pA.index), keyOf(toG, pB.index));
   });
 
-  if (anyNetConflict && state && !/FAULT/i.test(state.textContent || '')) {
-    state.textContent = 'FAULT • SHORT CIRCUIT / CONFLICTING ELECTRICAL SOURCES ON NET';
+  const passivePots = new Map();
+  const queue = [];
+  comps.forEach(g => {
+    const uid = g.dataset.uid;
+    if (classifySimComponent(g) === 'source') {
+      const srcMap = getSourceTerminalPotentials(g);
+      Object.entries(srcMap).forEach(([idxStr, pots]) => {
+        const k = keyOf(uid, Number(idxStr));
+        if (!passivePots.has(k)) passivePots.set(k, new Set());
+        pots.forEach(p => {
+          passivePots.get(k).add(p);
+          queue.push([k, p]);
+        });
+      });
+    }
+    // Also mark any motor PE terminal as PE conductor identity
+    portsFor(g).forEach((p, idx) => {
+      if (String(p.label).toUpperCase() === 'PE') {
+        const k = keyOf(uid, idx);
+        if (!passivePots.has(k)) passivePots.set(k, new Set());
+        if (!passivePots.get(k).has('PE')) {
+          passivePots.get(k).add('PE');
+          queue.push([k, 'PE']);
+        }
+      }
+    });
+  });
+
+  while (queue.length > 0) {
+    const [curr, pot] = queue.shift();
+    for (const nxt of (adj.get(curr) || [])) {
+      if (!passivePots.has(nxt)) passivePots.set(nxt, new Set());
+      if (!passivePots.get(nxt).has(pot)) {
+        passivePots.get(nxt).add(pot);
+        queue.push([nxt, pot]);
+      }
+    }
   }
+
+  wires.forEach(w => {
+    w.classList.remove('wire-live', ...wireColourClasses);
+    if (running) {
+      w.style.removeProperty('stroke');
+    }
+    const fromG = w.dataset.fromG;
+    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`);
+    const pA = aG ? resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from) : null;
+    const nodeKey = (fromG && pA) ? keyOf(fromG, pA.index) : '';
+    const livePots = (running && livePotentialsMap && nodeKey) ? (livePotentialsMap.get(nodeKey) || new Set()) : new Set();
+    const idPots = livePots.size > 0 ? livePots : ((nodeKey && passivePots.get(nodeKey)) || new Set());
+
+    let cClass = '';
+    if (idPots.has('PE')) cClass = 'wire-pe';
+    else if (idPots.has('L1')) cClass = 'wire-l1';
+    else if (idPots.has('L2')) cClass = 'wire-l2';
+    else if (idPots.has('L3')) cClass = 'wire-l3';
+    else if (idPots.has('L')) cClass = 'wire-l';
+    else if (idPots.has('POS')) cClass = 'wire-dc-positive';
+    else if (idPots.has('NEG')) cClass = 'wire-dc-negative';
+    else if (idPots.has('N')) cClass = 'wire-neutral';
+
+    if (cClass) w.classList.add(cClass);
+    if (running) {
+      if (livePots.size > 0) {
+        w.classList.add('wire-live');
+      } else {
+        w.classList.add('wire-deenergized');
+      }
+    }
+  });
 }
 window.updateWireConductorIdentification = updateWireConductorIdentification;
 
@@ -2999,36 +3040,6 @@ function evaluateCircuitSimulation() {
         if (!nSet.has(pot)) {
           nSet.add(pot);
           queue.push([nxt, pot]);
-        }
-      }
-    }
-
-    // Also identify PE nets connected to explicit PE terminals if no conflicting power source is on that net
-    const peQueue = [];
-    comps.forEach(g => {
-      const uid = g.dataset.uid;
-      portsFor(g).forEach((p, idx) => {
-        if (String(p.label || '').trim().toUpperCase() === 'PE') {
-          const k = keyOf(uid, idx);
-          if (adj.has(k)) {
-            if (!nodePotentials.has(k)) nodePotentials.set(k, new Set());
-            const set = nodePotentials.get(k);
-            if (set.size === 0) {
-              set.add('PE');
-              peQueue.push(k);
-            }
-          }
-        }
-      });
-    });
-    while (peQueue.length > 0) {
-      const curr = peQueue.shift();
-      for (const nxt of (adj.get(curr) || [])) {
-        if (!nodePotentials.has(nxt)) nodePotentials.set(nxt, new Set());
-        const nSet = nodePotentials.get(nxt);
-        if (!nSet.has('PE')) {
-          nSet.add('PE');
-          peQueue.push(nxt);
         }
       }
     }
@@ -3609,6 +3620,7 @@ makeDropped = function(d, x, y) {
     upgradeComponentToInlineSvg(g);
     syncComponentPorts(g);
     syncConnectedPortStates();
+    if (typeof window.applyEscWorkspaceColours === 'function') window.applyEscWorkspaceColours();
     if (running) evaluateCircuitSimulation();
   }
   return g;
@@ -4484,13 +4496,11 @@ document.getElementById('libraryGroups')?.addEventListener('click', function(e) 
       const isBranchJoint = cand.force || (allDirs.length >= 3) || (endpointCount >= 2 && allDirs.length >= 2);
       if (!isBranchJoint) return;
 
-      const effJ = (typeof window.getEscEffectiveColours === 'function') ? window.getEscEffectiveColours() : null;
-      const jW = (effJ && Number.isFinite(Number(effJ.wireWidth))) ? Number(effJ.wireWidth) : 2.2;
       const dot = document.createElementNS(NS, 'circle');
       dot.setAttribute('class', ['wire-joint-point', ...liveClasses].join(' '));
       dot.setAttribute('cx', String(cand.x));
       dot.setAttribute('cy', String(cand.y));
-      dot.setAttribute('r', String(Math.round(Math.max(3.2, jW * 1.65) * 10) / 10));
+      dot.setAttribute('r', '3.8');
       jointLayer.appendChild(dot);
     });
   }

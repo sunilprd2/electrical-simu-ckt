@@ -3299,284 +3299,124 @@ body.theme-light .top nav.cad-ribbon #themeToggle {
   position: relative;
 }
 
-/* Custom Wire & Conductor Colours + Thickness Controls driven by CSS Variables */
-#escSettingsPopover .esc-thickness-control {
-  margin-top: 6px;
-  padding: 7px 9px;
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 8px;
-  background: rgba(15, 34, 58, 0.78);
-}
-#escSettingsPopover .esc-thickness-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #e5eef8;
-}
-#escSettingsPopover .esc-thickness-header label {
-  margin: 0 !important;
-  font-size: 11.5px !important;
-  font-weight: 600 !important;
-  color: #e5eef8 !important;
-  cursor: pointer;
-}
-#escSettingsPopover .esc-thickness-badge {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #38bdf8;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 4px;
-  padding: 1px 6px;
-  min-width: 42px;
-  text-align: right;
-}
-#escSettingsPopover .esc-thickness-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-#escSettingsPopover .esc-thickness-row input[type="range"] {
-  flex: 1;
-  height: 5px;
-  margin: 0 !important;
-  accent-color: #38bdf8;
-  cursor: pointer;
-}
-#escSettingsPopover .esc-wire-preview-box {
-  flex: 0 0 56px;
-  width: 56px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #091526;
-  border: 1px solid #334155;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-/* 1. Component Appearance: Strictly Normal Component Colour Before, During, and After Simulation */
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) line,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) circle,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polygon:not([stroke="none"]),
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) line,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) circle,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) polygon:not([stroke="none"]) {
-  stroke: var(--comp-stroke-color, #ffffff) !important;
-  filter: none !important;
-}
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) #svg_motor_circle,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) #svg_motor_circle,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) #svg_motor_circle,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) #svg_motor_circle,
-body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) circle:not(#svg_motor_circle):not(.sim-rotor-ring),
-body.live #dropLayer .dropped-symbol.sim-energized > svg:not(.select-box) rect#svg_3 {
-  fill: none !important;
-  filter: none !important;
-}
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) text,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) tspan,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) text,
-body.theme-dark.live #dropLayer .dropped-symbol > svg:not(.select-box) tspan {
-  fill: var(--comp-stroke-color, #ffffff) !important;
-  stroke: none !important;
-  filter: none !important;
-}
-body.theme-dark #dropLayer .dropped-symbol .svg-terminal-node,
-body.theme-dark.live #dropLayer .dropped-symbol .svg-terminal-node {
-  fill: var(--comp-stroke-color, #ffffff) !important;
-  stroke: none !important;
-}
-
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) line,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) circle,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polygon:not([stroke="none"]),
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) line,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) circle,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) polygon:not([stroke="none"]) {
-  stroke: var(--comp-stroke-color, #000000) !important;
-  filter: none !important;
-}
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) text,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) tspan,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) text,
-body.theme-light.live #dropLayer .dropped-symbol > svg:not(.select-box) tspan {
-  fill: var(--comp-stroke-color, #000000) !important;
-  stroke: none !important;
-  filter: none !important;
-}
-body.theme-light #dropLayer .dropped-symbol .svg-terminal-node,
-body.theme-light.live #dropLayer .dropped-symbol .svg-terminal-node {
-  fill: var(--comp-stroke-color, #000000) !important;
-  stroke: none !important;
-}
-
-/* 2. Wire Appearance: Pre-Simulation Default Wire Colour & Wire Width */
-body #schematic #wireLayer .connected-wire,
-body #schematic #wireLayer .connected-wire:hover,
-body #schematic #wireLayer .connected-wire.wire-selected,
-body #schematic #wireLayer .wire-preview {
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire {
+/* Custom Wire & Conductor Colours driven by CSS Variables */
+body:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected) {
   stroke: var(--esc-wire-color, #ffffff) !important;
-  stroke-dasharray: none !important;
-  filter: none !important;
-  opacity: 1 !important;
 }
-body.theme-light:not(.live) #schematic #wireLayer .connected-wire {
-  stroke: var(--esc-wire-color, #000000) !important;
-  stroke-dasharray: none !important;
-  filter: none !important;
-  opacity: 1 !important;
+body.theme-light:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-wire-color, #1e293b) !important;
 }
-body:not(.live) #schematic #wireLayer .connected-wire.wire-selected {
-  filter: drop-shadow(0 0 3px rgba(45, 125, 255, 0.75)) !important;
+body:not(.live) #schematic #wireLayer .connected-wire.wire-l1:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-l1-wire, var(--esc-wire-color, #ff0000)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-l2:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-l2-wire, var(--esc-wire-color, #ffc000)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-l3:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-l3-wire, var(--esc-wire-color, #0070c0)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-l:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-l-wire, var(--esc-wire-color, #ff0000)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-neutral:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-n-wire, var(--esc-wire-color, #00b0f0)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-pe:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-pe-wire, var(--esc-wire-color, #00b050)) !important;
+  stroke-dasharray: 8 6 !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-dc-positive:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-pos-wire, var(--esc-wire-color, #ff0000)) !important;
+}
+body:not(.live) #schematic #wireLayer .connected-wire.wire-dc-negative:not(:hover):not(.wire-selected) {
+  stroke: var(--esc-color-neg-wire, var(--esc-wire-color, #0070c0)) !important;
 }
 
-/* 3. Live Simulation Wire Colours (Determined Strictly by Connected Electrical Net) */
-body.live #schematic #wireLayer .connected-wire.wire-deenergized,
-body.live #schematic #wireLayer .connected-wire.wire-conflict {
-  stroke: var(--esc-wire-color, #ffffff) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
-  stroke-dasharray: none !important;
-  filter: none !important;
-  opacity: 0.75 !important;
-}
-body.theme-light.live #schematic #wireLayer .connected-wire.wire-deenergized,
-body.theme-light.live #schematic #wireLayer .connected-wire.wire-conflict {
-  stroke: var(--esc-wire-color, #000000) !important;
-}
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-l1 {
+/* Live simulation wire colours also honour user-selected IEC conductor colours */
+#wireLayer .connected-wire.wire-live.wire-l1 {
   stroke: var(--esc-color-l1, #ff0000) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l1, #ff0000)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-l2 {
+#wireLayer .connected-wire.wire-live.wire-l2 {
   stroke: var(--esc-color-l2, #ffc000) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l2, #ffc000)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-l3 {
+#wireLayer .connected-wire.wire-live.wire-l3 {
   stroke: var(--esc-color-l3, #0070c0) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l3, #0070c0)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-l {
+#wireLayer .connected-wire.wire-live.wire-l {
   stroke: var(--esc-color-l, #ff0000) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l, #ff0000)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
+body #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
   stroke: var(--esc-color-n, #00b0f0) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-n, #00b0f0)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-pe {
+body #schematic #wireLayer .connected-wire.wire-pe,
+body #schematic #wireLayer .connected-wire.wire-live.wire-pe {
   stroke: var(--esc-color-pe, #00b050) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
-  stroke-dasharray: none !important;
-  filter: drop-shadow(0 0 2px var(--esc-color-pe, #00b050)) !important;
+  stroke-width: 2.8 !important;
+  stroke-dasharray: 8 6 !important;
+  filter: drop-shadow(0 0 2px #ffd21f) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-dc-positive {
+#wireLayer .connected-wire.wire-live.wire-dc-positive {
   stroke: var(--esc-color-pos, #ff0000) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-pos, #ff0000)) !important;
 }
-body.live #schematic #wireLayer .connected-wire.wire-live.wire-dc-negative {
+#wireLayer .connected-wire.wire-live.wire-dc-negative {
   stroke: var(--esc-color-neg, #0070c0) !important;
-  stroke-width: var(--esc-wire-width, 2.2px) !important;
+  stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-neg, #0070c0)) !important;
 }
 
-/* Junction dots match live wire colours during simulation and default wire colour before simulation */
-body:not(.live) #wireLayer .wire-joint-point {
-  fill: var(--esc-wire-color, #ffffff) !important;
-}
-body.theme-light:not(.live) #wireLayer .wire-joint-point {
-  fill: var(--esc-wire-color, #000000) !important;
-}
-body.live #wireLayer .wire-joint-point.wire-live.wire-l1 { fill: var(--esc-color-l1, #ff0000) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-l2 { fill: var(--esc-color-l2, #ffc000) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-l3 { fill: var(--esc-color-l3, #0070c0) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-l  { fill: var(--esc-color-l, #ff0000) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-neutral { fill: var(--esc-color-n, #00b0f0) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-pe { fill: var(--esc-color-pe, #00b050) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-dc-positive { fill: var(--esc-color-pos, #ff0000) !important; }
-body.live #wireLayer .wire-joint-point.wire-live.wire-dc-negative { fill: var(--esc-color-neg, #0070c0) !important; }
 
-/* Compact spacing so all Workspace Settings controls fit cleanly without scrollbar */
-#escSettingsPopover {
-  width: 324px !important;
-  max-height: calc(100vh - 84px) !important;
-  padding: 10px 12px !important;
+/* Component Colour (IEC Standard & Custom Swatch Support) */
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]) {
+  stroke: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
 }
-#escSettingsPopover h3 {
-  margin: 0 0 6px !important;
-  font-size: 13.5px !important;
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
+body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]) {
+  stroke: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
 }
-#escSettingsPopover .settings-section-label {
-  margin: 7px 0 4px !important;
-  font-size: 10.5px !important;
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan {
+  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
 }
-#escSettingsPopover .zoom-panel-setting {
-  padding: 5px 8px !important;
-  margin-bottom: 4px !important;
-  min-height: 30px !important;
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan {
+  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
 }
-#escSettingsPopover .esc-colour-grid {
-  gap: 4px !important;
-  margin-top: 4px !important;
+body.theme-dark #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node {
+  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
 }
-#escSettingsPopover .esc-colour-item {
-  padding: 4px 7px !important;
-  font-size: 11px !important;
+body.theme-light #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node {
+  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
 }
-#escSettingsPopover .esc-colour-swatch-btn {
-  height: 21px !important;
-  width: 42px !important;
-  min-width: 42px !important;
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
+  color: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
 }
-#escSettingsPopover .esc-colour-swatch-btn .swatch-fill {
-  height: 14px !important;
-  width: 22px !important;
-}
-#escSettingsPopover .esc-thickness-control {
-  margin-top: 4px !important;
-  padding: 5px 8px !important;
-}
-#escSettingsPopover .esc-thickness-header {
-  margin-bottom: 3px !important;
-  font-size: 11px !important;
-}
-#escSettingsPopover .esc-wire-preview-box {
-  height: 17px !important;
-}
-#escSettingsPopover #escResetColoursBtn {
-  margin-top: 6px !important;
-  padding: 6px 10px !important;
-}
-#escSettingsPopover > p {
-  margin: 5px 0 0 !important;
-  font-size: 9.5px !important;
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
+  color: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
 }
