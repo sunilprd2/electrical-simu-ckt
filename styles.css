@@ -3598,3 +3598,185 @@ body.theme-light #wireLayer .connected-wire.wire-selected { stroke:#b77900 !impo
 #dropLayer .dropped-symbol.group-selected > .select-box {
   display:none !important;
 }
+
+/* Shared user-selectable colour for component tags and terminal numbers. */
+body.theme-dark:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .port-name,
+body.theme-light:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .port-name,
+body.theme-dark.live #schematic #dropLayer .dropped-symbol .port-name,
+body.theme-light.live #schematic #dropLayer .dropped-symbol .port-name,
+body:not(.live) #dropLayer .dropped-symbol.selected .port-name,
+#dropLayer .dropped-symbol .port-name,
+#dropLayer .dropped-symbol > .drop-tag,
+body:not(.live) #dropLayer .dropped-symbol.selected > .drop-tag,
+#dropLayer .dropped-symbol.selected .drop-tag {
+  fill:var(--esc-tag-terminal-color,#00d9f5) !important;
+  color:var(--esc-tag-terminal-color,#00d9f5) !important;
+}
+#dropLayer .dropped-symbol > .drop-tag { font-size:9px !important; }
+
+/* Drawing text controls live in Workspace Settings instead of a floating toolbar. */
+#escSettingsPopover .esc-text-settings { display:grid; gap:6px; margin-top:4px; }
+#escSettingsPopover .esc-text-setting-row {
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin:0; padding:8px 9px; border:1px solid rgba(148,163,184,.24);
+  border-radius:8px; background:rgba(15,34,58,.78); color:#e5eef8; font-size:11.5px;
+}
+#escSettingsPopover .esc-text-setting-row input[type="color"] {
+  width:42px; height:25px; min-width:42px; padding:2px;
+  border:1px solid #64748b; border-radius:5px; background:#0f172a; cursor:pointer;
+}
+#escSettingsPopover .esc-text-setting-row input[type="number"] {
+  width:64px; min-width:64px; margin:0; padding:5px 7px;
+  border:1px solid #55708e; border-radius:5px; background:#0b1b2d; color:#f4f8fc; font:12px Arial,sans-serif;
+}
+body.theme-light #escSettingsPopover .esc-text-setting-row { color:#e5eef8; }
+
+/* Earth and PE components do not need a separate reference tag. */
+#dropLayer .dropped-symbol > .drop-tag.annotation-suppressed { display:none !important; }
+
+/* v144: Wider settings popover, right-aligned workspace toggles, and brand line. */
+#escSettingsPopover {
+  width: min(420px, calc(100vw - 20px)) !important;
+  max-width: calc(100vw - 20px) !important;
+  overflow-x: hidden !important;
+}
+#escSettingsPopover .esc-colour-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  min-width: 0;
+}
+#escSettingsPopover .esc-colour-item {
+  width: 100%;
+  min-width: 0;
+}
+#escSettingsPopover .esc-colour-item > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+#escSettingsPopover .esc-colour-swatch-btn {
+  flex: 0 0 44px;
+}
+#escSettingsPopover .zoom-panel-setting:not(#escDefaultColourRow) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 10px;
+}
+#escSettingsPopover .zoom-panel-setting:not(#escDefaultColourRow) > .zoom-panel-state {
+  min-width: 34px;
+  text-align: right;
+}
+#escSettingsPopover .zoom-panel-setting:not(#escDefaultColourRow) > .zoom-switch {
+  grid-column: 3;
+  justify-self: end;
+  margin-left: 0;
+}
+#escSettingsPopover > p {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#escSettingsPopover > p:last-child {
+  font-size: 11px;
+  letter-spacing: .1px;
+}
+@media (max-width: 460px) {
+  #escSettingsPopover .esc-colour-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* v145: Fit the complete settings panel without an inner vertical scrollbar. */
+#escSettingsPopover {
+  top: 74px !important;
+  max-height: calc(100vh - 84px) !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  padding: 10px !important;
+}
+#escSettingsPopover h3 {
+  margin: 0 0 4px !important;
+  font-size: 13px !important;
+  line-height: 16px !important;
+}
+#escSettingsPopover .settings-section-label {
+  margin: 6px 0 3px !important;
+  padding-top: 4px !important;
+  font-size: 11px !important;
+  line-height: 14px !important;
+}
+#escSettingsPopover .zoom-panel-setting:not(#escDefaultColourRow),
+#escSettingsPopover #escDefaultColourRow {
+  min-height: 29px;
+  margin: 3px 0 !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  line-height: 14px !important;
+}
+#escSettingsPopover .esc-colour-grid {
+  gap: 4px !important;
+  margin-top: 4px !important;
+}
+#escSettingsPopover .esc-colour-item {
+  min-height: 23px;
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+  line-height: 12px !important;
+}
+#escSettingsPopover .esc-colour-swatch-btn {
+  height: 20px !important;
+}
+#escSettingsPopover #escResetColoursBtn {
+  margin-top: 4px !important;
+  padding: 4px 8px !important;
+  font-size: 10px !important;
+  line-height: 13px !important;
+}
+#escSettingsPopover .esc-text-settings {
+  gap: 4px !important;
+  margin-top: 2px !important;
+}
+#escSettingsPopover .esc-text-setting-row {
+  min-height: 27px;
+  padding: 3px 8px !important;
+  font-size: 10.5px !important;
+  line-height: 13px !important;
+}
+#escSettingsPopover .esc-text-setting-row input[type="color"] {
+  height: 21px !important;
+}
+#escSettingsPopover .esc-text-setting-row input[type="number"] {
+  padding: 3px 6px !important;
+  font-size: 11px !important;
+}
+#escSettingsPopover > p {
+  margin: 4px 0 0 !important;
+  font-size: 10px !important;
+  line-height: 13px !important;
+}
+@media (max-height: 620px) {
+  #escSettingsPopover {
+    top: 66px !important;
+    max-height: calc(100vh - 72px) !important;
+    padding: 8px !important;
+  }
+  #escSettingsPopover .settings-section-label {
+    margin: 4px 0 2px !important;
+    padding-top: 2px !important;
+  }
+  #escSettingsPopover .zoom-panel-setting:not(#escDefaultColourRow),
+  #escSettingsPopover #escDefaultColourRow {
+    min-height: 26px;
+    margin: 2px 0 !important;
+    padding: 2px 6px !important;
+  }
+  #escSettingsPopover .esc-colour-item {
+    min-height: 21px;
+    padding: 1px 5px !important;
+  }
+  #escSettingsPopover .esc-colour-swatch-btn {
+    height: 18px !important;
+  }
+  #escSettingsPopover .esc-text-setting-row {
+    min-height: 24px;
+    padding: 2px 6px !important;
+  }
+}

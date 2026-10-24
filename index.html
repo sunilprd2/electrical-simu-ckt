@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v138-selection-wire-cancel">
+<link rel="stylesheet" href="styles.css?v=v145-settings-no-scroll">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -50,7 +50,7 @@ window.__escSafeStorage = (function(){
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
-      if (k !== 'electrical-simu-ckt-v138-selection-wire-cancel') caches.delete(k);
+      if (k !== 'electrical-simu-ckt-v145-settings-no-scroll') caches.delete(k);
     }));
   }
   if ('serviceWorker' in navigator) {
@@ -200,9 +200,9 @@ try {
 <div id="escSettingsPopover" role="dialog" aria-label="Workspace settings" aria-hidden="true">
   <h3>Workspace Settings</h3>
   <div class="settings-section-label">Workspace Display</div>
-  <label class="zoom-panel-setting"><span>Zoom Panel</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state">On</span></label>
-  <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="settingsSheetState">Off</span></label>
-  <label class="zoom-panel-setting"><span>Click to Connect</span><span class="zoom-switch"><input id="clickToConnectToggle" type="checkbox"><span class="zoom-switch-track"></span></span><span class="zoom-panel-state" id="clickToConnectState">Off</span></label>
+  <label class="zoom-panel-setting"><span>Zoom Workspace</span><span class="zoom-panel-state">On</span><span class="zoom-switch"><input id="showZoomPanel" type="checkbox"><span class="zoom-switch-track"></span></span></label>
+  <label class="zoom-panel-setting"><span>Engineering Sheet</span><span class="zoom-panel-state" id="settingsSheetState">Off</span><span class="zoom-switch"><input id="settingsSheetToggle" type="checkbox"><span class="zoom-switch-track"></span></span></label>
+  <label class="zoom-panel-setting"><span>Click to Connect</span><span class="zoom-panel-state" id="clickToConnectState">Off</span><span class="zoom-switch"><input id="clickToConnectToggle" type="checkbox"><span class="zoom-switch-track"></span></span></label>
   <div class="settings-section-label">Component / Wire Colour (IEC Standard)</div>
   <label id="escDefaultColourRow" class="zoom-panel-setting"><span>Use selected colour as default</span><input id="escDefaultColour" type="checkbox" checked aria-label="Use selected colour as default"></label>
   <div class="esc-colour-grid" role="group" aria-label="IEC Conductor, Wire and Component Colours">
@@ -216,11 +216,17 @@ try {
     <div class="esc-colour-item"><span>-VE (DC-)</span><button type="button" class="esc-colour-swatch-btn" data-color-key="neg" title="Select -VE (DC Negative) colour"><span class="swatch-fill" style="background:#0070c0"></span><span class="swatch-caret">▼</span></button></div>
     <div class="esc-colour-item"><span>Wire Colour</span><button type="button" class="esc-colour-swatch-btn" data-color-key="wire" title="Select Default Wire colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
     <div class="esc-colour-item"><span>Component</span><button type="button" class="esc-colour-swatch-btn" data-color-key="component" title="Select Default Component colour"><span class="swatch-fill" style="background:#ffffff"></span><span class="swatch-caret">▼</span></button></div>
+    <div class="esc-colour-item"><span>Tag / Terminal Labels</span><button type="button" class="esc-colour-swatch-btn" data-color-key="tagTerminal" title="Select shared tag and terminal label colour"><span class="swatch-fill" style="background:#00d9f5"></span><span class="swatch-caret">▼</span></button></div>
   </div>
   <button type="button" id="escResetColoursBtn">Reset IEC Standard Colours</button>
+  <div class="settings-section-label">Drawing Text</div>
+  <div id="escTextEditorTools" class="esc-text-settings">
+    <label class="esc-text-setting-row"><span>Text colour</span><input id="escTextColour" type="color" value="#ffff00" aria-label="Drawing text colour"></label>
+    <label class="esc-text-setting-row"><span>Text size</span><input id="escTextSize" type="number" min="6" max="96" step="1" value="10" aria-label="Drawing text size"></label>
+  </div>
   <input id="escComponentColor" type="color" value="#2584ff" hidden aria-hidden="true">
   <input id="escBorderColor" type="color" value="#f59e0b" hidden aria-hidden="true">
-  <p>ESC • Design · Simulate · Control · Visualize</p>
+  <p>Design. Simulate. Innovate.</p>
 </div>
 <div id="escColorPalettePopup" class="esc-palette-popup" role="dialog" aria-label="Theme and Standard Colors" aria-hidden="true">
   <div class="esc-palette-title">Theme Colors</div>
@@ -231,7 +237,7 @@ try {
   <div id="escPaletteStandard" class="esc-palette-row-standard"></div>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v138-selection-wire-cancel"></script>
+<script src="app.js?v=v145-settings-no-scroll"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){
@@ -634,6 +640,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    e.target.value='';
  });
  $('rotateBtn')?.addEventListener('click',()=>{
+    if(window.__escSelectedDrawingText?.isConnected)return;
    if(!selected || !selected.isConnected){setStatus('ROTATE • SELECT A COMPONENT FIRST');return;}
    const angle=((Number(selected.dataset.rotation)||0)+90)%360;
    selected.dataset.rotation=String(angle);
@@ -662,7 +669,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
 
 
 <script>
-/* Show Zoom Panel: double-click a library symbol to insert it in the workspace. */
+/* Workspace zoom toggle: double-click a library symbol to insert it in the workspace. */
 (()=>{
  const toggle=document.getElementById('showZoomPanel');
  const host=document.getElementById('libraryGroups');
@@ -674,10 +681,10 @@ document.querySelectorAll(".top nav button").forEach(button => {
  toggle.checked=enabled;
  const label=toggle.closest('.zoom-panel-setting')?.querySelector('.zoom-panel-state');
  const zoomControlsEl=document.getElementById('workspaceZoomControls');
- const syncZoomPanelVisibility=()=>{if(zoomControlsEl)zoomControlsEl.style.display=toggle.checked?'flex':'none';};
- const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';syncZoomPanelVisibility();};
+ const syncZoomControlsVisibility=()=>{if(zoomControlsEl)zoomControlsEl.style.display='flex';};
+ const setLabel=()=>{if(label)label.textContent=toggle.checked?'On':'Off';syncZoomControlsVisibility();};
  const setWorkspaceZoom=on=>window.dispatchEvent(new CustomEvent('esc-zoom-mode-change',{detail:{enabled:on}}));
- toggle.addEventListener('change',()=>{enabled=toggle.checked;window.__escSafeStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'ZOOM PANEL ON':'ZOOM PANEL OFF';});
+ toggle.addEventListener('change',()=>{enabled=toggle.checked;window.__escSafeStorage.setItem(KEY,enabled?'on':'off');setLabel();setWorkspaceZoom(enabled);if(status)status.textContent=enabled?'WORKSPACE ZOOM ON':'WORKSPACE ZOOM OFF';});
  setLabel();
  host.addEventListener('dblclick',e=>{
    const btn=e.target.closest('.symbol-btn');if(!btn)return;
@@ -692,7 +699,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    g.dataset.libraryScale='1';
    g.setAttribute('transform',`translate(${x-60},${y-45})`);
    g.dataset.x=String(x);g.dataset.y=String(y);
-   if(status)status.textContent=`INSERTED • ${d.name.toUpperCase()}${enabled?' • ENLARGED':''}`;
+   if(status)status.textContent=`INSERTED • ${d.name.toUpperCase()}${enabled?' • WORKSPACE ZOOM':''}`;
  });
 })();
 </script>
@@ -822,8 +829,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
    const tag=$('propTag')?.value.trim(),comment=$('propComment')?.value.trim()||'';
    if(tag){g.dataset.ref=tag;const t=g.querySelector('.drop-tag');if(t)t.textContent=tag;}
    g.dataset.comment=comment;
-   let note=g.querySelector('.drop-comment');
-   if(!note){note=document.createElementNS('http://www.w3.org/2000/svg','text');note.setAttribute('class','drop-comment');note.setAttribute('x','36');note.setAttribute('y','70');note.setAttribute('text-anchor','middle');note.setAttribute('transform','rotate(-90 36 70)');g.appendChild(note);}
+    let note=g.querySelector('.drop-comment');
+    if(!note){note=document.createElementNS('http://www.w3.org/2000/svg','text');note.setAttribute('class','drop-comment');g.appendChild(note);}
+    if(typeof window.layoutComponentAnnotations==='function')window.layoutComponentAnnotations(g);
    note.textContent=comment;note.style.display=comment?'':'none';
    const title=g.querySelector('title');if(title)title.textContent=(g.dataset.ref||'')+' — '+(g.dataset.name||'Component')+(comment?' • '+comment:'');
    setStatus('COMPONENT PROPERTIES SAVED');
@@ -1143,7 +1151,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
    pos: '#ff0000',       // DC Positive +VE (Red)
    neg: '#0070c0',       // DC Negative -VE (Blue)
    wire: dark ? '#ffffff' : '#000000',
-   component: dark ? '#ffffff' : '#000000'
+    component: dark ? '#ffffff' : '#000000',
+    tagTerminal: '#00d9f5'
  });
 
  const STORAGE_KEY = 'esc-iec-multi-colours-v1';
@@ -1176,7 +1185,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
        l1: themeFallback, l2: themeFallback, l3: themeFallback,
        l: themeFallback, n: themeFallback, pe: themeFallback,
        pos: themeFallback, neg: themeFallback,
-       wire: themeFallback, component: themeFallback
+        wire: themeFallback, component: themeFallback, tagTerminal: '#00d9f5'
      };
    }
    return { ...getIecDefaultColours(), ...userColours };
@@ -1228,12 +1237,16 @@ document.querySelectorAll(".top nav button").forEach(button => {
      root.style.setProperty('--esc-color-neg', eff.neg);
      root.style.setProperty('--esc-wire-color', eff.wire);
      root.style.setProperty('--esc-comp-color', eff.component);
+      root.style.setProperty('--esc-tag-terminal-color', eff.tagTerminal || '#00d9f5');
 
      ['l1', 'l2', 'l3', 'l', 'n', 'pe', 'pos', 'neg'].forEach(k => {
        root.style.removeProperty(`--esc-color-${k}-wire`);
      });
 
-     layer.querySelectorAll('.dropped-symbol').forEach(g => tintComponent(g, eff));
+      layer.querySelectorAll('.dropped-symbol').forEach(g => {
+        tintComponent(g, eff);
+        window.applySharedLabelColourToComponent?.(g, eff.tagTerminal || '#00d9f5');
+      });
      if (typeof window.updateWireConductorIdentification === 'function') {
        window.updateWireConductorIdentification(window.__escLastNodePotentials);
      }
@@ -1377,7 +1390,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  });
  themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
- function selectText(g){layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));g.classList.add('selected-text');window.__escSelectedDrawingText=g;}
+ function selectText(g){if(typeof window.select==='function')window.select(null,false);layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));g.classList.add('selected-text');window.__escSelectedDrawingText=g;}
  function moveOf(g){const m=/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/.exec(g.getAttribute('transform')||'');return {x:m?+m[1]:0,y:m?+m[2]:0};}
  function textBounds(g){
    const t=g.querySelector('text.drawing-text'); let b;
@@ -1386,13 +1399,27 @@ document.querySelectorAll(".top nav button").forEach(button => {
    hit.setAttribute('x',b.x-5);hit.setAttribute('y',b.y-4);hit.setAttribute('width',Math.max(30,b.width+10));hit.setAttribute('height',Math.max(25,b.height+8));
  }
  function ensureEditorTools(){
-   if($('escTextEditorTools'))return;
-   const panel=document.createElement('div');panel.id='escTextEditorTools';
-   panel.innerHTML='<label>Text colour <input id="escTextColour" type="color" value="#ffff00"></label><label>Size <input id="escTextSize" type="number" min="6" max="96" value="10"></label><button id="escTextDone" type="button">Done</button>';
-   document.body.appendChild(panel);
-   $('escTextColour').addEventListener('input',()=>{if(window.__escEditingText){window.__escEditingText.dataset.textColor=$('escTextColour').value;window.__escEditingText.querySelector('text.drawing-text').setAttribute('fill',$('escTextColour').value);}});
-   $('escTextSize').addEventListener('input',()=>{if(window.__escEditingText){window.__escEditingText.dataset.textSize=$('escTextSize').value;window.__escEditingText.querySelector('text.drawing-text').setAttribute('font-size',$('escTextSize').value);textBounds(window.__escEditingText);}});
-   $('escTextDone').addEventListener('click',()=>finishEdit(true));
+    const color=$('escTextColour'),size=$('escTextSize');
+    if(!color||!size||color.dataset.bound)return;
+    const colorKey='esc-drawing-text-color-v1',sizeKey='esc-drawing-text-size-v1';
+    color.value=window.__escSafeStorage.getItem(colorKey)||'#ffff00';
+    size.value=window.__escSafeStorage.getItem(sizeKey)||'10';
+    color.dataset.bound='1';
+    color.addEventListener('input',()=>{
+      const value=color.value;
+      window.__escSafeStorage.setItem(colorKey,value);
+      const targets=new Set([window.__escEditingText,window.__escSelectedDrawingText].filter(g=>g&&g.isConnected));
+      targets.forEach(g=>{g.dataset.textColor=value;const t=g.querySelector('text.drawing-text');if(t)t.setAttribute('fill',value);});
+      if(editArea)editArea.style.color=value;
+    });
+    size.addEventListener('input',()=>{
+      const value=Math.max(6,Math.min(96,Number(size.value)||10));
+      size.value=String(value);
+      window.__escSafeStorage.setItem(sizeKey,String(value));
+      const targets=new Set([window.__escEditingText,window.__escSelectedDrawingText].filter(g=>g&&g.isConnected));
+      targets.forEach(g=>{g.dataset.textSize=String(value);const t=g.querySelector('text.drawing-text');if(t)t.setAttribute('font-size',String(value));textBounds(g);});
+      if(editArea)editArea.style.fontSize=value+'px';
+    });
  }
  let editArea=null, editTarget=null;
  function finishEdit(keep){
@@ -1401,7 +1428,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
    const finishedTarget=editTarget;
    editArea.remove();editArea=null;editTarget=null;window.__escEditingText=null;
    if(finishedTarget){finishedTarget.classList.remove('editing-text');const renderedText=finishedTarget.querySelector('text.drawing-text');if(renderedText)renderedText.style.visibility='';}
-   const tools=$('escTextEditorTools');if(tools)tools.style.display='none';
    layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));
  }
  function beginEdit(g){
@@ -1413,13 +1439,8 @@ document.querySelectorAll(".top nav button").forEach(button => {
    editArea=document.createElement('textarea');editArea.className='esc-text-entry';editArea.value=t.textContent==='Click to type'?'':t.textContent;
    editArea.style.left=p.x+'px';editArea.style.top=(p.y-20)+'px';editArea.style.color=t.getAttribute('fill')||activeColor();editArea.style.fontSize=(t.getAttribute('font-size')||16)+'px';
    document.body.appendChild(editArea);
-   $('escTextColour').value=/^#[0-9a-f]{6}$/i.test(t.getAttribute('fill')||'')?t.getAttribute('fill'):activeColor();
-   $('escTextSize').value=t.getAttribute('font-size')||16;
-   const tools=$('escTextEditorTools');tools.style.display='flex';
-   const workspace=document.querySelector('.work')||$('sheet')||svg;
-   const wr=workspace.getBoundingClientRect();
-   tools.style.left=Math.max(wr.left+10,wr.right-tools.offsetWidth-10)+'px';
-   tools.style.top=Math.max(8,wr.top+10)+'px';
+    $('escTextColour').value=/^#[0-9a-f]{6}$/i.test(t.getAttribute('fill')||'')?t.getAttribute('fill'):activeColor();
+    $('escTextSize').value=t.getAttribute('font-size')||16;
    editArea.focus();editArea.setSelectionRange(editArea.value.length,editArea.value.length);
    editArea.addEventListener('input',()=>{t.textContent=editArea.value;textBounds(g);});
    editArea.addEventListener('keydown',e=>{
@@ -1427,8 +1448,15 @@ document.querySelectorAll(".top nav button").forEach(button => {
      else if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();finishEdit(true);}
      e.stopPropagation();
    });
-   editArea.addEventListener('blur',()=>{if(editArea)setTimeout(()=>{if(editArea&&!$('escTextEditorTools').matches(':hover'))finishEdit(true);},120);});
+    editArea.addEventListener('blur',()=>{if(editArea)setTimeout(()=>{if(editArea&&!$('escSettingsPopover')?.contains(document.activeElement))finishEdit(true);},120);});
  }
+ document.addEventListener('pointerdown',e=>{
+   if(e.button!==0||!e.target?.closest?.('#sheet, #schematic'))return;
+   if(e.target.closest?.('.drawing-text-object, #escSettingsPopover'))return;
+   if(editArea)finishEdit(true);
+   window.__escSelectedDrawingText=null;
+   layer.querySelectorAll('.drawing-text-object.selected-text').forEach(x=>x.classList.remove('selected-text'));
+ },true);
  function enableText(g){
    if(g.dataset.textBound)return;g.dataset.textBound='1';
    g.addEventListener('pointerdown',e=>{
@@ -1446,9 +1474,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
    textBounds(g);
  }
  function createTextAt(x,y){
-   const g=document.createElementNS(NS,'g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${x} ${y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';g.dataset.textColor=activeColor();g.dataset.textSize='10';
+    const g=document.createElementNS(NS,'g');g.setAttribute('class','drawing-text-object');g.setAttribute('transform',`translate(${x} ${y}) rotate(0)`);g.dataset.rotation='0';g.dataset.textObject='true';const newTextColor=$('escTextColour')?.value||activeColor(),newTextSize=String(Math.max(6,Math.min(96,Number($('escTextSize')?.value)||10)));g.dataset.textColor=newTextColor;g.dataset.textSize=newTextSize;
    const hit=document.createElementNS(NS,'rect');hit.setAttribute('class','drawing-text-hit');hit.setAttribute('fill','transparent');hit.setAttribute('stroke','none');g.appendChild(hit);
-   const t=document.createElementNS(NS,'text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill',activeColor());t.setAttribute('font-size','10');t.setAttribute('font-family','Arial,sans-serif');t.textContent='';g.appendChild(t);layer.appendChild(g);enableText(g);selectText(g);beginEdit(g);return g;
+    const t=document.createElementNS(NS,'text');t.setAttribute('class','drawing-text');t.setAttribute('x','0');t.setAttribute('y','0');t.setAttribute('fill',newTextColor);t.setAttribute('font-size',newTextSize);t.setAttribute('font-family','Arial,sans-serif');t.textContent='';g.appendChild(t);layer.appendChild(g);enableText(g);selectText(g);beginEdit(g);return g;
  }
  window.createDrawingTextAt=createTextAt;
  layer.querySelectorAll('.drawing-text-object').forEach(enableText);
@@ -1479,13 +1507,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
    }
  });
  const style=document.createElement('style');style.textContent=`
- .drawing-text-object{cursor:move;user-select:none}.drawing-text-object .drawing-text-hit{fill:transparent;stroke:transparent;pointer-events:all}
+  .drawing-text-object{cursor:move;user-select:none}.drawing-text-object .drawing-text-hit{fill:transparent;stroke:transparent;pointer-events:all}
+  .drawing-text-object.selected-text:not(.editing-text) .drawing-text-hit{fill:#38bdf80d;stroke:#38bdf8;stroke-width:1;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
  .drawing-text-object.editing-text .drawing-text-hit{stroke:transparent;stroke-width:0;stroke-dasharray:none}
  .drawing-text-object .drawing-text{pointer-events:none;font-family:Arial,sans-serif}
- .esc-text-entry{position:fixed;z-index:100000;width:300px;min-height:38px;resize:none;background:transparent;border:0;outline:none;caret-color:#ffff00;padding:2px 4px;line-height:1.25;white-space:pre-wrap;overflow:hidden;font-family:Arial,sans-serif}
- #escTextEditorTools{display:none;position:fixed;z-index:100001;align-items:center;gap:8px;padding:7px;background:#10243a;border:1px solid #168dff;border-radius:8px;color:#fff;font:12px Arial}
- #escTextEditorTools label{display:flex;align-items:center;gap:4px}#escTextEditorTools input[type=number]{width:55px}#escTextEditorTools button{background:#00bfae;border:0;border-radius:5px;padding:6px 10px;color:#001}
- body.theme-light .drawing-text-object.editing-text .drawing-text-hit{stroke:#000000} body.theme-light .esc-text-entry{border-color:#000000;caret-color:#000000}`;
+  .esc-text-entry{position:fixed;z-index:100000;width:300px;min-height:38px;resize:none;background:transparent;border:0;outline:none;caret-color:#ffff00;padding:2px 4px;line-height:1.25;white-space:pre-wrap;overflow:hidden;font-family:Arial,sans-serif}
+  body.theme-light .drawing-text-object.editing-text .drawing-text-hit{stroke:#000000} body.theme-light .esc-text-entry{border-color:#000000;caret-color:#000000}`;
  document.head.appendChild(style);
  applyColours();
 })();
@@ -1730,6 +1757,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
     #dropLayer > .esc-prox-metal-target:hover{filter:drop-shadow(0 0 5px #38bdf8)}
   `;
   document.head.appendChild(style);
+  ensureEditorTools();
   const observer=new MutationObserver(()=>{
     document.querySelectorAll(sensorSelector).forEach(g=>{if(isProximity(g))hideDuplicateTerminalLabels(g);});
   });

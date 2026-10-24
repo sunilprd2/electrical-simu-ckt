@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v138-selection-wire-cancel';
+const CACHE='electrical-simu-ckt-v145-settings-no-scroll';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=v138-selection-wire-cancel',
-  './app.js?v=v138-selection-wire-cancel',
+  './styles.css?v=v145-settings-no-scroll',
+  './app.js?v=v145-settings-no-scroll',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',

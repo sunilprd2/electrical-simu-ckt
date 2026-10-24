@@ -594,6 +594,7 @@ function syncComponentPorts(g) {
   });
   // Ensure .component-ports is at the top of the component group so terminals always receive pointer events first
   g.appendChild(portsGroup);
+  applySharedLabelColourToComponent(g);
 }
 window.syncComponentPorts = syncComponentPorts;
 
@@ -735,6 +736,55 @@ function snapComponentToTerminalAxes(g, rawX, rawY, snapTol = 6) {
 window.snapComponentToTerminalAxes = snapComponentToTerminalAxes;
 
 
+function layoutComponentAnnotations(g) {
+  if (!g) return;
+  const box = g.querySelector(':scope > .select-box');
+  const boxX = Number(box?.getAttribute('x'));
+  // The artwork has an internal margin inside its viewBox; move the tag into
+  // that margin so it sits close to the visible symbol instead of the box edge.
+  const tagX = Math.round((Number.isFinite(boxX) ? boxX + 14 : ESC_COMP_CX - 24) * 100) / 100;
+  const tag = g.querySelector(':scope > .drop-tag');
+  if (tag) {
+    const identity = `${g.dataset.symbolFile || ''} ${g.dataset.porttype || ''} ${g.dataset.type || ''} ${g.dataset.name || ''}`.toLowerCase();
+    const isEarthSymbol = /earth|ground|protective.?earth/.test(identity) || /^pe\d*$/i.test(g.dataset.ref || '');
+    if (isEarthSymbol) {
+      tag.classList.add('annotation-suppressed');
+      tag.dataset.annotationSuppressed = 'earth';
+    } else if (tag.dataset.annotationSuppressed === 'earth') {
+      tag.classList.remove('annotation-suppressed');
+      delete tag.dataset.annotationSuppressed;
+    }
+    // Keep the reference tag horizontal and just outside the component artwork.
+    tag.setAttribute('x', String(tagX));
+    tag.setAttribute('y', String(ESC_COMP_CY + 4));
+    tag.setAttribute('text-anchor', 'end');
+    tag.removeAttribute('transform');
+    tag.setAttribute('font-size', '9');
+    tag.style.fontSize = '9px';
+  }
+  const comment = g.querySelector(':scope > .drop-comment');
+  if (comment) {
+    // Place the vertical comment in its own column to the left of the component tag.
+    const commentX = Math.round((tagX - 20) * 100) / 100;
+    comment.setAttribute('x', String(commentX));
+    comment.setAttribute('y', String(ESC_COMP_CY + 4));
+    comment.setAttribute('text-anchor', 'middle');
+    const commentY = ESC_COMP_CY + 4;
+    comment.setAttribute('transform', `rotate(-90 ${commentX} ${commentY})`);
+  }
+}
+window.layoutComponentAnnotations = layoutComponentAnnotations;
+
+function applySharedLabelColourToComponent(g, colour) {
+  if (!g) return;
+  const sharedColour = colour || getComputedStyle(document.documentElement).getPropertyValue('--esc-tag-terminal-color').trim() || '#00d9f5';
+  g.querySelectorAll(':scope > .drop-tag, :scope > .component-ports .port-name').forEach(label => {
+    label.style.setProperty('fill', sharedColour, 'important');
+    label.style.setProperty('color', sharedColour, 'important');
+  });
+}
+window.applySharedLabelColourToComponent = applySharedLabelColourToComponent;
+
 function makeDropped(d, x, y) {
   const NS = 'http://www.w3.org/2000/svg', W = ESC_COMP_W, H = ESC_COMP_H;
   const g = document.createElementNS(NS, 'g');
@@ -803,13 +853,13 @@ function makeDropped(d, x, y) {
 
   const tag = document.createElementNS(NS, 'text');
   tag.setAttribute('class', 'drop-tag');
-  // Reference/tag name sits at the left side, vertically centered on the component.
+  // Final position is applied by layoutComponentAnnotations after the annotation nodes exist.
   tag.setAttribute('x', String(Math.round((ESC_COMP_CX - tightW / 2 - 8) * 100) / 100));
   tag.setAttribute('y', String(ESC_COMP_CY + 4));
   tag.setAttribute('text-anchor', 'end');
-  tag.setAttribute('font-size', '12');
+  tag.setAttribute('font-size', '9');
   tag.style.fill = '#ffffff';
-  tag.style.fontSize = '12px';
+  tag.style.fontSize = '9px';
   tag.textContent = g.dataset.ref;
 
   const title = document.createElementNS(NS, 'title');
@@ -835,6 +885,7 @@ function makeDropped(d, x, y) {
   hit.setAttribute('pointer-events', 'all');
 
   g.append(title, box, hit, ns, label, tag, comment, ports);
+  layoutComponentAnnotations(g);
   syncComponentPorts(g);
   dropLayer.appendChild(g);
   select(g);
@@ -1716,6 +1767,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   function ensureId(g) {
     if (!g.dataset.uid) g.dataset.uid = 'C' + (uid++);
     if (!g.querySelector(':scope > .component-ports .mag-port')) syncComponentPorts(g);
+    layoutComponentAnnotations(g);
   }
   const obs = new MutationObserver(() => {
     layer.querySelectorAll('.dropped-symbol').forEach(ensureId);
@@ -2414,6 +2466,13 @@ function upgradeComponentToInlineSvg(g) {
     }
     ns.innerHTML = markup;
   }
+  // Older builds tinted artwork text that matched a terminal name; restore those labels
+  // to the normal component colour and reserve the shared label setting for external tags.
+  ns.querySelectorAll('.svg-terminal-label').forEach(text => {
+    text.classList.remove('svg-terminal-label');
+    if (text.style.getPropertyPriority('fill') === 'important') text.style.removeProperty('fill');
+    if (text.style.getPropertyPriority('color') === 'important') text.style.removeProperty('color');
+  });
   if (!g.dataset.simColor) {
     g.dataset.simColor = window.getEscLoadSimColor(g.dataset.symbolFile || '');
   }
@@ -2437,6 +2496,7 @@ function upgradeComponentToInlineSvg(g) {
     const lblNode = ns.querySelector('#svg_13');
     if (lblNode) lblNode.textContent = `${pol} ${cType}`;
   }
+  applySharedLabelColourToComponent(g);
 }
 window.upgradeComponentToInlineSvg = upgradeComponentToInlineSvg;
 
@@ -4064,6 +4124,7 @@ makeDropped = function(d, x, y) {
 document.querySelectorAll('#dropLayer .dropped-symbol').forEach(g => {
   upgradeComponentToInlineSvg(g);
   syncComponentPorts(g);
+  layoutComponentAnnotations(g);
 });
 syncConnectedPortStates();
 
@@ -4875,6 +4936,7 @@ window.importEscProjectData = function(jsonStr) {
     upgradeComponentToInlineSvg(g);
     syncComponentPorts(g);
     enableMove(g);
+    layoutComponentAnnotations(g);
   });
   refreshAllWires();
   syncConnectedPortStates();

@@ -104,3 +104,25 @@ Four separate SVG coil/timer symbols are available in `components/Coils/`. The a
 - Group selection uses the tight gold component outline without the oversized legacy selection frame.
 - Clicking an empty point in the workspace cancels an unfinished wire start; selecting a second terminal completes the connection.
 
+
+## V139 label and text controls
+- Component reference tags and terminal names/numbers share a configurable colour in Settings.
+- Reference tags are smaller and sit closer to the component; comments move to the former tag area.
+- Drawing text colour and size are controlled from Settings; the floating text toolbar is removed.
+
+
+## V140 annotation placement
+- Component comments display vertically to the left of the reference tag.
+- The smaller horizontal reference tag sits immediately beside the component artwork.
+
+
+## V141 label and text selection fixes
+- Vertical comments have a clear gap to the left of the component reference tag; the tag sits at the component edge.
+- The shared label colour is applied to reference tags, generated terminal numbers, and matching IEC terminal names in component artwork.
+- A workspace click commits drawing text. Single-click selects it for rotation; double-click reopens editing.
+
+
+## V142 IEC annotation placement
+- Component reference tags are smaller and vertical, beside the symbol's left edge.
+- Vertical comments sit in a separate column farther left; terminal labels remain by their terminals.
+
