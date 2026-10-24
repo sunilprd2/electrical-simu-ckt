@@ -523,7 +523,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
  const setStatus=s=>{if(state)state.textContent=s};
  function exportProject(forceName=false){
    if(!drop){setStatus('SAVE FAILED • DRAWING LAYER NOT FOUND');return}
-   if(forceName){const n=prompt('Save drawing as (name only):',currentName);if(n===null)return;currentName=(n.trim()||'Untitled ESC Drawing')}
+   if(forceName){currentName=(currentName||'Untitled ESC Drawing')}
    const wireLayerEl=document.getElementById('wireLayer');
    const wiresClone=wireLayerEl?wireLayerEl.cloneNode(true):null;
    wiresClone?.querySelectorAll('.wire-preview').forEach(n=>n.remove());
@@ -539,7 +539,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
    }else setStatus('SAVED IN THIS BROWSER • '+currentName.toUpperCase());
  }
  $('newBtn')?.addEventListener('click',()=>{
-   if(drop&&drop.children.length&&!confirm('Start a new drawing? Download or save your current drawing first.'))return;
+   
    if(drop)drop.replaceChildren();
    document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>w.remove());
    if(typeof window.cancelActiveWiring==='function')window.cancelActiveWiring('');
@@ -594,7 +594,7 @@ document.querySelectorAll(".top nav button").forEach(button => {
      currentName=data.name||file.name.replace(/\.esc\.json$/i,'');
      if(svg&&data.viewBox)svg.setAttribute('viewBox',data.viewBox);
      setStatus('OPENED • '+currentName.toUpperCase());
-   }catch(err){alert('Could not open this drawing: '+err.message);setStatus('OPEN FAILED')}
+   }catch(err){setStatus('OPEN FAILED • '+(err&&err.message?err.message:'INVALID FILE'))}
    e.target.value='';
  });
  $('rotateBtn')?.addEventListener('click',()=>{
@@ -1133,38 +1133,6 @@ document.querySelectorAll(".top nav button").forEach(button => {
    try { window.__escSafeStorage.setItem(STORAGE_KEY, JSON.stringify(userColours)); } catch (_) {}
  };
 
- // Pole-specific SVG element selectors for all 10 Power/Source components
- const SOURCE_POLE_SELECTORS = {
-   'earth_ground.svg': { pe: ['#svg_25', '#svg_10', '#svg_g1', '#svg_g2', '#svg_g3'] },
-   'earth_pe.svg': { pe: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'source_dc_positive.svg': { pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'] },
-   'source_dc_negative.svg': { neg: ['#svg_11', '#svg_8', '#svg_10', '#svg_25'] },
-   'source_dc_supply_pair.svg': {
-     pos: ['#svg_11', '#svg_8', '#svg_28', '#svg_10', '#svg_25'],
-     neg: ['#svg_33', '#svg_31', '#svg_32', '#svg_30']
-   },
-   'terminal_l1_l2_l3.svg': {
-     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
-     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
-     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1']
-   },
-   'terminal_l1_l2_l3_n.svg': {
-     l1: ['#svg_c1', '#svg_t1', '#svg_s1', '#svg_25'],
-     l2: ['#svg_c2', '#svg_t2', '#svg_s2', '#svg_30'],
-     l3: ['#svg_c3', '#svg_t3', '#svg_s3', '#svg_1'],
-     n:  ['#svg_c4', '#svg_t4', '#svg_s4', '#svg_8']
-   },
-   'terminal_phase_l.svg': { l: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'terminal_neutral_n.svg': { n: ['#svg_11', '#svg_1', '#svg_10', '#svg_25'] },
-   'ac_to_dc_power_supply.svg': {
-     l:   ['#svg_term_l', '#svg_1', '#svg_11'],
-     n:   ['#svg_term_n', '#svg_2', '#svg_12'],
-     pe:  ['#svg_term_pe', '#svg_3', '#svg_13'],
-     pos: ['#svg_term_pos', '#svg_4', '#svg_14'],
-     neg: ['#svg_term_neg', '#svg_5', '#svg_15']
-   }
- };
-
  function getEffectiveColours() {
    const themeFallback = isDark() ? '#ffffff' : '#000000';
    if (defaultToggle && !defaultToggle.checked) {
@@ -1199,29 +1167,12 @@ document.querySelectorAll(".top nav button").forEach(button => {
    }
    const compColor = eff.component || (isDark() ? '#ffffff' : '#000000');
    g.style.setProperty('--comp-stroke-color', compColor);
+   g.style.removeProperty('--pole-color');
    g.dataset.workspaceColor = compColor;
 
    const artSvg = g.querySelector(':scope > svg:not(.select-box)');
    if (!artSvg) return;
-
-   // First clear any previous pole overrides
    artSvg.querySelectorAll('[style*="--pole-color"]').forEach(el => el.style.removeProperty('--pole-color'));
-
-   // Apply pole-specific colours for Power/Source symbols (L1, L2, L3, L, N, PE, +VE, -VE)
-   const asset = (typeof getAssetBasename === 'function')
-     ? getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '')
-     : String(g.dataset.symbolFile || '').split('/').pop().toLowerCase().replace(/\s*\(\d+\)(?=\.svg$)/i, '');
-   const poleMap = SOURCE_POLE_SELECTORS[asset];
-   if (poleMap) {
-     Object.entries(poleMap).forEach(([poleKey, selectors]) => {
-       const pColor = eff[poleKey];
-       if (!pColor) return;
-       selectors.forEach(sel => {
-         const el = artSvg.querySelector(sel);
-         if (el) el.style.setProperty('--pole-color', pColor);
-       });
-     });
-   }
  }
 
  let isApplyingColours = false;
@@ -1242,15 +1193,9 @@ document.querySelectorAll(".top nav button").forEach(button => {
      root.style.setProperty('--esc-wire-color', eff.wire);
      root.style.setProperty('--esc-comp-color', eff.component);
 
-     // Wire conductor colours in Edit mode follow L1/L2/L3/L/N/PE/+VE/-VE when default colours are enabled
-     root.style.setProperty('--esc-color-l1-wire', eff.l1);
-     root.style.setProperty('--esc-color-l2-wire', eff.l2);
-     root.style.setProperty('--esc-color-l3-wire', eff.l3);
-     root.style.setProperty('--esc-color-l-wire', eff.l);
-     root.style.setProperty('--esc-color-n-wire', eff.n);
-     root.style.setProperty('--esc-color-pe-wire', eff.pe);
-     root.style.setProperty('--esc-color-pos-wire', eff.pos);
-     root.style.setProperty('--esc-color-neg-wire', eff.neg);
+     ['l1', 'l2', 'l3', 'l', 'n', 'pe', 'pos', 'neg'].forEach(k => {
+       root.style.removeProperty(`--esc-color-${k}-wire`);
+     });
 
      layer.querySelectorAll('.dropped-symbol').forEach(g => tintComponent(g, eff));
      if (typeof window.updateWireConductorIdentification === 'function') {

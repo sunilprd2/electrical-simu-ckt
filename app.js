@@ -224,7 +224,7 @@ document.getElementById('play').onclick=()=>{
  if(motorResults.length && motorState) motorState.textContent='Motor: '+motorResults.join(' • ');
 };
 document.getElementById('stop').onclick=()=>{running=false;document.querySelectorAll('#dropLayer .device-on').forEach(g=>g.classList.remove('device-on'));document.querySelectorAll('#dropLayer .motor-rotating-cw, #dropLayer .motor-rotating-ccw, #dropLayer .motor-direction-unknown').forEach(g=>g.classList.remove('motor-rotating-cw','motor-rotating-ccw','motor-direction-unknown')); document.querySelectorAll('#wireLayer .connected-wire').forEach(w=>{w.classList.remove('wire-live','wire-dc-positive','wire-dc-negative','wire-l1','wire-l2','wire-l3','wire-neutral')});render()};
-const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>alert('The 2D physical component view is the next workspace to build. Your existing SCHEMATIC workspace is unchanged.');
+const _threeDBtn=document.getElementById('threeD');if(_threeDBtn)_threeDBtn.onclick=()=>{if(state)state.textContent='2D PHYSICAL VIEW COMING SOON';};
 document.getElementById('delete').onclick=()=>{if(selected){selected.remove();selected=null;state.textContent='DELETED';}else state.textContent='CLICK A COMPONENT THEN PRESS DELETE';};
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){select(null);state.textContent='SELECTION CLEARED';return;}if(e.key==='Delete'&&selected){e.preventDefault();selected.remove();selected=null;state.textContent='DELETED';}});
@@ -2168,7 +2168,7 @@ window.syncConnectedPortStates = function() {
       const idx = Number(termNode.dataset.portIndex);
       const portEl = portEls[idx];
       const isConn = Boolean(portEl && portEl.classList.contains('connected'));
-      termNode.classList.toggle('terminal-connected-hidden', isConn);
+      termNode.classList.remove('terminal-connected-hidden');
     });
   });
   if (typeof window.updateWireConductorIdentification === 'function') {
@@ -2571,9 +2571,9 @@ function getSourceTerminalPotentials(g, energizedConverters) {
   const asset = getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '');
   if (asset === 'ac_to_dc_power_supply.svg') {
     if (!energizedConverters || energizedConverters.has(g.dataset.uid)) {
-      return { 3: ['POS'], 4: ['NEG'] };
+      return { 2: ['PE'], 3: ['POS'], 4: ['NEG'] };
     }
-    return {};
+    return { 2: ['PE'] };
   }
   if (asset === 'source_dc_positive.svg') return { 0: ['POS'] };
   if (asset === 'source_dc_negative.svg') return { 0: ['NEG'] };
@@ -2762,99 +2762,58 @@ function stopSimClockLoop() {
 
 // Compute static conductor identification from connected source terminals even in edit mode or de-energised branches
 function updateWireConductorIdentification(livePotentialsMap = window.__escLastNodePotentials) {
-  const comps = [...document.querySelectorAll('#dropLayer .dropped-symbol')];
   const wires = [...document.querySelectorAll('#wireLayer .connected-wire')];
   const keyOf = (uid, idx) => `${uid}:${idx}`;
   const wireColourClasses = ['wire-dc-positive', 'wire-dc-negative', 'wire-l1', 'wire-l2', 'wire-l3', 'wire-l', 'wire-neutral', 'wire-pe', 'wire-deenergized'];
 
-  // Build passive conductor identity map from sources + closed paths
-  const adj = new Map();
-  const addEdge = (a, b) => {
-    if (!adj.has(a)) adj.set(a, []);
-    if (!adj.has(b)) adj.set(b, []);
-    adj.get(a).push(b);
-    adj.get(b).push(a);
-  };
-  wires.forEach(w => {
-    const fromG = w.dataset.fromG, toG = w.dataset.toG;
-    if (!fromG || !toG) return;
-    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`);
-    const bG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${toG}"]`);
-    if (!aG || !bG) return;
-    const pA = resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from);
-    const pB = resolveComponentPort(bG, w.dataset.toIndex, w.dataset.to);
-    if (!pA || !pB) return;
-    addEdge(keyOf(fromG, pA.index), keyOf(toG, pB.index));
-  });
-
-  const passivePots = new Map();
-  const queue = [];
-  comps.forEach(g => {
-    const uid = g.dataset.uid;
-    if (classifySimComponent(g) === 'source') {
-      const srcMap = getSourceTerminalPotentials(g);
-      Object.entries(srcMap).forEach(([idxStr, pots]) => {
-        const k = keyOf(uid, Number(idxStr));
-        if (!passivePots.has(k)) passivePots.set(k, new Set());
-        pots.forEach(p => {
-          passivePots.get(k).add(p);
-          queue.push([k, p]);
-        });
-      });
-    }
-    // Also mark any motor PE terminal as PE conductor identity
-    portsFor(g).forEach((p, idx) => {
-      if (String(p.label).toUpperCase() === 'PE') {
-        const k = keyOf(uid, idx);
-        if (!passivePots.has(k)) passivePots.set(k, new Set());
-        if (!passivePots.get(k).has('PE')) {
-          passivePots.get(k).add('PE');
-          queue.push([k, 'PE']);
-        }
-      }
+  // Before simulation (when Run tab is OFF), all wires strictly use the user's chosen Wire Colour.
+  // Phase / polarity colours (L1, L2, L3, L, N, PE, +VE, -VE) apply ONLY when Simulation Run is ON.
+  const isSimRunning = Boolean(running && document.body.classList.contains('live'));
+  if (!isSimRunning) {
+    wires.forEach(w => {
+      w.classList.remove('wire-live', ...wireColourClasses);
+      w.style.removeProperty('stroke');
     });
-  });
-
-  while (queue.length > 0) {
-    const [curr, pot] = queue.shift();
-    for (const nxt of (adj.get(curr) || [])) {
-      if (!passivePots.has(nxt)) passivePots.set(nxt, new Set());
-      if (!passivePots.get(nxt).has(pot)) {
-        passivePots.get(nxt).add(pot);
-        queue.push([nxt, pot]);
-      }
-    }
+    return;
   }
 
   wires.forEach(w => {
     w.classList.remove('wire-live', ...wireColourClasses);
-    if (running) {
-      w.style.removeProperty('stroke');
-    }
+    w.style.removeProperty('stroke');
+
     const fromG = w.dataset.fromG;
-    const aG = document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`);
+    const toG = w.dataset.toG;
+    const aG = fromG ? document.querySelector(`#dropLayer .dropped-symbol[data-uid="${fromG}"]`) : null;
+    const bG = toG ? document.querySelector(`#dropLayer .dropped-symbol[data-uid="${toG}"]`) : null;
     const pA = aG ? resolveComponentPort(aG, w.dataset.fromIndex, w.dataset.from) : null;
-    const nodeKey = (fromG && pA) ? keyOf(fromG, pA.index) : '';
-    const livePots = (running && livePotentialsMap && nodeKey) ? (livePotentialsMap.get(nodeKey) || new Set()) : new Set();
-    const idPots = livePots.size > 0 ? livePots : ((nodeKey && passivePots.get(nodeKey)) || new Set());
+    const pB = bG ? resolveComponentPort(bG, w.dataset.toIndex, w.dataset.to) : null;
+    const nodeKeyA = (fromG && pA) ? keyOf(fromG, pA.index) : '';
+    const nodeKeyB = (toG && pB) ? keyOf(toG, pB.index) : '';
+
+    const livePots = new Set();
+    if (livePotentialsMap) {
+      if (nodeKeyA && livePotentialsMap.has(nodeKeyA)) {
+        livePotentialsMap.get(nodeKeyA).forEach(p => livePots.add(p));
+      }
+      if (nodeKeyB && livePotentialsMap.has(nodeKeyB)) {
+        livePotentialsMap.get(nodeKeyB).forEach(p => livePots.add(p));
+      }
+    }
 
     let cClass = '';
-    if (idPots.has('PE')) cClass = 'wire-pe';
-    else if (idPots.has('L1')) cClass = 'wire-l1';
-    else if (idPots.has('L2')) cClass = 'wire-l2';
-    else if (idPots.has('L3')) cClass = 'wire-l3';
-    else if (idPots.has('L')) cClass = 'wire-l';
-    else if (idPots.has('POS')) cClass = 'wire-dc-positive';
-    else if (idPots.has('NEG')) cClass = 'wire-dc-negative';
-    else if (idPots.has('N')) cClass = 'wire-neutral';
+    if (livePots.has('PE')) cClass = 'wire-pe';
+    else if (livePots.has('L1')) cClass = 'wire-l1';
+    else if (livePots.has('L2')) cClass = 'wire-l2';
+    else if (livePots.has('L3')) cClass = 'wire-l3';
+    else if (livePots.has('L')) cClass = 'wire-l';
+    else if (livePots.has('POS')) cClass = 'wire-dc-positive';
+    else if (livePots.has('NEG')) cClass = 'wire-dc-negative';
+    else if (livePots.has('N')) cClass = 'wire-neutral';
 
-    if (cClass) w.classList.add(cClass);
-    if (running) {
-      if (livePots.size > 0) {
-        w.classList.add('wire-live');
-      } else {
-        w.classList.add('wire-deenergized');
-      }
+    if (livePots.size > 0 && cClass) {
+      w.classList.add('wire-live', cClass);
+    } else {
+      w.classList.add('wire-deenergized');
     }
   });
 }
@@ -3078,9 +3037,10 @@ function evaluateCircuitSimulation() {
       const asset = getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '');
       if (asset !== 'ac_to_dc_power_supply.svg') return;
       const uid = g.dataset.uid;
+      const hasAcInputWires = ((adj.get(keyOf(uid, 0)) || []).length > 0) || ((adj.get(keyOf(uid, 1)) || []).length > 0);
       const sL = nodePotentials.get(keyOf(uid, 0)) || new Set();
       const sN = nodePotentials.get(keyOf(uid, 1)) || new Set();
-      if (hasEnergizingPotentialDiff(sL, sN) && !hasShortCircuitConflict(sL)) {
+      if (!hasAcInputWires || (hasEnergizingPotentialDiff(sL, sN) && !hasShortCircuitConflict(sL))) {
         nextEnergizedConverters.add(uid);
       }
     });
@@ -3239,11 +3199,7 @@ function evaluateCircuitSimulation() {
     if (asset === 'ac_to_dc_power_supply.svg') {
       const isConvOn = energizedConverters.has(uid);
       if (isConvOn) {
-        g.classList.add('device-on', 'sim-energized');
-        g.style.setProperty('--sim-active-color', '#22c55e');
-        ensureComponentSimBadge(g, '24V DC ON', 'badge-ok');
-      } else {
-        ensureComponentSimBadge(g, 'NO AC IN', '');
+        g.classList.add('device-on');
       }
     } else if (kind === 'protection') {
       const sub = classifyProtectionSubkind(g);

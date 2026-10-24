@@ -1352,16 +1352,16 @@ body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) rect,
 body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) circle,
 body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
 body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:var(--pole-color, var(--comp-stroke-color, #ffffff))!important; }
-body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:var(--pole-color, var(--comp-stroke-color, #ffffff))!important; stroke:none!important; }
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:var(--comp-stroke-color, #ffffff)!important; }
+body.theme-dark #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:var(--comp-stroke-color, #ffffff)!important; stroke:none!important; }
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) path,
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) line,
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) rect,
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) circle,
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) ellipse,
 body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polyline,
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:var(--pole-color, var(--comp-stroke-color, #000000))!important; }
-body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:var(--pole-color, var(--comp-stroke-color, #000000))!important; stroke:none!important; }
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) polygon { stroke:var(--comp-stroke-color, #000000)!important; }
+body.theme-light #dropLayer .dropped-symbol > svg:not(.select-box) text { fill:var(--comp-stroke-color, #000000)!important; stroke:none!important; }
 body.theme-dark #dropLayer .dropped-symbol image { filter:brightness(0) invert(1)!important; }
 body.theme-light #dropLayer .dropped-symbol image { filter:brightness(0)!important; }
 /* Keep component reference tags in their assigned accent colour in both themes. */
@@ -2380,8 +2380,7 @@ body.theme-light body #schematic #wireLayer .connected-wire.wire-live.wire-neutr
   stroke: #111827 !important;
   filter: none !important;
 }
-body #schematic #wireLayer .connected-wire.wire-pe,
-body #schematic #wireLayer .connected-wire.wire-live.wire-pe {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-pe {
   stroke: #22c55e !important;
   stroke-width: 2.8 !important;
   stroke-dasharray: 8 6 !important;
@@ -2847,13 +2846,13 @@ body.theme-light #schematic #escSelectedComponentAxes line.esc-terminal-align-li
 #dropLayer .dropped-symbol .svg-terminal-node {
   display: inline !important;
   visibility: visible !important;
-  fill: var(--pole-color, var(--comp-stroke-color, #ffffff)) !important;
+  fill: var(--comp-stroke-color, #ffffff) !important;
   stroke: none !important;
   stroke-width: 0 !important;
   opacity: 1 !important;
 }
 body.theme-light #dropLayer .dropped-symbol .svg-terminal-node {
-  fill: var(--pole-color, var(--comp-stroke-color, #1e293b)) !important;
+  fill: var(--comp-stroke-color, #1e293b) !important;
   stroke: none !important;
   stroke-width: 0 !important;
 }
@@ -2941,19 +2940,19 @@ body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
-  stroke: var(--pole-color, var(--comp-stroke-color, #ffffff)) !important;
+  stroke: var(--comp-stroke-color, #ffffff) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
-  fill: var(--pole-color, var(--comp-stroke-color, #ffffff)) !important;
+  fill: var(--comp-stroke-color, #ffffff) !important;
   stroke: none !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected):hover .svg-terminal-node:not(.terminal-connected-hidden) {
-  fill: var(--pole-color, var(--comp-stroke-color, #ffffff)) !important;
+  fill: var(--comp-stroke-color, #ffffff) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
@@ -2964,13 +2963,13 @@ body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > sv
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polyline,
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) polygon,
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) ellipse {
-  stroke: var(--pole-color, var(--comp-stroke-color, #000000)) !important;
+  stroke: var(--comp-stroke-color, #000000) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) text,
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > svg:not(.select-box) tspan {
-  fill: var(--pole-color, var(--comp-stroke-color, #000000)) !important;
+  fill: var(--comp-stroke-color, #000000) !important;
   stroke: none !important;
   opacity: 1 !important;
   visibility: visible !important;
@@ -3300,123 +3299,202 @@ body.theme-light .top nav.cad-ribbon #themeToggle {
 }
 
 /* Custom Wire & Conductor Colours driven by CSS Variables */
-body:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected) {
+/* 1. Edit mode (Simulation OFF) & de-energized wires always use user-selected Wire Colour */
+body:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected),
+body.live #schematic #wireLayer .connected-wire:not(.wire-live):not(:hover):not(.wire-selected) {
   stroke: var(--esc-wire-color, #ffffff) !important;
+  stroke-dasharray: none !important;
+  filter: none !important;
 }
-body.theme-light:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-wire-color, #1e293b) !important;
+body.theme-light:not(.live) #schematic #wireLayer .connected-wire:not(:hover):not(.wire-selected),
+body.theme-light.live #schematic #wireLayer .connected-wire:not(.wire-live):not(:hover):not(.wire-selected) {
+  stroke: var(--esc-wire-color, #000000) !important;
+  stroke-dasharray: none !important;
+  filter: none !important;
 }
-body:not(.live) #schematic #wireLayer .connected-wire.wire-l1:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-l1-wire, var(--esc-wire-color, #ff0000)) !important;
+body:not(.live) #wireLayer .wire-joint-point {
+  fill: var(--esc-wire-color, #ffffff) !important;
 }
-body:not(.live) #schematic #wireLayer .connected-wire.wire-l2:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-l2-wire, var(--esc-wire-color, #ffc000)) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-l3:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-l3-wire, var(--esc-wire-color, #0070c0)) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-l:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-l-wire, var(--esc-wire-color, #ff0000)) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-neutral:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-n-wire, var(--esc-wire-color, #00b0f0)) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-pe:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-pe-wire, var(--esc-wire-color, #00b050)) !important;
-  stroke-dasharray: 8 6 !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-dc-positive:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-pos-wire, var(--esc-wire-color, #ff0000)) !important;
-}
-body:not(.live) #schematic #wireLayer .connected-wire.wire-dc-negative:not(:hover):not(.wire-selected) {
-  stroke: var(--esc-color-neg-wire, var(--esc-wire-color, #0070c0)) !important;
+body.theme-light:not(.live) #wireLayer .wire-joint-point {
+  fill: var(--esc-wire-color, #000000) !important;
 }
 
-/* Live simulation wire colours also honour user-selected IEC conductor colours */
-#wireLayer .connected-wire.wire-live.wire-l1 {
+/* 2. Simulation Run mode (body.live) ONLY: wires connected to L1, L2, L3, L, N, PE, +VE, -VE sources change colour */
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-l1 {
   stroke: var(--esc-color-l1, #ff0000) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l1, #ff0000)) !important;
 }
-#wireLayer .connected-wire.wire-live.wire-l2 {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-l2 {
   stroke: var(--esc-color-l2, #ffc000) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l2, #ffc000)) !important;
 }
-#wireLayer .connected-wire.wire-live.wire-l3 {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-l3 {
   stroke: var(--esc-color-l3, #0070c0) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l3, #0070c0)) !important;
 }
-#wireLayer .connected-wire.wire-live.wire-l {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-l {
   stroke: var(--esc-color-l, #ff0000) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-l, #ff0000)) !important;
 }
-body #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-neutral {
   stroke: var(--esc-color-n, #00b0f0) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-n, #00b0f0)) !important;
 }
-body #schematic #wireLayer .connected-wire.wire-pe,
-body #schematic #wireLayer .connected-wire.wire-live.wire-pe {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-pe {
   stroke: var(--esc-color-pe, #00b050) !important;
   stroke-width: 2.8 !important;
   stroke-dasharray: 8 6 !important;
   filter: drop-shadow(0 0 2px #ffd21f) !important;
 }
-#wireLayer .connected-wire.wire-live.wire-dc-positive {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-dc-positive {
   stroke: var(--esc-color-pos, #ff0000) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-pos, #ff0000)) !important;
 }
-#wireLayer .connected-wire.wire-live.wire-dc-negative {
+body.live #schematic #wireLayer .connected-wire.wire-live.wire-dc-negative {
   stroke: var(--esc-color-neg, #0070c0) !important;
   stroke-width: 2.8 !important;
   filter: drop-shadow(0 0 2px var(--esc-color-neg, #0070c0)) !important;
 }
 
+/* Live wire joint dots match configured IEC conductor colours during simulation */
+body.live #wireLayer .wire-joint-point.wire-live.wire-l1 {
+  fill: var(--esc-color-l1, #ff0000) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l2 {
+  fill: var(--esc-color-l2, #ffc000) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l3 {
+  fill: var(--esc-color-l3, #0070c0) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-l {
+  fill: var(--esc-color-l, #ff0000) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-neutral {
+  fill: var(--esc-color-n, #00b0f0) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-pe {
+  fill: var(--esc-color-pe, #00b050) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-dc-positive {
+  fill: var(--esc-color-pos, #ff0000) !important;
+}
+body.live #wireLayer .wire-joint-point.wire-live.wire-dc-negative {
+  fill: var(--esc-color-neg, #0070c0) !important;
+}
 
-/* Component Colour (IEC Standard & Custom Swatch Support) */
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]) {
-  stroke: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
+/* 3. Component Colour & Lower/Upper Terminal Marks:
+   Every component in the library (including all Sources L1, L2, L3, L, N, PE, +VE, -VE, AC/DC Supply)
+   and all terminal marks (.svg-terminal-node & .port-name) ALWAYS use the user-chosen Component colour! */
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) path:not(.svg-terminal-node):not(.sim-motor-dir-arrow):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) line,
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) circle:not(.sim-rotor-ring),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) ellipse,
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) polyline,
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) polygon:not(.sim-motor-dir-head):not([stroke="none"]) {
+  stroke: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
 }
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
-body.theme-light #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]) {
-  stroke: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
+
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) path:not(.svg-terminal-node):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) line,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) circle,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) ellipse,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polyline,
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) polygon:not([stroke="none"]),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) path:not(.svg-terminal-node):not(.sim-motor-dir-arrow):not([stroke="none"]):not([stroke-width="0"]),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) line,
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) rect:not([stroke="none"]),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) circle:not(.sim-rotor-ring),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) ellipse,
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) polyline,
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized):not(.sim-fuse-blown):not(.sim-fault-tripped) > svg:not(.select-box) polygon:not(.sim-motor-dir-head):not([stroke="none"]) {
+  stroke: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
 }
+
 body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
-body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text,
-body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan {
-  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text:not(.sim-state-badge),
+body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan,
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) text:not(.sim-state-badge),
+body.theme-dark.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) tspan {
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
 }
+
 body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
-body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text,
-body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan {
-  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) text:not(.sim-state-badge),
+body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) > svg:not(.select-box) tspan,
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) [fill="#666666"]:not(.svg-terminal-node),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) text:not(.sim-state-badge),
+body.theme-light.live #dropLayer .dropped-symbol:not(.sim-energized) > svg:not(.select-box) tspan {
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
 }
-body.theme-dark #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node {
-  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #ffffff))) !important;
+
+/* Preserve operated switch blade highlight in live mode */
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper1,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper2,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper3,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_flapper4,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_13,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_10,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_30,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_12,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_actuator,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_dash,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_dash_top,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_c,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_l1,
+body.live #schematic #dropLayer .dropped-symbol.sim-switch-operated > svg:not(.select-box) #svg_contactor_l2 {
+  stroke: #22c55e !important;
 }
-body.theme-light #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node {
-  fill: var(--pole-color, var(--comp-stroke-color, var(--esc-comp-color, #000000))) !important;
+
+/* Terminal marks (.svg-terminal-node) and terminal labels (.port-name) at the lower/upper part of the component
+   are ALWAYS visible and ALWAYS use the user-chosen Component colour (unless currently selected in Edit mode) */
+body.theme-dark:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node,
+body.theme-dark:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node.terminal-connected-hidden,
+body.theme-dark.live #schematic #dropLayer .dropped-symbol .svg-terminal-node,
+body.theme-dark.live #schematic #dropLayer .dropped-symbol .svg-terminal-node.terminal-connected-hidden {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  filter: none !important;
 }
-body.theme-dark:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
+body.theme-light:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node,
+body.theme-light:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .svg-terminal-node.terminal-connected-hidden,
+body.theme-light.live #schematic #dropLayer .dropped-symbol .svg-terminal-node,
+body.theme-light.live #schematic #dropLayer .dropped-symbol .svg-terminal-node.terminal-connected-hidden {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  fill: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  filter: none !important;
+}
+body.theme-dark:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .port-name,
+body.theme-dark.live #schematic #dropLayer .dropped-symbol .port-name {
   fill: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
   color: var(--comp-stroke-color, var(--esc-comp-color, #ffffff)) !important;
 }
-body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected) .port-name {
+body.theme-light:not(.live) #schematic #dropLayer .dropped-symbol:not(.selected) .port-name,
+body.theme-light.live #schematic #dropLayer .dropped-symbol .port-name {
   fill: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
   color: var(--comp-stroke-color, var(--esc-comp-color, #000000)) !important;
 }
