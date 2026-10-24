@@ -2792,6 +2792,18 @@ body.theme-light:not(.live) #dropLayer .dropped-symbol .mag-port.port-connected-
   cursor: crosshair !important;
 }
 
+/* Keep the first terminal visibly selected while Click to Connect awaits its destination. */
+#schematic #dropLayer .dropped-symbol .mag-port.click-connect-source {
+  opacity: 1 !important;
+  fill: rgba(0, 245, 184, 0.36) !important;
+  fill-opacity: 1 !important;
+  stroke: #00f5b8 !important;
+  stroke-width: 2px !important;
+  rx: 1.5px !important;
+  ry: 1.5px !important;
+  filter: drop-shadow(0 0 6px rgba(0, 245, 184, 0.95)) !important;
+}
+
 
 /* UI refinement requested 2026-10-22
    1) Remove the extra cyan worksheet surround; keep the actual schematic/grid intact.

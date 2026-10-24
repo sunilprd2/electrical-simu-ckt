@@ -1234,8 +1234,6 @@ window.syncConnectedPortStates = syncConnectedPortStates;
   window.selectedWire = null;
   window.__escWiringActive = false;
 
-  let lastPortDownTimestamp = 0;
-
   function isClickToConnectMode() {
     const toggleEl = document.getElementById('clickToConnectToggle');
     if (toggleEl) return Boolean(toggleEl.checked);
@@ -1288,10 +1286,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
 
   function cancelActiveWiring(msg = 'WIRING CANCELLED') {
     if (activePort && activePort.el) {
-      activePort.el.classList.remove('port-active', 'port-selected', 'selected');
+      activePort.el.classList.remove('port-active', 'port-selected', 'selected', 'click-connect-source');
     }
     document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.port-selected, #dropLayer .mag-port.selected').forEach(el => {
-      el.classList.remove('port-active', 'port-selected', 'selected');
+      el.classList.remove('port-active', 'port-selected', 'selected', 'click-connect-source');
     });
     activePort = null;
     window.__escWiringActive = false;
@@ -1359,10 +1357,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     }
 
     if (activePort && activePort.el) {
-      activePort.el.classList.remove('port-active', 'selected');
+      activePort.el.classList.remove('port-active', 'selected', 'click-connect-source');
     }
     document.querySelectorAll('#dropLayer .mag-port.port-active, #dropLayer .mag-port.selected').forEach(el => {
-      el.classList.remove('port-active', 'selected');
+      el.classList.remove('port-active', 'selected', 'click-connect-source');
     });
 
     // Keep both connected terminals glowing with the neon circle (.port-connected-glow & .port-selected)
@@ -1407,6 +1405,7 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     window.__escWiringActive = true;
     if (portInfo.el) {
       portInfo.el.classList.add('port-active', 'port-selected', 'selected');
+      if (clickConnect) portInfo.el.classList.add('click-connect-source');
     }
     const ref = portInfo.g.dataset.ref || portInfo.g.dataset.name || 'COMPONENT';
     if (clickConnect) {
@@ -1460,7 +1459,6 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       e.preventDefault();
       e.stopPropagation();
       if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      lastPortDownTimestamp = Date.now();
       handlePortInteraction(hitPort, e.pointerId);
       return;
     }
@@ -1592,7 +1590,10 @@ window.syncConnectedPortStates = syncConnectedPortStates;
     if (hitPort) {
       e.preventDefault();
       e.stopPropagation();
-      if (Date.now() - lastPortDownTimestamp > 60) {
+      // Pointer clicks are already handled on pointerdown. Only handle click-only
+      // activation here (for example, keyboard activation), so a normal click
+      // followed by release cannot select the same terminal twice and cancel.
+      if (e.detail === 0) {
         handlePortInteraction(hitPort, null);
       }
       return;
