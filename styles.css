@@ -2994,13 +2994,13 @@ body.theme-light:not(.live) #dropLayer .dropped-symbol:not(.selected):hover > sv
 #wireLayer .wire-joint-point {
   fill: #ffffff !important;
   stroke: #07172f !important;
-  stroke-width: 1px !important;
+  stroke-width: .8px !important;
   pointer-events: none !important;
 }
 body.theme-light #wireLayer .wire-joint-point {
   fill: #1e293b !important;
   stroke: #ffffff !important;
-  stroke-width: 1px !important;
+  stroke-width: .8px !important;
 }
 body.live #wireLayer .wire-joint-point.wire-live.wire-l1,
 body.live #wireLayer .wire-joint-point.wire-live.wire-dc-positive {
@@ -3516,4 +3516,85 @@ body.theme-light.live #schematic #dropLayer .dropped-symbol .port-name {
 body:not(.live) #schematic #wireLayer .connected-wire {
   pointer-events: stroke !important;
   cursor: move !important;
+}
+/* Show the fault banner only while a circuit fault is present. */
+#simulationDiagnostics {
+  position: absolute;
+  z-index: 25;
+  left: 14px;
+  bottom: 14px;
+  width: min(440px, calc(100% - 28px));
+  max-height: min(210px, 34vh);
+  overflow: auto;
+  padding: 10px 12px;
+  border: 1px solid #8b3640;
+  border-left: 4px solid #ff6874;
+  border-radius: 9px;
+  background: rgba(34, 8, 14, .96);
+  color: #ffe7e9;
+  box-shadow: 0 8px 26px rgba(0,0,0,.38);
+  font: 12px/1.45 Arial, sans-serif;
+  pointer-events: none;
+}
+#simulationDiagnostics[hidden] { display:none !important; }
+.simulation-diagnostics-list { display:grid; gap:4px; }
+.diagnostic-item { padding-left:9px; border-left:2px solid #ff6874; color:#ffe7e9; font-weight:700; }
+.component-dialog-card select { min-width:0; padding:9px 10px; border:1px solid #52646c; border-radius:6px; background:#071116; color:#f1f7f9; }
+body.theme-light .component-dialog-card select { background:#f7fafb; color:#1d2930; }
+body.theme-light #simulationDiagnostics { background:rgba(255,244,245,.98); border-color:#d99aa1; color:#5e1720; box-shadow:0 8px 24px #5e172033; }
+body.theme-light .diagnostic-item { color:#7e1e29; }
+@media(max-width:600px) {
+  #simulationDiagnostics { left:8px; bottom:8px; width:calc(100% - 16px); max-height:28vh; font-size:10px; }
+}
+
+/* Shift-click selection makes a reusable group; the gold edge marks its members. */
+#dropLayer .dropped-symbol.group-selected > .select-box {
+  display:block !important;
+  fill:rgba(255,205,65,.08) !important;
+  fill-opacity:1 !important;
+  stroke:#ffcd41 !important;
+  stroke-width:2px !important;
+  stroke-dasharray:5 3 !important;
+  stroke-opacity:1 !important;
+}
+#dropLayer .dropped-symbol.group-selected > .component-selection-outline {
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  fill:none !important;
+  stroke:#ffcd41 !important;
+  stroke-width:2px !important;
+  stroke-dasharray:none !important;
+  stroke-opacity:1 !important;
+  pointer-events:none !important;
+}
+#wireLayer .connected-wire.wire-selected {
+  stroke:#ffcd41 !important;
+  stroke-width:3px !important;
+  filter:drop-shadow(0 0 3px #ffcd41aa) !important;
+}
+#dropLayer .dropped-symbol.group-selected { cursor:grab; }
+#dropLayer .dropped-symbol.group-selected.moving { cursor:grabbing; }
+body.theme-light #dropLayer .dropped-symbol.group-selected > .select-box,
+body.theme-light #dropLayer .dropped-symbol.group-selected > .component-selection-outline { stroke:#b77900 !important; }
+body.theme-light #wireLayer .connected-wire.wire-selected { stroke:#b77900 !important; filter:drop-shadow(0 0 2px #b7790055) !important; }
+.group-marquee-window {
+  fill:rgba(44,153,255,.12);
+  stroke:#49aaff;
+  stroke-width:1.5px;
+  stroke-dasharray:6 4;
+  vector-effect:non-scaling-stroke;
+}
+.group-marquee-crossing {
+  fill:rgba(63,211,157,.12);
+  stroke:#3fd39d;
+  stroke-width:1.5px;
+  stroke-dasharray:6 4;
+  vector-effect:non-scaling-stroke;
+}
+
+/* The tight artwork outline is the group-selection indicator; hide the larger legacy frame. */
+#dropLayer .dropped-symbol.selected > .select-box,
+#dropLayer .dropped-symbol.group-selected > .select-box {
+  display:none !important;
 }

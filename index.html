@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ELECTRICAL SIMU CKT — UI Foundation</title>
-<link rel="stylesheet" href="styles.css?v=v130-clean-svg">
+<link rel="stylesheet" href="styles.css?v=v138-selection-wire-cancel">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#07172f">
 <style>.cad-ribbon .toolbar-icon svg{width:22px;height:22px;display:block;flex:0 0 auto;stroke:currentColor;fill:none}</style>
@@ -50,7 +50,7 @@ window.__escSafeStorage = (function(){
 try {
   if ('caches' in window) {
     caches.keys().then(keys => keys.forEach(k => {
-      if (k !== 'electrical-simu-ckt-v130-clean-svg') caches.delete(k);
+      if (k !== 'electrical-simu-ckt-v138-selection-wire-cancel') caches.delete(k);
     }));
   }
   if ('serviceWorker' in navigator) {
@@ -146,6 +146,9 @@ try {
     <button id="fitBtn" type="button" title="Zoom to fit" aria-label="Zoom to fit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/><path d="M8 8h8v8H8z"/></svg></button>
     <button id="zoomInBtn" type="button" title="Zoom in" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></button>
   </div>
+  <section id="simulationDiagnostics" class="simulation-diagnostics" aria-label="Circuit fault" aria-live="assertive" hidden>
+    <div id="diagnosticList" class="simulation-diagnostics-list"></div>
+  </section>
 </main>
 </div>
 
@@ -167,6 +170,7 @@ try {
     <div class="dialog-heading"><b id="componentDialogTitle">Component details</b><button type="button" id="closeComponentDialog" aria-label="Close">✕</button></div>
     <label>Component name<input id="detailName" type="text"></label>
     <div class="dialog-grid"><label>Short designation<input id="detailRef" type="text" placeholder="KM1, F1, QF1"></label><label>Value / rating<input id="detailValue" type="text" placeholder="e.g. 9 A, 230 V"></label></div>
+    <label id="detailFieldModelRow" style="display:none">DC motor model<select id="detailFieldModel"><option value="permanent">Permanent magnet (A1/A2)</option><option value="wound">Wound field (A1/A2 and F1/F2)</option></select></label>
     <label>Terminal numbers (comma-separated)<input id="detailTerminals" type="text" placeholder="1,3,5,2,4,6"></label>
     <div class="dialog-actions"><button type="button" id="cancelComponentDialog">Cancel</button><button type="button" id="applyComponentDialog">Apply changes</button></div>
   </div>
@@ -227,7 +231,7 @@ try {
   <div id="escPaletteStandard" class="esc-palette-row-standard"></div>
 </div>
 <div id="escUtilityPopover" class="esc-utility-popover" role="dialog" aria-live="polite" aria-hidden="true"><div class="utility-popover-head"><b id="utilityTitle">ELECTRICAL SIMU CKT</b><button type="button" id="utilityClose" aria-label="Close panel">×</button></div><div id="utilityBody"></div></div>
-<script src="app.js?v=v130-clean-svg"></script>
+<script src="app.js?v=v138-selection-wire-cancel"></script>
 <script>
 /* Component library fallback: Sources, Coils and Switches SVG symbols, expandable category rows. */
 (function(){

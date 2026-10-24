@@ -88,6 +88,12 @@ const lib=document.getElementById('libraryGroups');
 function openComponentDetails(g){
  if(!g)return;
  const dlg=document.getElementById('componentDialog');
+ const asset=getAssetBasename(g.dataset.symbolFile||g.dataset.porttype||g.dataset.type||'');
+ const fieldRow=document.getElementById('detailFieldModelRow');
+ const fieldModel=document.getElementById('detailFieldModel');
+ const hasDcFieldModel=asset==='motor_dc_motor.svg';
+ if(fieldRow)fieldRow.style.display=hasDcFieldModel?'':'none';
+ if(fieldModel)fieldModel.value=g.dataset.motorFieldModel==='wound'?'wound':'permanent';
  document.getElementById('detailName').value=g.dataset.name||'';
  document.getElementById('detailRef').value=g.dataset.ref||'';
  document.getElementById('detailValue').value=g.dataset.value||'';
@@ -107,7 +113,19 @@ document.getElementById('applyComponentDialog')?.addEventListener('click',()=>{
  g.dataset.name=document.getElementById('detailName').value.trim()||g.dataset.name;
  g.dataset.ref=document.getElementById('detailRef').value.trim().toUpperCase()||g.dataset.ref; const tag=g.querySelector('.drop-tag'); if(tag)tag.textContent=g.dataset.ref;
  g.dataset.value=document.getElementById('detailValue').value.trim();
- const terminals=document.getElementById('detailTerminals').value.split(',').map(s=>s.trim()).filter(Boolean);
+ let terminals=document.getElementById('detailTerminals').value.split(',').map(s=>s.trim()).filter(Boolean);
+ const asset=getAssetBasename(g.dataset.symbolFile||g.dataset.porttype||g.dataset.type||'');
+ if(asset==='motor_dc_motor.svg'){
+  const fieldModel=document.getElementById('detailFieldModel')?.value==='wound'?'wound':'permanent';
+  if(fieldModel==='wound'){
+   g.dataset.motorFieldModel='wound';
+   if(terminals.length<4)terminals=['A1','A2','F1','F2'];
+  }else{
+   const wasWound=g.dataset.motorFieldModel==='wound';
+   delete g.dataset.motorFieldModel;
+   if(wasWound&&terminals.length>=4)terminals=terminals.slice(0,2);
+  }
+ }else delete g.dataset.motorFieldModel;
  g.dataset.terminals=JSON.stringify(terminals);
  if(typeof syncComponentPorts==='function')syncComponentPorts(g);
  if(typeof refreshWiresForComponent==='function')refreshWiresForComponent(g);
@@ -379,7 +397,7 @@ function getComponentViewport(typeOrFile) {
 }
 window.getComponentViewport = getComponentViewport;
 
-function portDefs(type) {
+function portDefs(type, includeDcFieldPorts = false) {
   const entry = getSvgCatalogEntry(type);
   if (entry) {
     const [vx0, vy0, vw, vh] = parseViewBoxTuple(entry.vb);
@@ -388,7 +406,7 @@ function portDefs(type) {
     const drawW = vw * scale, drawH = vh * scale;
     const originX = vp.x + (vp.w - drawW) / 2;
     const originY = vp.y + (vp.h - drawH) / 2;
-    return entry.ports.map((p, idx) => ({
+    const mapPort = (p, idx) => ({
       index: idx,
       x: Math.round((originX + (p.vx - vx0) * scale) * 100) / 100,
       y: Math.round((originY + (p.vy - vy0) * scale) * 100) / 100,
@@ -399,7 +417,15 @@ function portDefs(type) {
       label: p.label,
       side: p.side || 'top',
       tid: p.tid || ''
-    }));
+    });
+    const defs = entry.ports.map(mapPort);
+    if (includeDcFieldPorts && getAssetBasename(type) === 'motor_dc_motor.svg') {
+      // Optional wound-field terminals sit below the motor body; the default DC model remains two-terminal.
+      [{ vx: 190, vy: 548, label: 'F1', side: 'bottom', tid: 'sim_field_f1' },
+       { vx: 370, vy: 548, label: 'F2', side: 'bottom', tid: 'sim_field_f2' }]
+        .forEach(p => defs.push(mapPort(p, defs.length)));
+    }
+    return defs;
   }
   const v = (x, y, label, side) => ({ x, y, label, side });
   const asset = String(type || '').split('/').pop().toLowerCase();
@@ -450,7 +476,7 @@ function portDefs(type) {
 function portsFor(g) {
   if (!g) return [];
   const key = g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '';
-  const defs = portDefs(key);
+  const defs = portDefs(key, g.dataset.motorFieldModel === 'wound');
   let labels = [];
   try { labels = JSON.parse(g.dataset.terminals || 'null') || []; } catch (_) {}
   if (!labels.length) {
@@ -869,7 +895,34 @@ renderLibrary();
 })();
 
 /* V10–V98 — Component terminal selection & orthogonal wire connection between components */
-function computeWirePoints(fromPort, toPort, waypoints = []) {
+function simplifyWirePointString(rawPoints) {
+  const parsed = String(rawPoints || '').trim().split(/\s+/).filter(Boolean).map(pair => {
+    const [x, y] = pair.split(',').map(Number);
+    return { x, y };
+  }).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y));
+  if (parsed.length < 2) return String(rawPoints || '');
+
+  const points = [];
+  parsed.forEach((point, index) => {
+    const previous = points[points.length - 1];
+    if (!previous || Math.hypot(point.x - previous.x, point.y - previous.y) > 0.01 || index === parsed.length - 1) {
+      points.push(point);
+    }
+    while (points.length >= 3) {
+      const a = points[points.length - 3];
+      const b = points[points.length - 2];
+      const c = points[points.length - 1];
+      const sameRow = Math.abs(a.y - b.y) <= 0.01 && Math.abs(b.y - c.y) <= 0.01;
+      const sameColumn = Math.abs(a.x - b.x) <= 0.01 && Math.abs(b.x - c.x) <= 0.01;
+      if (!sameRow && !sameColumn) break;
+      points.splice(points.length - 2, 1);
+    }
+  });
+  if (points.length === 1) points.push(parsed[parsed.length - 1]);
+  return points.map(point => `${Math.round(point.x * 100) / 100},${Math.round(point.y * 100) / 100}`).join(' ');
+}
+
+function computeWirePointsRaw(fromPort, toPort, waypoints = []) {
   if (!fromPort || !toPort) return '';
   const ax = Math.round(fromPort.x * 100) / 100;
   const ay = Math.round(fromPort.y * 100) / 100;
@@ -977,6 +1030,9 @@ function computeWirePoints(fromPort, toPort, waypoints = []) {
   const x1 = fromSide === 'right' ? Math.round(ax + STUB) : Math.round(ax - STUB);
   return `${ax},${ay} ${x1},${ay} ${x1},${by} ${bx},${by}`;
 }
+function computeWirePoints(fromPort, toPort, waypoints = []) {
+  return simplifyWirePointString(computeWirePointsRaw(fromPort, toPort, waypoints));
+}
 window.computeWirePoints = computeWirePoints;
 
 /* Click to Connect Mode Wire Router:
@@ -985,7 +1041,7 @@ window.computeWirePoints = computeWirePoints;
    - If the two terminals are misaligned (|ax - bx| > 2 and |ay - by| > 2),
      3-route option occurs: returns 3 orthogonal segments with two 90-degree bends (VHV or HVH).
    - If a component is dragged into aligned position, automatically straightens with no 90-degree bend. */
-function computeClickToConnectRoute(fromPort, toPort, customMid = null, customOrient = null) {
+function computeClickToConnectRouteRaw(fromPort, toPort, customMid = null, customOrient = null) {
   if (!fromPort || !toPort) return { points: '', orient: 'VHV', mid: 0, aligned: false };
   const ax = Math.round(fromPort.x * 100) / 100;
   const ay = Math.round(fromPort.y * 100) / 100;
@@ -1063,6 +1119,10 @@ function computeClickToConnectRoute(fromPort, toPort, customMid = null, customOr
     mid: my,
     aligned: false
   };
+}
+function computeClickToConnectRoute(fromPort, toPort, customMid = null, customOrient = null) {
+  const route = computeClickToConnectRouteRaw(fromPort, toPort, customMid, customOrient);
+  return { ...route, points: simplifyWirePointString(route.points) };
 }
 window.computeClickToConnectRoute = computeClickToConnectRoute;
 
@@ -1511,6 +1571,16 @@ window.syncConnectedPortStates = syncConnectedPortStates;
       }
     }
   }, true);
+
+  // Clicking elsewhere on the workspace abandons a pending wire start.
+  // Terminal clicks are handled above, and successful wire branches clear activePort first.
+  document.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || !activePort) return;
+    if (!e.target?.closest?.('#sheet, #schematic')) return;
+    if (resolvePortFromEvent(e, 11)) return;
+    cancelActiveWiring('WIRING CANCELLED');
+    selectTerminal(null);
+  });
 
   // Live wire preview and magnetic target snapping during pointermove
   svgEl.addEventListener('pointermove', e => {
@@ -2832,6 +2902,46 @@ function hasShortCircuitConflict(potSet) {
   return false;
 }
 
+function hasEarthFaultConflict(potSet) {
+  // A neutral-to-PE bond can be intentional; treat energized line/DC conductors to PE as faults.
+  return Boolean(potSet && potSet.has('PE') && [...potSet].some(p => p !== 'PE' && p !== 'N'));
+}
+
+function hasElectricalFaultConflict(potSet) {
+  return hasShortCircuitConflict(potSet) || hasEarthFaultConflict(potSet);
+}
+
+function diagnoseThreePhaseMotor(g, phaseByTerminal, terminalPotentials, addDiagnostic) {
+  const ref = g.dataset.ref || g.dataset.name || '3P MOTOR';
+  const terminalNames = ['U', 'V', 'W'];
+  const badIndex = terminalPotentials.findIndex(hasElectricalFaultConflict);
+  let diagnostic;
+  if (badIndex >= 0) {
+    const p = terminalPotentials[badIndex] || new Set();
+    const reason = hasEarthFaultConflict(p) ? 'EARTH FAULT' : 'SHORT CIRCUIT';
+    diagnostic = { code: 'motor-terminal-fault', message: `${ref}: ${reason} at motor terminal ${terminalNames[badIndex]}.` };
+  } else {
+    const seen = new Map();
+    const repeated = [];
+    phaseByTerminal.forEach((phase, i) => {
+      if (!phase) return;
+      if (seen.has(phase)) repeated.push(`${phase} at ${terminalNames[seen.get(phase)]} and ${terminalNames[i]}`);
+      else seen.set(phase, i);
+    });
+    if (repeated.length) {
+      diagnostic = { code: 'motor-phase-miswire', message: `${ref}: PHASE MISWIRE — ${repeated.join(', ')}; use three distinct phases.` };
+    } else {
+      const missing = phaseByTerminal.map((phase, i) => phase ? '' : `${terminalNames[i]} (expected ${['L1', 'L2', 'L3'][i]})`).filter(Boolean);
+      const hasAnyPhase = phaseByTerminal.some(Boolean);
+      diagnostic = hasAnyPhase
+        ? { code: 'motor-phase-loss', message: `${ref}: PHASE LOSS — no phase reaches ${missing.join(', ')}.` }
+        : { code: 'motor-no-supply', message: `${ref}: NO SUPPLY — no three-phase power reaches U/V/W.` };
+    }
+  }
+  addDiagnostic(diagnostic.code, diagnostic.message, 'fault');
+  return diagnostic;
+}
+
 function ensureMotorRotorOverlay(motor, runningDir) {
   upgradeComponentToInlineSvg(motor);
   const ns = motor.querySelector(':scope > svg:not(.select-box)');
@@ -2978,6 +3088,26 @@ function stopSimClockLoop() {
   }
 }
 
+function renderSimulationDiagnostics(diagnostics = [], active = running) {
+  const panel = document.getElementById('simulationDiagnostics');
+  const list = document.getElementById('diagnosticList');
+  const faults = active && Array.isArray(diagnostics) ? diagnostics.filter(item => item && item.severity !== 'info') : [];
+  if (!panel || !list) return;
+  panel.hidden = faults.length === 0;
+  if (!faults.length) {
+    list.replaceChildren();
+    return;
+  }
+  const rows = faults.map(item => {
+    const row = document.createElement('div');
+    row.className = 'diagnostic-item';
+    row.textContent = item.message;
+    return row;
+  });
+  list.replaceChildren(...rows);
+}
+window.renderSimulationDiagnostics = renderSimulationDiagnostics;
+
 // Compute static conductor identification from connected source terminals even in edit mode or de-energised branches
 function updateWireConductorIdentification(livePotentialsMap = window.__escLastNodePotentials) {
   const wires = [...document.querySelectorAll('#wireLayer .connected-wire')];
@@ -3077,10 +3207,20 @@ function evaluateCircuitSimulation() {
     });
     window.__escLastNodePotentials = null;
     updateWireConductorIdentification(null);
+    if (motorState) motorState.textContent = 'Motor: OFF';
+    renderSimulationDiagnostics([], false);
     return;
   }
 
   const keyOf = (uid, idx) => `${uid}:${idx}`;
+  const diagnostics = [];
+  const diagnosticKeys = new Set();
+  const addDiagnostic = (code, message, severity = 'fault') => {
+    const key = `${code}|${message}`;
+    if (diagnosticKeys.has(key)) return;
+    diagnosticKeys.add(key);
+    diagnostics.push({ code, message, severity });
+  };
 
   // Collect tripped Thermal Overload Relay references (e.g., F1)
   const getTrippedOverloadRefs = () => {
@@ -3234,11 +3374,13 @@ function evaluateCircuitSimulation() {
         if (hasShortCircuitConflict(pSet)) {
           if (sub === 'fuse' || sub === 'fuse_isolator') {
             g.dataset.fuseState = 'blown';
+            g.dataset.simTripCause = 'short-circuit';
             g.dataset.simState = '0';
             faultClearedInPass = true;
             if (state) state.textContent = `FAULT • SHORT CIRCUIT CLEARED BY FUSE ${g.dataset.ref || ''}`;
           } else if (sub === 'circuit_breaker' || sub === 'mcb_motor') {
             g.dataset.breakerState = 'tripped';
+            g.dataset.simTripCause = 'short-circuit';
             g.dataset.simState = '0';
             faultClearedInPass = true;
             if (state) state.textContent = `FAULT • SHORT CIRCUIT TRIPPED BREAKER ${g.dataset.ref || ''}`;
@@ -3315,7 +3457,7 @@ function evaluateCircuitSimulation() {
       const ref = normalizeDeviceRef(g.dataset.ref);
       const s0 = nodePotentials.get(keyOf(uid, 0)) || new Set();
       const s1 = nodePotentials.get(keyOf(uid, 1)) || new Set();
-      const isEnergized = hasEnergizingPotentialDiff(s0, s1) && !hasShortCircuitConflict(s0);
+      const isEnergized = hasEnergizingPotentialDiff(s0, s1) && !hasElectricalFaultConflict(s0) && !hasElectricalFaultConflict(s1);
 
       if (!/timer/.test(asset)) {
         // Instantaneous Contactor / Relay Coil
@@ -3396,6 +3538,62 @@ function evaluateCircuitSimulation() {
   window.__escActiveCoils = energizedCoils;
   window.__escActiveCoilRefs = energizedCoilRefs;
 
+  const componentsByUid = new Map(comps.map(g => [g.dataset.uid, g]));
+  const describeNode = nodeKey => {
+    const splitAt = nodeKey.lastIndexOf(':');
+    const g = componentsByUid.get(nodeKey.slice(0, splitAt));
+    if (!g) return 'an unidentified connection';
+    const port = resolveComponentPort(g, Number(nodeKey.slice(splitAt + 1)));
+    return `${g.dataset.ref || g.dataset.name || 'Component'}:${port?.label || 'terminal'}`;
+  };
+  const reportedPotentialFaults = new Set();
+  nodePotentials.forEach((potentials, nodeKey) => {
+    const phases = ['L1', 'L2', 'L3'].filter(p => potentials.has(p));
+    const line = ['L', 'L1', 'L2', 'L3'].find(p => potentials.has(p));
+    let shortCode = '';
+    let shortText = '';
+    if (potentials.has('POS') && potentials.has('NEG')) {
+      shortCode = 'dc-short'; shortText = 'DC positive-to-negative short circuit';
+    } else if (phases.length > 1) {
+      shortCode = 'phase-short'; shortText = `phase-to-phase short circuit (${phases.join(' + ')})`;
+    } else if (line && potentials.has('N')) {
+      shortCode = 'line-neutral-short'; shortText = `${line}-to-neutral short circuit`;
+    }
+    if (shortCode && hasShortCircuitConflict(potentials)) {
+      const signature = `${shortCode}|${[...potentials].sort().join(',')}`;
+      if (!reportedPotentialFaults.has(signature)) {
+        reportedPotentialFaults.add(signature);
+        addDiagnostic(shortCode, `SHORT CIRCUIT — ${shortText} at ${describeNode(nodeKey)}.`);
+      }
+    }
+    if (hasEarthFaultConflict(potentials)) {
+      const conductors = [...potentials].filter(p => p !== 'PE' && p !== 'N').sort();
+      const signature = `earth-fault|${conductors.join(',')}`;
+      if (!reportedPotentialFaults.has(signature)) {
+        reportedPotentialFaults.add(signature);
+        addDiagnostic('earth-fault', `EARTH FAULT — ${conductors.join(' / ')} is connected to PE at ${describeNode(nodeKey)}.`);
+      }
+    }
+  });
+  comps.forEach(g => {
+    if (classifySimComponent(g) !== 'protection') return;
+    const ref = g.dataset.ref || g.dataset.name || 'Protection device';
+    const sub = classifyProtectionSubkind(g);
+    if (sub === 'fuse' && g.dataset.fuseState === 'blown') {
+      const message = g.dataset.simTripCause === 'short-circuit'
+        ? `SHORT CIRCUIT — ${ref} fuse opened to interrupt the fault; check the wiring before replacement.`
+        : `${ref}: fuse is blown; the protected circuit is open.`;
+      addDiagnostic('fuse-open', message, g.dataset.simTripCause === 'short-circuit' ? 'fault' : 'warning');
+    } else if (g.dataset.breakerState === 'tripped') {
+      const message = g.dataset.simTripCause === 'short-circuit'
+        ? `SHORT CIRCUIT — ${ref} tripped to interrupt the fault; clear the wiring fault before reset.`
+        : `${ref}: circuit breaker tripped; reset it after checking the circuit.`;
+      addDiagnostic('breaker-tripped', message, g.dataset.simTripCause === 'short-circuit' ? 'fault' : 'warning');
+    } else if (g.dataset.overloadState === 'tripped') {
+      addDiagnostic('overload-tripped', `${ref}: thermal overload relay tripped; reset it after checking the motor load.`, 'warning');
+    }
+  });
+
   // 6. Apply visual state to Coils, Timers, Loads, Protections, Proximity Sensors, and Motors
   const motorResults = [];
 
@@ -3431,7 +3629,7 @@ function evaluateCircuitSimulation() {
     } else if (kind === 'coil' || kind === 'load') {
       const s0 = nodePotentials.get(keyOf(uid, 0)) || new Set();
       const s1 = nodePotentials.get(keyOf(uid, 1)) || new Set();
-      const isOn = hasEnergizingPotentialDiff(s0, s1) && !hasShortCircuitConflict(s0);
+      const isOn = hasEnergizingPotentialDiff(s0, s1) && !hasElectricalFaultConflict(s0) && !hasElectricalFaultConflict(s1);
       const chosenColor = g.dataset.simColor || window.getEscLoadSimColor(g.dataset.symbolFile || '');
 
       if (/timer/.test(asset)) {
@@ -3490,6 +3688,32 @@ function evaluateCircuitSimulation() {
       if (asset.includes('dc_motor')) {
         const s0 = nodePotentials.get(keyOf(uid, 0)) || new Set();
         const s1 = nodePotentials.get(keyOf(uid, 1)) || new Set();
+        const ref = g.dataset.ref || g.dataset.name || 'DC Motor';
+        const armatureFault = hasElectricalFaultConflict(s0) || hasElectricalFaultConflict(s1);
+        if (armatureFault) {
+          const reason = hasEarthFaultConflict(s0) || hasEarthFaultConflict(s1) ? 'EARTH FAULT' : 'SHORT CIRCUIT';
+          addDiagnostic('dc-motor-terminal-fault', `${ref}: ${reason} at the armature terminals.`);
+          ensureComponentSimBadge(g, reason, 'badge-fault');
+          g.classList.add('motor-direction-unknown');
+          motorResults.push(`${ref}: STOPPED • ${reason}`);
+          return;
+        }
+        const armatureEnergized = hasEnergizingPotentialDiff(s0, s1);
+        if (armatureEnergized && g.dataset.motorFieldModel === 'wound') {
+          const defs = portsFor(g);
+          const f1Index = defs.findIndex(p => /^(F1|F\+|FIELD1|FIELD\+)$/.test(String(p.label || '').toUpperCase()));
+          const f2Index = defs.findIndex(p => /^(F2|F-|FIELD2|FIELD-)$/.test(String(p.label || '').toUpperCase()));
+          const f1 = f1Index >= 0 ? (nodePotentials.get(keyOf(uid, f1Index)) || new Set()) : new Set();
+          const f2 = f2Index >= 0 ? (nodePotentials.get(keyOf(uid, f2Index)) || new Set()) : new Set();
+          const fieldPowered = (f1.has('POS') && f2.has('NEG')) || (f1.has('NEG') && f2.has('POS'));
+          if (!fieldPowered) {
+            addDiagnostic('dc-field-loss', `${ref}: FIELD LOSS — the armature is supplied but F1/F2 have no DC field supply.`);
+            ensureComponentSimBadge(g, 'FIELD LOSS', 'badge-fault');
+            g.classList.add('motor-direction-unknown');
+            motorResults.push(`${ref}: STOPPED • FIELD LOSS`);
+            return;
+          }
+        }
         const cw = (s0.has('POS') && s1.has('NEG')) || ((s0.has('L') || s0.has('L1')) && s1.has('N'));
         const ccw = (s0.has('NEG') && s1.has('POS')) || (s0.has('N') && (s1.has('L') || s1.has('L1')));
         if (cw || ccw) {
@@ -3500,12 +3724,16 @@ function evaluateCircuitSimulation() {
           motorResults.push(`${g.dataset.ref || g.dataset.name || 'DC Motor'}: RUNNING (${finalDir === 'CW' ? 'CLOCKWISE' : 'ANTICLOCKWISE'})`);
         } else {
           g.classList.add('motor-direction-unknown');
-          motorResults.push(`${g.dataset.ref || g.dataset.name || 'DC Motor'}: OFF`);
+          if (s0.size || s1.size) {
+            addDiagnostic('dc-motor-wiring', `${ref}: INVALID SUPPLY — connect opposite DC polarities to A1/A2.`, 'warning');
+            ensureComponentSimBadge(g, 'CHECK SUPPLY', 'badge-warn');
+            motorResults.push(`${ref}: STOPPED • CHECK DC SUPPLY`);
+          } else motorResults.push(`${ref}: OFF`);
         }
       } else if (asset.includes('single_phase')) {
         const s0 = nodePotentials.get(keyOf(uid, 0)) || new Set();
         const s1 = nodePotentials.get(keyOf(uid, 1)) || new Set();
-        if (hasEnergizingPotentialDiff(s0, s1)) {
+        if (hasEnergizingPotentialDiff(s0, s1) && !hasElectricalFaultConflict(s0) && !hasElectricalFaultConflict(s1)) {
           const finalDir = (overrideDir === 'CCW') ? 'CCW' : 'CW';
           g.classList.add('device-on', 'sim-energized', finalDir === 'CW' ? 'motor-rotating-cw' : 'motor-rotating-ccw');
           g.style.setProperty('--sim-active-color', '#22c55e');
@@ -3513,7 +3741,16 @@ function evaluateCircuitSimulation() {
           motorResults.push(`${g.dataset.ref || g.dataset.name || '1P Motor'}: RUNNING (${finalDir})`);
         } else {
           g.classList.add('motor-direction-unknown');
-          motorResults.push(`${g.dataset.ref || g.dataset.name || '1P Motor'}: OFF`);
+          const ref = g.dataset.ref || g.dataset.name || '1P Motor';
+          if (hasElectricalFaultConflict(s0) || hasElectricalFaultConflict(s1)) {
+            const reason = hasEarthFaultConflict(s0) || hasEarthFaultConflict(s1) ? 'EARTH FAULT' : 'SHORT CIRCUIT';
+            addDiagnostic('single-phase-motor-fault', `${ref}: ${reason} at the motor terminals.`);
+            ensureComponentSimBadge(g, reason, 'badge-fault');
+            motorResults.push(`${ref}: STOPPED • ${reason}`);
+          } else {
+            if (s0.size || s1.size) addDiagnostic('single-phase-motor-supply', `${ref}: NO VALID SUPPLY across the motor terminals.`, 'warning');
+            motorResults.push(`${ref}: OFF`);
+          }
         }
       } else {
         // 3-Phase or Star-Delta Motor: requires all 3 phases L1, L2, L3 at U1, V1, W1 (ports 0, 1, 2)
@@ -3525,7 +3762,7 @@ function evaluateCircuitSimulation() {
         const primaryThreePhases = Boolean(
           pU && pV && pW &&
           new Set([pU, pV, pW]).size === 3 &&
-          !hasShortCircuitConflict(sU) && !hasShortCircuitConflict(sV) && !hasShortCircuitConflict(sW)
+          !hasElectricalFaultConflict(sU) && !hasElectricalFaultConflict(sV) && !hasElectricalFaultConflict(sW)
         );
 
         if (asset.includes('star_delta')) {
@@ -3557,7 +3794,7 @@ function evaluateCircuitSimulation() {
 
           // Star (Y): W2 (4), U2 (5), V2 (6) are bridged together in the active circuit graph without phase short
           const starBridged = arePortsConnected(4, 5) && arePortsConnected(5, 6);
-          const starValid = starBridged && !hasShortCircuitConflict(sW2) && !pW2 && !pU2 && !pV2;
+          const starValid = starBridged && !hasElectricalFaultConflict(sW2) && !pW2 && !pU2 && !pV2;
 
           // Delta (Δ): W2 (4), U2 (5), V2 (6) are not bridged in star, and each winding (U1-U2, V1-V2, W1-W2)
           // is connected phase-to-phase across the 3 phases
@@ -3572,7 +3809,7 @@ function evaluateCircuitSimulation() {
             hasEnergizingPotentialDiff(sU, sU2) &&
             hasEnergizingPotentialDiff(sV, sV2) &&
             hasEnergizingPotentialDiff(sW, sW2) &&
-            !hasShortCircuitConflict(sW2) && !hasShortCircuitConflict(sU2) && !hasShortCircuitConflict(sV2);
+            !hasElectricalFaultConflict(sW2) && !hasElectricalFaultConflict(sU2) && !hasElectricalFaultConflict(sV2);
           const deltaValid = deltaPotentialsValid || (primaryThreePhases && deltaTopology);
 
           // Highlight Y or Δ inside the motor whenever Star or Delta topology is present
@@ -3600,6 +3837,7 @@ function evaluateCircuitSimulation() {
             g.classList.add('motor-direction-unknown', 'motor-secondary-open-warn');
             ensureComponentSimBadge(g, '⚠ SECONDARY (W2-U2-V2) NOT CONNECTED', 'badge-warn');
             const refLabel = g.dataset.ref || g.dataset.name || 'M1';
+            addDiagnostic('star-delta-winding', `${refLabel}: WINDING CONNECTION ERROR — W2/U2/V2 are not connected in a valid star or delta pattern.`, 'warning');
             motorResults.push(`${refLabel}: WARNING — SECONDARY (W2, U2, V2) NOT CONNECTED IN STAR (Y) OR DELTA (Δ)`);
             if (state) {
               state.textContent = `WARNING • ${refLabel.toUpperCase()} SECONDARY SIDE (W2, U2, V2) NOT CONNECTED IN STAR (Y) OR DELTA (Δ)`;
@@ -3630,6 +3868,23 @@ function evaluateCircuitSimulation() {
     }
   });
 
+  comps.forEach(g => {
+    if (classifySimComponent(g) !== 'motor') return;
+    const asset = getAssetBasename(g.dataset.symbolFile || g.dataset.porttype || g.dataset.type || '');
+    if (asset.includes('dc_motor') || asset.includes('single_phase')) return;
+    const uid = g.dataset.uid;
+    const sets = [0, 1, 2].map(i => nodePotentials.get(keyOf(uid, i)) || new Set());
+    const pick = s => s.has('L1') ? 'R' : s.has('L2') ? 'Y' : s.has('L3') ? 'B' : '';
+    const phases = sets.map(pick);
+    const hasThreeDistinctPhases = phases.every(Boolean) && new Set(phases).size === 3 && !sets.some(hasElectricalFaultConflict);
+    if (g.classList.contains('motor-secondary-open-warn') && hasThreeDistinctPhases) {
+      addDiagnostic('star-delta-winding', `${g.dataset.ref || g.dataset.name || 'Motor'}: WINDING CONNECTION ERROR — connect W2/U2/V2 in a valid star or delta pattern.`, 'warning');
+    } else if (!hasThreeDistinctPhases) {
+      const issue = diagnoseThreePhaseMotor(g, phases, sets, addDiagnostic);
+      ensureComponentSimBadge(g, issue.code === 'motor-phase-loss' ? 'PHASE LOSS' : issue.code === 'motor-phase-miswire' ? 'MISWIRED' : issue.code === 'motor-terminal-fault' ? 'FAULT' : 'NO SUPPLY', 'badge-fault');
+    }
+  });
+
   // 7. Update wire conductor identification and live glow
   window.__escLastNodePotentials = nodePotentials;
   updateWireConductorIdentification(nodePotentials);
@@ -3637,6 +3892,7 @@ function evaluateCircuitSimulation() {
   if (motorResults.length && motorState) {
     motorState.textContent = 'Motor: ' + motorResults.join(' • ');
   }
+  renderSimulationDiagnostics(diagnostics, true);
 }
 window.evaluateCircuitSimulation = evaluateCircuitSimulation;
 
@@ -3656,6 +3912,8 @@ function toggleComponentInRunMode(g, shiftKey = false) {
         return false;
       }
       g.dataset.fuseState = g.dataset.fuseState === 'blown' ? 'healthy' : 'blown';
+      if (g.dataset.fuseState === 'blown') g.dataset.simTripCause = 'manual';
+      else delete g.dataset.simTripCause;
       g.dataset.simState = g.dataset.fuseState === 'blown' ? '1' : '0';
       evaluateCircuitSimulation();
       if (state) state.textContent = `FUSE ${label.toUpperCase()} → ${g.dataset.fuseState === 'blown' ? 'BLOWN (CIRCUIT INTERRUPTED)' : 'REPLACED (HEALTHY)'}`;
@@ -3672,6 +3930,7 @@ function toggleComponentInRunMode(g, shiftKey = false) {
     if (sub === 'circuit_breaker' || sub === 'mcb_motor') {
       if (shiftKey) {
         g.dataset.breakerState = 'tripped';
+        g.dataset.simTripCause = 'manual';
         g.dataset.simState = '0';
         evaluateCircuitSimulation();
         if (state) state.textContent = `BREAKER ${label.toUpperCase()} → TRIPPED (FAULT)`;
@@ -3679,6 +3938,7 @@ function toggleComponentInRunMode(g, shiftKey = false) {
       }
       if (g.dataset.breakerState === 'tripped') {
         g.dataset.breakerState = 'open';
+        delete g.dataset.simTripCause;
         g.dataset.simState = '0';
         evaluateCircuitSimulation();
         if (state) state.textContent = `BREAKER ${label.toUpperCase()} → RESET TO OPEN (CLICK AGAIN TO CLOSE)`;
@@ -3752,6 +4012,7 @@ document.getElementById('play').onclick = () => {
     running = false;
     document.body.classList.remove('live');
     setSimulationRunUI(false);
+    renderSimulationDiagnostics([], false);
     if (sim) { sim.textContent = '● OPEN CIRCUIT'; sim.classList.remove('running'); }
     if (motorState) motorState.textContent = 'Motor: OFF';
     if (state) state.textContent = 'OPEN CIRCUIT • CONNECT COMPONENT TERMINALS WITH WIRES FIRST';
@@ -4051,6 +4312,465 @@ syncConnectedPortStates();
 })();
 
 // ============================================================================
+// Multi-select, group movement, and group deletion for placed components and wires.
+(function installGroupSelectionAndDrag() {
+  const svg = document.getElementById('schematic');
+  if (!svg) return;
+  let groupDrag = null;
+  let marqueeDrag = null;
+  let marqueeRect = null;
+
+  const groupItems = () => [...document.querySelectorAll(
+    '#dropLayer .dropped-symbol.group-selected, #wireLayer .connected-wire.wire-selected'
+  )];
+  const componentItems = () => [...document.querySelectorAll('#dropLayer .dropped-symbol.group-selected')];
+  const wireItems = () => [...document.querySelectorAll('#wireLayer .connected-wire.wire-selected')];
+
+  function clearGroupSelection() {
+    document.querySelectorAll('#dropLayer .dropped-symbol.group-selected').forEach(item => item.classList.remove('group-selected'));
+    document.querySelectorAll('#wireLayer .connected-wire.wire-selected').forEach(item => item.classList.remove('wire-selected'));
+    window.selectedWire = null;
+    if (typeof select === 'function') select(null, false);
+  }
+
+  function selectGroupItem(item) {
+    const isWire = item.classList.contains('connected-wire');
+    const className = isWire ? 'wire-selected' : 'group-selected';
+    const adding = !item.classList.contains(className);
+    if (adding) {
+      item.classList.add(className);
+      if (isWire) {
+        if (typeof select === 'function') select(null, false);
+        window.selectedWire = item;
+      } else {
+        updateSelectionOutline(item);
+        if (typeof select === 'function') select(item, false);
+      }
+    } else {
+      item.classList.remove(className);
+      if (isWire && window.selectedWire === item) {
+        window.selectedWire = wireItems()[0] || null;
+      }
+      if (!isWire && typeof selected !== 'undefined' && selected === item) {
+        select(componentItems()[0] || null, false);
+      }
+    }
+  }
+
+  function parsePoints(value) {
+    return String(value || '').trim().split(/\s+/).filter(Boolean).map(pair => {
+      const [x, y] = pair.split(',').map(Number);
+      return { x, y };
+    }).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y));
+  }
+
+  function pointsText(points) {
+    return points.map(point => `${Math.round(point.x * 100) / 100},${Math.round(point.y * 100) / 100}`).join(' ');
+  }
+
+  function shiftPointText(value, dx, dy) {
+    return pointsText(parsePoints(value).map(point => ({ x: point.x + dx, y: point.y + dy })));
+  }
+
+  function snapshotWire(wire) {
+    return {
+      element: wire,
+      fromUid: wire.dataset.fromG || '',
+      toUid: wire.dataset.toG || '',
+      points: wire.getAttribute('points') || '',
+      waypoints: wire.dataset.waypoints || '',
+      customPoints: wire.dataset.customPoints || '',
+      routingMode: wire.dataset.routingMode || 'default',
+      orthoOrient: wire.dataset.orthoOrient || 'VHV',
+      orthoMid: wire.dataset.orthoMid || '',
+      branchFixed: wire.dataset.branchWireFixed === '1',
+      branchX: wire.dataset.branchX || '',
+      branchY: wire.dataset.branchY || '',
+      branchSide: wire.dataset.branchSide || 'top'
+    };
+  }
+
+  function getComponentByUid(uid) {
+    return [...document.querySelectorAll('#dropLayer .dropped-symbol')].find(item => item.dataset.uid === uid) || null;
+  }
+
+  function resolveRecordPorts(record) {
+    const wire = record.element;
+    const from = getComponentByUid(record.fromUid);
+    const to = getComponentByUid(record.toUid);
+    return {
+      from,
+      to,
+      a: from ? resolveComponentPort(from, wire.dataset.fromIndex, wire.dataset.from) : null,
+      b: to ? resolveComponentPort(to, wire.dataset.toIndex, wire.dataset.to) : null
+    };
+  }
+
+  function setWireRoute(wire, a, b, clickMode = false) {
+    if (!a || !b) return;
+    if (clickMode) {
+      const route = computeClickToConnectRoute(a, b);
+      wire.setAttribute('points', route.points);
+      wire.dataset.orthoOrient = route.orient;
+      wire.dataset.orthoMid = String(route.mid);
+      delete wire.dataset.customPoints;
+      return;
+    }
+    const aligned = Math.abs(a.x - b.x) <= 2 || Math.abs(a.y - b.y) <= 2;
+    wire.setAttribute('points', aligned
+      ? `${Math.round(a.x * 100) / 100},${Math.round(a.y * 100) / 100} ${Math.round(b.x * 100) / 100},${Math.round(b.y * 100) / 100}`
+      : computeWirePoints(a, b, []));
+    delete wire.dataset.waypoints;
+    delete wire.dataset.customPoints;
+  }
+
+  function moveWireOnly(record, dx, dy) {
+    const wire = record.element;
+    const { a, b } = resolveRecordPorts(record);
+    if (!a || !b) return;
+    if (record.routingMode === 'click-to-connect') {
+      const orient = record.orthoOrient === 'HVH' ? 'HVH' : 'VHV';
+      const mid = Number(record.orthoMid);
+      const shiftedMid = Number.isFinite(mid) ? mid + (orient === 'HVH' ? dx : dy) : null;
+      const route = computeClickToConnectRoute(a, b, shiftedMid, orient);
+      wire.setAttribute('points', route.points);
+      wire.dataset.orthoOrient = route.orient;
+      wire.dataset.orthoMid = String(route.mid);
+      wire.dataset.customPoints = route.points;
+      return;
+    }
+    let waypoints = [];
+    if (record.waypoints) {
+      try { waypoints = JSON.parse(record.waypoints) || []; } catch (_) {}
+    }
+    if (!waypoints.length) {
+      const pts = parsePoints(record.points);
+      waypoints = pts.slice(1, -1).map(point => ({ x: point.x, y: point.y }));
+      if (!waypoints.length) {
+        waypoints = [{ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }];
+      }
+    }
+    waypoints = waypoints.map(point => ({ x: Number(point.x) + dx, y: Number(point.y) + dy }));
+    wire.dataset.waypoints = JSON.stringify(waypoints);
+    wire.setAttribute('points', computeWirePoints(a, b, waypoints));
+  }
+
+  function moveGroupWire(record, dx, dy, movingUids) {
+    const wire = record.element;
+    const fromMoves = movingUids.has(record.fromUid);
+    const toMoves = movingUids.has(record.toUid);
+    const isSelected = wire.classList.contains('wire-selected');
+    const { a, b } = resolveRecordPorts(record);
+    if (fromMoves && toMoves) {
+      wire.setAttribute('points', shiftPointText(record.points, dx, dy));
+      if (record.customPoints) wire.dataset.customPoints = shiftPointText(record.customPoints, dx, dy);
+      if (record.waypoints) {
+        try {
+          const moved = JSON.parse(record.waypoints).map(point => ({ x: Number(point.x) + dx, y: Number(point.y) + dy }));
+          wire.dataset.waypoints = JSON.stringify(moved);
+        } catch (_) {}
+      }
+      const mid = Number(record.orthoMid);
+      if (Number.isFinite(mid)) wire.dataset.orthoMid = String(mid + (record.orthoOrient === 'HVH' ? dx : dy));
+      if (record.branchFixed) {
+        wire.dataset.branchX = String(Number(record.branchX) + dx);
+        wire.dataset.branchY = String(Number(record.branchY) + dy);
+      }
+      return;
+    }
+    if (fromMoves || toMoves) {
+      if (record.branchFixed && a) {
+        const shiftBranch = toMoves;
+        const bx = Number(record.branchX) + (shiftBranch ? dx : 0);
+        const by = Number(record.branchY) + (shiftBranch ? dy : 0);
+        if (Number.isFinite(bx) && Number.isFinite(by)) {
+          wire.dataset.branchX = String(bx);
+          wire.dataset.branchY = String(by);
+          wire.setAttribute('points', computeWirePoints(a, { x: bx, y: by, side: record.branchSide, index: 0 }, []));
+          return;
+        }
+      }
+      setWireRoute(wire, a, b, record.routingMode === 'click-to-connect');
+      return;
+    }
+    if (isSelected) moveWireOnly(record, dx, dy);
+  }
+
+  function removeGroupSelection() {
+    const components = componentItems();
+    const wires = new Set(wireItems());
+    components.forEach(component => {
+      const uid = component.dataset.uid;
+      if (!uid) return;
+      document.querySelectorAll('#wireLayer .connected-wire').forEach(wire => {
+        if (wire.dataset.fromG === uid || wire.dataset.toG === uid) wires.add(wire);
+      });
+    });
+    wires.forEach(wire => wire.remove());
+    components.forEach(component => component.remove());
+    clearGroupSelection();
+    if (typeof syncConnectedPortStates === 'function') syncConnectedPortStates();
+    if (typeof window.refreshAllWires === 'function') window.refreshAllWires();
+    if (typeof window.updateWireBranchJoints === 'function') window.updateWireBranchJoints();
+    if (state) state.textContent = components.length + wires.size > 1 ? 'GROUP DELETED' : 'ITEM DELETED';
+  }
+
+  function beginGroupDrag(e, items) {
+    const point = getPoint(e);
+    const components = items.filter(item => item.classList.contains('dropped-symbol'));
+    const componentRecords = components.map(item => ({
+      element: item,
+      x: Number(item.dataset.x) || 0,
+      y: Number(item.dataset.y) || 0,
+      uid: item.dataset.uid || ''
+    }));
+    const allWires = [...document.querySelectorAll('#wireLayer .connected-wire')].map(snapshotWire);
+    groupDrag = {
+      pointerId: e.pointerId,
+      startX: point.x,
+      startY: point.y,
+      components: componentRecords,
+      wires: allWires,
+      moved: false
+    };
+    components.forEach(item => item.classList.add('moving'));
+    try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  function beginMarquee(e) {
+    const point = getPoint(e);
+    marqueeRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    marqueeRect.setAttribute('class', 'group-marquee-window');
+    marqueeRect.setAttribute('pointer-events', 'none');
+    marqueeRect.setAttribute('x', String(point.x));
+    marqueeRect.setAttribute('y', String(point.y));
+    marqueeRect.setAttribute('width', '0');
+    marqueeRect.setAttribute('height', '0');
+    svg.appendChild(marqueeRect);
+    marqueeDrag = {
+      pointerId: e.pointerId,
+      startX: point.x,
+      startY: point.y,
+      x: point.x,
+      y: point.y,
+      startClientX: e.clientX,
+      startClientY: e.clientY,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      moved: false
+    };
+    try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  function updateMarquee(point, clientX, clientY) {
+    if (!marqueeDrag || !marqueeRect) return;
+    marqueeDrag.x = point.x;
+    marqueeDrag.y = point.y;
+    marqueeDrag.clientX = clientX;
+    marqueeDrag.clientY = clientY;
+    marqueeDrag.moved = Math.hypot(clientX - marqueeDrag.startClientX, clientY - marqueeDrag.startClientY) > 4;
+    const left = Math.min(marqueeDrag.startX, point.x);
+    const top = Math.min(marqueeDrag.startY, point.y);
+    marqueeRect.setAttribute('x', String(left));
+    marqueeRect.setAttribute('y', String(top));
+    marqueeRect.setAttribute('width', String(Math.abs(point.x - marqueeDrag.startX)));
+    marqueeRect.setAttribute('height', String(Math.abs(point.y - marqueeDrag.startY)));
+    marqueeRect.setAttribute('class', clientX < marqueeDrag.startClientX ? 'group-marquee-crossing' : 'group-marquee-window');
+  }
+
+  function elementBoundsOnScreen(element) {
+    try {
+      const box = element.getBoundingClientRect();
+      if (!box.width && !box.height) return null;
+      return { left: box.left, right: box.right, top: box.top, bottom: box.bottom };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function wirePointsOnScreen(wire) {
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return [];
+    return parsePoints(wire.getAttribute('points')).map(value => {
+      const point = svg.createSVGPoint();
+      point.x = value.x;
+      point.y = value.y;
+      const screenPoint = point.matrixTransform(matrix);
+      return { x: screenPoint.x, y: screenPoint.y };
+    });
+  }
+
+  function pointsWithinRect(points, rect) {
+    return points.length > 0 && points.every(point => point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom);
+  }
+
+  function wireCrossesRect(points, rect) {
+    if (points.length < 2) return pointsWithinRect(points, rect);
+    for (let i = 1; i < points.length; i++) {
+      const a = points[i - 1], b = points[i];
+      if (a.x === b.x) {
+        if (a.x >= rect.left && a.x <= rect.right && Math.max(Math.min(a.y, b.y), rect.top) <= Math.min(Math.max(a.y, b.y), rect.bottom)) return true;
+      } else if (a.y === b.y) {
+        if (a.y >= rect.top && a.y <= rect.bottom && Math.max(Math.min(a.x, b.x), rect.left) <= Math.min(Math.max(a.x, b.x), rect.right)) return true;
+      } else {
+        const minX = Math.min(a.x, b.x), maxX = Math.max(a.x, b.x);
+        const minY = Math.min(a.y, b.y), maxY = Math.max(a.y, b.y);
+        if (maxX >= rect.left && minX <= rect.right && maxY >= rect.top && minY <= rect.bottom) return true;
+      }
+    }
+    return false;
+  }
+
+  function finishMarquee() {
+    if (!marqueeDrag) return;
+    const drag = marqueeDrag;
+    marqueeDrag = null;
+    if (marqueeRect?.isConnected) marqueeRect.remove();
+    marqueeRect = null;
+    if (!drag.moved) return;
+
+    const rect = {
+      left: Math.min(drag.startClientX, drag.clientX),
+      right: Math.max(drag.startClientX, drag.clientX),
+      top: Math.min(drag.startClientY, drag.clientY),
+      bottom: Math.max(drag.startClientY, drag.clientY)
+    };
+    const crossing = drag.clientX < drag.startClientX;
+    clearGroupSelection();
+    const components = [...document.querySelectorAll('#dropLayer .dropped-symbol')].filter(component => {
+      const bounds = elementBoundsOnScreen(component);
+      if (!bounds) return false;
+      const enclosed = bounds.left >= rect.left && bounds.right <= rect.right && bounds.top >= rect.top && bounds.bottom <= rect.bottom;
+      const intersects = bounds.right >= rect.left && bounds.left <= rect.right && bounds.bottom >= rect.top && bounds.top <= rect.bottom;
+      return crossing ? intersects : enclosed;
+    });
+    components.forEach(component => {
+      component.classList.add('group-selected');
+      updateSelectionOutline(component);
+    });
+    const selectedUids = new Set(components.map(component => component.dataset.uid).filter(Boolean));
+    const wires = [...document.querySelectorAll('#wireLayer .connected-wire')].filter(wire => {
+      const points = wirePointsOnScreen(wire);
+      const fitsBox = crossing ? wireCrossesRect(points, rect) : pointsWithinRect(points, rect);
+      const connectsSelectedComponents = selectedUids.has(wire.dataset.fromG) && selectedUids.has(wire.dataset.toG);
+      return fitsBox || connectsSelectedComponents;
+    });
+    wires.forEach(wire => wire.classList.add('wire-selected'));
+    window.selectedWire = wires[0] || null;
+    if (components.length && typeof select === 'function') select(components[0], false);
+    if (state) state.textContent = `${components.length + wires.length} ITEMS SELECTED`;
+  }
+
+  function onPointerDown(e) {
+    if (running || document.body.classList.contains('live') || window.__escWiringActive || window.__escWireEditingActive) return;
+    if (e.button === 2) {
+      if (e.target?.closest?.('#sheet, #schematic')) beginMarquee(e);
+      return;
+    }
+    if (e.button !== 0) return;
+    if (e.target?.closest?.('.mag-port') || (typeof window.resolvePortFromEvent === 'function' && window.resolvePortFromEvent(e, 11))) return;
+    const component = e.target?.closest?.('#dropLayer .dropped-symbol') || null;
+    const wire = e.target?.closest?.('#wireLayer .connected-wire') || null;
+    const item = component || wire;
+    const additive = e.shiftKey || e.ctrlKey || e.metaKey;
+
+    if (additive && item) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      selectGroupItem(item);
+      return;
+    }
+    if (item && groupItems().length > 1 && item.classList.contains(component ? 'group-selected' : 'wire-selected')) {
+      if (e.detail >= 2) {
+        clearGroupSelection();
+        return;
+      }
+      beginGroupDrag(e, groupItems());
+      return;
+    }
+    if (e.target?.closest?.('#schematic') && groupItems().length) clearGroupSelection();
+  }
+
+  function onPointerMove(e) {
+    if (marqueeDrag && e.pointerId === marqueeDrag.pointerId) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      updateMarquee(getPoint(e), e.clientX, e.clientY);
+      return;
+    }
+    if (!groupDrag || e.pointerId !== groupDrag.pointerId) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const point = getPoint(e);
+    const rawDx = point.x - groupDrag.startX;
+    const rawDy = point.y - groupDrag.startY;
+    if (Math.hypot(rawDx, rawDy) > 2) groupDrag.moved = true;
+    if (!groupDrag.moved) return;
+    const dx = Math.round(rawDx / 12) * 12;
+    const dy = Math.round(rawDy / 12) * 12;
+    const movingUids = new Set(groupDrag.components.map(record => record.uid).filter(Boolean));
+    groupDrag.components.forEach(record => {
+      const x = record.x + dx, y = record.y + dy;
+      record.element.dataset.x = String(x);
+      record.element.dataset.y = String(y);
+      applyComponentTransform(record.element, x, y);
+    });
+    groupDrag.wires.forEach(record => moveGroupWire(record, dx, dy, movingUids));
+    if (typeof window.updateWireBranchJoints === 'function') window.updateWireBranchJoints();
+    if (typeof window.updateSelectedTerminalAxes === 'function' && typeof selected !== 'undefined') window.updateSelectedTerminalAxes(selected);
+  }
+
+  function onPointerEnd(e) {
+    if (marqueeDrag && (e.pointerId == null || e.pointerId === marqueeDrag.pointerId)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      updateMarquee(getPoint(e), e.clientX, e.clientY);
+      finishMarquee();
+      return;
+    }
+    if (!groupDrag || (e.pointerId != null && e.pointerId !== groupDrag.pointerId)) return;
+    e.stopImmediatePropagation();
+    groupDrag.components.forEach(record => record.element.classList.remove('moving'));
+    groupDrag = null;
+  }
+
+  window.addEventListener('pointerdown', onPointerDown, true);
+  window.addEventListener('pointermove', onPointerMove, { capture: true, passive: false });
+  window.addEventListener('pointerup', onPointerEnd, true);
+  window.addEventListener('pointercancel', onPointerEnd, true);
+  window.addEventListener('contextmenu', e => {
+    if (e.target?.closest?.('#sheet, #schematic')) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+  window.addEventListener('keydown', e => {
+    const typing = e.target?.closest?.('input, textarea, select, [contenteditable="true"]');
+    if (typing) return;
+    if (e.key === 'Escape' && groupItems().length) {
+      clearGroupSelection();
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      return;
+    }
+    if ((e.key === 'Delete' || e.key === 'Backspace') && groupItems().length) {
+      removeGroupSelection();
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+  document.getElementById('delete')?.addEventListener('click', e => {
+    if (!groupItems().length) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    removeGroupSelection();
+  }, true);
+})();
+
 // Wire Dragging / Rerouting in Edit Mode & Save/Load Helper API
 // ============================================================================
 (function installWireRerouteDragging() {
@@ -4684,7 +5404,7 @@ document.getElementById('libraryGroups')?.addEventListener('click', function(e) 
       dot.setAttribute('class', ['wire-joint-point', ...liveClasses].join(' '));
       dot.setAttribute('cx', String(cand.x));
       dot.setAttribute('cy', String(cand.y));
-      dot.setAttribute('r', '3.8');
+      dot.setAttribute('r', '2.2');
       jointLayer.appendChild(dot);
     });
   }

@@ -87,3 +87,20 @@ The POWER SUPPLY category includes phase/neutral/PE terminals, 1-phase and 3-pha
 
 ## Coil SVG library
 Four separate SVG coil/timer symbols are available in `components/Coils/`. The artwork has no K/KT reference designation; the editor assigns K1/K2... or KT1/KT2... when dropped into the workspace.
+
+## Run-mode wiring diagnostics
+- A fault banner appears only when the running circuit has a detected fault; it stays hidden when no fault is present. Motor run/off status is not shown in the banner.
+- The banner reports phase-to-phase, line-to-neutral, DC polarity, and conductor-to-PE wiring faults.
+- Three-phase motors run only when U/V/W receive three distinct phases. Missing phases and duplicate phase assignments stop the motor and report the affected terminal.
+- The DC motor defaults to a two-terminal permanent-magnet model. To simulate a wound-field motor, open Component Details, choose **Wound field**, and supply A1/A2 plus F1/F2. Energized armature with an unpowered F1/F2 field circuit is reported as field loss and the motor remains stopped.
+- These checks use ideal connection and potential labels. They do not calculate current, impedance, protection coordination, or installation safety.
+
+## Group selection and movement
+- Right-click and drag a rectangle around components and wires; each selected component gets its own gold outline. Dragging from right to left also selects items the rectangle crosses. No Shift key is required.
+- Left-drag any selected component or wire to move the full selected group. Wires between moved components keep their route and connections; wires that reach outside the group reroute to stay connected.
+- Press **Delete** or use the Delete button to remove the selected group. Removing a component also removes wires attached to it.
+
+## V138 selection and wiring cleanup
+- Group selection uses the tight gold component outline without the oversized legacy selection frame.
+- Clicking an empty point in the workspace cancels an unfinished wire start; selecting a second terminal completes the connection.
+

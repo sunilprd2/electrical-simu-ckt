@@ -1,9 +1,9 @@
-const CACHE='electrical-simu-ckt-v130-clean-svg';
+const CACHE='electrical-simu-ckt-v138-selection-wire-cancel';
 const ASSETS=[
   './',
   './index.html',
-  './styles.css?v=v127-master-sim',
-  './app.js?v=v127-master-sim',
+  './styles.css?v=v138-selection-wire-cancel',
+  './app.js?v=v138-selection-wire-cancel',
   './manifest.webmanifest',
   './assets/esc-user-logo.png?v=85-logo-path-fix',
   './assets/esc-user-logo.png',
